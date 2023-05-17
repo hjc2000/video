@@ -363,4 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /ffmpegLearn/out.*
-!/ffmpegLearn/ffmpeg_build/bin
+!/ffmpegLearn/ffmpeg_build
+!/ffmpegLearn/ffmpeg_build/*
