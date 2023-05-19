@@ -22,7 +22,6 @@ WebApplication app = builder.Build();
 #region 设置服务器监听的URL
 app.Urls.Clear();
 app.Urls.Add("http://localhost");
-app.Urls.Add("https://localhost");
 foreach (IPAddress ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
 {
 	// 下面的判断过滤 IPv4 地址
@@ -31,7 +30,6 @@ foreach (IPAddress ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
 		string localIp = ip.ToString();
 		Console.WriteLine(localIp);
 		app.Urls.Add($"http://{localIp}");
-		app.Urls.Add($"https://{localIp}");
 	}
 }
 #endregion
