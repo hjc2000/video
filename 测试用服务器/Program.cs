@@ -16,12 +16,21 @@ WebApplicationOptions options = new()
 	WebRootPath = _webRootPath,
 };
 WebApplicationBuilder builder = WebApplication.CreateBuilder(options);
+builder.Services.AddCors(c =>
+{
+	c.AddPolicy("AllowAllOrigins", policy =>
+	{
+		policy.AllowAnyOrigin()
+		.AllowAnyMethod()
+		.AllowAnyHeader();
+	});
+});
 WebApplication app = builder.Build();
 #endregion
 
 #region 设置服务器监听的URL
 app.Urls.Clear();
-app.Urls.Add("http://localhost");
+app.Urls.Add("http://localhost:8848");
 foreach (IPAddress ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
 {
 	// 下面的判断过滤 IPv4 地址
@@ -29,7 +38,7 @@ foreach (IPAddress ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
 	{
 		string localIp = ip.ToString();
 		Console.WriteLine(localIp);
-		app.Urls.Add($"http://{localIp}");
+		app.Urls.Add($"http://{localIp}:8848");
 	}
 }
 #endregion
@@ -38,6 +47,8 @@ foreach (IPAddress ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
 //{
 //	await next(context);
 //});
+
+app.UseCors("AllowAllOrigins");
 
 #region 配置路由
 app.UseRouting();
