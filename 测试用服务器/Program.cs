@@ -61,7 +61,7 @@ app.MapGet("/ts.mp4", async (HttpContext context) =>
 		Console.WriteLine("请求视频文件");
 		context.Response.Headers.Add("Transfer-Encoding", "chunked");
 		context.Response.Headers.ContentType = "video/mp4";
-		FileStream fileStream = File.OpenRead(@"C:\msys64\home\Satlink_test\ffmpeg_build\bin\YOASOBI-アイドル.mp4");
+		FileStream fileStream = File.OpenRead(_webRootPath + "/ts.mp4");
 		await ChunkWriter.WriteContent(fileStream, context.Response.Body);
 		await ChunkWriter.WriteTrailer(context.Response.Body);
 	}
