@@ -59,6 +59,7 @@ app.MapGet("/ts.mp4", async (HttpContext context) =>
 	{
 		context.Response.Clear();
 		Console.WriteLine("请求视频文件");
+		context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"ts.mp4\"");
 		context.Response.Headers.Add("Transfer-Encoding", "chunked");
 		context.Response.Headers.ContentType = "video/mp4";
 		FileStream fileStream = File.OpenRead(_webRootPath + "/ts.mp4");
