@@ -16,15 +16,6 @@ WebApplicationOptions options = new()
 	WebRootPath = _webRootPath,
 };
 WebApplicationBuilder builder = WebApplication.CreateBuilder(options);
-builder.Services.AddCors(c =>
-{
-	c.AddPolicy("AllowAllOrigins", policy =>
-	{
-		policy.AllowAnyOrigin()
-		.AllowAnyMethod()
-		.AllowAnyHeader();
-	});
-});
 WebApplication app = builder.Build();
 #endregion
 
@@ -43,12 +34,14 @@ foreach (IPAddress ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
 }
 #endregion
 
-//app.Use(async (HttpContext context, RequestDelegate next) =>
-//{
-//	await next(context);
-//});
-
-app.UseCors("AllowAllOrigins");
+app.Use(async (HttpContext context, RequestDelegate next) =>
+{
+	context.Response.Headers.AccessControlAllowOrigin = "*";
+	context.Response.Headers.AccessControlAllowHeaders = "*";
+	context.Response.Headers.AccessControlAllowMethods = "*";
+	context.Response.Headers.AccessControlExposeHeaders = "*";
+	await next(context);
+});
 
 #region 配置路由
 app.UseRouting();
@@ -57,7 +50,6 @@ app.MapGet("/ts.mp4", async (HttpContext context) =>
 {
 	try
 	{
-		context.Response.Clear();
 		Console.WriteLine("请求视频文件");
 		context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"ts.mp4\"");
 		context.Response.Headers.Add("Transfer-Encoding", "chunked");

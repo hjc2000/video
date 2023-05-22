@@ -5,7 +5,17 @@
 HttpResponseMessage msg = await client.GetAsync("ts.mp4");
 if (msg.IsSuccessStatusCode)
 {
-	Console.WriteLine(msg.Headers);
+	foreach (KeyValuePair<string, IEnumerable<string>> head in msg.Headers)
+	{
+		Console.WriteLine($"{head.Key}");
+		foreach (string str in head.Value)
+		{
+			Console.WriteLine(str);
+		}
+
+		Console.WriteLine();
+	}
+
 	FileStream file = File.Open("./ts.mp4", FileMode.OpenOrCreate);
 	using (file)
 	{
