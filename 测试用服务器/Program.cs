@@ -34,6 +34,8 @@ foreach (IPAddress ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
 }
 #endregion
 
+#region 自定义中间件
+// 允许跨域
 app.Use(async (HttpContext context, RequestDelegate next) =>
 {
 	context.Response.Headers.AccessControlAllowOrigin = "*";
@@ -42,6 +44,7 @@ app.Use(async (HttpContext context, RequestDelegate next) =>
 	context.Response.Headers.AccessControlExposeHeaders = "*";
 	await next(context);
 });
+#endregion
 
 #region 配置路由
 app.UseRouting();
