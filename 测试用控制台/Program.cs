@@ -5,17 +5,7 @@
 HttpResponseMessage msg = await client.GetAsync("test.txt");
 if (msg.IsSuccessStatusCode)
 {
-	foreach (KeyValuePair<string, IEnumerable<string>> head in msg.Headers)
-	{
-		Console.WriteLine($"{head.Key}");
-		foreach (string str in head.Value)
-		{
-			Console.WriteLine(str);
-		}
-
-		Console.WriteLine();
-	}
-
+	Console.WriteLine(msg.Headers);
 	FileStream file = File.Open("D:\\my_files\\workspace\\temp\\test.txt", FileMode.OpenOrCreate);
 	using (file)
 	{
