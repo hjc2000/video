@@ -2,7 +2,7 @@
 {
 	BaseAddress = new Uri("http://localhost:8848"),
 };
-HttpResponseMessage msg = await client.GetAsync("ts.mp4");
+HttpResponseMessage msg = await client.GetAsync("test.txt");
 if (msg.IsSuccessStatusCode)
 {
 	foreach (KeyValuePair<string, IEnumerable<string>> head in msg.Headers)
@@ -16,7 +16,7 @@ if (msg.IsSuccessStatusCode)
 		Console.WriteLine();
 	}
 
-	FileStream file = File.Open("./ts.mp4", FileMode.OpenOrCreate);
+	FileStream file = File.Open("D:\\my_files\\workspace\\temp\\test.txt", FileMode.OpenOrCreate);
 	using (file)
 	{
 		Stream httpStream = await msg.Content.ReadAsStreamAsync();

@@ -1,11 +1,11 @@
-using ChunkLib;
 using Microsoft.AspNetCore.StaticFiles;
+using NetLib.HttpLib;
 using System.Net;
 using System.Net.Sockets;
 
 #region 设置服务器根路径
 string _webRootPath = Environment.GetEnvironmentVariable("WEBROOT") ?? "./";
-_webRootPath = _webRootPath + "/wwwroot";
+_webRootPath += "/wwwroot";
 _webRootPath = _webRootPath.Replace("\\", "/");
 #endregion
 
@@ -58,8 +58,24 @@ app.MapGet("/ts.mp4", async (HttpContext context) =>
 		context.Response.Headers.Add("Transfer-Encoding", "chunked");
 		context.Response.Headers.ContentType = "video/mp4";
 		FileStream fileStream = File.OpenRead(_webRootPath + "/ts.mp4");
-		await ChunkWriter.WriteContent(fileStream, context.Response.Body);
-		await ChunkWriter.WriteTrailer(context.Response.Body);
+		await ChunkEncoder.WriteContentAsync(fileStream, context.Response.Body);
+		await ChunkEncoder.WriteTrailerAsync(context.Response.Body);
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex.Message);
+	}
+});
+
+app.MapGet("/test.txt", async (HttpContext context) =>
+{
+	try
+	{
+		context.Response.Headers.Add("Transfer-Encoding", "chunked");
+		context.Response.Headers.ContentType = "text/plain";
+		FileStream fileStream = File.OpenRead(_webRootPath + "/test.txt");
+		await ChunkEncoder.WriteContentAsync(fileStream, context.Response.Body);
+		await ChunkEncoder.WriteTrailerAsync(context.Response.Body);
 	}
 	catch (Exception ex)
 	{

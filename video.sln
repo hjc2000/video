@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "流式加载图片视频", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "测试用控制台", "测试用控制台\测试用控制台.csproj", "{1690CB31-8611-4C9E-B14D-550C94283398}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChunkLib", "Chunk\ChunkLib.csproj", "{D9597379-4F1B-4B4B-80C7-CB553D124747}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,18 +89,6 @@ Global
 		{1690CB31-8611-4C9E-B14D-550C94283398}.Release|x64.Build.0 = Release|Any CPU
 		{1690CB31-8611-4C9E-B14D-550C94283398}.Release|x86.ActiveCfg = Release|Any CPU
 		{1690CB31-8611-4C9E-B14D-550C94283398}.Release|x86.Build.0 = Release|Any CPU
-		{D9597379-4F1B-4B4B-80C7-CB553D124747}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9597379-4F1B-4B4B-80C7-CB553D124747}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9597379-4F1B-4B4B-80C7-CB553D124747}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D9597379-4F1B-4B4B-80C7-CB553D124747}.Debug|x64.Build.0 = Debug|Any CPU
-		{D9597379-4F1B-4B4B-80C7-CB553D124747}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D9597379-4F1B-4B4B-80C7-CB553D124747}.Debug|x86.Build.0 = Debug|Any CPU
-		{D9597379-4F1B-4B4B-80C7-CB553D124747}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9597379-4F1B-4B4B-80C7-CB553D124747}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D9597379-4F1B-4B4B-80C7-CB553D124747}.Release|x64.ActiveCfg = Release|Any CPU
-		{D9597379-4F1B-4B4B-80C7-CB553D124747}.Release|x64.Build.0 = Release|Any CPU
-		{D9597379-4F1B-4B4B-80C7-CB553D124747}.Release|x86.ActiveCfg = Release|Any CPU
-		{D9597379-4F1B-4B4B-80C7-CB553D124747}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,22 +3,18 @@
 namespace ChunkLib;
 public class ChunkWriter
 {
-	public static async Task WriteContent(Stream sourceStream, Stream dstStream)
+	public static async Task WriteContentAsync(Stream sourceStream, Stream dstStream)
 	{
 		byte[] readBuff = new byte[1500];
 		while (true)
 		{
-			int readCount = await sourceStream.ReadAsync(readBuff, 0, readBuff.Length);
-			if (readCount == 0)
-			{
-				break;
-			}
-
-			await WriteContent(readBuff, 0, readCount, dstStream);
+			int readCount = await sourceStream.ReadAsync(readBuff);
+			if (readCount == 0) break;
+			await WriteContentAsync(readBuff, 0, readCount, dstStream);
 		}
 	}
 
-	public static async Task WriteContent(byte[] buff, int offset, int count, Stream dstStream)
+	public static async Task WriteContentAsync(byte[] buff, int offset, int count, Stream dstStream)
 	{
 		string length = $"{count:x}\r\n";
 		await dstStream.WriteAsync(Encoding.UTF8.GetBytes(length));
@@ -26,7 +22,7 @@ public class ChunkWriter
 		await dstStream.WriteAsync(CRLF);
 	}
 
-	public static async Task WriteTrailer(Stream dstStream)
+	public static async Task WriteTrailerAsync(Stream dstStream)
 	{
 		await dstStream.WriteAsync(Trailer);
 	}
