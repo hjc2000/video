@@ -9,7 +9,7 @@ public partial class Index
 	protected override async Task OnInitializedAsync()
 	{
 		_module = await JsHelper<Index>.CreateAsync(JS, "./Pages/Index.razor.js", this);
-		await _module.InvokeVoidAsync("AddScript");
+		_jsOp = await JsOp.CreateAsync(JS);
 	}
 	#endregion
 
@@ -20,16 +20,16 @@ public partial class Index
 			return;
 		}
 
-		CallbackHelper callbackHelper = new();
-		callbackHelper.Action += () =>
+		if (_jsOp == null)
 		{
-			Console.WriteLine(77);
-		};
-		await _module.InvokeVoidAsync("CallBak", callbackHelper.DotNetHelper);
+			return;
+		}
+
+		await _jsOp.AddScript("./hls.js");
+		await _module.InvokeVoidAsync("Log");
 	}
 
-	#region 工具
 	private JsHelper<Index>? _module;
-	#endregion
+	private JsOp? _jsOp;
 	private ElementReference? _img;
 }

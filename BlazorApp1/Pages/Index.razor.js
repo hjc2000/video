@@ -14,16 +14,3 @@ export function Log()
 {
 	console.log(Hls.isSupported());
 }
-
-export function AddScript()
-{
-	var head = document.head;
-	var script = document.createElement('script');
-	script.setAttribute("src", "./hls.js");
-	head.appendChild(script);
-}
-
-export function CallBak(callBackHelper)
-{
-	callBackHelper.invokeMethodAsync("Invoke");
-}
