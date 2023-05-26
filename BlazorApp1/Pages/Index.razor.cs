@@ -20,7 +20,12 @@ public partial class Index
 			return;
 		}
 
-		await _module.InvokeVoidAsync("Log");
+		CallbackHelper callbackHelper = new();
+		callbackHelper.Action += () =>
+		{
+			Console.WriteLine(77);
+		};
+		await _module.InvokeVoidAsync("CallBak", callbackHelper.DotNetHelper);
 	}
 
 	#region 工具

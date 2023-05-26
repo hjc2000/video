@@ -22,3 +22,8 @@ export function AddScript()
 	script.setAttribute("src", "./hls.js");
 	head.appendChild(script);
 }
+
+export function CallBak(callBackHelper)
+{
+	callBackHelper.invokeMethodAsync("Invoke");
+}
