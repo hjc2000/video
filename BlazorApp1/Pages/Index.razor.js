@@ -10,7 +10,12 @@
 	imageElement.src = url;
 }
 
-export function Log()
+export async function Log(stream)
 {
-	console.log(Hls.isSupported());
+	console.log(stream);
+	stream._streamPromise.then((stream) =>
+	{
+		let reader = stream.getReader();
+		console.log(reader);
+	});
 }
