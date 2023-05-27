@@ -8,7 +8,7 @@ public partial class Index
 	#region 生命周期
 	public Index()
 	{
-		_installTask = new Task(async () =>
+		_initTask = new Task(async () =>
 		{
 			_module = await JsModule.CreateAsync(JS, "./Pages/Index.razor.js");
 			_jsOp = await JsOp.CreateAsync(JS);
@@ -17,20 +17,20 @@ public partial class Index
 
 	protected override async Task OnInitializedAsync()
 	{
-		_installTask.Start();
-		await _installTask;
+		_initTask.Start();
+		await _initTask;
 	}
 	#endregion
 
 	private async Task Onclick()
 	{
-		await _installTask;
+		await _initTask;
 		await _jsOp.AddScript("./hls.js");
 	}
 
 	private async Task OnLoadFile(InputFileChangeEventArgs e)
 	{
-		await _installTask;
+		await _initTask;
 		Stream stream = e.File.OpenReadStream(maxAllowedSize: (long)300e6);
 		DotNetStreamReference dotNetStreamReference = new(stream);
 		_jsOp.Log(dotNetStreamReference);
@@ -41,5 +41,5 @@ public partial class Index
 	/// <summary>
 	/// 安装本类的依赖的任务
 	/// </summary>
-	private readonly Task _installTask;
+	private readonly Task _initTask;
 }
