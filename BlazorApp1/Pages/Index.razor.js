@@ -10,12 +10,7 @@
 	imageElement.src = url;
 }
 
-export async function Log(stream)
+export async function Log()
 {
-	console.log(stream);
-	stream._streamPromise.then((stream) =>
-	{
-		let reader = stream.getReader();
-		console.log(reader);
-	});
+	console.log(mpegts);
 }
