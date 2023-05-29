@@ -61,7 +61,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="JsLib" Version="1.0.17" />
+      <PackageReference Include="JSLib" Version="1.0.33" />
+      <PackageReference Include="TaskLib" Version="1.0.3" />
     </ItemGroup>
 
 </Project>
