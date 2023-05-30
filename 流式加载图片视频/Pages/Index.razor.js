@@ -63,6 +63,7 @@ class TSPlayer
 		console.log(this.segments.length);
 		this.mime = 'video/mp4; codecs="mp4a.40.2,avc1.64001f"';
 		this.mediaSource = new MediaSource();
+		this.sourceBuffer = null;
 		this.transmuxer = new muxjs.mp4.Transmuxer();
 		videoElement.src = URL.createObjectURL(this.mediaSource);
 		this.mediaSource.addEventListener("sourceopen", () =>
@@ -71,11 +72,22 @@ class TSPlayer
 		});
 	}
 
-	async Fetch(fileName)
+	/**
+	 * 从 .net 中获取存放着 ts 流的 byte[] 然后推送给播放器进行播放
+	 * @param {any} fileName
+	 * @returns
+	 */
+	async FetchAndPush(fileName)
 	{
-		return await this.dotnetHelper.invokeMethodAsync("FetchAsync", fileName);
+		let buff = await this.dotnetHelper.invokeMethodAsync("FetchAsync", fileName);
+		this.transmuxer.push(buff);
+		this.transmuxer.flush();
 	}
 
+	/**
+	 * 添加第一个片段到播放器
+	 * @returns
+	 */
 	async AppendFirstSegment()
 	{
 		if (this.segments.length == 0)
@@ -83,6 +95,10 @@ class TSPlayer
 			return;
 		}
 
+		// MediaSource 对象被 video 标签打开后，MediaSource 的 URL 就
+		// 没用了，可以释放了，因为 video 已经获取到 MediaSource 对象的
+		// 引用了，它不需要时刻都使用 URL，只在打开 MediaSource 对象的时候
+		// 需要
 		URL.revokeObjectURL(this.videoElement.src);
 		this.sourceBuffer = this.mediaSource.addSourceBuffer(this.mime);
 		this.sourceBuffer.addEventListener('updateend', () =>
@@ -99,11 +115,13 @@ class TSPlayer
 			this.sourceBuffer.appendBuffer(data);
 		})
 
-		let buff = await this.Fetch(this.segments.shift());
-		this.transmuxer.push(buff);
-		this.transmuxer.flush();
+		await this.FetchAndPush(this.segments.shift());
 	}
 
+	/**
+	 * 添加后续的片段到播放器
+	 * @returns
+	 */
 	async AppendNextSegment()
 	{
 		// reset the 'data' event listener to just append (moof/mdat) boxes to the Source Buffer
@@ -122,9 +140,7 @@ class TSPlayer
 		}
 
 		console.log("获取下一个视频");
-		let buff = await this.Fetch(this.segments.shift());
-		this.transmuxer.push(buff);
-		this.transmuxer.flush();
+		await this.FetchAndPush(this.segments.shift());
 	}
 }
 
