@@ -58,8 +58,8 @@ class TSPlayer
 			"./ts3.ts",
 			"./ts4.ts",
 		];
-		console.log(this.segments.length);
 
+		console.log(this.segments.length);
 		this.mime = 'video/mp4; codecs="mp4a.40.2,avc1.64001f"';
 		this.mediaSource = new MediaSource();
 		this.transmuxer = new muxjs.mp4.Transmuxer();
