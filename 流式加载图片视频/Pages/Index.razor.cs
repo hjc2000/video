@@ -14,6 +14,7 @@ public partial class Index
 			_jsModule = await JSModule.CreateAsync(JS, "./Pages/Index.razor.js");
 			_jsOp = await JSOp.CreateAsync(JS);
 			await _jsOp.AddScript("https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.min.js");
+			await _jsOp.AddScript("./mux.js");
 		});
 	}
 
@@ -27,14 +28,9 @@ public partial class Index
 
 	private async Task Onclick()
 	{
-		if (_videoElement == null)
-		{
-			return;
-		}
-
 		await _initializer.WaitAsync();
-		await _jsModule.InvokeVoidAsync("Log");
-		await _jsModule.InvokeVoidAsync("LoadVideoFromUrl", _videoElement, "http://192.168.0.221:8000/101.ts");
+		await _jsModule.InvokeVoidAsync("Load_ts", _videoElement);
+		//await _jsOp.LogAsync(new byte[] { 1, 2, 4, 5, 6, 7, 8, 9, });
 	}
 
 	#region 工具
@@ -43,5 +39,5 @@ public partial class Index
 	private readonly Initializer _initializer;
 	#endregion
 
-	private ElementReference? _videoElement;
+	private ElementReference _videoElement = default!;
 }
