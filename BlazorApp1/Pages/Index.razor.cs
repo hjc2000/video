@@ -1,4 +1,4 @@
-﻿using JsLib;
+﻿using JSLib;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using TaskLib;
@@ -11,8 +11,8 @@ public partial class Index
 	{
 		_initializer = new(async Task () =>
 		{
-			_jsModule = await JsModule.CreateAsync(JS, "./Pages/Index.razor.js");
-			_jsOp = await JsOp.CreateAsync(JS);
+			_jsModule = await JSModule.CreateAsync(JS, "./Pages/Index.razor.js");
+			_jsOp = await JSOp.CreateAsync(JS);
 		});
 	}
 
@@ -40,8 +40,8 @@ public partial class Index
 		_jsOp.Log(dotNetStreamReference);
 	}
 
-	private JsModule _jsModule = default!;
-	private JsOp _jsOp = default!;
+	private JSModule _jsModule = default!;
+	private JSOp _jsOp = default!;
 
 	/// <summary>
 	/// 安装本类的依赖的任务

@@ -42,6 +42,22 @@ export async function LoadVideo(videoElement, videoStream)
 	}
 }
 
+export async function LoadVideoFromUrl(videoElement, url)
+{
+	if (mpegts.getFeatureList().mseLivePlayback)
+	{
+		var player = mpegts.createPlayer(
+			{
+				type: 'mpegts',  // could also be mpegts, m2ts, flv
+				isLive: true,
+				url: url,
+			});
+		player.attachMediaElement(videoElement);
+		player.load();
+		player.play();
+	}
+}
+
 export function Load_ts()
 {
 	// Create array of TS files to play

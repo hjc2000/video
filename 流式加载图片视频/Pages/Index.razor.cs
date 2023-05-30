@@ -13,6 +13,7 @@ public partial class Index
 		{
 			_jsModule = await JSModule.CreateAsync(JS, "./Pages/Index.razor.js");
 			_jsOp = await JSOp.CreateAsync(JS);
+			await _jsOp.AddScript("https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.min.js");
 		});
 	}
 
@@ -21,7 +22,6 @@ public partial class Index
 		await base.OnInitializedAsync();
 		_initializer.Start();
 		await _initializer.WaitAsync();
-		await _jsOp.AddScript("https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.min.js");
 	}
 	#endregion
 
@@ -34,9 +34,7 @@ public partial class Index
 
 		await _initializer.WaitAsync();
 		await _jsModule.InvokeVoidAsync("Log");
-		using FileStream fileStream = File.Open(@"D:\my_files\workspace\音视频加工区\ts0.ts", FileMode.Open);
-		DotNetStreamReference streamHelper = new(fileStream);
-		await _jsModule.InvokeVoidAsync("LoadVideo", _videoElement, streamHelper);
+		await _jsModule.InvokeVoidAsync("LoadVideoFromUrl", _videoElement, "http://192.168.0.221:8000/101.ts");
 	}
 
 	#region 工具
