@@ -9,6 +9,7 @@ public partial class Index
 	#region 生命周期
 	public Index()
 	{
+		_dotnetHelper = DotNetObjectReference.Create(this);
 		_initializer = new Initializer(async () =>
 		{
 			_jsModule = await JSModule.CreateAsync(JS, "./Pages/Index.razor.js");
@@ -29,15 +30,24 @@ public partial class Index
 	private async Task Onclick()
 	{
 		await _initializer.WaitAsync();
-		await _jsModule.InvokeVoidAsync("Load_ts", _videoElement);
-		//await _jsOp.LogAsync(new byte[] { 1, 2, 4, 5, 6, 7, 8, 9, });
+		await _jsModule.InvokeVoidAsync("LoadTS", _videoElement, _dotnetHelper);
 	}
 
 	#region 工具
 	private JSModule _jsModule = default!;
 	private JSOp _jsOp = default!;
 	private readonly Initializer _initializer;
+	DotNetObjectReference<Index> _dotnetHelper;
 	#endregion
 
 	private ElementReference _videoElement = default!;
+
+	[JSInvokable]
+	public async Task<byte[]> FetchAsync(string fileName)
+	{
+		using FileStream fileStream = File.Open(@"D:\my_files\workspace\wwwroot\wwwroot\" + fileName, FileMode.Open);
+		byte[] buff = new byte[fileStream.Length];
+		await fileStream.ReadAsync(buff);
+		return buff;
+	}
 }

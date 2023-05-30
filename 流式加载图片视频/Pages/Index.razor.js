@@ -48,15 +48,16 @@ export async function LoadVideoFromUrl(videoElement, url)
 
 class TSPlayer
 {
-	constructor(videoElement)
+	constructor(videoElement, dotnetHelper)
 	{
 		this.videoElement = videoElement;
+		this.dotnetHelper = dotnetHelper;
 		this.segments = [
-			"./ts0.ts",
-			"./ts1.ts",
-			"./ts2.ts",
-			"./ts3.ts",
-			"./ts4.ts",
+			"ts0.ts",
+			"ts1.ts",
+			"ts2.ts",
+			"ts3.ts",
+			"ts4.ts",
 		];
 
 		console.log(this.segments.length);
@@ -66,11 +67,16 @@ class TSPlayer
 		videoElement.src = URL.createObjectURL(this.mediaSource);
 		this.mediaSource.addEventListener("sourceopen", () =>
 		{
-			this.appendFirstSegment();
+			this.AppendFirstSegment();
 		});
 	}
 
-	appendFirstSegment()
+	async Fetch(fileName)
+	{
+		return await this.dotnetHelper.invokeMethodAsync("FetchAsync", fileName);
+	}
+
+	async AppendFirstSegment()
 	{
 		if (this.segments.length == 0)
 		{
@@ -81,7 +87,7 @@ class TSPlayer
 		this.sourceBuffer = this.mediaSource.addSourceBuffer(this.mime);
 		this.sourceBuffer.addEventListener('updateend', () =>
 		{
-			this.appendNextSegment();
+			this.AppendNextSegment();
 		});
 
 		this.transmuxer.on('data', (segment) =>
@@ -93,17 +99,12 @@ class TSPlayer
 			this.sourceBuffer.appendBuffer(data);
 		})
 
-		fetch(this.segments.shift()).then((response) =>
-		{
-			return response.arrayBuffer();
-		}).then((response) =>
-		{
-			this.transmuxer.push(new Uint8Array(response));
-			this.transmuxer.flush();
-		})
+		let buff = await this.Fetch(this.segments.shift());
+		this.transmuxer.push(buff);
+		this.transmuxer.flush();
 	}
 
-	appendNextSegment()
+	async AppendNextSegment()
 	{
 		// reset the 'data' event listener to just append (moof/mdat) boxes to the Source Buffer
 		this.transmuxer.off('data');
@@ -121,20 +122,13 @@ class TSPlayer
 		}
 
 		console.log("获取下一个视频");
-		fetch(this.segments.shift())
-			.then((response) =>
-			{
-				return response.arrayBuffer();
-			})
-			.then((response) =>
-			{
-				this.transmuxer.push(new Uint8Array(response));
-				this.transmuxer.flush();
-			})
+		let buff = await this.Fetch(this.segments.shift());
+		this.transmuxer.push(buff);
+		this.transmuxer.flush();
 	}
 }
 
-export function Load_ts(videoElement)
+export function LoadTS(videoElement, dotnetHelper)
 {
-	new TSPlayer(videoElement);
+	new TSPlayer(videoElement, dotnetHelper);
 }
