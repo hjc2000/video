@@ -52,15 +52,6 @@ class TSPlayer
 	{
 		this.videoElement = videoElement;
 		this.dotnetHelper = dotnetHelper;
-		this.segments = [
-			"ts0.ts",
-			"ts1.ts",
-			"ts2.ts",
-			"ts3.ts",
-			"ts4.ts",
-		];
-
-		console.log(this.segments.length);
 		this.mime = 'video/mp4; codecs="mp4a.40.2,avc1.64001f"';
 		this.mediaSource = new MediaSource();
 		this.sourceBuffer = null;
@@ -74,12 +65,11 @@ class TSPlayer
 
 	/**
 	 * 从 .net 中获取存放着 ts 流的 byte[] 然后推送给播放器进行播放
-	 * @param {any} fileName
 	 * @returns
 	 */
-	async FetchAndPush(fileName)
+	async FetchAndPush()
 	{
-		let buff = await this.dotnetHelper.invokeMethodAsync("FetchAsync", fileName);
+		let buff = await this.dotnetHelper.invokeMethodAsync("FetchAsync");
 		this.transmuxer.push(buff);
 		this.transmuxer.flush();
 	}
@@ -90,11 +80,6 @@ class TSPlayer
 	 */
 	async AppendFirstSegment()
 	{
-		if (this.segments.length == 0)
-		{
-			return;
-		}
-
 		// MediaSource 对象被 video 标签打开后，MediaSource 的 URL 就
 		// 没用了，可以释放了，因为 video 已经获取到 MediaSource 对象的
 		// 引用了，它不需要时刻都使用 URL，只在打开 MediaSource 对象的时候
@@ -115,7 +100,14 @@ class TSPlayer
 			this.sourceBuffer.appendBuffer(data);
 		})
 
-		await this.FetchAndPush(this.segments.shift());
+		try
+		{
+			await this.FetchAndPush();
+		}
+		catch (e)
+		{
+			console.log(e);
+		}
 	}
 
 	/**
@@ -131,16 +123,18 @@ class TSPlayer
 			this.sourceBuffer.appendBuffer(new Uint8Array(segment.data));
 		})
 
-		if (this.segments.length == 0)
+		console.log("获取下一个视频");
+
+		try
 		{
-			// notify MSE that we have no more segments to append.
+			await this.FetchAndPush();
+		}
+		catch (e)
+		{
+			console.log(e);
 			console.log("结束");
 			this.mediaSource.endOfStream();
-			return;
 		}
-
-		console.log("获取下一个视频");
-		await this.FetchAndPush(this.segments.shift());
 	}
 }
 

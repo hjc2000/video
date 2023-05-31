@@ -52,11 +52,19 @@ public partial class Index
 	private ElementReference _videoElement = default!;
 
 	[JSInvokable]
-	public async Task<byte[]> FetchAsync(string fileName)
+	public async Task<byte[]> FetchAsync()
 	{
-		using FileStream fileStream = File.Open(@"D:\my_files\workspace\wwwroot\wwwroot\" + fileName, FileMode.Open);
+		if (_tsIndex >= 5)
+		{
+			_tsIndex = 0;
+			throw new Exception("没有ts文件了");
+		}
+
+		using FileStream fileStream = File.Open(@"D:\my_files\workspace\wwwroot\wwwroot\" + $"ts{_tsIndex++}.ts", FileMode.Open);
 		byte[] buff = new byte[fileStream.Length];
 		await fileStream.ReadAsync(buff);
 		return buff;
 	}
+	private int _tsIndex = 0;
+
 }
