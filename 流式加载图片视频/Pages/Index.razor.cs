@@ -1,6 +1,7 @@
 ﻿using JSLib;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Net.WebSockets;
 
 namespace 流式加载图片视频.Pages;
 public partial class Index
@@ -26,6 +27,19 @@ public partial class Index
 	{
 		await _initTask.Task;
 		await _jsModule.InvokeVoidAsync("LoadTS", _videoElement, _dotnetHelper);
+	}
+
+	private async Task OnRequestWebsocket()
+	{
+		using ClientWebSocket ws = new();
+		using CancellationTokenSource cts = new();
+		await ws.ConnectAsync(new Uri(@"ws://localhost:8848/ws"), cts.Token);
+		byte[] buff = new byte[1024];
+		WebSocketReceiveResult result = await ws.ReceiveAsync(buff, cts.Token);
+		for (int i = 0; i < result.Count; i++)
+		{
+			await _jsOp.LogAsync(buff[i]);
+		}
 	}
 
 	#region 工具

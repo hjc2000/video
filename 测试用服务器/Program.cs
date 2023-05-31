@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using NetLib.HttpLib;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.WebSockets;
 
 #region 设置服务器根路径
 string _webRootPath = Environment.GetEnvironmentVariable("WEBROOT") ?? "./";
@@ -48,6 +49,22 @@ app.Use(async (HttpContext context, RequestDelegate next) =>
 
 #region 配置路由
 app.UseRouting();
+app.UseWebSockets();
+
+app.MapGet("/ws", async (HttpContext context) =>
+{
+	if (context.WebSockets.IsWebSocketRequest)
+	{
+		using WebSocket ws = await context.WebSockets.AcceptWebSocketAsync();
+		using CancellationTokenSource cts = new();
+		await ws.SendAsync(new byte[] { 1, 2, 3, }, WebSocketMessageType.Binary, true, cts.Token);
+		Console.WriteLine("收到websocket请求");
+	}
+	else
+	{
+		Console.WriteLine("收到的不是websocket请求");
+	}
+});
 
 app.MapGet("/ts.ts", async (HttpContext context) =>
 {
