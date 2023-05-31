@@ -61,9 +61,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="JSLib" Version="1.1.0" />
-      <PackageReference Include="TaskLib" Version="1.0.3" />
-      <PackageReference Include="WindowComponents" Version="1.0.20" />
+      <PackageReference Include="JSLib" Version="1.1.1" />
+      <PackageReference Include="WindowComponents" Version="1.0.21" />
     </ItemGroup>
 
 </Project>
