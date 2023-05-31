@@ -13,6 +13,7 @@ public partial class Index
 		{
 			_jsModule = await JSModule.CreateAsync(JS, "./Pages/Index.razor.js");
 			_jsOp = await JSOp.CreateAsync(JS);
+			await _jsOp.AddScript("https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.min.js");
 		});
 	}
 
@@ -21,7 +22,6 @@ public partial class Index
 		await base.OnInitializedAsync();
 		_initializer.Start();
 		await _initializer.WaitAsync();
-		await _jsOp.AddScript("https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.min.js");
 
 	}
 	#endregion
