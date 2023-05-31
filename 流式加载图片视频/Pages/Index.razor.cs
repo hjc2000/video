@@ -60,8 +60,7 @@ public partial class Index
 			throw new Exception("没有ts文件了");
 		}
 
-		await Task.Delay(1000);
-		using FileStream fileStream = File.Open(@"D:\my_files\workspace\wwwroot\wwwroot\" + $"ts{_tsIndex++}.ts", FileMode.Open);
+		using Stream fileStream = await FileSystem.OpenAppPackageFileAsync($"ts{_tsIndex++}.ts");
 		byte[] buff = new byte[fileStream.Length];
 		await fileStream.ReadAsync(buff);
 		return buff;

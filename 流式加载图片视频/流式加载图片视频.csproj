@@ -51,13 +51,21 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Resources\Raw\test.jpg" />
-      <None Remove="Resources\Raw\ts5.ts" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="Resources\Raw\test.jpg" />
-      <Content Include="Resources\Raw\ts5.ts" />
+      <Content Include="Resources\Raw\ts0.ts">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Resources\Raw\ts1.ts">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Resources\Raw\ts2.ts">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Resources\Raw\ts3.ts">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Resources\Raw\ts4.ts">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
