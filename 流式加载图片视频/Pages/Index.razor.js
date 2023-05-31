@@ -103,6 +103,7 @@ class TSPlayer
 		try
 		{
 			await this.FetchAndPush();
+			this.videoElement.play();
 		}
 		catch (e)
 		{
