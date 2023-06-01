@@ -1,19 +1,23 @@
-﻿HttpClient client = new()
-{
-	BaseAddress = new Uri("http://localhost:8848"),
-};
-HttpResponseMessage msg = await client.GetAsync("test.txt");
-if (msg.IsSuccessStatusCode)
-{
-	Console.WriteLine(msg.Headers);
-	FileStream file = File.Open("D:\\my_files\\workspace\\temp\\test.txt", FileMode.OpenOrCreate);
-	using (file)
-	{
-		Stream httpStream = await msg.Content.ReadAsStreamAsync();
-		await httpStream.CopyToAsync(file);
-		await file.FlushAsync();
-		Console.WriteLine("完成");
-	}
-}
+﻿using StreamLib;
 
+SplicedStream splicedStream = new();
+int i = 0;
+splicedStream.OnStreamQueueEmpty += async (tcs) =>
+{
+	if (i <= 4)
+	{
+		FileStream fileStream = File.Open(@"D:\my_files\workspace\wwwroot\wwwroot\" + $"ts{i++}.ts", FileMode.Open);
+		splicedStream.PushBack(fileStream);
+	}
+
+	Console.WriteLine("即将等待1s");
+	await Task.Delay(1000);
+	Console.WriteLine("结束等待");
+	Console.WriteLine();
+	tcs.SetResult();
+};
+FileStream outputFile = File.Open(@"D:\my_files\workspace\wwwroot\wwwroot\out.ts", FileMode.Create);
+await splicedStream.CopyToAsync(outputFile);
+await outputFile.FlushAsync();
+Console.WriteLine("结束");
 Console.ReadLine();
