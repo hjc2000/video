@@ -93,6 +93,7 @@ class TSPlayer
 
 		this.transmuxer.on('data', (segment) =>
 		{
+			console.log(segment);
 			let data = new Uint8Array(segment.initSegment.byteLength + segment.data.byteLength);
 			data.set(segment.initSegment, 0);
 			data.set(segment.data, segment.initSegment.byteLength);
@@ -123,8 +124,6 @@ class TSPlayer
 		{
 			this.sourceBuffer.appendBuffer(new Uint8Array(segment.data));
 		})
-
-		console.log("获取下一个视频");
 
 		try
 		{

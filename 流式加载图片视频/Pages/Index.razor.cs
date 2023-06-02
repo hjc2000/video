@@ -1,6 +1,7 @@
 ﻿using JSLib;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using StreamLib;
 using System.Net.WebSockets;
 
 namespace 流式加载图片视频.Pages;
@@ -10,6 +11,17 @@ public partial class Index
 	public Index()
 	{
 		_dotnetHelper = DotNetObjectReference.Create(this);
+		_splicedStream.OnStreamQueueEmpty += async (tcs) =>
+		{
+			if (_tsIndex <= 4)
+			{
+				_jsOp.Log($"读取 ts{_tsIndex}.ts");
+				Stream fileStream = await FileSystem.OpenAppPackageFileAsync($"ts{_tsIndex++}.ts");
+				_splicedStream.PushBack(fileStream);
+			}
+
+			tcs.SetResult();
+		};
 	}
 
 	protected override async Task OnInitializedAsync()
@@ -47,6 +59,12 @@ public partial class Index
 	private JSOp _jsOp = default!;
 	private readonly DotNetObjectReference<Index> _dotnetHelper;
 	private readonly TaskCompletionSource _initTask = new();
+	private readonly SplicedStream _splicedStream = new();
+	#endregion
+
+	#region 私有字段
+	private int _tsIndex = 0;
+	private readonly byte[] _tsBuff = new byte[(int)20e6];
 	#endregion
 
 	private ElementReference _videoElement = default!;
@@ -54,17 +72,17 @@ public partial class Index
 	[JSInvokable]
 	public async Task<byte[]> FetchAsync()
 	{
-		if (_tsIndex >= 5)
+		int haveRead = await _splicedStream.ReadAsync(_tsBuff, 0, _tsBuff.Length);
+		_jsOp.Log($"读取了{haveRead}字节");
+		if (haveRead > 0)
 		{
-			_tsIndex = 0;
-			throw new Exception("没有ts文件了");
+			byte[] buff = new byte[haveRead];
+			Array.Copy(_tsBuff, buff, haveRead);
+			return buff;
 		}
-
-		using Stream fileStream = await FileSystem.OpenAppPackageFileAsync($"ts{_tsIndex++}.ts");
-		byte[] buff = new byte[fileStream.Length];
-		await fileStream.ReadAsync(buff);
-		return buff;
+		else
+		{
+			throw new Exception("流到达尽头");
+		}
 	}
-	private int _tsIndex = 0;
-
 }

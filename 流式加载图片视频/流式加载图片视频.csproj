@@ -73,4 +73,8 @@
       <PackageReference Include="WindowComponents" Version="1.0.21" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\StreamLib\StreamLib.csproj" />
+    </ItemGroup>
+
 </Project>
