@@ -1,23 +1,11 @@
 ﻿using StreamLib;
 
-SplicedStream splicedStream = new();
-int i = 0;
-splicedStream.OnStreamQueueEmpty += async (tcs) =>
+string url = @"D:\my_files\workspace\wwwroot\wwwroot\ts0.ts";
+using FileStream fileStream = File.Open(url, FileMode.Open);
+byte[] buff = new byte[188];
+int haveRead = await fileStream.ReadAsync(buff);
+if (haveRead == 188)
 {
-	if (i <= 4)
-	{
-		FileStream fileStream = File.Open(@"D:\my_files\workspace\wwwroot\wwwroot\" + $"ts{i++}.ts", FileMode.Open);
-		splicedStream.PushBack(fileStream);
-	}
-
-	Console.WriteLine("即将等待1s");
-	await Task.Delay(1000);
-	Console.WriteLine("结束等待");
-	Console.WriteLine();
-	tcs.SetResult();
-};
-FileStream outputFile = File.Open(@"D:\my_files\workspace\wwwroot\wwwroot\out.ts", FileMode.Create);
-await splicedStream.CopyToAsync(outputFile);
-await outputFile.FlushAsync();
-Console.WriteLine("结束");
-Console.ReadLine();
+	TSPacket tsPacket = new(buff);
+	Console.WriteLine(tsPacket);
+}

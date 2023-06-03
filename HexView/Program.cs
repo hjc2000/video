@@ -1,9 +1,9 @@
-﻿using FileStream fs = File.OpenRead("./ts1.ts");
+﻿using FileStream fs = File.OpenRead("./ts0.ts");
 using BinaryReader binaryReader = new(fs);
 using FileStream outputTxt = File.Open("./hex.txt", FileMode.Create);
 using StreamWriter streamWriter = new(outputTxt);
 
-int startPos = 188;
+int startPos = 0;
 int endPos = 188 * 2;
 
 fs.Seek(startPos, SeekOrigin.Begin);
@@ -12,13 +12,17 @@ for (int i = 0; i < endPos - startPos; i++)
 {
 	try
 	{
-		byte[] bs = binaryReader.ReadBytes(20);
-		foreach (byte b in bs)
+		byte b = binaryReader.ReadByte();
+		streamWriter.Write($"{b:x2}\t");
+		if ((i + 1) % 4 == 0)
 		{
-			streamWriter.Write($"{b:x}\t");
+			streamWriter.WriteLine();
 		}
 
-		streamWriter.WriteLine();
+		if ((i + 1) % 188 == 0)
+		{
+			streamWriter.WriteLine();
+		}
 	}
 	catch
 	{
