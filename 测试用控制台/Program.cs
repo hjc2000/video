@@ -1,7 +1,7 @@
 ﻿using StreamLib;
 
 string url = @"D:\my_files\workspace\wwwroot\wwwroot\ts0.ts";
-using FileStream fileStream = File.Open(url, FileMode.Open);
+using FileStream fileStream = File.Open(url, FileMode.Open, FileAccess.Read, FileShare.Read);
 using FileStream outputFile = File.Open("./ts_parse.json", FileMode.Create);
 StreamWriter outputWriter = new(outputFile);
 for (int i = 0; i < 100; i++)

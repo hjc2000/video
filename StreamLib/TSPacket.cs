@@ -128,7 +128,12 @@ public class AdaptationField
 	/// <returns></returns>
 	private static ulong CalculatePCR(BinaryReader reader)
 	{
-		ulong pcrBase = reader.ReadUInt32();
+		ulong pcrBase = 0;
+		for (int i = 0; i < 4; i++)
+		{
+			pcrBase <<= 8;
+			pcrBase += reader.ReadByte();
+		}
 		// PCR 的 base 是 33 位，所以再左移一位
 		pcrBase <<= 1;
 		// PCR 总共有 6 个字节，已经读取了 4 个字节，还剩 2 个字节
