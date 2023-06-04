@@ -16,7 +16,7 @@ public class Test
 {
 	[DllImport(@"C:\msys64\home\huang\ffmpeg_learn\test.dll",
 		CallingConvention = CallingConvention.Cdecl,
-		CharSet = CharSet.Unicode, 
+		CharSet = CharSet.Unicode,
 		EntryPoint = "test_dic")]
 	public static extern void TestDic();
 }
