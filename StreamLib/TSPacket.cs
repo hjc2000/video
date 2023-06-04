@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.Text.Json;
 
 namespace StreamLib;
 public class TSPacket
@@ -31,6 +31,7 @@ public class TSPacket
 		if (AdaptationFieldControl == 1 || AdaptationFieldControl == 3)
 		{
 			// 存在数据域
+			Payload = new(reader);
 		}
 	}
 
@@ -43,25 +44,19 @@ public class TSPacket
 	public byte AdaptationFieldControl { get; set; }
 	public byte ContinuityCounter { get; set; }
 	public AdaptationField? AdaptationField { get; set; } = null;
-	public byte[]? Data { get; set; } = null;
+	public Payload? Payload { get; set; } = null;
 
 	public override string ToString()
 	{
-		StringBuilder sb = new();
-		sb.AppendLine($"sync_byte=0x{SyncByte:x}");
-		sb.AppendLine($"transport_error_indicator={TransportErrorIndicator}");
-		sb.AppendLine($"payload_unit_start_indicator={PayloadUnitStartIndicator}");
-		sb.AppendLine($"transport_priority={TransportPriority}");
-		sb.AppendLine($"PID=0x{PID:x4}");
-		sb.AppendLine($"transport_scrambling_control={TransportScramblingControl}");
-		sb.AppendLine($"adaptation_field_control={AdaptationFieldControl}");
-		sb.AppendLine($"continuity_counter={ContinuityCounter}");
-		if (AdaptationField != null)
+		using MemoryStream memoryStream = new();
+		JsonSerializer.Serialize(memoryStream, this, new JsonSerializerOptions()
 		{
-			sb.AppendLine(AdaptationField.ToString());
-		}
-
-		return sb.ToString();
+			AllowTrailingCommas = true,
+			WriteIndented = true,
+		});
+		memoryStream.Position = 0;
+		StreamReader jsonStreamReader = new(memoryStream);
+		return jsonStreamReader.ReadToEnd();
 	}
 }
 
@@ -97,6 +92,7 @@ public class AdaptationField
 	}
 
 	public byte AdaptationFieldLength { get; set; }
+
 	#region 标志域
 	public bool DiscontinuityIndicator { get; set; }
 	public bool RandomAccessIndicator { get; set; }
@@ -107,36 +103,12 @@ public class AdaptationField
 	public bool TransportPrivateDataFlag { get; set; }
 	public bool AdaptationFieldExtensionFlag { get; set; }
 	#endregion
+
 	#region 可选域
 	public ulong PCR { get; set; }
 	public ulong OPCR { get; set; }
 	public sbyte SpliceCountdown { get; set; }
 	#endregion
-
-	public override string ToString()
-	{
-		StringBuilder sb = new();
-		sb.AppendLine($"\t adaptation_field_length={AdaptationFieldLength}");
-		sb.AppendLine($"\t discontinuity_indicator={DiscontinuityIndicator}");
-		sb.AppendLine($"\t RandomAccessIndicator={RandomAccessIndicator}");
-		sb.AppendLine($"\t ElementaryStreamPriorityIndicator={ElementaryStreamPriorityIndicator}");
-		sb.AppendLine($"\t PCR_Flag={PCR_Flag}");
-		sb.AppendLine($"\t OPCR_Flag={OPCR_Flag}");
-		sb.AppendLine($"\t SplicingPointFlag={SplicingPointFlag}");
-		sb.AppendLine($"\t TransportPrivateDataFlag={TransportPrivateDataFlag}");
-		sb.AppendLine($"\t AdaptationFieldExtensionFlag={AdaptationFieldExtensionFlag}");
-		if (PCR_Flag)
-		{
-			sb.AppendLine($"\t PCR={PCR}");
-		}
-
-		if (OPCR_Flag)
-		{
-			sb.AppendLine($"\t PCR={OPCR}");
-		}
-
-		return sb.ToString();
-	}
 
 	/// <summary>
 	/// 计算 PCR 或 OPCR
@@ -160,5 +132,13 @@ public class AdaptationField
 		byte low = reader.ReadByte();
 		ushort extension = (ushort)((high << 8) | low);
 		return (pcrBase * 300) + extension;
+	}
+}
+
+public class Payload
+{
+	public Payload(BinaryReader reader)
+	{
+
 	}
 }
