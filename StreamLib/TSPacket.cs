@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace StreamLib;
 public class TSPacket
@@ -53,6 +54,8 @@ public class TSPacket
 		{
 			AllowTrailingCommas = true,
 			WriteIndented = true,
+			NumberHandling = JsonNumberHandling.Strict,
+			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
 		});
 		memoryStream.Position = 0;
 		StreamReader jsonStreamReader = new(memoryStream);
@@ -89,6 +92,12 @@ public class AdaptationField
 		{
 			SpliceCountdown = reader.ReadSByte();
 		}
+
+		if (TransportPrivateDataFlag)
+		{
+			TransportPrivateDataLength = reader.ReadByte();
+			TransportPrivateData = reader.ReadBytes(TransportPrivateDataLength);
+		}
 	}
 
 	public byte AdaptationFieldLength { get; set; }
@@ -108,6 +117,8 @@ public class AdaptationField
 	public ulong PCR { get; set; }
 	public ulong OPCR { get; set; }
 	public sbyte SpliceCountdown { get; set; }
+	public byte TransportPrivateDataLength { get; set; }
+	public byte[]? TransportPrivateData { get; set; }
 	#endregion
 
 	/// <summary>
@@ -139,6 +150,10 @@ public class Payload
 {
 	public Payload(BinaryReader reader)
 	{
-
+		PayloadPointer = reader.ReadByte();
+		ActualPayload = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
 	}
+
+	public byte PayloadPointer { get; set; }
+	public byte[] ActualPayload { get; set; }
 }
