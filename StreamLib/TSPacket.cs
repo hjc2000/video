@@ -9,20 +9,14 @@ public class TSPacket
 		BinaryReader reader = new(tsPacketBuffStream);
 		// 读取同步字节
 		SyncByte = reader.ReadByte();
-		// 读取两个字节
-		ushort temp = reader.ReadUInt16();
-		Console.WriteLine(temp);
-		TransportErrorIndicator = BitView.ReadBit(temp, 15) != 0;
-		PayloadUnitStartIndicator = BitView.ReadBit(temp, 14) != 0;
-		TransportPriority = BitView.ReadBit(temp, 13) != 0;
-		PID = (ushort)BitView.ReadBits(temp, 0, 13);
-		// 读取一个字节
-		byte temp1 = reader.ReadByte();
-		// 读取第6、7位
-		TransportScramblingControl = (byte)BitView.ReadBits(temp1, 6, 2);
-		// 读取第4、5位
-		AdaptationFieldControl = (byte)BitView.ReadBits(temp1, 4, 2);
-		ContinuityCounter = (byte)BitView.ReadBits(temp1, 0, 4);
+		byte temp = reader.ReadByte();
+		TransportErrorIndicator = BitView.ReadBit(temp, 7);
+		PayloadUnitStartIndicator = BitView.ReadBit(temp, 6);
+		TransportPriority = BitView.ReadBit(temp, 5);
+		// 剩下的 5 位和下一个字节拼在一起组成 PID
+		temp = (byte)(temp & 0b_000_11111);
+		byte low = reader.ReadByte();
+		PID = (ushort)((temp << 8) | low);
 	}
 
 	public byte SyncByte { get; set; }
@@ -41,7 +35,7 @@ public class TSPacket
 		sb.AppendLine($"transport_error_indicator={TransportErrorIndicator}");
 		sb.AppendLine($"payload_unit_start_indicator={PayloadUnitStartIndicator}");
 		sb.AppendLine($"transport_priority={TransportPriority}");
-		sb.AppendLine($"PID={PID}");
+		sb.AppendLine($"PID=0x{PID:x}");
 		sb.AppendLine($"transport_scrambling_control={TransportScramblingControl}");
 		sb.AppendLine($"adaptation_field_control={AdaptationFieldControl}");
 		sb.AppendLine($"continuity_counter={ContinuityCounter}");

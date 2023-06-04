@@ -4,7 +4,7 @@ using FileStream outputTxt = File.Open("./hex.txt", FileMode.Create);
 using StreamWriter streamWriter = new(outputTxt);
 
 int startPos = 0;
-int endPos = 188 * 2;
+int endPos = 188 * 10;
 
 fs.Seek(startPos, SeekOrigin.Begin);
 
