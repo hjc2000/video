@@ -4,7 +4,7 @@ using FileStream outputTxt = File.Open("./hex.txt", FileMode.Create);
 using StreamWriter streamWriter = new(outputTxt);
 
 int startPos = 0;
-int endPos = 188 * 10;
+int endPos = 188 * 100;
 
 fs.Seek(startPos, SeekOrigin.Begin);
 
@@ -12,6 +12,11 @@ for (int i = 0; i < endPos - startPos; i++)
 {
 	try
 	{
+		if (i % 188 == 0)
+		{
+			streamWriter.WriteLine($"第{(i / 188) + 1}个包");
+		}
+
 		byte b = binaryReader.ReadByte();
 		streamWriter.Write($"{b:x2}\t");
 		if ((i + 1) % 4 == 0)

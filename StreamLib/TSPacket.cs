@@ -82,11 +82,22 @@ public class AdaptationField
 		AdaptationFieldExtensionFlag = BitView.ReadBit(temp, bitIndex--);
 		if (PCR_Flag)
 		{
-			CalculatePCR(reader);
+			PCR = CalculatePCR(reader);
+		}
+
+		if (OPCR_Flag)
+		{
+			OPCR = CalculatePCR(reader);
+		}
+
+		if (SplicingPointFlag)
+		{
+			SpliceCountdown = reader.ReadSByte();
 		}
 	}
 
 	public byte AdaptationFieldLength { get; set; }
+	#region 标志域
 	public bool DiscontinuityIndicator { get; set; }
 	public bool RandomAccessIndicator { get; set; }
 	public bool ElementaryStreamPriorityIndicator { get; set; }
@@ -95,7 +106,12 @@ public class AdaptationField
 	public bool SplicingPointFlag { get; set; }
 	public bool TransportPrivateDataFlag { get; set; }
 	public bool AdaptationFieldExtensionFlag { get; set; }
+	#endregion
+	#region 可选域
 	public ulong PCR { get; set; }
+	public ulong OPCR { get; set; }
+	public sbyte SpliceCountdown { get; set; }
+	#endregion
 
 	public override string ToString()
 	{
@@ -114,10 +130,20 @@ public class AdaptationField
 			sb.AppendLine($"\t PCR={PCR}");
 		}
 
+		if (OPCR_Flag)
+		{
+			sb.AppendLine($"\t PCR={OPCR}");
+		}
+
 		return sb.ToString();
 	}
 
-	private void CalculatePCR(BinaryReader reader)
+	/// <summary>
+	/// 计算 PCR 或 OPCR
+	/// </summary>
+	/// <param name="reader"></param>
+	/// <returns></returns>
+	private static ulong CalculatePCR(BinaryReader reader)
 	{
 		ulong pcrBase = reader.ReadUInt32();
 		// PCR 的 base 是 33 位，所以再左移一位
@@ -133,6 +159,6 @@ public class AdaptationField
 		high &= 1;
 		byte low = reader.ReadByte();
 		ushort extension = (ushort)((high << 8) | low);
-		PCR = (pcrBase * 300) + extension;
+		return (pcrBase * 300) + extension;
 	}
 }
