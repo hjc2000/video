@@ -11,4 +11,13 @@
     <ProjectReference Include="..\StreamLib\StreamLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ts0.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ts1.ts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
