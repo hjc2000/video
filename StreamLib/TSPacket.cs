@@ -2,12 +2,17 @@
 using System.Text.Json.Serialization;
 
 namespace StreamLib;
+
 public class TSPacket
 {
+	/// <summary>
+	/// 构造函数
+	/// </summary>
+	/// <param name="tsPacket">188 字节的一个 ts 包</param>
 	public TSPacket(byte[] tsPacket)
 	{
-		MemoryStream tsPacketBuffStream = new(tsPacket);
-		BinaryReader reader = new(tsPacketBuffStream);
+		using MemoryStream tsPacketBuffStream = new(tsPacket);
+		using BinaryReader reader = new(tsPacketBuffStream);
 		// 读取同步字节
 		SyncByte = reader.ReadByte();
 		byte temp = reader.ReadByte();
@@ -32,7 +37,7 @@ public class TSPacket
 		if (AdaptationFieldControl == 1 || AdaptationFieldControl == 3)
 		{
 			// 存在数据域
-			Payload = new(reader);
+			Payload = new(reader, PayloadUnitStartIndicator);
 		}
 	}
 
@@ -67,36 +72,50 @@ public class AdaptationField
 {
 	public AdaptationField(BinaryReader reader)
 	{
+		// 每读取一个字节就递增
 		AdaptationFieldLength = reader.ReadByte();
-		byte temp = reader.ReadByte();
-		int bitIndex = 7;
-		DiscontinuityIndicator = BitView.ReadBit(temp, bitIndex--);
-		RandomAccessIndicator = BitView.ReadBit(temp, bitIndex--);
-		ElementaryStreamPriorityIndicator = BitView.ReadBit(temp, bitIndex--);
-		PCR_Flag = BitView.ReadBit(temp, bitIndex--);
-		OPCR_Flag = BitView.ReadBit(temp, bitIndex--);
-		SplicingPointFlag = BitView.ReadBit(temp, bitIndex--);
-		TransportPrivateDataFlag = BitView.ReadBit(temp, bitIndex--);
-		AdaptationFieldExtensionFlag = BitView.ReadBit(temp, bitIndex--);
-		if (PCR_Flag)
+		// 把自适应区全部读入缓冲区
+		byte[] adaptationFieldBuff = reader.ReadBytes(AdaptationFieldLength);
+		using MemoryStream memoryStream = new(adaptationFieldBuff);
+		using (reader = new BinaryReader(memoryStream))
 		{
-			PCR = CalculatePCR(reader);
-		}
+			byte temp = reader.ReadByte();
+			int bitIndex = 7;
+			DiscontinuityIndicator = BitView.ReadBit(temp, bitIndex--);
+			RandomAccessIndicator = BitView.ReadBit(temp, bitIndex--);
+			ElementaryStreamPriorityIndicator = BitView.ReadBit(temp, bitIndex--);
+			PCR_Flag = BitView.ReadBit(temp, bitIndex--);
+			OPCR_Flag = BitView.ReadBit(temp, bitIndex--);
+			SplicingPointFlag = BitView.ReadBit(temp, bitIndex--);
+			TransportPrivateDataFlag = BitView.ReadBit(temp, bitIndex--);
+			AdaptationFieldExtensionFlag = BitView.ReadBit(temp, bitIndex--);
+			if (PCR_Flag)
+			{
+				PCR = CalculatePCR(reader);
+			}
 
-		if (OPCR_Flag)
-		{
-			OPCR = CalculatePCR(reader);
-		}
+			if (OPCR_Flag)
+			{
+				OPCR = CalculatePCR(reader);
+			}
 
-		if (SplicingPointFlag)
-		{
-			SpliceCountdown = reader.ReadSByte();
-		}
+			if (SplicingPointFlag)
+			{
+				SpliceCountdown = reader.ReadSByte();
+			}
 
-		if (TransportPrivateDataFlag)
-		{
-			TransportPrivateDataLength = reader.ReadByte();
-			TransportPrivateData = reader.ReadBytes(TransportPrivateDataLength);
+			if (TransportPrivateDataFlag)
+			{
+				// 私有数据
+				TransportPrivateDataLength = reader.ReadByte();
+				TransportPrivateData = reader.ReadBytes(TransportPrivateDataLength);
+			}
+
+			if (AdaptationFieldExtensionFlag)
+			{
+				// 自适应区的扩展区
+				AdaptationExtension = new(reader);
+			}
 		}
 	}
 
@@ -119,6 +138,7 @@ public class AdaptationField
 	public sbyte SpliceCountdown { get; set; }
 	public byte TransportPrivateDataLength { get; set; }
 	public byte[]? TransportPrivateData { get; set; }
+	public AdaptationExtension? AdaptationExtension { get; set; }
 	#endregion
 
 	/// <summary>
@@ -151,14 +171,41 @@ public class AdaptationField
 	}
 }
 
+public class AdaptationExtension
+{
+	public AdaptationExtension(BinaryReader reader)
+	{
+
+	}
+}
+
 public class Payload
 {
-	public Payload(BinaryReader reader)
+	public Payload(BinaryReader reader, bool payloadUnitStartIndicator)
 	{
-		PayloadPointer = reader.ReadByte();
+		if (payloadUnitStartIndicator)
+		{
+			// payloadUnitStartIndicator=true 表示有上一个数据包的负载搭了这个数据包的便车，
+			// 需要将上一个数据包的负载分离出来
+			PayloadPointer = reader.ReadByte();
+			LastPacketPayload = reader.ReadBytes(PayloadPointer);
+		}
+		// 读完剩下的所有内容
 		ActualPayload = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
 	}
 
+	/// <summary>
+	/// 指示从第几个字节开始（索引号从0开始）是这个数据包的负载，在这之前的都是上一个数据包的负载
+	/// </summary>
 	public byte PayloadPointer { get; set; }
+	/// <summary>
+	/// 上一个数据包的负载
+	/// </summary>
+	public byte[]? LastPacketPayload { get; set; }
 	public byte[] ActualPayload { get; set; }
+}
+
+public class PAT
+{
+
 }
