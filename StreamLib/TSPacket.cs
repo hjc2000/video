@@ -165,7 +165,7 @@ public class AdaptationField
 		{
 			pcrBase += 1;
 		}
-		// 接下来还剩下 6 位保留位，于是就只剩一个最低位了
+		// 接下来的 6 位是保留位，只剩一个最低位是有用的，把它取出来
 		high &= 1;
 		byte low = reader.ReadByte();
 		ushort extension = (ushort)((high << 8) | low);
@@ -207,6 +207,9 @@ public class Payload
 	public byte[] ActualPayload { get; set; }
 }
 
+/// <summary>
+/// https://www.cnblogs.com/shakin/p/3714848.html
+/// </summary>
 public class PAT
 {
 	public PAT(byte[] dataBuffer)
@@ -221,27 +224,55 @@ public class PAT
 		}
 
 		byte temp = reader.ReadByte();
-
+		BitStream_lbf bslbf = new(temp);
+		SectionSyntaxIndicator = bslbf.ReadBit();
+		Zero = bslbf.ReadBit();
+		Reserved1 = bslbf.ReadBits(2);
+		byte high = bslbf.ReadBits(4);
+		byte low = reader.ReadByte();
+		SectionLength = (ushort)((high << 8) | low);
+		high = reader.ReadByte();
+		low = reader.ReadByte();
+		TransportStreamID = (ushort)((high << 8) | low);
+		temp = reader.ReadByte();
+		bslbf = new BitStream_lbf(temp);
+		Reserved2 = bslbf.ReadBits(2);
+		VersionNumber = bslbf.ReadBits(5);
+		CurrentNextIndicator = bslbf.ReadBit();
+		SectionNumber = reader.ReadByte();
+		LastSectionNumber = reader.ReadByte();
 	}
 
 	public byte Table_ID { get; set; }
 	public bool SectionSyntaxIndicator { get; set; }
+	public bool Zero { get; set; }
+	public byte Reserved1 { get; set; }
+	public ushort SectionLength { get; set; }
+	public ushort TransportStreamID { get; set; }
+	public byte Reserved2 { get; set; }
+	public byte VersionNumber { get; set; }
+	public bool CurrentNextIndicator { get; set; }
+	public byte SectionNumber { get; set; }
+	public byte LastSectionNumber { get; set; }
 
 	/*
-		unsigned section_syntax_indicator     : 1; //段语法标志位，固定为1  
-		unsigned zero                         : 1; //0  
-		unsigned reserved_1                   : 2; // 保留位  
-		 unsigned section_length               : 12; //表示从下一个字段开始到CRC32(含)之间有用的字节数  
-		unsigned transport_stream_id          : 16; //该传输流的ID，区别于一个网络中其它多路复用的流  
-		unsigned reserved_2                   : 2;// 保留位  
-		unsigned version_number               : 5; //范围0-31，表示PAT的版本号  
-		unsigned current_next_indicator       : 1; //发送的PAT是当前有效还是下一个PAT有效  
-		unsigned section_number               : 8; //分段的号码。PAT可能分为多段传输，第一段为00，以后每个分段加1，最多可能有256个分段  
-		unsigned last_section_number          : 8;  //最后一个分段的号码  
-
 		std::vector<TS_PAT_Program> program;  
 		unsigned reserved_3                    : 3; // 保留位  
 		unsigned network_PID                    : 13; //网络信息表（NIT）的PID,节目号为0时对应的PID为network_PID  
 		unsigned CRC_32                        : 32;  //CRC32校验码  
 	 */
+	public override string ToString()
+	{
+		using MemoryStream memoryStream = new();
+		JsonSerializer.Serialize(memoryStream, this, new JsonSerializerOptions()
+		{
+			AllowTrailingCommas = true,
+			WriteIndented = true,
+			NumberHandling = JsonNumberHandling.Strict,
+			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+		});
+		memoryStream.Position = 0;
+		StreamReader jsonStreamReader = new(memoryStream);
+		return jsonStreamReader.ReadToEnd();
+	}
 }

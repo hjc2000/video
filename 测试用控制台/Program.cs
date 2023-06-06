@@ -12,6 +12,11 @@ for (int i = 0; i < 100; i++)
 	{
 		await outputWriter.WriteLineAsync($"第{i + 1}个包");
 		TSPacket tsPacket = new(buff);
+		if (tsPacket.PID == 0 && tsPacket.Payload != null)
+		{
+			Console.WriteLine(new PAT(tsPacket.Payload.ActualPayload));
+		}
+
 		await outputWriter.WriteLineAsync(tsPacket.ToString());
 	}
 	else
