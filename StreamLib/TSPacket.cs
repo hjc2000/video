@@ -24,9 +24,9 @@ public class TSPacket
 		byte low = reader.ReadByte();
 		PID = (ushort)((temp << 8) | low);
 		temp = reader.ReadByte();
-		TransportScramblingControl = (byte)BitView.ReadBits(temp, 6, 7);
-		AdaptationFieldControl = (byte)BitView.ReadBits(temp, 4, 5);
-		ContinuityCounter = (byte)BitView.ReadBits(temp, 0, 3);
+		TransportScramblingControl = BitView.ReadBits(temp, 6, 7);
+		AdaptationFieldControl = BitView.ReadBits(temp, 4, 5);
+		ContinuityCounter = BitView.ReadBits(temp, 0, 3);
 		// 调整域
 		if (AdaptationFieldControl == 2 || AdaptationFieldControl == 3)
 		{
@@ -207,5 +207,39 @@ public class Payload
 
 public class PAT
 {
+	public PAT(byte[] dataBuffer)
+	{
+		using MemoryStream memoryStream = new(dataBuffer);
+		using BinaryReader reader = new(memoryStream);
+		Table_ID = reader.ReadByte();
+		if (Table_ID != 0)
+		{
+			Console.WriteLine("这不是PAT表");
+			throw new Exception("这不是PAT表");
+		}
 
+		byte temp = reader.ReadByte();
+
+	}
+
+	public byte Table_ID { get; set; }
+	public bool SectionSyntaxIndicator { get; set; }
+
+	/*
+		unsigned section_syntax_indicator     : 1; //段语法标志位，固定为1  
+		unsigned zero                         : 1; //0  
+		unsigned reserved_1                   : 2; // 保留位  
+		 unsigned section_length               : 12; //表示从下一个字段开始到CRC32(含)之间有用的字节数  
+		unsigned transport_stream_id          : 16; //该传输流的ID，区别于一个网络中其它多路复用的流  
+		unsigned reserved_2                   : 2;// 保留位  
+		unsigned version_number               : 5; //范围0-31，表示PAT的版本号  
+		unsigned current_next_indicator       : 1; //发送的PAT是当前有效还是下一个PAT有效  
+		unsigned section_number               : 8; //分段的号码。PAT可能分为多段传输，第一段为00，以后每个分段加1，最多可能有256个分段  
+		unsigned last_section_number          : 8;  //最后一个分段的号码  
+
+		std::vector<TS_PAT_Program> program;  
+		unsigned reserved_3                    : 3; // 保留位  
+		unsigned network_PID                    : 13; //网络信息表（NIT）的PID,节目号为0时对应的PID为network_PID  
+		unsigned CRC_32                        : 32;  //CRC32校验码  
+	 */
 }

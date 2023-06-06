@@ -17,15 +17,22 @@ public class BitView
 	/// <param name="startIndex"></param>
 	/// <param name="endIndex"></param>
 	/// <returns></returns>
-	public static ulong ReadBits(ulong data, int startIndex, int endIndex)
+	public static byte ReadBits(byte data, int startIndex, int endIndex)
 	{
-		// 位长
-		int length = endIndex - startIndex + 1;
-		// 先左移，让右边出现 length 个 0 位，然后取反，这样右边就出现
-		// length 个 1 位了，其它位都为 0
-		ulong mark = ~(ulong.MaxValue << length);
-		// 将 mark 中全 1 的部分移动到相应的窗口
-		mark <<= startIndex;
-		return (data & mark) >> startIndex;
+		if (startIndex <= endIndex && startIndex >= 0 && endIndex >= 0 && endIndex <= 7)
+		{
+			// 位长
+			int length = endIndex - startIndex + 1;
+			// 先左移，让右边出现 length 个 0 位，然后取反，这样右边就出现
+			// length 个 1 位了，其它位都为 0
+			byte mark = (byte)~(byte.MaxValue << length);
+			// 将 mark 中全 1 的部分移动到相应的窗口
+			mark <<= startIndex;
+			return (byte)((data & mark) >> startIndex);
+		}
+		else
+		{
+			throw new ArgumentException("位索引溢出");
+		}
 	}
 }
