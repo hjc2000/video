@@ -16,17 +16,19 @@ public class TSPacket
 		// 读取同步字节
 		SyncByte = reader.ReadByte();
 		byte temp = reader.ReadByte();
-		TransportErrorIndicator = BitView.ReadBit(temp, 7);
-		PayloadUnitStartIndicator = BitView.ReadBit(temp, 6);
-		TransportPriority = BitView.ReadBit(temp, 5);
+		BitStream_lbf bslbf = new(temp);
+		TransportErrorIndicator = bslbf.ReadBit();
+		PayloadUnitStartIndicator = bslbf.ReadBit();
+		TransportPriority = bslbf.ReadBit();
 		// 剩下的 5 位和下一个字节拼在一起组成 PID
 		temp = (byte)(temp & 0b_000_11111);
 		byte low = reader.ReadByte();
 		PID = (ushort)((temp << 8) | low);
 		temp = reader.ReadByte();
-		TransportScramblingControl = BitView.ReadBits(temp, 6, 7);
-		AdaptationFieldControl = BitView.ReadBits(temp, 4, 5);
-		ContinuityCounter = BitView.ReadBits(temp, 0, 3);
+		bslbf = new BitStream_lbf(temp);
+		TransportScramblingControl = bslbf.ReadBits(2);
+		AdaptationFieldControl = bslbf.ReadBits(2);
+		ContinuityCounter = bslbf.ReadBits(4);
 		// 调整域
 		if (AdaptationFieldControl == 2 || AdaptationFieldControl == 3)
 		{
@@ -80,15 +82,15 @@ public class AdaptationField
 		using (reader = new BinaryReader(memoryStream))
 		{
 			byte temp = reader.ReadByte();
-			int bitIndex = 7;
-			DiscontinuityIndicator = BitView.ReadBit(temp, bitIndex--);
-			RandomAccessIndicator = BitView.ReadBit(temp, bitIndex--);
-			ElementaryStreamPriorityIndicator = BitView.ReadBit(temp, bitIndex--);
-			PCR_Flag = BitView.ReadBit(temp, bitIndex--);
-			OPCR_Flag = BitView.ReadBit(temp, bitIndex--);
-			SplicingPointFlag = BitView.ReadBit(temp, bitIndex--);
-			TransportPrivateDataFlag = BitView.ReadBit(temp, bitIndex--);
-			AdaptationFieldExtensionFlag = BitView.ReadBit(temp, bitIndex--);
+			BitStream_lbf bslbf = new(temp);
+			DiscontinuityIndicator = bslbf.ReadBit();
+			RandomAccessIndicator = bslbf.ReadBit();
+			ElementaryStreamPriorityIndicator = bslbf.ReadBit();
+			PCR_Flag = bslbf.ReadBit();
+			OPCR_Flag = bslbf.ReadBit();
+			SplicingPointFlag = bslbf.ReadBit();
+			TransportPrivateDataFlag = bslbf.ReadBit();
+			AdaptationFieldExtensionFlag = bslbf.ReadBit();
 			if (PCR_Flag)
 			{
 				PCR = CalculatePCR(reader);
