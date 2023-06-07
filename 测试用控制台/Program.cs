@@ -4,6 +4,8 @@ string url = @"./ts0.ts";
 using FileStream fileStream = File.Open(url, FileMode.Open, FileAccess.Read, FileShare.Read);
 using FileStream outputFile = File.Open("./ts_parse.json", FileMode.Create);
 StreamWriter outputWriter = new(outputFile);
+using FileStream outputPAT = File.Open("./pat.json", FileMode.Create);
+StreamWriter patWriter = new(outputPAT);
 for (int i = 0; i < 100; i++)
 {
 	byte[] buff = new byte[188];
@@ -14,7 +16,7 @@ for (int i = 0; i < 100; i++)
 		TSPacket tsPacket = new(buff);
 		if (tsPacket.PID == 0 && tsPacket.Payload != null)
 		{
-			Console.WriteLine(new PAT(tsPacket.Payload.ActualPayload));
+			await patWriter.WriteLineAsync(new PAT(tsPacket.Payload.ActualPayload).ToString());
 		}
 
 		await outputWriter.WriteLineAsync(tsPacket.ToString());
@@ -26,5 +28,6 @@ for (int i = 0; i < 100; i++)
 }
 
 await outputWriter.FlushAsync();
+await patWriter.FlushAsync();
 Console.WriteLine("完成");
 Console.ReadLine();

@@ -190,7 +190,10 @@ public class Payload
 			// payloadUnitStartIndicator=true 表示有上一个数据包的负载搭了这个数据包的便车，
 			// 需要将上一个数据包的负载分离出来
 			PayloadPointer = reader.ReadByte();
-			LastPacketPayload = reader.ReadBytes(PayloadPointer);
+			if (PayloadPointer > 0)
+			{
+				LastPacketPayload = reader.ReadBytes(PayloadPointer);
+			}
 		}
 		// 读完剩下的所有内容
 		ActualPayload = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
@@ -241,6 +244,28 @@ public class PAT
 		CurrentNextIndicator = bslbf.ReadBit();
 		SectionNumber = reader.ReadByte();
 		LastSectionNumber = reader.ReadByte();
+		// 流的 Position 指示的是下一次读取时的索引号
+		while (SectionLength - reader.BaseStream.Position > 4)
+		{
+			high = reader.ReadByte();
+			low = reader.ReadByte();
+			ushort programNumber = SpliceByte.SpliceIntoUint16(high, low);
+			high = reader.ReadByte();
+			high = (byte)(high & 0b_000_11111);
+			low = reader.ReadByte();
+			ushort pid = SpliceByte.SpliceIntoUint16(high, low);
+			PAT_ProgrameList.Add(new PAT_Program()
+			{
+				ProgramNumber = programNumber,
+				PID = pid,
+			});
+			if (reader.BaseStream.Position == 180)
+			{
+				Console.WriteLine();
+			}
+		}
+
+		CRC32 = SpliceByte.SpliceIntoUint32(reader.ReadBytes(4));
 	}
 
 	public byte Table_ID { get; set; }
@@ -254,13 +279,10 @@ public class PAT
 	public bool CurrentNextIndicator { get; set; }
 	public byte SectionNumber { get; set; }
 	public byte LastSectionNumber { get; set; }
+	public List<PAT_Program> PAT_ProgrameList { get; set; } = new List<PAT_Program>();
+	public uint CRC32 { get; set; }
+	public string CRC32_Str => $"{CRC32:x}";
 
-	/*
-		std::vector<TS_PAT_Program> program;  
-		unsigned reserved_3                    : 3; // 保留位  
-		unsigned network_PID                    : 13; //网络信息表（NIT）的PID,节目号为0时对应的PID为network_PID  
-		unsigned CRC_32                        : 32;  //CRC32校验码  
-	 */
 	public override string ToString()
 	{
 		using MemoryStream memoryStream = new();
@@ -275,4 +297,10 @@ public class PAT
 		StreamReader jsonStreamReader = new(memoryStream);
 		return jsonStreamReader.ReadToEnd();
 	}
+}
+
+public class PAT_Program
+{
+	public ushort ProgramNumber { get; set; }
+	public ushort PID { get; set; }
 }
