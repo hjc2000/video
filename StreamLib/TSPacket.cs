@@ -245,6 +245,8 @@ public class PAT
 		SectionNumber = reader.ReadByte();
 		LastSectionNumber = reader.ReadByte();
 		// 流的 Position 指示的是下一次读取时的索引号
+		// SectionLength 指示储存节目信息的区域加上末尾的 CRC32 的总长度
+		// 到最后的 4 字节之前都是节目信息，所以在循环内解析节目信息，直到剩下 4 个字节
 		while (SectionLength - reader.BaseStream.Position > 4)
 		{
 			high = reader.ReadByte();
@@ -257,14 +259,14 @@ public class PAT
 			PAT_ProgrameList.Add(new PAT_Program()
 			{
 				ProgramNumber = programNumber,
-				PID = pid,
+				PMT_PID = pid,
 			});
 			if (reader.BaseStream.Position == 180)
 			{
 				Console.WriteLine();
 			}
 		}
-
+		// 解析出 CRC32
 		CRC32 = SpliceByte.SpliceIntoUint32(reader.ReadBytes(4));
 	}
 
@@ -302,5 +304,5 @@ public class PAT
 public class PAT_Program
 {
 	public ushort ProgramNumber { get; set; }
-	public ushort PID { get; set; }
+	public ushort PMT_PID { get; set; }
 }
