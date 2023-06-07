@@ -1,4 +1,4 @@
-﻿using FileStream fs = File.OpenRead("./ts0.ts");
+﻿using FileStream fs = File.OpenRead("./re.ts");
 using BinaryReader binaryReader = new(fs);
 using FileStream outputTxt = File.Open("./hex.txt", FileMode.Create);
 using StreamWriter streamWriter = new(outputTxt);
