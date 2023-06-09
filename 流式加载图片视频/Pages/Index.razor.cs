@@ -35,7 +35,12 @@ public partial class Index
 	}
 	#endregion
 
-	private async Task Onclick()
+	private async Task OnClick()
+	{
+		FileResult? file = await FilePicker.Default.PickAsync();
+	}
+
+	private async Task OnLoadTS()
 	{
 		await _initTask.Task;
 		await _jsModule.InvokeVoidAsync("LoadTS", _videoElement, _dotnetHelper);
