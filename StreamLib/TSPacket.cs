@@ -48,10 +48,34 @@ public class TSPacket
 	public bool PayloadUnitStartIndicator { get; set; } = false;
 	public bool TransportPriority { get; set; } = true;
 	public ushort PID { get; set; }
+	/// <summary>
+	/// 传输加扰指示。00 表示未加扰，其他表示加扰
+	/// </summary>
 	public byte TransportScramblingControl { get; set; }
+	/// <summary>
+	/// 自适应域指示。				<br></br>
+	/// 00 - 保留				<br></br>
+	/// 01 - 无自适应域，有负载	<br></br>
+	/// 10 - 有自适应域，无负载	<br></br>
+	/// 11 - 有自适应域，有负载	<br></br>
+	/// * 可以看出，左边一位表示有无自适应域，右边一位表示有无负载。		<br></br>
+	/// * 空包的自适应字段应设置为 01
+	/// </summary>
 	public byte AdaptationFieldControl { get; set; }
+	/// <summary>
+	/// 连续性计数器												<br></br>
+	/// * 只有含有负载时才能递增此值，即自适应域指示应为 01 或 11		<br></br>
+	/// * 数据包可以出现重复，重复的数据包不得递增此值					<br></br>
+	/// * 空数据包的连续性计数器值未定义								<br></br>
+	/// </summary>
 	public byte ContinuityCounter { get; set; }
+	/// <summary>
+	/// 自适应域
+	/// </summary>
 	public AdaptationField? AdaptationField { get; set; } = null;
+	/// <summary>
+	/// 负载
+	/// </summary>
 	public Payload? Payload { get; set; } = null;
 
 	public override string ToString()
