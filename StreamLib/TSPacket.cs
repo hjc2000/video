@@ -29,16 +29,14 @@ public class TSPacket
 		TransportScramblingControl = bslbf.ReadBits(2);
 		AdaptationFieldControl = bslbf.ReadBits(2);
 		ContinuityCounter = bslbf.ReadBits(4);
-		// 调整域
+		// 自适应域
 		if (AdaptationFieldControl == 2 || AdaptationFieldControl == 3)
 		{
-			// 存在调整域
 			AdaptationField = new(reader);
 		}
 		// 数据域
 		if (AdaptationFieldControl == 1 || AdaptationFieldControl == 3)
 		{
-			// 存在数据域
 			Payload = new(reader, PayloadUnitStartIndicator);
 		}
 	}
