@@ -1,8 +1,8 @@
 ﻿using JSLib;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 
 namespace BlazorApp1.Pages;
+
 public partial class Index
 {
 	#region 生命周期
@@ -19,15 +19,10 @@ public partial class Index
 	private async Task Onclick()
 	{
 		await _initTask.Task;
-		await _jsModule.InvokeVoidAsync("Log");
-	}
-
-	private async Task OnLoadFile(InputFileChangeEventArgs e)
-	{
-		await _initTask.Task;
-		Stream stream = e.File.OpenReadStream(maxAllowedSize: (long)300e6);
-		DotNetStreamReference dotNetStreamReference = new(stream);
-		_jsOp.Log(dotNetStreamReference);
+		byte[] buffer = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, };
+		using MemoryStream mstream = new(buffer);
+		using DotNetStreamReference dotnetStream = new(mstream);
+		await _jsModule.InvokeVoidAsync("log", dotnetStream);
 	}
 
 	private JSModule _jsModule = default!;
