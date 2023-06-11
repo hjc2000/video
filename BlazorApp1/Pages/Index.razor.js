@@ -23,6 +23,7 @@ export async function log(data)
 		{
 			break;
 		}
-		console.log(readResult.value);
+		let uint8Array = readResult.value;
+		console.log(uint8Array);
 	}
 }

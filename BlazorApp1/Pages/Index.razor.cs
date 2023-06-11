@@ -19,7 +19,7 @@ public partial class Index
 	private async Task Onclick()
 	{
 		await _initTask.Task;
-		byte[] buffer = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, };
+		byte[] buffer = new byte[(int)1e6];
 		using MemoryStream mstream = new(buffer);
 		using DotNetStreamReference dotnetStream = new(mstream);
 		await _jsModule.InvokeVoidAsync("log", dotnetStream);
