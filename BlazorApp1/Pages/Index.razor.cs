@@ -19,8 +19,8 @@ public partial class Index
 	private async Task OnFileLoad()
 	{
 		await _initTask.Task;
-		InputFileElementWrapper wrapper = new(JS, _inputElement);
-		IJSObjectReference jsFileStream = await wrapper.GetFileAs_JS_Stream(0);
+		await using InputFileElementWrapper wrapper = new(JS, _inputElement);
+		await using IJSObjectReference jsFileStream = await wrapper.GetFileAs_JS_Stream(0);
 		_jsOp.Log(jsFileStream);
 		JSStreamReader jsStreamReader = new(JS, jsFileStream);
 		byte[] buffer = await jsStreamReader.ReadAsync();
