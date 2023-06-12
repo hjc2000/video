@@ -2,5 +2,8 @@
 @inject IJSRuntime JS
 
 <div>
+	<button @onclick="OnClick">按钮</button>
+</div>
+<div>
 	<input @ref="_inputElement" type="file" @onchange="OnFileLoad" />
 </div>

@@ -9,20 +9,3 @@
 	}
 	imageElement.src = url;
 }
-
-export async function log(data)
-{
-	let stream = await data.stream();
-	console.log(stream);
-	let reader = stream.getReader();
-	console.log(reader);
-	let readResult = await reader.read();
-	console.log(readResult);
-}
-
-
-export async function get_stream(data)
-{
-	let stream = await data.stream();
-	return stream;
-}
