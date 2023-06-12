@@ -10,13 +10,17 @@ public partial class Index
 		await base.OnInitializedAsync();
 		_jsModule = await JSModule.CreateAsync(JS, "./Pages/Index.razor.js");
 		_jsOp = await JSOp.CreateAsync(JS);
+		_callbackHelper.Action += () =>
+		{
+			Console.WriteLine("666666666666666666666666");
+		};
 		_initTask.SetResult();
 	}
 	#endregion
 	private async Task OnClick()
 	{
 		await _initTask.Task;
-		_inputFileElementWrapper = new(JS);
+		_inputFileElementWrapper = new(JS, _callbackHelper);
 		await _inputFileElementWrapper.Click();
 	}
 
@@ -36,4 +40,5 @@ public partial class Index
 	private InputFileElementWrapper _inputFileElementWrapper = default!;
 	private JSModule _jsModule = default!;
 	private JSOp _jsOp = default!;
+	private CallbackHelper _callbackHelper = new();
 }
