@@ -19,11 +19,13 @@ public partial class Index
 	private async Task OnFileLoad()
 	{
 		await _initTask.Task;
-		IJSObjectReference inputFileElement = await _jsModule.InvokeAsync<IJSObjectReference>("InputFileElement.create", _inputElement);
-		IJSObjectReference jsFileStream = await inputFileElement.InvokeAsync<IJSObjectReference>("get_file_as_stream", 0);
+		InputFileElementWrapper wrapper = new(JS, _inputElement);
+		IJSObjectReference jsFileStream = await wrapper.GetFileAs_JS_Stream(0);
+		_jsOp.Log(jsFileStream);
 		JSStreamReader jsStreamReader = new(JS, jsFileStream);
 		byte[] buffer = await jsStreamReader.ReadAsync();
 		Console.WriteLine(buffer.Length);
+		await wrapper.Remove();
 	}
 
 	private ElementReference _inputElement = default!;
