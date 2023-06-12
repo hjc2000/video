@@ -43,6 +43,7 @@ export class InputFileElement
 	get_file_as_stream(index)
 	{
 		let file = this.fileList[index];
-		console.log(file.stream());
+		console.log(file);
+		return file.stream();
 	}
 }
