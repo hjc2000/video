@@ -69,11 +69,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="WindowComponents" Version="1.0.21" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\JSLib\JSLib\JSLib.csproj" />
+      <ProjectReference Include="..\..\WindowComponents\WindowComponents\WindowComponents.csproj" />
       <ProjectReference Include="..\StreamLib\StreamLib.csproj" />
     </ItemGroup>
 

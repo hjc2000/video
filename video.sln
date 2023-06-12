@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StreamLib", "StreamLib\Stre
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JSLib", "..\JSLib\JSLib\JSLib.csproj", "{13633BBF-7869-4F64-8AE4-83AEC160F76D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowComponents", "..\WindowComponents\WindowComponents\WindowComponents.csproj", "{56DB8558-8A67-4661-8078-52AB6ECFE01C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +147,18 @@ Global
 		{13633BBF-7869-4F64-8AE4-83AEC160F76D}.Release|x64.Build.0 = Release|Any CPU
 		{13633BBF-7869-4F64-8AE4-83AEC160F76D}.Release|x86.ActiveCfg = Release|Any CPU
 		{13633BBF-7869-4F64-8AE4-83AEC160F76D}.Release|x86.Build.0 = Release|Any CPU
+		{56DB8558-8A67-4661-8078-52AB6ECFE01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56DB8558-8A67-4661-8078-52AB6ECFE01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56DB8558-8A67-4661-8078-52AB6ECFE01C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{56DB8558-8A67-4661-8078-52AB6ECFE01C}.Debug|x64.Build.0 = Debug|Any CPU
+		{56DB8558-8A67-4661-8078-52AB6ECFE01C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{56DB8558-8A67-4661-8078-52AB6ECFE01C}.Debug|x86.Build.0 = Debug|Any CPU
+		{56DB8558-8A67-4661-8078-52AB6ECFE01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56DB8558-8A67-4661-8078-52AB6ECFE01C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56DB8558-8A67-4661-8078-52AB6ECFE01C}.Release|x64.ActiveCfg = Release|Any CPU
+		{56DB8558-8A67-4661-8078-52AB6ECFE01C}.Release|x64.Build.0 = Release|Any CPU
+		{56DB8558-8A67-4661-8078-52AB6ECFE01C}.Release|x86.ActiveCfg = Release|Any CPU
+		{56DB8558-8A67-4661-8078-52AB6ECFE01C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
