@@ -18,20 +18,18 @@ public partial class Index
 	private async Task OnClick()
 	{
 		await _initTask.Task;
-		_inputFileElementWrapper = new(JS, true);
-		await _inputFileElementWrapper.Click();
-		int count = await _inputFileElementWrapper.GetFileCount();
+		await using InputFileElementWrapper inputFileElementWrapper = new(JS, true);
+		await inputFileElementWrapper.Click();
+		int count = await inputFileElementWrapper.GetFileCount();
 		Console.WriteLine($"选中了{count}个文件");
-		await using IJSObjectReference jsFileStream = await _inputFileElementWrapper.GetFileAs_JS_Stream(0);
+		await using IJSObjectReference jsFileStream = await inputFileElementWrapper.GetFileAs_JS_Stream(0);
 		_jsOp.Log(jsFileStream);
-		JSStreamReader jsStreamReader = new(JS, jsFileStream);
-		byte[] buffer = await jsStreamReader.ReadAsync();
-		Console.WriteLine($"本次读取到的字节数组大小为{buffer.Length / 1e6}MB");
-		await _inputFileElementWrapper.DisposeAsync();
+		JSReadableStream jsReadableFileStream = new(JS, jsFileStream);
+		StreamReader reader = new(jsReadableFileStream);
+		Console.WriteLine(await reader.ReadToEndAsync());
 	}
 
 	private TaskCompletionSource _initTask = new();
-	private InputFileElementWrapper _inputFileElementWrapper = default!;
 	private JSModule _jsModule = default!;
 	private JSOp _jsOp = default!;
 }
