@@ -25,8 +25,7 @@ public partial class Index
 		IJSObjectReference reader = await jsStream.InvokeAsync<IJSObjectReference>("getReader");
 		_jsOp.Log(reader);
 		JSStreamReader jsStreamReader = new(JS, reader);
-		ReadResult readResult = await jsStreamReader.ReadAsync();
-		Console.WriteLine(readResult);
+		_jsOp.Log(await jsStreamReader.ReadAsync());
 	}
 
 	private JSModule _jsModule = default!;
