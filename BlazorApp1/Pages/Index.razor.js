@@ -16,14 +16,13 @@ export async function log(data)
 	console.log(stream);
 	let reader = stream.getReader();
 	console.log(reader);
-	while (true)
-	{
-		let readResult = await reader.read();
-		if (readResult.done)
-		{
-			break;
-		}
-		let uint8Array = readResult.value;
-		console.log(uint8Array);
-	}
+	let readResult = await reader.read();
+	console.log(readResult);
+}
+
+
+export async function get_stream(data)
+{
+	let stream = await data.stream();
+	return stream;
 }

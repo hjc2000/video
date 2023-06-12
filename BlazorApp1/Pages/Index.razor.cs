@@ -11,7 +11,6 @@ public partial class Index
 		await base.OnInitializedAsync();
 		_jsModule = await JSModule.CreateAsync(JS, "./Pages/Index.razor.js");
 		_jsOp = await JSOp.CreateAsync(JS);
-		await _jsOp.AddScript("https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.min.js");
 		_initTask.SetResult();
 	}
 	#endregion
@@ -19,10 +18,15 @@ public partial class Index
 	private async Task Onclick()
 	{
 		await _initTask.Task;
-		byte[] buffer = new byte[(int)1e6];
-		using MemoryStream mstream = new(buffer);
-		using DotNetStreamReference dotnetStream = new(mstream);
-		await _jsModule.InvokeVoidAsync("log", dotnetStream);
+		byte[] buffer = new byte[1024];
+		using MemoryStream stream = new(buffer);
+		using DotNetStreamReference dotnetStream = new(stream);
+		IJSObjectReference jsStream = await _jsModule.InvokeAsync<IJSObjectReference>("get_stream", dotnetStream);
+		IJSObjectReference reader = await jsStream.InvokeAsync<IJSObjectReference>("getReader");
+		_jsOp.Log(reader);
+		JSStreamReader jsStreamReader = new(JS, reader);
+		ReadResult readResult = await jsStreamReader.ReadAsync();
+		Console.WriteLine(readResult);
 	}
 
 	private JSModule _jsModule = default!;
