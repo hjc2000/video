@@ -34,7 +34,10 @@ public class SplicedStream : Stream
 					}
 				}
 
-				_currentStream = _streamQueue.Dequeue();
+				lock (_streamQueue)
+				{
+					_currentStream = _streamQueue.Dequeue();
+				}
 			}
 			catch
 			{
@@ -98,7 +101,10 @@ public class SplicedStream : Stream
 	/// <param name="stream"></param>
 	public void PushBack(Stream stream)
 	{
-		_streamQueue.Enqueue(stream);
+		lock (_streamQueue)
+		{
+			_streamQueue.Enqueue(stream);
+		}
 	}
 
 	public event Action<TaskCompletionSource>? OnStreamQueueEmpty;

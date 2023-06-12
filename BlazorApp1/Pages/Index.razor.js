@@ -26,3 +26,23 @@ export async function get_stream(data)
 	let stream = await data.stream();
 	return stream;
 }
+
+export class InputFileElement
+{
+	static create(element)
+	{
+		return new InputFileElement(element);
+	}
+
+	constructor(element)
+	{
+		this.element = element;
+		this.fileList = element.files;
+	}
+
+	get_file_as_stream(index)
+	{
+		let file = this.fileList[index];
+		console.log(file.stream());
+	}
+}
