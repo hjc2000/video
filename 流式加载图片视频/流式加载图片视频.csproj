@@ -70,8 +70,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\JSLib\JSLib\JSLib.csproj" />
+      <ProjectReference Include="..\..\StreamLib\StreamLib\StreamLib.csproj" />
       <ProjectReference Include="..\..\WindowComponents\WindowComponents\WindowComponents.csproj" />
-      <ProjectReference Include="..\StreamLib\StreamLib.csproj" />
     </ItemGroup>
 
 </Project>
