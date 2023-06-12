@@ -18,7 +18,7 @@ public partial class Index
 	private async Task OnClick()
 	{
 		await _initTask.Task;
-		_inputFileElementWrapper = new(JS);
+		_inputFileElementWrapper = new(JS, true);
 		await _inputFileElementWrapper.Click();
 		int count = await _inputFileElementWrapper.GetFileCount();
 		Console.WriteLine($"选中了{count}个文件");
