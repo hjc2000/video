@@ -24,8 +24,8 @@ public partial class Index
 		Console.WriteLine($"选中了{count}个文件");
 		await using IJSObjectReference jsFileStream = await inputFileElementWrapper.GetFileAs_JS_Stream(0);
 		_jsOp.Log(jsFileStream);
-		JSReadableStream jsReadableFileStream = new(JS, jsFileStream);
-		StreamReader reader = new(jsReadableFileStream);
+		await using JSReadableStream jsReadableFileStream = new(JS, jsFileStream);
+		using StreamReader reader = new(jsReadableFileStream);
 		Console.WriteLine(await reader.ReadToEndAsync());
 	}
 
