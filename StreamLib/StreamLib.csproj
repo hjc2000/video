@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\st8630web\JSLib\JSLib.csproj" />
+    <ProjectReference Include="..\..\JSLib\JSLib\JSLib.csproj" />
   </ItemGroup>
 
 </Project>
