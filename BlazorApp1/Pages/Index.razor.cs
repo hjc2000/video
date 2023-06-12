@@ -14,17 +14,20 @@ public partial class Index
 		_initTask.SetResult();
 	}
 	#endregion
+
 	private async Task OnClick()
 	{
 		await _initTask.Task;
 		_inputFileElementWrapper = new(JS);
 		await _inputFileElementWrapper.Click();
+		int count = await _inputFileElementWrapper.GetFileCount();
+		Console.WriteLine($"选中了{count}个文件");
 		await using IJSObjectReference jsFileStream = await _inputFileElementWrapper.GetFileAs_JS_Stream(0);
 		_jsOp.Log(jsFileStream);
 		JSStreamReader jsStreamReader = new(JS, jsFileStream);
 		byte[] buffer = await jsStreamReader.ReadAsync();
-		Console.WriteLine(buffer.Length);
-		await _inputFileElementWrapper.Remove();
+		Console.WriteLine($"本次读取到的字节数组大小为{buffer.Length / 1e6}MB");
+		await _inputFileElementWrapper.DisposeAsync();
 	}
 
 	private TaskCompletionSource _initTask = new();
