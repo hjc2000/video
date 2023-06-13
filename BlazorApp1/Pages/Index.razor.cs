@@ -1,5 +1,4 @@
 ﻿using JSLib;
-using Microsoft.JSInterop;
 
 namespace BlazorApp1.Pages;
 
@@ -20,23 +19,20 @@ public partial class Index
 		await _initTask.Task;
 		await using InputFileElementWrapper inputFileElementWrapper = await InputFileElementWrapper.CreateAsync(JS, true);
 		await inputFileElementWrapper.Click();
-		int count = await inputFileElementWrapper.GetFileCount();
-		Console.WriteLine($"选中了{count}个文件");
-		await using IJSObjectReference jsFileStream = await inputFileElementWrapper.GetFileAs_JS_Stream(0);
-		_jsOp.Log(jsFileStream);
-		await using JSReadableStream jsReadableFileStream = await JSReadableStream.CreateAsync(JS, jsFileStream);
+		Console.WriteLine($"选中了{inputFileElementWrapper.FileCount}个文件");
+		await using JSReadableStream jsReadableFileStream = await inputFileElementWrapper.OpenReadAsStream(0);
 		Console.WriteLine($"文件大小为：{jsReadableFileStream.Length}");
-		//while (true)
-		//{
-		//	byte[] buffer = new byte[(ulong)1e6];
-		//	int readResult = await jsReadableFileStream.ReadAsync(buffer);
-		//	if (readResult == 0)
-		//	{
-		//		break;
-		//	}
+		while (true)
+		{
+			byte[] buffer = new byte[(ulong)1e6];
+			int readResult = await jsReadableFileStream.ReadAsync(buffer);
+			if (readResult == 0)
+			{
+				break;
+			}
 
-		//	Console.WriteLine(readResult);
-		//}
+			Console.WriteLine(readResult);
+		}
 	}
 
 	private TaskCompletionSource _initTask = new();
