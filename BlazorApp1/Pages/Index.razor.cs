@@ -25,8 +25,18 @@ public partial class Index
 		await using IJSObjectReference jsFileStream = await inputFileElementWrapper.GetFileAs_JS_Stream(0);
 		_jsOp.Log(jsFileStream);
 		await using JSReadableStream jsReadableFileStream = new(JS, jsFileStream);
-		using StreamReader reader = new(jsReadableFileStream);
-		Console.WriteLine(await reader.ReadToEndAsync());
+		Console.WriteLine($"文件大小为：{await jsReadableFileStream.GetSize()}");
+		//while (true)
+		//{
+		//	byte[] buffer = new byte[(ulong)1e6];
+		//	int readResult = await jsReadableFileStream.ReadAsync(buffer);
+		//	if (readResult == 0)
+		//	{
+		//		break;
+		//	}
+
+		//	Console.WriteLine(readResult);
+		//}
 	}
 
 	private TaskCompletionSource _initTask = new();
