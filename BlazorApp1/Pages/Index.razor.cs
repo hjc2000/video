@@ -24,8 +24,8 @@ public partial class Index
 		Console.WriteLine($"选中了{count}个文件");
 		await using IJSObjectReference jsFileStream = await inputFileElementWrapper.GetFileAs_JS_Stream(0);
 		_jsOp.Log(jsFileStream);
-		await using JSReadableStream jsReadableFileStream = new(JS, jsFileStream);
-		Console.WriteLine($"文件大小为：{await jsReadableFileStream.GetSize()}");
+		await using JSReadableStream jsReadableFileStream = await JSReadableStream.CreateAsync(JS, jsFileStream);
+		Console.WriteLine($"文件大小为：{jsReadableFileStream.Length}");
 		//while (true)
 		//{
 		//	byte[] buffer = new byte[(ulong)1e6];
