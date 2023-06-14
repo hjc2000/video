@@ -8,9 +8,23 @@ using FileStream outputPAT = File.Open("./pat.json", FileMode.Create);
 StreamWriter patWriter = new(outputPAT);
 for (int i = 0; i < 100; i++)
 {
-	byte[] buff = new byte[188];
+	while (true)
+	{
+		int syncByte = fileStream.ReadByte();
+		if (syncByte == 0x47)
+		{
+			break;
+		}
+		else if (syncByte == -1)
+		{
+			Console.WriteLine("文件结束");
+			return;
+		}
+	}
+
+	byte[] buff = new byte[187];
 	int haveRead = await fileStream.ReadAsync(buff);
-	if (haveRead == 188)
+	if (haveRead == 187)
 	{
 		await outputWriter.WriteLineAsync($"第{i + 1}个包");
 		TSPacket tsPacket = new(buff);
@@ -23,7 +37,7 @@ for (int i = 0; i < 100; i++)
 	}
 	else
 	{
-		Console.WriteLine("读取的不足188字节");
+		Console.WriteLine("读取的不足187字节");
 	}
 }
 
