@@ -35,11 +35,6 @@ public partial class Index
 	}
 	#endregion
 
-	private async Task OnClick()
-	{
-		FileResult? file = await FilePicker.Default.PickAsync();
-	}
-
 	private async Task OnLoadTS()
 	{
 		await _initTask.Task;
@@ -77,12 +72,12 @@ public partial class Index
 	[JSInvokable]
 	public async Task<byte[]> FetchAsync()
 	{
-		int haveRead = await _splicedStream.ReadAsync(_tsBuff, 0, _tsBuff.Length);
+		int haveRead = await _splicedStream.ReadAsync(_tsBuff);
 		_jsOp.Log($"读取了{haveRead}字节");
 		if (haveRead > 0)
 		{
-			byte[] buff = new byte[haveRead];
-			Array.Copy(_tsBuff, buff, haveRead);
+			Memory<byte> memory = _tsBuff.AsMemory(0, haveRead);
+			byte[] buff = memory.ToArray();
 			return buff;
 		}
 		else
