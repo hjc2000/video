@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StreamLib", "..\StreamLib\S
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.vcxproj", "{11690919-FE3F-4C0A-931C-3B4E47BBD0C3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ffmpeg", "ffmpeg\ffmpeg.vcxproj", "{5778CA57-10A2-4814-AA11-51DEE427A536}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,18 @@ Global
 		{11690919-FE3F-4C0A-931C-3B4E47BBD0C3}.Release|x64.Build.0 = Release|x64
 		{11690919-FE3F-4C0A-931C-3B4E47BBD0C3}.Release|x86.ActiveCfg = Release|Win32
 		{11690919-FE3F-4C0A-931C-3B4E47BBD0C3}.Release|x86.Build.0 = Release|Win32
+		{5778CA57-10A2-4814-AA11-51DEE427A536}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{5778CA57-10A2-4814-AA11-51DEE427A536}.Debug|Any CPU.Build.0 = Debug|x64
+		{5778CA57-10A2-4814-AA11-51DEE427A536}.Debug|x64.ActiveCfg = Debug|x64
+		{5778CA57-10A2-4814-AA11-51DEE427A536}.Debug|x64.Build.0 = Debug|x64
+		{5778CA57-10A2-4814-AA11-51DEE427A536}.Debug|x86.ActiveCfg = Debug|Win32
+		{5778CA57-10A2-4814-AA11-51DEE427A536}.Debug|x86.Build.0 = Debug|Win32
+		{5778CA57-10A2-4814-AA11-51DEE427A536}.Release|Any CPU.ActiveCfg = Release|x64
+		{5778CA57-10A2-4814-AA11-51DEE427A536}.Release|Any CPU.Build.0 = Release|x64
+		{5778CA57-10A2-4814-AA11-51DEE427A536}.Release|x64.ActiveCfg = Release|x64
+		{5778CA57-10A2-4814-AA11-51DEE427A536}.Release|x64.Build.0 = Release|x64
+		{5778CA57-10A2-4814-AA11-51DEE427A536}.Release|x86.ActiveCfg = Release|Win32
+		{5778CA57-10A2-4814-AA11-51DEE427A536}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
