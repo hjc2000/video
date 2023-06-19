@@ -15,14 +15,13 @@ namespace FFmpeg
 {
 	class AVFormatContext : public Wraper<::AVFormatContext>
 	{
-#pragma region 生命周期
-	public:
+	public:// 生命周期
 		AVFormatContext() {}
-		AVFormatContext(::AVFormatContext *pFormatContext)
+		AVFormatContext(::AVFormatContext* pFormatContext)
 		{
 			m_pWrapedObj = pFormatContext;
 		}
-		AVFormatContext(::AVFormatContext &ref_FormatContext)
+		AVFormatContext(::AVFormatContext& ref_FormatContext)
 		{
 			m_pWrapedObj = &ref_FormatContext;
 		}
@@ -33,19 +32,13 @@ namespace FFmpeg
 			::avformat_close_input(&m_pWrapedObj);
 			::avformat_free_context(m_pWrapedObj);
 		}
-#pragma endregion
 
-#pragma region 公共字段
-
-#pragma endregion
-
-#pragma region ffmpeg 中针对 AVFormatContext 的操作函数
-	private:
+	private:// 私有字段
 		bool m_is_input = false;
 		bool m_is_output = false;
 
 	public:
-		inline void open_input(const char *url, const ::AVInputFormat *fmt = nullptr, ::AVDictionary **options = nullptr)
+		inline void open_input(const char* url, const ::AVInputFormat* fmt = nullptr, ::AVDictionary** options = nullptr)
 		{
 			if (m_is_output)
 				throw "该上下文已经是输出了，不允许作为输入打开";
@@ -55,7 +48,7 @@ namespace FFmpeg
 				throw result;
 		}
 
-		void alloc_output_context2(const char *filename)
+		void alloc_output_context2(const char* filename)
 		{
 			if (m_is_input)
 				throw "该上下文已经是输入了，不允许作为输出打开";
@@ -65,7 +58,7 @@ namespace FFmpeg
 				throw result;
 		}
 
-		void dump_format(int index, const char *url, int is_output)
+		void dump_format(int index, const char* url, int is_output)
 		{
 			::av_dump_format(m_pWrapedObj, index, url, is_output);
 		}
@@ -76,7 +69,7 @@ namespace FFmpeg
 		 *
 		 * @param options
 		 */
-		inline void find_stream_info(::AVDictionary **options = nullptr)
+		inline void find_stream_info(::AVDictionary** options = nullptr)
 		{
 			int result = ::avformat_find_stream_info(m_pWrapedObj, options);
 			if (result < 0)
@@ -102,15 +95,13 @@ namespace FFmpeg
 				return result;
 		}
 
-		void read_frame(FFmpeg::AVPacket &ref_packet)
+		void read_frame(FFmpeg::AVPacket& ref_packet)
 		{
 			int result = ::av_read_frame(m_pWrapedObj, ref_packet);
 			if (result < 0)
 				throw result;
 		}
-#pragma endregion
 
-#pragma region 扩展方法
 	public:
 		/**
 		 * @brief 获取视频时长
@@ -136,6 +127,5 @@ namespace FFmpeg
 			sstream >> re_value;
 			return re_value;
 		}
-#pragma endregion
 	};
 }
