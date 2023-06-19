@@ -32,9 +32,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(HOME)\ffmpeg_build\lib\swscale-7.def">
-      <Filter>资源文件</Filter>
-    </None>
     <None Include="$(HOME)\ffmpeg_build\lib\avcodec-60.def">
       <Filter>资源文件</Filter>
     </None>
@@ -54,6 +51,9 @@
       <Filter>资源文件</Filter>
     </None>
     <None Include="$(HOME)\ffmpeg_build\lib\swresample-4.def">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="$(HOME)\ffmpeg_build\lib\swscale-7.def">
       <Filter>资源文件</Filter>
     </None>
   </ItemGroup>

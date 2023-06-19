@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\msys64\home\huang\ffmpeg_build\include;$(ProjectDir)\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(HOME)\ffmpeg_build\include;$(ProjectDir)\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -136,27 +136,27 @@
     <ClCompile Include="src\AVUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\avcodec-60.def" />
-    <None Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\avdevice-60.def" />
-    <None Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\avfilter-9.def" />
-    <None Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\avformat-60.def" />
-    <None Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\avutil-58.def" />
-    <None Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\postproc-57.def" />
-    <None Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\swresample-4.def" />
-    <None Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\swscale-7.def" />
+    <None Include="$(HOME)\ffmpeg_build\lib\avcodec-60.def" />
+    <None Include="$(HOME)\ffmpeg_build\lib\avdevice-60.def" />
+    <None Include="$(HOME)\ffmpeg_build\lib\avfilter-9.def" />
+    <None Include="$(HOME)\ffmpeg_build\lib\avformat-60.def" />
+    <None Include="$(HOME)\ffmpeg_build\lib\avutil-58.def" />
+    <None Include="$(HOME)\ffmpeg_build\lib\postproc-57.def" />
+    <None Include="$(HOME)\ffmpeg_build\lib\swresample-4.def" />
+    <None Include="$(HOME)\ffmpeg_build\lib\swscale-7.def" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\libavcodec.dll.a" />
-    <Library Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\libavdevice.dll.a" />
-    <Library Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\libavfilter.dll.a" />
-    <Library Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\libavformat.dll.a" />
-    <Library Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\libavutil.dll.a" />
-    <Library Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\libpostproc.dll.a" />
-    <Library Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\libswresample.dll.a" />
-    <Library Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\libswscale.dll.a" />
-    <Library Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\libx264.dll.a" />
-    <Library Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\libx265.a" />
-    <Library Include="..\..\..\..\..\..\msys64\home\huang\ffmpeg_build\lib\libx265.dll.a" />
+    <Library Include="$(HOME)\ffmpeg_build\lib\libavcodec.dll.a" />
+    <Library Include="$(HOME)\ffmpeg_build\lib\libavdevice.dll.a" />
+    <Library Include="$(HOME)\ffmpeg_build\lib\libavfilter.dll.a" />
+    <Library Include="$(HOME)\ffmpeg_build\lib\libavformat.dll.a" />
+    <Library Include="$(HOME)\ffmpeg_build\lib\libavutil.dll.a" />
+    <Library Include="$(HOME)\ffmpeg_build\lib\libpostproc.dll.a" />
+    <Library Include="$(HOME)\ffmpeg_build\lib\libswresample.dll.a" />
+    <Library Include="$(HOME)\ffmpeg_build\lib\libswscale.dll.a" />
+    <Library Include="$(HOME)\ffmpeg_build\lib\libx264.dll.a" />
+    <Library Include="$(HOME)\ffmpeg_build\lib\libx265.a" />
+    <Library Include="$(HOME)\ffmpeg_build\lib\libx265.dll.a" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AVDictionary.h" />
