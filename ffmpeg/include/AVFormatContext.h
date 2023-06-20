@@ -2,6 +2,7 @@
 #include <Wraper.h>
 #include <AVUtil.h>
 #include <AVPacket.h>
+#include<AVStream.h>
 extern "C"
 {
 #define __STDC_CONSTANT_MACROS
@@ -38,6 +39,10 @@ namespace FFmpeg
 		bool m_is_output = false;
 
 	public:
+		/// @brief 打开指定 url 作为输入。作为输入后无法再将此对象变成输出
+		/// @param url 
+		/// @param fmt 
+		/// @param options 
 		inline void open_input(const char* url, const ::AVInputFormat* fmt = nullptr, ::AVDictionary** options = nullptr)
 		{
 			if (m_is_output)
@@ -48,6 +53,8 @@ namespace FFmpeg
 				throw result;
 		}
 
+		/// @brief 创建输出格式上下文。作为输出后无法再将此对象变成输入
+		/// @param filename 
 		void alloc_output_context2(const char* filename)
 		{
 			if (m_is_input)
@@ -58,17 +65,19 @@ namespace FFmpeg
 				throw result;
 		}
 
+		/// @brief 对 FFmpeg 内部提供的打印流信息的函数的封装。会以官方格式打印流信息
+		/// @param index 想要打印信息的流的索引号
+		/// @param url 自定义的 url，比如这是一个输出文件，那么 url 就是你定义的输出文件路径。
+		/// 你随便输都没关系，这里的 url 的用途只有被显示
+		/// @param is_output 是否是输出文件。你也可以随便定，同样的，这个参数的用途只是用来被显示
 		void dump_format(int index, const char* url, int is_output)
 		{
 			::av_dump_format(m_pWrapedObj, index, url, is_output);
 		}
 
-		/**
-		 * @brief 通过读几个包来检测流信息。此操作不会导致读取进度向前推移，被读取的包会放在
-		 * 缓冲区下次读取的时候接着用
-		 *
-		 * @param options
-		 */
+		/// @brief 通过读几个包来检测流信息。此操作不会导致读取进度向前推移，
+		/// 被读取的包会放在缓冲区下次读取的时候接着用
+		/// @param options 
 		inline void find_stream_info(::AVDictionary** options = nullptr)
 		{
 			int result = ::avformat_find_stream_info(m_pWrapedObj, options);
@@ -76,16 +85,9 @@ namespace FFmpeg
 				throw result;
 		}
 
-		/**
-		 * @brief 找出最好的流
-		 *
-		 * @param type
-		 * @param wanted_stream_nb
-		 * @param related_stream
-		 * @param decoder_ret
-		 * @param flags
-		 * @return int
-		 */
+		/// @brief 找出最好的流
+		/// @param type 
+		/// @return 
 		int find_best_stream(AVMediaType type)
 		{
 			int result = ::av_find_best_stream(m_pWrapedObj, type, -1, -1, nullptr, 0);
@@ -95,6 +97,8 @@ namespace FFmpeg
 				return result;
 		}
 
+		/// @brief 读取一个包（未解码的音视频数据包）
+		/// @param ref_packet 
 		void read_frame(FFmpeg::AVPacket& ref_packet)
 		{
 			int result = ::av_read_frame(m_pWrapedObj, ref_packet);
@@ -102,13 +106,18 @@ namespace FFmpeg
 				throw result;
 		}
 
+		FFmpeg::AVStream create_new_stream(const ::AVCodec* pCodec = nullptr)
+		{
+			::AVStream* ps = avformat_new_stream(m_pWrapedObj, pCodec);
+			if (ps == nullptr)
+				throw "创建流失败";
+			else
+				return ps;
+		}
+
 	public:
-		/**
-		 * @brief 获取视频时长
-		 *
-		 * @return std::string 返回结果是一个字符串，里面储存着格式化过的时间。格式为
-		 * 时:分:秒
-		 */
+		/// @brief 获取视频时长
+		/// @return std::string 返回结果是一个字符串，里面储存着格式化过的时间。格式为
 		inline std::string get_duration_as_formatted_time_string()
 		{
 			std::stringstream sstream;
@@ -126,6 +135,18 @@ namespace FFmpeg
 			std::string re_value;
 			sstream >> re_value;
 			return re_value;
+		}
+
+		/// @brief 获取指定索引的流。流的索引号超出范围会抛出异常
+		/// @param stream_index 
+		/// @return 
+		FFmpeg::AVStream get_stream(int stream_index)
+		{
+			if (stream_index < 0 || stream_index >= m_pWrapedObj->nb_streams)
+			{
+				throw "流索引号超出范围";
+			}
+			return FFmpeg::AVStream{m_pWrapedObj->streams[stream_index]};
 		}
 	};
 }

@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(HOME)\ffmpeg_build\include;$(ProjectDir)\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(HOME)\ffmpeg_build\include;$(ProjectDir);$(ProjectDir)\include</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AVStream.cpp" />
     <ClCompile Include="ffmpeg.cpp" />
     <ClCompile Include="src\AVError.cpp" />
     <ClCompile Include="src\AVUtil.cpp" />
@@ -159,12 +160,12 @@
     <Library Include="$(HOME)\ffmpeg_build\lib\libx265.dll.a" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AVStream.h" />
     <ClInclude Include="include\AVDictionary.h" />
     <ClInclude Include="include\AVError.h" />
     <ClInclude Include="include\AVFormatContext.h" />
     <ClInclude Include="include\AVInputFormat.h" />
     <ClInclude Include="include\AVPacket.h" />
-    <ClInclude Include="include\AVStream.h" />
     <ClInclude Include="include\AVUtil.h" />
     <ClInclude Include="include\Wraper.h" />
   </ItemGroup>

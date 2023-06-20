@@ -30,6 +30,9 @@
     <ClCompile Include="src\AVUtil.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="AVStream.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(HOME)\ffmpeg_build\lib\avcodec-60.def">
@@ -108,13 +111,13 @@
     <ClInclude Include="include\AVPacket.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\AVStream.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\AVUtil.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Wraper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="AVStream.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
