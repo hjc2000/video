@@ -365,3 +365,5 @@ FodyWeavers.xsd
 /ffmpegLearn/out.*
 !/ffmpegLearn/ffmpeg_build
 !/ffmpegLearn/ffmpeg_build/*
+/ffmpeg/output.ts
+/ffmpeg/output.mp4

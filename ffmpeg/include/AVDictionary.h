@@ -22,6 +22,7 @@
 
 #pragma once
 #include <AVUtil.h>
+#include<Wraper.h>
 extern "C"
 {
 #define __STDC_CONSTANT_MACROS
@@ -39,7 +40,7 @@ namespace FFmpeg
 	 * 来清理资源。清理完了之后，再次调用 av_dict_set 方法会创建一个新的 ::AVDictionary
 	 * 对象
 	 */
-	class AVDictionary
+	class AVDictionary :public Wraper<::AVDictionary>
 	{
 	public:
 		~AVDictionary()
@@ -47,7 +48,6 @@ namespace FFmpeg
 			av_dict_free();
 		}
 
-#pragma region 对 ::AVDictionary 的实现
 	public:
 		/**
 		 * @brief 获取字典中记录的条数
@@ -56,7 +56,7 @@ namespace FFmpeg
 		 */
 		inline int av_dict_count()
 		{
-			return ::av_dict_count(m_dic);
+			return ::av_dict_count(m_pWrapedObj);
 		}
 
 		/**
@@ -67,9 +67,9 @@ namespace FFmpeg
 		 * @param flags
 		 * @return int
 		 */
-		inline int av_dict_set(const char *key, const char *value, AVDictionaryFlag flags = AVDictionaryFlag::none)
+		inline int av_dict_set(const char* key, const char* value, AVDictionaryFlag flags = AVDictionaryFlag::none)
 		{
-			return ::av_dict_set(&m_dic, key, value, flags);
+			return ::av_dict_set(&m_pWrapedObj, key, value, flags);
 		}
 
 		/**
@@ -81,9 +81,9 @@ namespace FFmpeg
 		 * @param flags
 		 * @return FFmpeg::AVDictionaryEntry*
 		 */
-		AVDictionaryEntry *av_dict_get(const char *key, const AVDictionaryEntry *previous_entry, AVDictionaryFlag flags = AVDictionaryFlag::none)
+		AVDictionaryEntry* av_dict_get(const char* key, const AVDictionaryEntry* previous_entry, AVDictionaryFlag flags = AVDictionaryFlag::none)
 		{
-			return ::av_dict_get(m_dic, key, previous_entry, flags);
+			return ::av_dict_get(m_pWrapedObj, key, previous_entry, flags);
 		}
 
 		/**
@@ -92,11 +92,7 @@ namespace FFmpeg
 		 */
 		inline void av_dict_free()
 		{
-			::av_dict_free(&m_dic);
+			::av_dict_free(&m_pWrapedObj);
 		}
-#pragma endregion
-
-	public:
-		::AVDictionary *m_dic = nullptr;
 	};
 }

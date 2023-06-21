@@ -2,6 +2,7 @@
 #include <Wraper.h>
 #include <AVUtil.h>
 #include <AVPacket.h>
+#include<AVDictionary.h>
 #include<AVStream.h>
 extern "C"
 {
@@ -85,25 +86,34 @@ namespace FFmpeg
 				throw result;
 		}
 
-		/// @brief 找出最好的流
-		/// @param type 
-		/// @return 
-		int find_best_stream(AVMediaType type)
+		/// <summary>
+		/// 找出最好的流
+		/// </summary>
+		/// <param name="type"></param>
+		/// <returns>返回找到的流</returns>
+		FFmpeg::AVStream find_best_stream(AVMediaType type)
 		{
 			int result = ::av_find_best_stream(m_pWrapedObj, type, -1, -1, nullptr, 0);
 			if (result < 0)
 				throw result;
 			else
-				return result;
+				return m_pWrapedObj->streams[result];
 		}
 
-		/// @brief 读取一个包（未解码的音视频数据包）
-		/// @param ref_packet 
-		void read_frame(FFmpeg::AVPacket& ref_packet)
+		/// <summary>
+		/// 读取一个包（未解码的音视频数据包）
+		/// - 如果已经到达文件末尾，再次调用本方法会抛出异常
+		/// - 如果发生错误，也会抛出异常
+		/// </summary>
+		/// <returns>返回读取到的包</returns>
+		FFmpeg::AVPacket read_frame()
 		{
-			int result = ::av_read_frame(m_pWrapedObj, ref_packet);
+			FFmpeg::AVPacket packet;
+			int result = ::av_read_frame(m_pWrapedObj, packet);
 			if (result < 0)
 				throw result;
+			else
+				return packet;
 		}
 
 		FFmpeg::AVStream create_new_stream(const ::AVCodec* pCodec = nullptr)
@@ -115,9 +125,37 @@ namespace FFmpeg
 				return ps;
 		}
 
+		void write_header(FFmpeg::AVDictionary* dic = nullptr)
+		{
+			int result;
+			if (dic == nullptr)
+				result = ::avformat_write_header(m_pWrapedObj, nullptr);
+			else
+				result = ::avformat_write_header(m_pWrapedObj, *dic);
+
+			if (result < 0)
+				throw result;
+		}
+
+		void interleaved_write_frame(FFmpeg::AVPacket packet)
+		{
+			int ret = ::av_interleaved_write_frame(m_pWrapedObj, packet);
+			if (ret < 0)
+				throw ret;
+		}
+
+		void write_trailer()
+		{
+			int ret = ::av_write_trailer(m_pWrapedObj);
+			if (ret < 0)
+				throw ret;
+		}
+
 	public:
-		/// @brief 获取视频时长
-		/// @return std::string 返回结果是一个字符串，里面储存着格式化过的时间。格式为
+		/// <summary>
+		/// 获取视频时长
+		/// </summary>
+		/// <returns>返回结果是一个字符串，里面储存着格式化过的时间</returns>
 		inline std::string get_duration_as_formatted_time_string()
 		{
 			std::stringstream sstream;
@@ -137,12 +175,16 @@ namespace FFmpeg
 			return re_value;
 		}
 
-		/// @brief 获取指定索引的流。流的索引号超出范围会抛出异常
-		/// @param stream_index 
-		/// @return 
+		/// <summary>
+		/// 获取指定索引的流。流的索引号超出范围会抛出异常
+		/// </summary>
+		/// <param name="stream_index"></param>
+		/// <returns></returns>
 		FFmpeg::AVStream get_stream(int stream_index)
 		{
-			if (stream_index < 0 || stream_index >= m_pWrapedObj->nb_streams)
+			// 将 stream_index 强制转换为 uint32_t，如果 stream_index 是负数，会
+			// 造成上溢，如果不是负数，但是大于 nb_streams，同样会造成上溢
+			if ((uint32_t)stream_index >= m_pWrapedObj->nb_streams)
 			{
 				throw "流索引号超出范围";
 			}
