@@ -18,7 +18,7 @@ using std::fstream;
 using std::ios_base;
 using std::string;
 
-static void encode(FFmpeg::AVCodecContext& enc_ctx, AVFrame* frame, FFmpeg::AVPacket& pkt, FILE* outfile)
+static void encode(FFmpeg::AVCodecContext enc_ctx, AVFrame* frame, FFmpeg::AVPacket& pkt, FILE* outfile)
 {
 	int ret;
 	ret = avcodec_send_frame(enc_ctx, frame);

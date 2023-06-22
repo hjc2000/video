@@ -17,9 +17,17 @@ namespace FFmpeg
 				throw "avcodec_alloc_context3失败";
 			}
 		}
+		AVCodecContext(const AVCodecContext& refAVCodecContext)
+		{
+			m_pWrapedObj = refAVCodecContext.m_pWrapedObj;
+			_copyed = true;
+		}
 		~AVCodecContext()
 		{
-			avcodec_free_context(&m_pWrapedObj);
+			if (!_copyed)
+			{
+				avcodec_free_context(&m_pWrapedObj);
+			}
 		}
 	public://公共方法
 		void avcodec_open2(FFmpeg::AVDictionary* dic = nullptr)
@@ -30,6 +38,7 @@ namespace FFmpeg
 		}
 	private:
 		FFmpeg::AVCodec _codec;
+		bool _copyed = false;
 	};
 }
 

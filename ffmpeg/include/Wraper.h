@@ -34,5 +34,6 @@ public:
 		return m_pWrapedObj;
 	}
 
+protected:
 	T* m_pWrapedObj = nullptr;
 };

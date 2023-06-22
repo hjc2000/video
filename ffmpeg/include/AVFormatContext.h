@@ -6,9 +6,9 @@
 #include<AVStream.h>
 extern "C"
 {
-#define __STDC_CONSTANT_MACROS
-#include <libavformat/avio.h>
-#include <libavformat/avformat.h>
+	#define __STDC_CONSTANT_MACROS
+	#include <libavformat/avio.h>
+	#include <libavformat/avformat.h>
 }
 #include <string>
 #include <sstream>
@@ -27,22 +27,32 @@ namespace FFmpeg
 		{
 			m_pWrapedObj = &refFormatContext;
 		}
+		AVFormatContext(const AVFormatContext& refAVFormatContext)
+		{
+			m_pWrapedObj = refAVFormatContext.m_pWrapedObj;
+			_copyed = true;
+		}
 		~AVFormatContext()
 		{
-			if (m_is_output)
+			// 如果发生拷贝，由副本负责释放资源
+			if (!_copyed)
 			{
-				if (!(m_pWrapedObj->oformat->flags & AVFMT_NOFILE))
-					avio_closep(&m_pWrapedObj->pb);
+				if (m_is_output)
+				{
+					if (!(m_pWrapedObj->oformat->flags & AVFMT_NOFILE))
+						avio_closep(&m_pWrapedObj->pb);
+				}
+				// 不管是输入还是输出，尽管调用释放资源的函数，反正不会发生异常
+				// ffmpeg 内部有防御措施，不会对 nullptr 执行释放资源的操作
+				::avformat_close_input(&m_pWrapedObj);
+				::avformat_free_context(m_pWrapedObj);
 			}
-			// 不管是输入还是输出，尽管调用释放资源的函数，反正不会发生异常
-			// ffmpeg 内部有防御措施，不会对 nullptr 执行释放资源的操作
-			::avformat_close_input(&m_pWrapedObj);
-			::avformat_free_context(m_pWrapedObj);
 		}
 
 	private:// 私有字段
 		bool m_is_input = false;
 		bool m_is_output = false;
+		bool _copyed = false;
 
 	public:
 		/// @brief 打开指定 url 作为输入。作为输入后无法再将此对象变成输出
