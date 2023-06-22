@@ -23,9 +23,9 @@ namespace FFmpeg
 		{
 			m_pWrapedObj = pFormatContext;
 		}
-		AVFormatContext(::AVFormatContext& ref_FormatContext)
+		AVFormatContext(::AVFormatContext& refFormatContext)
 		{
-			m_pWrapedObj = &ref_FormatContext;
+			m_pWrapedObj = &refFormatContext;
 		}
 		~AVFormatContext()
 		{
