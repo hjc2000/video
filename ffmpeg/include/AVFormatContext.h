@@ -29,6 +29,11 @@ namespace FFmpeg
 		}
 		~AVFormatContext()
 		{
+			if (m_is_output)
+			{
+				if (!(m_pWrapedObj->oformat->flags & AVFMT_NOFILE))
+					avio_closep(&m_pWrapedObj->pb);
+			}
 			// 不管是输入还是输出，尽管调用释放资源的函数，反正不会发生异常
 			// ffmpeg 内部有防御措施，不会对 nullptr 执行释放资源的操作
 			::avformat_close_input(&m_pWrapedObj);
@@ -64,6 +69,13 @@ namespace FFmpeg
 			int result = ::avformat_alloc_output_context2(&m_pWrapedObj, nullptr, nullptr, filename);
 			if (result < 0)
 				throw result;
+			// 如果没有打开 IO 则打开 IO
+			if (!(m_pWrapedObj->oformat->flags & AVFMT_NOFILE))
+			{
+				int result = avio_open(&m_pWrapedObj->pb, filename, AVIO_FLAG_WRITE);
+				if (result < 0)
+					throw result;
+			}
 		}
 
 		/// @brief 对 FFmpeg 内部提供的打印流信息的函数的封装。会以官方格式打印流信息
