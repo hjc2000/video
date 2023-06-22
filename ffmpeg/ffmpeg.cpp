@@ -23,19 +23,15 @@ static void encode(AVCodecContext* enc_ctx, AVFrame* frame, AVPacket* pkt, FILE*
 	int ret;
 	ret = avcodec_send_frame(enc_ctx, frame);
 	if (ret < 0)
-	{
-		fprintf(stderr, "Error sending a frame for encoding\n");
-		exit(1);
-	}
+		throw "Error sending a frame for encoding\n";
 
-	while (ret >= 0) {
+	while (ret >= 0)
+	{
 		ret = avcodec_receive_packet(enc_ctx, pkt);
 		if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
 			return;
 		else if (ret < 0)
-		{
 			throw ret;
-		}
 
 		fwrite(pkt->data, 1, pkt->size, outfile);
 		av_packet_unref(pkt);
