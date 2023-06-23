@@ -20,9 +20,12 @@ namespace FFmpeg
 		{
 			_pWrapedObj = &ref_AVPacket;
 		}
-		void DisposeWrapedObj() override
+		~AVPacket()
 		{
-			unref();
+			if (should_dispose())
+			{
+				unref();
+			}
 		}
 
 	private:

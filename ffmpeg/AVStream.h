@@ -21,10 +21,7 @@ namespace FFmpeg
 		{
 			_pWrapedObj = &refStream;
 		}
-		void DisposeWrapedObj() override
-		{
 
-		}
 	public:
 		/// @brief 将此流的参数复制到指定的流
 		/// @param dst_stream 

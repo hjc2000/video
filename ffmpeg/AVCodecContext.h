@@ -17,10 +17,15 @@ namespace FFmpeg
 				throw "avcodec_alloc_context3失败";
 			}
 		}
-		void DisposeWrapedObj() override
+		~AVCodecContext()
 		{
-			avcodec_free_context(&_pWrapedObj);
+			if (should_dispose())
+			{
+				cout << "AVCodecContext 析构" << endl;
+				avcodec_free_context(&_pWrapedObj);
+			}
 		}
+
 	public://公共方法
 		void avcodec_open2(FFmpeg::AVDictionary* dic = nullptr)
 		{

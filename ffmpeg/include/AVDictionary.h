@@ -43,9 +43,12 @@ namespace FFmpeg
 	class AVDictionary :public Wraper<::AVDictionary>
 	{
 	public:
-		void DisposeWrapedObj() override
+		~AVDictionary()
 		{
-			av_dict_free();
+			if (should_dispose())
+			{
+				av_dict_free();
+			}
 		}
 
 	public:
