@@ -27,26 +27,17 @@ namespace FFmpeg
 		{
 			_pWrapedObj = &refFormatContext;
 		}
-		AVFormatContext(const AVFormatContext& refAVFormatContext)
+		void DisposeWrapedObj() override
 		{
-			_pWrapedObj = refAVFormatContext._pWrapedObj;
-			_copyed = true;
-		}
-		~AVFormatContext()
-		{
-			// 如果发生拷贝，由副本负责释放资源
-			if (!_copyed)
+			if (m_is_output)
 			{
-				if (m_is_output)
-				{
-					if (!(_pWrapedObj->oformat->flags & AVFMT_NOFILE))
-						avio_closep(&_pWrapedObj->pb);
-				}
-				// 不管是输入还是输出，尽管调用释放资源的函数，反正不会发生异常
-				// ffmpeg 内部有防御措施，不会对 nullptr 执行释放资源的操作
-				::avformat_close_input(&_pWrapedObj);
-				::avformat_free_context(_pWrapedObj);
+				if (!(_pWrapedObj->oformat->flags & AVFMT_NOFILE))
+					avio_closep(&_pWrapedObj->pb);
 			}
+			// 不管是输入还是输出，尽管调用释放资源的函数，反正不会发生异常
+			// ffmpeg 内部有防御措施，不会对 nullptr 执行释放资源的操作
+			::avformat_close_input(&_pWrapedObj);
+			::avformat_free_context(_pWrapedObj);
 		}
 
 	private:// 私有字段

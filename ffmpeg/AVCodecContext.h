@@ -17,17 +17,9 @@ namespace FFmpeg
 				throw "avcodec_alloc_context3失败";
 			}
 		}
-		AVCodecContext(const AVCodecContext& refAVCodecContext)
+		void DisposeWrapedObj()
 		{
-			_pWrapedObj = refAVCodecContext._pWrapedObj;
-			_copyed = true;
-		}
-		~AVCodecContext()
-		{
-			if (!_copyed)
-			{
-				avcodec_free_context(&_pWrapedObj);
-			}
+			avcodec_free_context(&_pWrapedObj);
 		}
 	public://公共方法
 		void avcodec_open2(FFmpeg::AVDictionary* dic = nullptr)

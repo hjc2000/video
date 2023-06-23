@@ -25,9 +25,9 @@
 #include<Wraper.h>
 extern "C"
 {
-#define __STDC_CONSTANT_MACROS
-#include <libavutil/avutil.h>
-#include <libavutil/opt.h>
+	#define __STDC_CONSTANT_MACROS
+	#include <libavutil/avutil.h>
+	#include <libavutil/opt.h>
 }
 
 namespace FFmpeg
@@ -43,7 +43,7 @@ namespace FFmpeg
 	class AVDictionary :public Wraper<::AVDictionary>
 	{
 	public:
-		~AVDictionary()
+		void DisposeWrapedObj()override
 		{
 			av_dict_free();
 		}
