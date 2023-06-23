@@ -12,22 +12,22 @@ namespace FFmpeg
 		AVCodec() {}
 		AVCodec(::AVCodec* pAVCodec)
 		{
-			m_pWrapedObj = pAVCodec;
+			_pWrapedObj = pAVCodec;
 		}
 		AVCodec(const ::AVCodec* pAVCodec)
 		{
-			m_pWrapedObj = (::AVCodec*)pAVCodec;
+			_pWrapedObj = (::AVCodec*)pAVCodec;
 		}
 		AVCodec(::AVCodec& refAVCodec)
 		{
-			m_pWrapedObj = &refAVCodec;
+			_pWrapedObj = &refAVCodec;
 		}
 		AVCodec(const char* codec_name)
 		{
 			const ::AVCodec* ret = ::avcodec_find_encoder_by_name(codec_name);
 			if (ret == nullptr)
 				throw "查找编码器失败";
-			m_pWrapedObj = (::AVCodec*)ret;
+			_pWrapedObj = (::AVCodec*)ret;
 		}
 	};
 }

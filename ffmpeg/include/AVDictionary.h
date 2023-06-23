@@ -56,7 +56,7 @@ namespace FFmpeg
 		 */
 		inline int av_dict_count()
 		{
-			return ::av_dict_count(m_pWrapedObj);
+			return ::av_dict_count(_pWrapedObj);
 		}
 
 		/**
@@ -69,7 +69,7 @@ namespace FFmpeg
 		 */
 		inline int av_dict_set(const char* key, const char* value, AVDictionaryFlag flags = AVDictionaryFlag::none)
 		{
-			return ::av_dict_set(&m_pWrapedObj, key, value, flags);
+			return ::av_dict_set(&_pWrapedObj, key, value, flags);
 		}
 
 		/**
@@ -83,7 +83,7 @@ namespace FFmpeg
 		 */
 		AVDictionaryEntry* av_dict_get(const char* key, const AVDictionaryEntry* previous_entry, AVDictionaryFlag flags = AVDictionaryFlag::none)
 		{
-			return ::av_dict_get(m_pWrapedObj, key, previous_entry, flags);
+			return ::av_dict_get(_pWrapedObj, key, previous_entry, flags);
 		}
 
 		/**
@@ -92,7 +92,7 @@ namespace FFmpeg
 		 */
 		inline void av_dict_free()
 		{
-			::av_dict_free(&m_pWrapedObj);
+			::av_dict_free(&_pWrapedObj);
 		}
 	};
 }

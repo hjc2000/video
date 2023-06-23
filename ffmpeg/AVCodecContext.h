@@ -11,28 +11,33 @@ namespace FFmpeg
 		AVCodecContext() {}
 		AVCodecContext(FFmpeg::AVCodec codec) :_codec(codec)
 		{
-			m_pWrapedObj = ::avcodec_alloc_context3(codec);
-			if (!m_pWrapedObj)
+			_pWrapedObj = ::avcodec_alloc_context3(codec);
+			if (!_pWrapedObj)
 			{
 				throw "avcodec_alloc_context3失败";
 			}
 		}
 		AVCodecContext(const AVCodecContext& refAVCodecContext)
 		{
-			m_pWrapedObj = refAVCodecContext.m_pWrapedObj;
+			_pWrapedObj = refAVCodecContext._pWrapedObj;
 			_copyed = true;
 		}
 		~AVCodecContext()
 		{
 			if (!_copyed)
 			{
-				avcodec_free_context(&m_pWrapedObj);
+				avcodec_free_context(&_pWrapedObj);
 			}
 		}
 	public://公共方法
 		void avcodec_open2(FFmpeg::AVDictionary* dic = nullptr)
 		{
-			int ret = ::avcodec_open2(m_pWrapedObj, _codec, *dic);
+			int ret;
+			if (dic)
+				ret = ::avcodec_open2(_pWrapedObj, _codec, *dic);
+			else
+				ret = ::avcodec_open2(_pWrapedObj, _codec, nullptr);
+
 			if (ret < 0)
 				throw ret;
 		}

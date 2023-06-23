@@ -15,18 +15,18 @@ namespace FFmpeg
 	public:
 		AVStream(::AVStream* pStream)
 		{
-			m_pWrapedObj = pStream;
+			_pWrapedObj = pStream;
 		}
 		AVStream(::AVStream& refStream)
 		{
-			m_pWrapedObj = &refStream;
+			_pWrapedObj = &refStream;
 		}
 	public:
 		/// @brief 将此流的参数复制到指定的流
 		/// @param dst_stream 
 		void copy_parameters_to(FFmpeg::AVStream dst_stream)
 		{
-			int result = avcodec_parameters_copy(dst_stream()->codecpar, m_pWrapedObj->codecpar);
+			int result = avcodec_parameters_copy(dst_stream()->codecpar, _pWrapedObj->codecpar);
 			if (result < 0)
 				throw result;
 		}

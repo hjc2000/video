@@ -21,15 +21,15 @@ namespace FFmpeg
 		AVFormatContext() {}
 		AVFormatContext(::AVFormatContext* pFormatContext)
 		{
-			m_pWrapedObj = pFormatContext;
+			_pWrapedObj = pFormatContext;
 		}
 		AVFormatContext(::AVFormatContext& refFormatContext)
 		{
-			m_pWrapedObj = &refFormatContext;
+			_pWrapedObj = &refFormatContext;
 		}
 		AVFormatContext(const AVFormatContext& refAVFormatContext)
 		{
-			m_pWrapedObj = refAVFormatContext.m_pWrapedObj;
+			_pWrapedObj = refAVFormatContext._pWrapedObj;
 			_copyed = true;
 		}
 		~AVFormatContext()
@@ -39,13 +39,13 @@ namespace FFmpeg
 			{
 				if (m_is_output)
 				{
-					if (!(m_pWrapedObj->oformat->flags & AVFMT_NOFILE))
-						avio_closep(&m_pWrapedObj->pb);
+					if (!(_pWrapedObj->oformat->flags & AVFMT_NOFILE))
+						avio_closep(&_pWrapedObj->pb);
 				}
 				// 不管是输入还是输出，尽管调用释放资源的函数，反正不会发生异常
 				// ffmpeg 内部有防御措施，不会对 nullptr 执行释放资源的操作
-				::avformat_close_input(&m_pWrapedObj);
-				::avformat_free_context(m_pWrapedObj);
+				::avformat_close_input(&_pWrapedObj);
+				::avformat_free_context(_pWrapedObj);
 			}
 		}
 
@@ -64,7 +64,7 @@ namespace FFmpeg
 			if (m_is_output)
 				throw "该上下文已经是输出了，不允许作为输入打开";
 			m_is_input = true;
-			int result = ::avformat_open_input(&m_pWrapedObj, url, fmt, options);
+			int result = ::avformat_open_input(&_pWrapedObj, url, fmt, options);
 			if (result < 0)
 				throw result;
 		}
@@ -76,13 +76,13 @@ namespace FFmpeg
 			if (m_is_input)
 				throw "该上下文已经是输入了，不允许作为输出打开";
 			m_is_output = true;
-			int result = ::avformat_alloc_output_context2(&m_pWrapedObj, nullptr, nullptr, filename);
+			int result = ::avformat_alloc_output_context2(&_pWrapedObj, nullptr, nullptr, filename);
 			if (result < 0)
 				throw result;
 			// 如果没有打开 IO 则打开 IO
-			if (!(m_pWrapedObj->oformat->flags & AVFMT_NOFILE))
+			if (!(_pWrapedObj->oformat->flags & AVFMT_NOFILE))
 			{
-				int result = avio_open(&m_pWrapedObj->pb, filename, AVIO_FLAG_WRITE);
+				int result = avio_open(&_pWrapedObj->pb, filename, AVIO_FLAG_WRITE);
 				if (result < 0)
 					throw result;
 			}
@@ -95,7 +95,7 @@ namespace FFmpeg
 		/// @param is_output 是否是输出文件。你也可以随便定，同样的，这个参数的用途只是用来被显示
 		void dump_format(int index, const char* url, int is_output)
 		{
-			::av_dump_format(m_pWrapedObj, index, url, is_output);
+			::av_dump_format(_pWrapedObj, index, url, is_output);
 		}
 
 		/// @brief 通过读几个包来检测流信息。此操作不会导致读取进度向前推移，
@@ -103,7 +103,7 @@ namespace FFmpeg
 		/// @param options 
 		inline void find_stream_info(::AVDictionary** options = nullptr)
 		{
-			int result = ::avformat_find_stream_info(m_pWrapedObj, options);
+			int result = ::avformat_find_stream_info(_pWrapedObj, options);
 			if (result < 0)
 				throw result;
 		}
@@ -115,11 +115,11 @@ namespace FFmpeg
 		/// <returns>返回找到的流</returns>
 		FFmpeg::AVStream find_best_stream(AVMediaType type)
 		{
-			int result = ::av_find_best_stream(m_pWrapedObj, type, -1, -1, nullptr, 0);
+			int result = ::av_find_best_stream(_pWrapedObj, type, -1, -1, nullptr, 0);
 			if (result < 0)
 				throw result;
 			else
-				return m_pWrapedObj->streams[result];
+				return _pWrapedObj->streams[result];
 		}
 
 		/// <summary>
@@ -131,7 +131,7 @@ namespace FFmpeg
 		FFmpeg::AVPacket read_frame()
 		{
 			FFmpeg::AVPacket packet;
-			int result = ::av_read_frame(m_pWrapedObj, packet);
+			int result = ::av_read_frame(_pWrapedObj, packet);
 			if (result < 0)
 				throw result;
 			else
@@ -140,7 +140,7 @@ namespace FFmpeg
 
 		FFmpeg::AVStream create_new_stream(const ::AVCodec* pCodec = nullptr)
 		{
-			::AVStream* ps = avformat_new_stream(m_pWrapedObj, pCodec);
+			::AVStream* ps = avformat_new_stream(_pWrapedObj, pCodec);
 			if (ps == nullptr)
 				throw "创建流失败";
 			else
@@ -151,9 +151,9 @@ namespace FFmpeg
 		{
 			int result;
 			if (dic == nullptr)
-				result = ::avformat_write_header(m_pWrapedObj, nullptr);
+				result = ::avformat_write_header(_pWrapedObj, nullptr);
 			else
-				result = ::avformat_write_header(m_pWrapedObj, *dic);
+				result = ::avformat_write_header(_pWrapedObj, *dic);
 
 			if (result < 0)
 				throw result;
@@ -161,14 +161,14 @@ namespace FFmpeg
 
 		void interleaved_write_frame(FFmpeg::AVPacket packet)
 		{
-			int ret = ::av_interleaved_write_frame(m_pWrapedObj, packet);
+			int ret = ::av_interleaved_write_frame(_pWrapedObj, packet);
 			if (ret < 0)
 				throw ret;
 		}
 
 		void write_trailer()
 		{
-			int ret = ::av_write_trailer(m_pWrapedObj);
+			int ret = ::av_write_trailer(_pWrapedObj);
 			if (ret < 0)
 				throw ret;
 		}
@@ -182,7 +182,7 @@ namespace FFmpeg
 		{
 			std::stringstream sstream;
 			// 获取视频总的秒数
-			int64_t total_seconds = m_pWrapedObj->duration / AV_TIME_BASE;
+			int64_t total_seconds = _pWrapedObj->duration / AV_TIME_BASE;
 			// 取出秒
 			int second = total_seconds % 60;
 			// 扣除秒位后总的分钟数
@@ -206,11 +206,11 @@ namespace FFmpeg
 		{
 			// 将 stream_index 强制转换为 uint32_t，如果 stream_index 是负数，会
 			// 造成上溢，如果不是负数，但是大于 nb_streams，同样会造成上溢
-			if ((uint32_t)stream_index >= m_pWrapedObj->nb_streams)
+			if ((uint32_t)stream_index >= _pWrapedObj->nb_streams)
 			{
 				throw "流索引号超出范围";
 			}
-			return FFmpeg::AVStream{m_pWrapedObj->streams[stream_index]};
+			return FFmpeg::AVStream{_pWrapedObj->streams[stream_index]};
 		}
 	};
 }

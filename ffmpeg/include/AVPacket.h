@@ -15,15 +15,15 @@ namespace FFmpeg
 	public:
 		AVPacket()
 		{
-			m_pWrapedObj = &m_packet;
+			_pWrapedObj = &m_packet;
 		}
 		AVPacket(::AVPacket* pAVPacket)
 		{
-			m_pWrapedObj = pAVPacket;
+			_pWrapedObj = pAVPacket;
 		}
 		AVPacket(::AVPacket& ref_AVPacket)
 		{
-			m_pWrapedObj = &ref_AVPacket;
+			_pWrapedObj = &ref_AVPacket;
 		}
 		~AVPacket()
 		{
@@ -40,7 +40,7 @@ namespace FFmpeg
 		 */
 		void unref(void)
 		{
-			::av_packet_unref(m_pWrapedObj);
+			::av_packet_unref(_pWrapedObj);
 		}
 		int64_t& get_pts()
 		{
