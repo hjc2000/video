@@ -19,19 +19,23 @@ using std::fstream;
 using std::ios_base;
 using std::string;
 
-static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, FFmpeg::AVPacket pkt, FILE* outfile)
+static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, FILE* outfile)
 {
 	enc_ctx.avcodec_send_frame(frame);
 	while (1)
 	{
-		int ret = avcodec_receive_packet(enc_ctx, pkt);
-		if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
-			return;
-		else if (ret < 0)
-			throw ret;
-
-		fwrite(pkt()->data, 1, pkt()->size, outfile);
-		pkt.unref();
+		try
+		{
+			FFmpeg::AVPacket pkt = enc_ctx.avcodec_receive_packet();
+			fwrite(pkt()->data, 1, pkt()->size, outfile);
+		}
+		catch (int err_code)
+		{
+			if (err_code == AVERROR(EAGAIN) || err_code == AVERROR_EOF)
+				return;
+			else if (err_code < 0)
+				throw err_code;
+		}
 	}
 }
 
@@ -119,7 +123,6 @@ void try_encode()
 	/* find the mpeg1video encoder */
 	FFmpeg::AVCodec codec{"mpeg1video"};
 	FFmpeg::AVCodecContext codec_context{codec};
-	FFmpeg::AVPacket pkt;
 
 	/* put sample parameters */
 	codec_context()->bit_rate = 400000;
@@ -201,11 +204,11 @@ void try_encode()
 		frame()->pts = i;
 
 		/* encode the image */
-		encode(codec_context, frame, pkt, f);
+		encode(codec_context, frame, f);
 	}
 
 	/* flush the encoder */
-	encode(codec_context, nullptr, pkt, f);
+	encode(codec_context, nullptr, f);
 
 	/* Add sequence end code to have a real MPEG file.
 	It makes only sense because this tiny examples writes packets
@@ -223,8 +226,8 @@ int main(void)
 {
 	try
 	{
-		//try_remux();
-		try_encode();
+		try_remux();
+		//try_encode();
 		return 0;
 	}
 	catch (int err_code)

@@ -10,43 +10,34 @@ namespace FFmpeg
 	public:
 		AVPacket()
 		{
-			_pWrapedObj = &m_packet;
+			_pWrapedObj = new ::AVPacket{};
 		}
-		AVPacket(::AVPacket* pAVPacket)
+		AVPacket(::AVPacket* p)
 		{
-			_pWrapedObj = pAVPacket;
+			_pWrapedObj = p;
 		}
-		AVPacket(::AVPacket& ref_AVPacket)
+		AVPacket(::AVPacket& ref)
 		{
-			_pWrapedObj = &ref_AVPacket;
+			_pWrapedObj = &ref;
 		}
 		~AVPacket()
 		{
-			// 因为本类的 _pWrapedObj 指针指向的是类字段，所以不需要使用 should_dispose，直接释放
-			// 资源
-			unref();
+			if (should_dispose())
+			{
+				::av_packet_unref(_pWrapedObj);
+				delete _pWrapedObj;
+			}
 		}
-
-	private:
-		::AVPacket m_packet = ::AVPacket();
 
 	public:
-		/**
-		 * @brief 析构函数中会自动调用此方法
-		 *
-		 */
-		void unref(void)
+		int64_t& pts()
 		{
-			::av_packet_unref(_pWrapedObj);
-		}
-		int64_t& get_pts()
-		{
-			return m_packet.pts;
+			return _pWrapedObj->pts;
 		}
 
-		int64_t& get_dts()
+		int64_t& dts()
 		{
-			return m_packet.dts;
+			return _pWrapedObj->dts;
 		}
 	};
 }

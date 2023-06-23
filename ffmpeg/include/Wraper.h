@@ -20,6 +20,7 @@ public:
 	/// 拷贝构造函数
 	/// </summary>
 	/// <param name="wraper"></param>
+	/// 
 	Wraper(const Wraper& wraper)
 	{
 		// 复制共享指针，以此递增引用计数
@@ -29,6 +30,7 @@ public:
 
 	virtual ~Wraper() {}
 
+protected:
 	/// <summary>
 	/// 利用它内部维护的引用计数
 	/// </summary>
