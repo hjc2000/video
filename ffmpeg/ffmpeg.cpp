@@ -243,8 +243,8 @@ int main(void)
 {
 	try
 	{
-		//try_encode();
 		try_remux();
+		//try_encode();
 		return 0;
 	}
 	catch (int err_code)

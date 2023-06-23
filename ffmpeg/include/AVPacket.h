@@ -22,10 +22,9 @@ namespace FFmpeg
 		}
 		~AVPacket()
 		{
-			if (should_dispose())
-			{
-				unref();
-			}
+			// 因为本类的 _pWrapedObj 指针指向的是类字段，所以不需要使用 should_dispose，直接释放
+			// 资源
+			unref();
 		}
 
 	private:
