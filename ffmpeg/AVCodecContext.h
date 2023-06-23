@@ -17,7 +17,7 @@ namespace FFmpeg
 				throw "avcodec_alloc_context3失败";
 			}
 		}
-		void DisposeWrapedObj()
+		void DisposeWrapedObj() override
 		{
 			avcodec_free_context(&_pWrapedObj);
 		}

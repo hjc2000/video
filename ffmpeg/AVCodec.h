@@ -1,6 +1,6 @@
 #pragma once
-#include <Wraper.h>
 #include<include_ffmpeg.h>
+#include <Wraper.h>
 
 namespace FFmpeg
 {
@@ -29,5 +29,6 @@ namespace FFmpeg
 				throw "查找编码器失败";
 			_pWrapedObj = (::AVCodec*)ret;
 		}
+		void DisposeWrapedObj() override {}
 	};
 }

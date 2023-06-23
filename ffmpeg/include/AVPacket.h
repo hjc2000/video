@@ -1,12 +1,7 @@
 #pragma once
+#include<include_ffmpeg.h>
 #include <Wraper.h>
 #include <AVUtil.h>
-extern "C"
-{
-#define __STDC_CONSTANT_MACROS
-#include <libavformat/avio.h>
-#include <libavformat/avformat.h>
-}
 
 namespace FFmpeg
 {
