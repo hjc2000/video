@@ -227,7 +227,10 @@ int main(void)
 {
 	try
 	{
-		//try_remux();
+		cout << "try_remux" << endl;
+		try_remux();
+		cout << endl;
+		cout << "try_encode" << endl;
 		try_encode();
 		return 0;
 	}
