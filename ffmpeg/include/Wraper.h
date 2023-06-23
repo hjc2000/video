@@ -1,8 +1,9 @@
 #pragma once
 #include<iostream>
-
 using std::cout;
 using std::endl;
+#include<functional>
+using std::function;
 
 template <class T>
 class Wraper
