@@ -1,6 +1,7 @@
 #pragma once
 #include<Wraper.h>
 #include<AVCodec.h>
+#include<AVFrame.h>
 #include<include_ffmpeg.h>
 
 namespace FFmpeg
@@ -13,9 +14,7 @@ namespace FFmpeg
 		{
 			_pWrapedObj = ::avcodec_alloc_context3(codec);
 			if (!_pWrapedObj)
-			{
 				throw "avcodec_alloc_context3失败";
-			}
 		}
 		~AVCodecContext()
 		{
@@ -27,16 +26,15 @@ namespace FFmpeg
 		}
 
 	public://公共方法
-		void avcodec_open2(FFmpeg::AVDictionary* dic = nullptr)
+		void avcodec_open2(FFmpeg::AVDictionary dic = nullptr)
 		{
-			int ret;
-			if (dic)
-				ret = ::avcodec_open2(_pWrapedObj, _codec, *dic);
-			else
-				ret = ::avcodec_open2(_pWrapedObj, _codec, nullptr);
-
+			int ret = ::avcodec_open2(_pWrapedObj, _codec, dic);
 			if (ret < 0)
 				throw ret;
+		}
+		void avcodec_send_frame(FFmpeg::AVFrame frame)
+		{
+			::avcodec_send_frame(_pWrapedObj, frame);
 		}
 	private:
 		FFmpeg::AVCodec _codec;

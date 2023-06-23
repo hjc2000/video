@@ -117,16 +117,16 @@
     <ClInclude Include="AVStream.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include_ffmpeg.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="AVCodec.h">
-      <Filter>头文件</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="AVCodecContext.h">
-      <Filter>头文件</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="AVFrame.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include_ffmpeg.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
