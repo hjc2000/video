@@ -24,12 +24,17 @@ namespace FFmpeg
 		{
 			if (should_dispose())
 			{
-				::av_packet_unref(_pWrapedObj);
+				unref();
 				delete _pWrapedObj;
 			}
 		}
 
 	public:
+		void unref()
+		{
+			::av_packet_unref(_pWrapedObj);
+		}
+
 		int64_t& pts()
 		{
 			return _pWrapedObj->pts;

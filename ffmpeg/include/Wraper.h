@@ -30,6 +30,18 @@ public:
 
 	virtual ~Wraper() {}
 
+private:
+	/// <summary>
+	/// * 禁止使用一个已经构造完成的对象对另一个已经构造完成的对象赋值。如果不重载这个运算符并设为
+	/// private，编译器会生成一个默认的，这会导致内存泄漏，因为被赋值的对象的 _pWrapedObj 失去
+	/// 了原本指向的地址，无法对它进行释放了
+	/// * 父类 Wraper 重载这个运算符并设为 private 后，所有子类，如果不显式地重写一个 public 的，
+	/// 都无法使用这个运算符了
+	/// </summary>
+	/// <param name="ref"></param>
+	/// <returns></returns>
+	Wraper& operator=(const Wraper& ref) {}
+
 protected:
 	/// <summary>
 	/// 利用它内部维护的引用计数

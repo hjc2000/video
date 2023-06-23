@@ -27,6 +27,7 @@ static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, FILE* 
 		try
 		{
 			FFmpeg::AVPacket pkt = enc_ctx.avcodec_receive_packet();
+			FFmpeg::AVPacket pkt1;
 			fwrite(pkt()->data, 1, pkt()->size, outfile);
 		}
 		catch (int err_code)
@@ -226,8 +227,8 @@ int main(void)
 {
 	try
 	{
-		try_remux();
-		//try_encode();
+		//try_remux();
+		try_encode();
 		return 0;
 	}
 	catch (int err_code)
