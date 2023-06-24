@@ -22,11 +22,12 @@ using std::string;
 static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, FILE* outfile)
 {
 	enc_ctx.avcodec_send_frame(frame);
+	FFmpeg::AVPacket pkt;
 	while (1)
 	{
 		try
 		{
-			FFmpeg::AVPacket pkt = enc_ctx.avcodec_receive_packet();
+			enc_ctx.avcodec_receive_packet(pkt);
 			FFmpeg::AVPacket pkt1;
 			fwrite(pkt()->data, 1, pkt()->size, outfile);
 		}
@@ -37,6 +38,8 @@ static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, FILE* 
 			else if (err_code < 0)
 				throw err_code;
 		}
+
+		pkt.unref();
 	}
 }
 
@@ -83,9 +86,10 @@ void try_remux()
 	oformat_context.write_header();
 	try
 	{
+		FFmpeg::AVPacket packet;
 		while (1)
 		{
-			FFmpeg::AVPacket packet = iformat_context.read_frame();
+			iformat_context.read_frame(packet);
 			FFmpeg::AVStream input_stream = iformat_context.get_stream(packet()->stream_index);
 			// 如果映射表中的目标索引号是负数，表示此流不被复制到输出格式中
 			if (stream_map[packet()->stream_index] >= 0)
@@ -100,6 +104,7 @@ void try_remux()
 				packet()->pos = -1;
 				oformat_context.interleaved_write_frame(packet);
 			}
+			packet.unref();
 		}
 	}
 	catch (int err_code)

@@ -122,15 +122,12 @@ namespace FFmpeg
 		/// - 如果已经到达文件末尾，再次调用本方法会抛出异常
 		/// - 如果发生错误，也会抛出异常
 		/// </summary>
-		/// <returns>返回读取到的包</returns>
-		FFmpeg::AVPacket read_frame()
+		/// <param name="packet"></param>
+		void read_frame(FFmpeg::AVPacket packet)
 		{
-			FFmpeg::AVPacket packet;
 			int result = ::av_read_frame(_pWrapedObj, packet);
 			if (result < 0)
 				throw result;
-			else
-				return packet;
 		}
 
 		FFmpeg::AVStream create_new_stream(const ::AVCodec* pCodec = nullptr)

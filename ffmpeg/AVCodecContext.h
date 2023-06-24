@@ -46,21 +46,28 @@ namespace FFmpeg
 		}
 
 		/*
-			while (1)
+		
+		enc_ctx.avcodec_send_frame(frame);
+		FFmpeg::AVPacket pkt;
+		while (1)
+		{
+			try
 			{
-				try
-				{
-					FFmpeg::AVPacket pkt = enc_ctx.avcodec_receive_packet();
-					fwrite(pkt()->data, 1, pkt()->size, outfile);
-				}
-				catch (int err_code)
-				{
-					if (err_code == AVERROR(EAGAIN) || err_code == AVERROR_EOF)
-						return;
-					else if (err_code < 0)
-						throw err_code;
-				}
+				enc_ctx.avcodec_receive_packet(pkt);
+				FFmpeg::AVPacket pkt1;
+				fwrite(pkt()->data, 1, pkt()->size, outfile);
 			}
+			catch (int err_code)
+			{
+				if (err_code == AVERROR(EAGAIN) || err_code == AVERROR_EOF)
+					return;
+				else if (err_code < 0)
+					throw err_code;
+			}
+
+			pkt.unref();
+		}
+
 		*/
 		/// <summary>
 		/// 接收编码完成的包。
@@ -71,15 +78,15 @@ namespace FFmpeg
 		/// * 如果是其他错误代码，说明发生了不正常的错误，需要重新抛出这个错误代码。
 		/// * 示例见上方紧跟着的块注释
 		/// </summary>
-		/// <returns></returns>
-		FFmpeg::AVPacket avcodec_receive_packet()
+		/// <param name="pkt">
+		/// 提前创建好的包对象。如果是在循环内调用本方法，请在循环外创建包对象，然后重复使用同一个包
+		/// 对象，避免频繁的堆内存分配和释放。在循环结束的时候别玩了调用包对象的 unref 方法。
+		/// </param>
+		void avcodec_receive_packet(FFmpeg::AVPacket pkt)
 		{
-			FFmpeg::AVPacket pkt;
 			int ret = ::avcodec_receive_packet(_pWrapedObj, pkt);
 			if (ret < 0)
 				throw ret;
-			else
-				return pkt;
 		}
 
 	private:
