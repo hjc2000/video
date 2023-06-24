@@ -1,7 +1,10 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
+#define __STDC_CONSTANT_MACROS
+#define __STDC_FORMAT_MACROS
+
 extern "C"
 {
-	#define __STDC_CONSTANT_MACROS
 	#include <libavutil/log.h>
 	#include <libavutil/error.h>
 	#include <libavutil/avutil.h>
@@ -14,5 +17,6 @@ extern "C"
 	#include <libavfilter/buffersrc.h>
 	#include <libavutil/channel_layout.h>
 	#include <libavutil/pixdesc.h>
-
+	#include <libavutil/imgutils.h>
+	#include <libavutil/samplefmt.h>
 }

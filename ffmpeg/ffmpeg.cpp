@@ -3,6 +3,8 @@
 void try_encode();
 void try_remux();
 int try_decode_video();
+int try_transcode();
+int demux_decode();
 
 int main(void)
 {
@@ -10,7 +12,9 @@ int main(void)
 	{
 		//try_remux();
 		//try_encode();
-		try_decode_video();
+		//try_decode_video();
+		//try_transcode();
+		demux_decode();
 		return 0;
 	}
 	catch (int err_code)
