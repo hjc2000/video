@@ -19,7 +19,7 @@ using std::fstream;
 using std::ios_base;
 using std::string;
 
-static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, FILE* outfile)
+static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, fstream& outfile)
 {
 	enc_ctx.avcodec_send_frame(frame);
 	FFmpeg::AVPacket pkt;
@@ -29,7 +29,7 @@ static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, FILE* 
 		{
 			enc_ctx.avcodec_receive_packet(pkt);
 			FFmpeg::AVPacket pkt1;
-			fwrite(pkt()->data, 1, pkt()->size, outfile);
+			outfile.write((char*)pkt()->data, pkt()->size);
 		}
 		catch (int err_code)
 		{
@@ -121,9 +121,8 @@ void try_remux()
 void try_encode()
 {
 	int i, ret, x, y;
-	FILE* f;
+	fstream fs{ "output.mp4", ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary };
 	uint8_t endcode[] = { 0, 0, 1, 0xb7 };
-
 	const char* filename = "output.mp4";
 
 	/* find the mpeg1video encoder */
@@ -154,12 +153,6 @@ void try_encode()
 
 	/* open it */
 	codec_context.avcodec_open2();
-	f = fopen(filename, "wb");
-	if (!f)
-	{
-		fprintf(stderr, "Could not open %s\n", filename);
-		exit(1);
-	}
 
 	FFmpeg::AVFrame frame;
 	frame()->format = codec_context()->pix_fmt;
@@ -210,11 +203,11 @@ void try_encode()
 		frame()->pts = i;
 
 		/* encode the image */
-		encode(codec_context, frame, f);
+		encode(codec_context, frame, fs);
 	}
 
 	/* flush the encoder */
-	encode(codec_context, nullptr, f);
+	encode(codec_context, nullptr, fs);
 
 	/* Add sequence end code to have a real MPEG file.
 	It makes only sense because this tiny examples writes packets
@@ -223,9 +216,10 @@ void try_encode()
 	into a proper file format or protocol; see mux.c.
 	*/
 	if (codec()->id == AV_CODEC_ID_MPEG1VIDEO || codec()->id == AV_CODEC_ID_MPEG2VIDEO)
-		fwrite(endcode, 1, sizeof(endcode), f);
+		fs.write((char*)endcode, sizeof(endcode));
 
-	fclose(f);
+	fs.flush();
+	fs.close();
 }
 
 int main(void)
