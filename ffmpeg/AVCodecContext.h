@@ -9,6 +9,10 @@ namespace FFmpeg
 	class AVCodecContext :public Wraper<::AVCodecContext>
 	{
 	public:// 生命周期
+		/// <summary>
+		/// 通过编码器创建一个编码器上下文
+		/// </summary>
+		/// <param name="codec"></param>
 		AVCodecContext(FFmpeg::AVCodec codec) :_codec(codec)
 		{
 			_pWrapedObj = ::avcodec_alloc_context3(codec);

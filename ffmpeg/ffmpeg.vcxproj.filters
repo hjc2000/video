@@ -30,6 +30,18 @@
     <ClCompile Include="src\AVUtil.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="try_encode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="try_remux.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="try_decode_video.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="try_transcode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(HOME)\ffmpeg_build\lib\avcodec-60.def">
@@ -127,6 +139,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="AVFrame.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="FFmpeg.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

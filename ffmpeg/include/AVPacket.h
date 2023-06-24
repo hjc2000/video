@@ -30,19 +30,22 @@ namespace FFmpeg
 		}
 
 	public:
+		/// <summary>
+		/// 解除此包对缓冲区的引用
+		/// </summary>
 		void unref()
 		{
 			::av_packet_unref(_pWrapedObj);
 		}
 
-		int64_t& pts()
+		void av_packet_rescale_ts(AVRational tb_src, AVRational tb_dst)
 		{
-			return _pWrapedObj->pts;
-		}
-
-		int64_t& dts()
-		{
-			return _pWrapedObj->dts;
+			// 使用这个方法可以取代以下函数
+			//packet()->pts = av_rescale_q_rnd(packet()->pts, input_stream()->time_base, output_stream()->time_base, ::AVRounding(AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
+			//packet()->dts = av_rescale_q_rnd(packet()->dts, input_stream()->time_base, output_stream()->time_base, ::AVRounding(AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
+			//packet()->duration = av_rescale_q(packet()->duration, input_stream()->time_base, output_stream()->time_base);
+			// 直接一个函数完成 3 个函数的工作
+			::av_packet_rescale_ts(_pWrapedObj, tb_src, tb_dst);
 		}
 	};
 }

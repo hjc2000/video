@@ -27,6 +27,8 @@ namespace FFmpeg
 			const ::AVCodec* ret = ::avcodec_find_encoder_by_name(codec_name);
 			if (ret == nullptr)
 				throw "查找编码器失败";
+			// 将 const 变量的指针强制转换为非 const 变量的指针。
+			// 这么做是为了兼容包装类。虽然这么做了，但是不要去修改这个指针指向的变量的内容
 			_pWrapedObj = (::AVCodec*)ret;
 		}
 	};

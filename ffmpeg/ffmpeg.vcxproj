@@ -131,9 +131,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="try_decode_video.cpp" />
     <ClCompile Include="ffmpeg.cpp" />
     <ClCompile Include="src\AVError.cpp" />
     <ClCompile Include="src\AVUtil.cpp" />
+    <ClCompile Include="try_encode.cpp" />
+    <ClCompile Include="try_remux.cpp" />
+    <ClCompile Include="try_transcode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(HOME)\ffmpeg_build\lib\avcodec-60.def" />
@@ -163,6 +167,7 @@
     <ClInclude Include="AVCodecContext.h" />
     <ClInclude Include="AVFrame.h" />
     <ClInclude Include="AVStream.h" />
+    <ClInclude Include="FFmpeg.h" />
     <ClInclude Include="include\AVDictionary.h" />
     <ClInclude Include="include\AVError.h" />
     <ClInclude Include="include\AVFormatContext.h" />
