@@ -148,7 +148,7 @@ static int decode_packet(AVCodecContext* dec, const AVPacket* pkt)
 }
 
 static int open_codec_context(int* stream_idx,
-	AVCodecContext** dec_ctx, AVFormatContext* fmt_ctx, enum AVMediaType type)
+	AVCodecContext** dec_ctx, FFmpeg::AVFormatContext fmt_ctx, enum AVMediaType type)
 {
 	int ret, stream_index;
 	AVStream* st;
@@ -164,7 +164,7 @@ static int open_codec_context(int* stream_idx,
 	else
 	{
 		stream_index = ret;
-		st = fmt_ctx->streams[stream_index];
+		st = fmt_ctx()->streams[stream_index];
 
 		/* find decoder for the stream */
 		dec = avcodec_find_decoder(st->codecpar->codec_id);
