@@ -14,6 +14,8 @@ int main(void)
 		//try_encode();
 		//try_decode_video();
 		//try_transcode();
+
+		// ffplay -f rawvideo -video_size 352*288 out_video.yuv
 		demux_decode();
 		return 0;
 	}
