@@ -367,3 +367,5 @@ FodyWeavers.xsd
 !/ffmpegLearn/ffmpeg_build/*
 /ffmpeg/output.ts
 /ffmpeg/output.mp4
+/ffmpeg/out_video.yuv
+/ffmpeg/out_audio.pcm

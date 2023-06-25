@@ -252,7 +252,7 @@ int demux_decode()
 	//		argv[0]);
 	//	exit(1);
 	//}
-	src_filename = "mpegts1.mp4";
+	src_filename = "in.mp4";
 	video_dst_filename = "out_video.yuv";
 	audio_dst_filename = "out_audio.pcm";
 
