@@ -31,6 +31,7 @@
 
 #include<FFmpeg.h>
 
+FFmpeg::AVPacket pkt{};
 static AVFormatContext* fmt_ctx = NULL;
 static AVCodecContext* video_dec_ctx = NULL, * audio_dec_ctx;
 static int width, height;
@@ -48,7 +49,6 @@ static int video_dst_bufsize;
 
 static int video_stream_idx = -1, audio_stream_idx = -1;
 static AVFrame* frame = NULL;
-static AVPacket* pkt = NULL;
 static int video_frame_count = 0;
 static int audio_frame_count = 0;
 
@@ -326,14 +326,6 @@ int demux_decode()
 		goto end;
 	}
 
-	pkt = av_packet_alloc();
-	if (!pkt)
-	{
-		fprintf(stderr, "Could not allocate packet\n");
-		ret = AVERROR(ENOMEM);
-		goto end;
-	}
-
 	if (video_stream)
 		printf("Demuxing video from file '%s' into '%s'\n", src_filename, video_dst_filename);
 	if (audio_stream)
@@ -344,11 +336,11 @@ int demux_decode()
 	{
 		// check if the packet belongs to a stream we are interested in, otherwise
 		// skip it
-		if (pkt->stream_index == video_stream_idx)
+		if (pkt()->stream_index == video_stream_idx)
 			ret = decode_packet(video_dec_ctx, pkt);
-		else if (pkt->stream_index == audio_stream_idx)
+		else if (pkt()->stream_index == audio_stream_idx)
 			ret = decode_packet(audio_dec_ctx, pkt);
-		av_packet_unref(pkt);
+		pkt.unref();
 		if (ret < 0)
 			break;
 	}
@@ -402,7 +394,6 @@ end:
 		fclose(video_dst_file);
 	if (audio_dst_file)
 		fclose(audio_dst_file);
-	av_packet_free(&pkt);
 	av_frame_free(&frame);
 	av_free(video_dst_data[0]);
 
