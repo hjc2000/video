@@ -150,29 +150,12 @@ static int decode_packet(AVCodecContext* dec, const AVPacket* pkt)
 static int open_codec_context(int* stream_idx,
 	AVCodecContext** dec_ctx, FFmpeg::AVFormatContext fmt_ctx, FFmpeg::AVMediaType type)
 {
-	int ret, stream_index;
-	const AVCodec* dec = NULL;
-
-	ret = av_find_best_stream(fmt_ctx, type, -1, -1, NULL, 0);
-	if (ret < 0)
+	int ret;
+	try
 	{
-		fprintf(stderr, "Could not find %s stream in input file '%s'\n",
-			av_get_media_type_string(type), src_filename);
-		return ret;
-	}
-	else
-	{
-		stream_index = ret;
-		FFmpeg::AVStream st = fmt_ctx()->streams[stream_index];
-
-		/* find decoder for the stream */
-		dec = avcodec_find_decoder(st()->codecpar->codec_id);
-		if (!dec)
-		{
-			fprintf(stderr, "Failed to find %s codec\n",
-				av_get_media_type_string(type));
-			return AVERROR(EINVAL);
-		}
+		FFmpeg::AVStream st = fmt_ctx.find_best_stream(type);
+		ret = st()->index;
+		FFmpeg::AVCodec dec{st()->codecpar->codec_id};
 
 		/* Allocate a codec context for the decoder */
 		*dec_ctx = avcodec_alloc_context3(dec);
@@ -198,8 +181,15 @@ static int open_codec_context(int* stream_idx,
 				av_get_media_type_string(type));
 			return ret;
 		}
-		*stream_idx = stream_index;
+		*stream_idx = st()->index;
 	}
+	catch (int err_code)
+	{
+		fprintf(stderr, "Could not find %s stream in input file '%s'\n",
+			av_get_media_type_string(type), src_filename);
+		return err_code;
+	}
+	ret = av_find_best_stream(fmt_ctx, type, -1, -1, NULL, 0);
 
 	return 0;
 }

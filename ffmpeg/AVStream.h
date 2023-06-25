@@ -9,13 +9,13 @@ namespace FFmpeg
 	{
 	public:
 		AVStream() {}
-		AVStream(::AVStream* pStream)
+		AVStream(::AVStream* p)
 		{
-			_pWrapedObj = pStream;
+			_pWrapedObj = p;
 		}
-		AVStream(::AVStream& refStream)
+		AVStream(::AVStream& ref)
 		{
-			_pWrapedObj = &refStream;
+			_pWrapedObj = &ref;
 		}
 
 	public:

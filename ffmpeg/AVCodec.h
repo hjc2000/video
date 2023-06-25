@@ -31,5 +31,13 @@ namespace FFmpeg
 			// 这么做是为了兼容包装类。虽然这么做了，但是不要去修改这个指针指向的变量的内容
 			_pWrapedObj = (::AVCodec*)ret;
 		}
+		AVCodec(AVCodecID id)
+		{
+			::AVCodec* ret = (::AVCodec*)::avcodec_find_decoder(id);
+			if (!ret)
+				throw "查找编码器失败";
+			else
+				_pWrapedObj = ret;
+		}
 	};
 }
