@@ -32,7 +32,7 @@
 #include<FFmpeg.h>
 
 FFmpeg::AVPacket pkt{};
-static AVFormatContext* fmt_ctx = NULL;
+FFmpeg::AVFormatContext fmt_ctx{};
 static AVCodecContext* video_dec_ctx = NULL, * audio_dec_ctx;
 static int width, height;
 static enum AVPixelFormat pix_fmt;
@@ -252,27 +252,16 @@ int demux_decode()
 	//		argv[0]);
 	//	exit(1);
 	//}
-	src_filename = "in.mp4";
+	src_filename = "mpegts1.mp4";
 	video_dst_filename = "out_video.yuv";
 	audio_dst_filename = "out_audio.pcm";
 
-	/* open input file, and allocate format context */
-	if (avformat_open_input(&fmt_ctx, src_filename, NULL, NULL) < 0)
-	{
-		fprintf(stderr, "Could not open source file %s\n", src_filename);
-		exit(1);
-	}
-
-	/* retrieve stream information */
-	if (avformat_find_stream_info(fmt_ctx, NULL) < 0)
-	{
-		fprintf(stderr, "Could not find stream information\n");
-		exit(1);
-	}
+	fmt_ctx.open_input(src_filename);
+	fmt_ctx.find_stream_info();
 
 	if (open_codec_context(&video_stream_idx, &video_dec_ctx, fmt_ctx, AVMEDIA_TYPE_VIDEO) >= 0)
 	{
-		video_stream = fmt_ctx->streams[video_stream_idx];
+		video_stream = fmt_ctx()->streams[video_stream_idx];
 
 		video_dst_file = fopen(video_dst_filename, "wb");
 		if (!video_dst_file)
@@ -298,7 +287,7 @@ int demux_decode()
 
 	if (open_codec_context(&audio_stream_idx, &audio_dec_ctx, fmt_ctx, AVMEDIA_TYPE_AUDIO) >= 0)
 	{
-		audio_stream = fmt_ctx->streams[audio_stream_idx];
+		audio_stream = fmt_ctx()->streams[audio_stream_idx];
 		audio_dst_file = fopen(audio_dst_filename, "wb");
 		if (!audio_dst_file)
 		{
@@ -389,7 +378,6 @@ int demux_decode()
 end:
 	avcodec_free_context(&video_dec_ctx);
 	avcodec_free_context(&audio_dec_ctx);
-	avformat_close_input(&fmt_ctx);
 	if (video_dst_file)
 		fclose(video_dst_file);
 	if (audio_dst_file)

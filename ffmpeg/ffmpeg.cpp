@@ -16,6 +16,7 @@ int main(void)
 		//try_transcode();
 
 		// ffplay -f rawvideo -video_size 1280x720 out_video.yuv
+		// ffplay -f rawvideo -video_size 352x288 out_video.yuv
 		// ffplay -f f32le -ac 1 -ar 44100 out_audio.pcm
 		demux_decode();
 		return 0;
