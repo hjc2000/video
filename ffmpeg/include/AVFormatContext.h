@@ -4,12 +4,7 @@
 #include <AVPacket.h>
 #include<AVDictionary.h>
 #include<AVStream.h>
-extern "C"
-{
-	#define __STDC_CONSTANT_MACROS
-	#include <libavformat/avio.h>
-	#include <libavformat/avformat.h>
-}
+#include<include_ffmpeg.h>
 #include <string>
 #include <sstream>
 

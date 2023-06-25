@@ -1,18 +1,14 @@
 #pragma once
 
 #include<Wraper.h>
-extern "C"
-{
-#define __STDC_CONSTANT_MACROS
-#include <libavformat/avio.h>
-#include <libavformat/avformat.h>
-}
+#include<include_ffmpeg.h>
 
 namespace FFmpeg
 {
 	class AVStream :public Wraper<::AVStream>
 	{
 	public:
+		AVStream() {}
 		AVStream(::AVStream* pStream)
 		{
 			_pWrapedObj = pStream;

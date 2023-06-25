@@ -148,10 +148,9 @@ static int decode_packet(AVCodecContext* dec, const AVPacket* pkt)
 }
 
 static int open_codec_context(int* stream_idx,
-	AVCodecContext** dec_ctx, FFmpeg::AVFormatContext fmt_ctx, enum AVMediaType type)
+	AVCodecContext** dec_ctx, FFmpeg::AVFormatContext fmt_ctx, FFmpeg::AVMediaType type)
 {
 	int ret, stream_index;
-	AVStream* st;
 	const AVCodec* dec = NULL;
 
 	ret = av_find_best_stream(fmt_ctx, type, -1, -1, NULL, 0);
@@ -164,10 +163,10 @@ static int open_codec_context(int* stream_idx,
 	else
 	{
 		stream_index = ret;
-		st = fmt_ctx()->streams[stream_index];
+		FFmpeg::AVStream st = fmt_ctx()->streams[stream_index];
 
 		/* find decoder for the stream */
-		dec = avcodec_find_decoder(st->codecpar->codec_id);
+		dec = avcodec_find_decoder(st()->codecpar->codec_id);
 		if (!dec)
 		{
 			fprintf(stderr, "Failed to find %s codec\n",
@@ -185,7 +184,7 @@ static int open_codec_context(int* stream_idx,
 		}
 
 		/* Copy codec parameters from input stream to output codec context */
-		if ((ret = avcodec_parameters_to_context(*dec_ctx, st->codecpar)) < 0)
+		if ((ret = avcodec_parameters_to_context(*dec_ctx, st()->codecpar)) < 0)
 		{
 			fprintf(stderr, "Failed to copy %s codec parameters to decoder context\n",
 				av_get_media_type_string(type));
