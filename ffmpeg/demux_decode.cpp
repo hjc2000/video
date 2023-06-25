@@ -150,11 +150,9 @@ static int decode_packet(AVCodecContext* dec, const AVPacket* pkt)
 static int open_codec_context(int* stream_idx,
 	AVCodecContext** dec_ctx, FFmpeg::AVFormatContext fmt_ctx, FFmpeg::AVMediaType type)
 {
-	int ret;
 	try
 	{
 		FFmpeg::AVStream st = fmt_ctx.find_best_stream(type);
-		ret = st()->index;
 		FFmpeg::AVCodec dec{st()->codecpar->codec_id};
 
 		/* Allocate a codec context for the decoder */
@@ -167,6 +165,7 @@ static int open_codec_context(int* stream_idx,
 		}
 
 		/* Copy codec parameters from input stream to output codec context */
+		int ret;
 		if ((ret = avcodec_parameters_to_context(*dec_ctx, st()->codecpar)) < 0)
 		{
 			fprintf(stderr, "Failed to copy %s codec parameters to decoder context\n",
@@ -189,7 +188,6 @@ static int open_codec_context(int* stream_idx,
 			av_get_media_type_string(type), src_filename);
 		return err_code;
 	}
-	ret = av_find_best_stream(fmt_ctx, type, -1, -1, NULL, 0);
 
 	return 0;
 }
@@ -241,6 +239,8 @@ int demux_decode()
 	//		argv[0]);
 	//	exit(1);
 	//}
+	
+	//src_filename = "in.mp4";
 	src_filename = "mpegts1.mp4";
 	video_dst_filename = "out_video.yuv";
 	audio_dst_filename = "out_audio.pcm";

@@ -99,7 +99,7 @@ namespace FFmpeg
 		}
 
 		/// <summary>
-		/// 找出最好的流
+		/// 找出最好的流。如果找不到指定的流，会抛出异常
 		/// </summary>
 		/// <param name="type"></param>
 		/// <returns>返回找到的流</returns>
