@@ -14,11 +14,20 @@ namespace FFmpeg
 		/// 通过编码器创建一个编码器上下文
 		/// </summary>
 		/// <param name="codec"></param>
-		AVCodecContext(FFmpeg::AVCodec codec) :_codec(codec)
+		AVCodecContext(FFmpeg::AVCodec codec)
 		{
+			_codec = codec;
 			_pWrapedObj = ::avcodec_alloc_context3(codec);
 			if (!_pWrapedObj)
 				throw "avcodec_alloc_context3失败";
+		}
+		AVCodecContext(FFmpeg::AVCodec codec, AVCodecParameters *param)
+		{
+			_codec = codec;
+			_pWrapedObj = ::avcodec_alloc_context3(codec);
+			if (!_pWrapedObj)
+				throw "avcodec_alloc_context3失败";
+			set_codec_param(param);
 		}
 		~AVCodecContext()
 		{
@@ -34,7 +43,7 @@ namespace FFmpeg
 		/// 打开编码器
 		/// </summary>
 		/// <param name="dic"></param>
-		void avcodec_open2(FFmpeg::AVDictionary dic = nullptr)
+		void open_codec(FFmpeg::AVDictionary dic = nullptr)
 		{
 			int ret = ::avcodec_open2(_pWrapedObj, _codec, dic);
 			if (ret < 0)
@@ -94,6 +103,12 @@ namespace FFmpeg
 				throw ret;
 		}
 
+		void set_codec_param(AVCodecParameters *param)
+		{
+			int ret = ::avcodec_parameters_to_context(_pWrapedObj, param);
+			if (ret < 0)
+				throw ret;
+		}
 	private:
 		/// <summary>
 		/// 保存构造函数传进来的编码器参数

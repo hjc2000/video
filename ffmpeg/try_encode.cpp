@@ -60,7 +60,7 @@ void try_encode()
 		av_opt_set(codec_context()->priv_data, "preset", "slow", 0);
 
 	/* open it */
-	codec_context.avcodec_open2();
+	codec_context.open_codec();
 
 	FFmpeg::AVFrame frame;
 	frame()->format = codec_context()->pix_fmt;

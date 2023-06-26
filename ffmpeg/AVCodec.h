@@ -41,7 +41,7 @@ namespace FFmpeg
 		}
 
 	public:
-		FFmpeg::AVCodec &operator=(const FFmpeg::AVCodec &ref)
+		void operator=(const FFmpeg::AVCodec &ref)
 		{
 			_pWrapedObj = ref._pWrapedObj;
 		}
