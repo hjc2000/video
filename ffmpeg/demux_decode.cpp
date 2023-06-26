@@ -69,7 +69,7 @@ static int output_audio_frame(AVFrame *frame)
 	return 0;
 }
 
-static int decode_packet(FFmpeg::AVCodecContext dec, const AVPacket *pkt, FFmpeg::AVFrame frame)
+static int decode_packet(FFmpeg::AVCodecContext dec, FFmpeg::AVPacket pkt, FFmpeg::AVFrame frame)
 {
 	int ret = 0;
 

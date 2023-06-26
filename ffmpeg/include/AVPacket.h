@@ -12,18 +12,19 @@ namespace FFmpeg
 		{
 			_pWrapedObj = new ::AVPacket{};
 		}
-		AVPacket(::AVPacket* p)
+		AVPacket(::AVPacket *p)
 		{
 			_pWrapedObj = p;
 		}
-		AVPacket(::AVPacket& ref)
+		AVPacket(::AVPacket &ref)
 		{
 			_pWrapedObj = &ref;
 		}
 		~AVPacket()
 		{
-			if (should_dispose())
+			if (should_dispose() && _pWrapedObj)
 			{
+				cout << "AVPacket析构" << endl;
 				unref();
 				delete _pWrapedObj;
 			}
