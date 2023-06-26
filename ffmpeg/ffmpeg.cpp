@@ -4,7 +4,7 @@ void try_encode();
 void try_remux();
 int try_decode_video();
 int try_transcode();
-int demux_decode();
+int demux_decode(const char* src_filename);
 
 int main(void)
 {
@@ -18,7 +18,8 @@ int main(void)
 		// ffplay -f rawvideo -video_size 1280x720 out_video.yuv
 		// ffplay -f rawvideo -video_size 352x288 out_video.yuv
 		// ffplay -f f32le -ac 1 -ar 44100 out_audio.pcm
-		demux_decode();
+		demux_decode("mpegts1.mp4");
+		//demux_decode("in.mp4");
 		return 0;
 	}
 	catch (int err_code)

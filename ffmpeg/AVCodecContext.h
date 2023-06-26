@@ -9,6 +9,7 @@ namespace FFmpeg
 	class AVCodecContext :public Wraper<::AVCodecContext>
 	{
 	public:// 生命周期
+		AVCodecContext() {}
 		/// <summary>
 		/// 通过编码器创建一个编码器上下文
 		/// </summary>
@@ -50,7 +51,7 @@ namespace FFmpeg
 		}
 
 		/*
-		
+
 		enc_ctx.avcodec_send_frame(frame);
 		FFmpeg::AVPacket pkt;
 		while (1)
