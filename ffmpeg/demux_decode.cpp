@@ -1,6 +1,5 @@
 #include<FFmpeg.h>
 
-FFmpeg::AVFormatContext fmt_ctx{};
 FFmpeg::AVCodecContext audio_dec_ctx;
 static int width, height;
 static enum AVPixelFormat pix_fmt;
@@ -112,48 +111,38 @@ static int decode_packet(FFmpeg::AVCodecContext dec, const AVPacket *pkt, FFmpeg
 	return 0;
 }
 
-static int open_codec_context(int *stream_idx,
+static void open_codec_context(int *stream_idx,
 	AVCodecContext **dec_ctx, FFmpeg::AVFormatContext fmt_ctx, FFmpeg::AVMediaType type)
 {
-	try
+	FFmpeg::AVStream st = fmt_ctx.find_best_stream(type);
+	FFmpeg::AVCodec dec{st()->codecpar->codec_id};
+
+	/* Allocate a codec context for the decoder */
+	*dec_ctx = avcodec_alloc_context3(dec);
+	if (!*dec_ctx)
 	{
-		FFmpeg::AVStream st = fmt_ctx.find_best_stream(type);
-		FFmpeg::AVCodec dec{st()->codecpar->codec_id};
-
-		/* Allocate a codec context for the decoder */
-		*dec_ctx = avcodec_alloc_context3(dec);
-		if (!*dec_ctx)
-		{
-			fprintf(stderr, "Failed to allocate the %s codec context\n",
-				av_get_media_type_string(type));
-			return AVERROR(ENOMEM);
-		}
-
-		/* Copy codec parameters from input stream to output codec context */
-		int ret;
-		if ((ret = avcodec_parameters_to_context(*dec_ctx, st()->codecpar)) < 0)
-		{
-			fprintf(stderr, "Failed to copy %s codec parameters to decoder context\n",
-				av_get_media_type_string(type));
-			return ret;
-		}
-
-		/* Init the decoders */
-		if ((ret = avcodec_open2(*dec_ctx, dec, NULL)) < 0)
-		{
-			fprintf(stderr, "Failed to open %s codec\n",
-				av_get_media_type_string(type));
-			return ret;
-		}
-		*stream_idx = st()->index;
-	}
-	catch (int err_code)
-	{
-		cout << "无法打开输入文件" << endl;
-		return err_code;
+		fprintf(stderr, "Failed to allocate the %s codec context\n",
+			av_get_media_type_string(type));
+		throw AVERROR(ENOMEM);
 	}
 
-	return 0;
+	/* Copy codec parameters from input stream to output codec context */
+	int ret;
+	if ((ret = avcodec_parameters_to_context(*dec_ctx, st()->codecpar)) < 0)
+	{
+		fprintf(stderr, "Failed to copy %s codec parameters to decoder context\n",
+			av_get_media_type_string(type));
+		throw ret;
+	}
+
+	/* Init the decoders */
+	if ((ret = avcodec_open2(*dec_ctx, dec, NULL)) < 0)
+	{
+		fprintf(stderr, "Failed to open %s codec\n",
+			av_get_media_type_string(type));
+		throw ret;
+	}
+	*stream_idx = st()->index;
 }
 
 static int get_format_from_sample_fmt(const char **fmt,
@@ -192,56 +181,50 @@ static int get_format_from_sample_fmt(const char **fmt,
 int demux_decode(const char *src_filename)
 {
 	int ret = 0;
-
-	//if (argc != 4)
-	//{
-	//	fprintf(stderr, "usage: %s  input_file video_output_file audio_output_file\n"
-	//		"API example program to show how to read frames from an input file.\n"
-	//		"This program reads frames from a file, decodes them, and writes decoded\n"
-	//		"video frames to a rawvideo file named video_output_file, and decoded\n"
-	//		"audio frames to a rawaudio file named audio_output_file.\n",
-	//		argv[0]);
-	//	exit(1);
-	//}
-
-	//src_filename = "in.mp4";
 	video_dst_filename = "out_video.yuv";
 	audio_dst_filename = "out_audio.pcm";
+	// 输入文件
+	FFmpeg::AVFormatContext inputFormatCtx{};
+	inputFormatCtx.open_input(src_filename);
+	inputFormatCtx.find_stream_info();
 
-	fmt_ctx.open_input(src_filename);
-	fmt_ctx.find_stream_info();
 	int video_stream_idx;
+	// 输出视频文件的解码器上下文
 	FFmpeg::AVCodecContext video_dec_ctx;
-	if (open_codec_context(&video_stream_idx, video_dec_ctx, fmt_ctx, FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO) >= 0)
+
+	try
 	{
-		video_stream = fmt_ctx()->streams[video_stream_idx];
+		open_codec_context(&video_stream_idx, video_dec_ctx, inputFormatCtx, FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
+		video_stream = inputFormatCtx()->streams[video_stream_idx];
 
 		video_dst_file = fopen(video_dst_filename, "wb");
 		if (!video_dst_file)
 		{
-			fprintf(stderr, "Could not open destination file %s\n", video_dst_filename);
-			ret = 1;
-			throw ret;
+			cout << "无法打开" << video_dst_filename << endl;
+			throw 1;
 		}
 
 		/* allocate image where the decoded image will be put */
 		width = video_dec_ctx()->width;
 		height = video_dec_ctx()->height;
 		pix_fmt = video_dec_ctx()->pix_fmt;
-		ret = av_image_alloc(video_dst_data, video_dst_linesize,
-			width, height, pix_fmt, 1);
+		ret = av_image_alloc(video_dst_data, video_dst_linesize, width, height, pix_fmt, 1);
 		if (ret < 0)
 		{
 			fprintf(stderr, "Could not allocate raw video buffer\n");
 			throw ret;
 		}
+
 		video_dst_bufsize = ret;
 	}
+	catch (int err_code) {}
+
 	int audio_stream_idx = -1;
 
-	if (open_codec_context(&audio_stream_idx, audio_dec_ctx, fmt_ctx, AVMEDIA_TYPE_AUDIO) >= 0)
+	try
 	{
-		audio_stream = fmt_ctx()->streams[audio_stream_idx];
+		open_codec_context(&audio_stream_idx, audio_dec_ctx, inputFormatCtx, AVMEDIA_TYPE_AUDIO);
+		audio_stream = inputFormatCtx()->streams[audio_stream_idx];
 		audio_dst_file = fopen(audio_dst_filename, "wb");
 		if (!audio_dst_file)
 		{
@@ -250,9 +233,10 @@ int demux_decode(const char *src_filename)
 			throw ret;
 		}
 	}
+	catch (int err) {}
 
 	/* dump input information to stderr */
-	av_dump_format(fmt_ctx, 0, src_filename, 0);
+	av_dump_format(inputFormatCtx, 0, src_filename, 0);
 
 	if (!audio_stream && !video_stream)
 	{
@@ -270,18 +254,21 @@ int demux_decode(const char *src_filename)
 
 	FFmpeg::AVPacket pkt{};
 	/* read frames from the file */
-	while (av_read_frame(fmt_ctx, pkt) >= 0)
+	try
 	{
-		// check if the packet belongs to a stream we are interested in, otherwise
-		// skip it
-		if (pkt()->stream_index == video_stream_idx)
-			ret = decode_packet(video_dec_ctx, pkt, frame);
-		else if (pkt()->stream_index == audio_stream_idx)
-			ret = decode_packet(audio_dec_ctx, pkt, frame);
-		pkt.unref();
-		if (ret < 0)
-			break;
+		while (1)
+		{
+			inputFormatCtx.read_frame(pkt);
+			if (pkt()->stream_index == video_stream_idx)
+				ret = decode_packet(video_dec_ctx, pkt, frame);
+			else if (pkt()->stream_index == audio_stream_idx)
+				ret = decode_packet(audio_dec_ctx, pkt, frame);
+			pkt.unref();
+			if (ret < 0)
+				break;
+		}
 	}
+	catch (int err) {}
 
 	/* flush the decoders */
 	if (video_dec_ctx)
