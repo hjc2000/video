@@ -25,6 +25,7 @@ public:
 	{
 		// 复制共享指针，以此递增引用计数
 		_refCount = wraper._refCount;
+		// 将对方的指针复制过来
 		_pWrapedObj = wraper._pWrapedObj;
 	}
 

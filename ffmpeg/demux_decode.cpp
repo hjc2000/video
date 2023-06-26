@@ -145,6 +145,39 @@ static void open_codec_context(int *stream_idx,
 	*stream_idx = st()->index;
 }
 
+static void open_video_codec_context(int *stream_idx,
+	AVCodecContext **dec_ctx, FFmpeg::AVStream st)
+{
+	FFmpeg::AVCodec dec{st()->codecpar->codec_id};
+
+	/* Allocate a codec context for the decoder */
+	*dec_ctx = avcodec_alloc_context3(dec);
+	if (!*dec_ctx)
+	{
+		fprintf(stderr, "Failed to allocate the %s codec context\n",
+			av_get_media_type_string(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO));
+		throw AVERROR(ENOMEM);
+	}
+
+	/* Copy codec parameters from input stream to output codec context */
+	int ret;
+	if ((ret = avcodec_parameters_to_context(*dec_ctx, st()->codecpar)) < 0)
+	{
+		fprintf(stderr, "Failed to copy %s codec parameters to decoder context\n",
+			av_get_media_type_string(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO));
+		throw ret;
+	}
+
+	/* Init the decoders */
+	if ((ret = avcodec_open2(*dec_ctx, dec, NULL)) < 0)
+	{
+		fprintf(stderr, "Failed to open %s codec\n",
+			av_get_media_type_string(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO));
+		throw ret;
+	}
+	*stream_idx = st()->index;
+}
+
 static int get_format_from_sample_fmt(const char **fmt,
 	enum AVSampleFormat sample_fmt)
 {
@@ -194,7 +227,8 @@ int demux_decode(const char *src_filename)
 
 	try
 	{
-		open_codec_context(&video_stream_idx, video_dec_ctx, inputFormatCtx, FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
+		FFmpeg::AVStream bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
+		open_video_codec_context(&video_stream_idx, video_dec_ctx, bestVideoStream);
 		video_stream = inputFormatCtx()->streams[video_stream_idx];
 
 		video_dst_file = fopen(video_dst_filename, "wb");
@@ -223,7 +257,7 @@ int demux_decode(const char *src_filename)
 
 	try
 	{
-		open_codec_context(&audio_stream_idx, audio_dec_ctx, inputFormatCtx, AVMEDIA_TYPE_AUDIO);
+		open_codec_context(&audio_stream_idx, audio_dec_ctx, inputFormatCtx, FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
 		audio_stream = inputFormatCtx()->streams[audio_stream_idx];
 		audio_dst_file = fopen(audio_dst_filename, "wb");
 		if (!audio_dst_file)
