@@ -3,7 +3,7 @@
 FFmpeg::AVCodecContext audio_dec_ctx;
 static int width, height;
 static enum AVPixelFormat pix_fmt;
-static AVStream *video_stream = NULL, *audio_stream = NULL;
+static AVStream *audio_stream = NULL;
 static const char *video_dst_filename = NULL;
 static const char *audio_dst_filename = NULL;
 static FILE *video_dst_file = NULL;
@@ -194,12 +194,9 @@ int demux_decode(const char *src_filename)
 	FFmpeg::AVCodecContext bestVideoDecodeCodecContext{bestVideoDecodeCodec};
 	bestVideoDecodeCodecContext.set_codec_param(bestVideoStream()->codecpar);
 	bestVideoDecodeCodecContext.open_codec();
-	int video_stream_idx = bestVideoStream()->index;
 
 	try
 	{
-		video_stream = inputFormatCtx()->streams[video_stream_idx];
-
 		video_dst_file = fopen(video_dst_filename, "wb");
 		if (!video_dst_file)
 		{
@@ -241,7 +238,7 @@ int demux_decode(const char *src_filename)
 	/* dump input information to stderr */
 	av_dump_format(inputFormatCtx, 0, src_filename, 0);
 
-	if (!audio_stream && !video_stream)
+	if (!audio_stream && !bestVideoStream)
 	{
 		fprintf(stderr, "Could not find audio or video stream in the input, aborting\n");
 		ret = 1;
@@ -250,7 +247,7 @@ int demux_decode(const char *src_filename)
 
 	FFmpeg::AVFrame frame{};
 
-	if (video_stream)
+	if (bestVideoStream)
 		printf("Demuxing video from file '%s' into '%s'\n", src_filename, video_dst_filename);
 	if (audio_stream)
 		printf("Demuxing audio from file '%s' into '%s'\n", src_filename, audio_dst_filename);
@@ -262,7 +259,7 @@ int demux_decode(const char *src_filename)
 		while (1)
 		{
 			inputFormatCtx.read_frame(pkt);
-			if (pkt()->stream_index == video_stream_idx)
+			if (pkt()->stream_index == bestVideoStream()->index)
 				ret = decode_packet(bestVideoDecodeCodecContext, pkt, frame);
 			else if (pkt()->stream_index == audio_stream_idx)
 				ret = decode_packet(audio_dec_ctx, pkt, frame);
@@ -281,7 +278,7 @@ int demux_decode(const char *src_filename)
 
 	printf("Demuxing succeeded.\n");
 
-	if (video_stream)
+	if (bestVideoStream)
 	{
 		printf("Play the output video file with the command:\n"
 			"ffplay -f rawvideo -pix_fmt %s -video_size %dx%d %s\n",
