@@ -201,7 +201,7 @@ int demux_decode(const char *src_filename)
 		if (!video_dst_file)
 		{
 			cout << "无法打开" << video_dst_filename << endl;
-			throw 1;
+			throw -1;
 		}
 
 		/* allocate image where the decoded image will be put */
