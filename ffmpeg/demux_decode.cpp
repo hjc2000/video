@@ -111,7 +111,7 @@ static int decode_packet(FFmpeg::AVCodecContext dec, FFmpeg::AVPacket pkt, FFmpe
 	return 0;
 }
 
-static void open_codec_context(int *stream_idx,
+static void open_audio_codec_context(int *stream_idx,
 	AVCodecContext **dec_ctx, FFmpeg::AVFormatContext fmt_ctx, FFmpeg::AVMediaType type)
 {
 	FFmpeg::AVStream st = fmt_ctx.find_best_stream(type);
@@ -145,20 +145,11 @@ static void open_codec_context(int *stream_idx,
 	*stream_idx = st()->index;
 }
 
-static void open_video_codec_context(int *stream_idx, AVCodecContext **dec_ctx, FFmpeg::AVStream st, FFmpeg::AVCodec bestVideoDecodeCodec)
+static void open_video_codec_context(int *stream_idx, FFmpeg::AVCodecContext dec_ctx, FFmpeg::AVStream st, FFmpeg::AVCodec bestVideoDecodeCodec)
 {
-	/* Allocate a codec context for the decoder */
-	*dec_ctx = avcodec_alloc_context3(bestVideoDecodeCodec);
-	if (!*dec_ctx)
-	{
-		fprintf(stderr, "Failed to allocate the %s codec context\n",
-			av_get_media_type_string(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO));
-		throw AVERROR(ENOMEM);
-	}
-
 	/* Copy codec parameters from input stream to output codec context */
 	int ret;
-	if ((ret = avcodec_parameters_to_context(*dec_ctx, st()->codecpar)) < 0)
+	if ((ret = avcodec_parameters_to_context(dec_ctx, st()->codecpar)) < 0)
 	{
 		fprintf(stderr, "Failed to copy %s codec parameters to decoder context\n",
 			av_get_media_type_string(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO));
@@ -166,7 +157,7 @@ static void open_video_codec_context(int *stream_idx, AVCodecContext **dec_ctx, 
 	}
 
 	/* Init the decoders */
-	if ((ret = avcodec_open2(*dec_ctx, bestVideoDecodeCodec, NULL)) < 0)
+	if ((ret = avcodec_open2(dec_ctx, bestVideoDecodeCodec, NULL)) < 0)
 	{
 		fprintf(stderr, "Failed to open %s codec\n",
 			av_get_media_type_string(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO));
@@ -219,14 +210,14 @@ int demux_decode(const char *src_filename)
 	inputFormatCtx.find_stream_info();
 
 	int video_stream_idx;
+	FFmpeg::AVStream bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
+	FFmpeg::AVCodec videoDecodeCodec{bestVideoStream()->codecpar->codec_id};
 	// 输出视频文件的解码器上下文
-	FFmpeg::AVCodecContext video_dec_ctx;
+	FFmpeg::AVCodecContext videoDecodeCtx{videoDecodeCodec};
 
 	try
 	{
-		FFmpeg::AVStream bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
-		FFmpeg::AVCodec bestVideoDecodeCodec{bestVideoStream()->codecpar->codec_id};
-		open_video_codec_context(&video_stream_idx, video_dec_ctx, bestVideoStream, bestVideoDecodeCodec);
+		open_video_codec_context(&video_stream_idx, videoDecodeCtx, bestVideoStream, videoDecodeCodec);
 		video_stream = inputFormatCtx()->streams[video_stream_idx];
 
 		video_dst_file = fopen(video_dst_filename, "wb");
@@ -237,9 +228,9 @@ int demux_decode(const char *src_filename)
 		}
 
 		/* allocate image where the decoded image will be put */
-		width = video_dec_ctx()->width;
-		height = video_dec_ctx()->height;
-		pix_fmt = video_dec_ctx()->pix_fmt;
+		width = videoDecodeCtx()->width;
+		height = videoDecodeCtx()->height;
+		pix_fmt = videoDecodeCtx()->pix_fmt;
 		ret = av_image_alloc(video_dst_data, video_dst_linesize, width, height, pix_fmt, 1);
 		if (ret < 0)
 		{
@@ -255,7 +246,7 @@ int demux_decode(const char *src_filename)
 
 	try
 	{
-		open_codec_context(&audio_stream_idx, audio_dec_ctx, inputFormatCtx, FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
+		open_audio_codec_context(&audio_stream_idx, audio_dec_ctx, inputFormatCtx, FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
 		audio_stream = inputFormatCtx()->streams[audio_stream_idx];
 		audio_dst_file = fopen(audio_dst_filename, "wb");
 		if (!audio_dst_file)
@@ -292,7 +283,7 @@ int demux_decode(const char *src_filename)
 		{
 			inputFormatCtx.read_frame(pkt);
 			if (pkt()->stream_index == video_stream_idx)
-				ret = decode_packet(video_dec_ctx, pkt, frame);
+				ret = decode_packet(videoDecodeCtx, pkt, frame);
 			else if (pkt()->stream_index == audio_stream_idx)
 				ret = decode_packet(audio_dec_ctx, pkt, frame);
 			pkt.unref();
@@ -303,8 +294,8 @@ int demux_decode(const char *src_filename)
 	catch (int err) {}
 
 	/* flush the decoders */
-	if (video_dec_ctx)
-		decode_packet(video_dec_ctx, NULL, frame);
+	if (videoDecodeCtx)
+		decode_packet(videoDecodeCtx, NULL, frame);
 	if (audio_dec_ctx)
 		decode_packet(audio_dec_ctx, NULL, frame);
 

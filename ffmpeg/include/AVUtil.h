@@ -25,6 +25,7 @@ namespace FFmpeg
 	typedef ::AVMediaType AVMediaType;
 	typedef ::AVDictionaryEntry AVDictionaryEntry;
 	typedef ::AVCodecID AVCodecID;
+	typedef ::AVCodecParameters AVCodecParameters;
 
 	/**
 	 * @brief 字典操作的枚举类型
