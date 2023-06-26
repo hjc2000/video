@@ -145,13 +145,10 @@ static void open_codec_context(int *stream_idx,
 	*stream_idx = st()->index;
 }
 
-static void open_video_codec_context(int *stream_idx,
-	AVCodecContext **dec_ctx, FFmpeg::AVStream st)
+static void open_video_codec_context(int *stream_idx, AVCodecContext **dec_ctx, FFmpeg::AVStream st, FFmpeg::AVCodec bestVideoDecodeCodec)
 {
-	FFmpeg::AVCodec dec{st()->codecpar->codec_id};
-
 	/* Allocate a codec context for the decoder */
-	*dec_ctx = avcodec_alloc_context3(dec);
+	*dec_ctx = avcodec_alloc_context3(bestVideoDecodeCodec);
 	if (!*dec_ctx)
 	{
 		fprintf(stderr, "Failed to allocate the %s codec context\n",
@@ -169,7 +166,7 @@ static void open_video_codec_context(int *stream_idx,
 	}
 
 	/* Init the decoders */
-	if ((ret = avcodec_open2(*dec_ctx, dec, NULL)) < 0)
+	if ((ret = avcodec_open2(*dec_ctx, bestVideoDecodeCodec, NULL)) < 0)
 	{
 		fprintf(stderr, "Failed to open %s codec\n",
 			av_get_media_type_string(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO));
@@ -228,7 +225,8 @@ int demux_decode(const char *src_filename)
 	try
 	{
 		FFmpeg::AVStream bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
-		open_video_codec_context(&video_stream_idx, video_dec_ctx, bestVideoStream);
+		FFmpeg::AVCodec bestVideoDecodeCodec{bestVideoStream()->codecpar->codec_id};
+		open_video_codec_context(&video_stream_idx, video_dec_ctx, bestVideoStream, bestVideoDecodeCodec);
 		video_stream = inputFormatCtx()->streams[video_stream_idx];
 
 		video_dst_file = fopen(video_dst_filename, "wb");
