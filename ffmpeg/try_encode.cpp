@@ -35,7 +35,7 @@ void try_encode()
 
 	/* find the mpeg1video encoder */
 	FFmpeg::AVCodec codec = FFmpeg::AVCodec::find_encoder_by_name("mpeg1video");
-	FFmpeg::AVCodecContext codec_context{codec};
+	FFmpeg::AVCodecContext codec_context = FFmpeg::AVCodecContext::create(codec);
 
 	/* put sample parameters */
 	codec_context()->bit_rate = 400000;

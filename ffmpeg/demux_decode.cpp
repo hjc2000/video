@@ -191,7 +191,8 @@ int demux_decode(const char *src_filename)
 	FFmpeg::AVStream bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
 	FFmpeg::AVCodec bestVideoDecodeCodec = FFmpeg::AVCodec::find_decoder_by_id(bestVideoStream()->codecpar->codec_id);
 	// 输出视频文件的解码器上下文
-	FFmpeg::AVCodecContext bestVideoDecodeCodecContext{bestVideoDecodeCodec};
+	FFmpeg::AVCodecContext bestVideoDecodeCodecContext;
+	bestVideoDecodeCodecContext = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec);
 	bestVideoDecodeCodecContext.set_codec_param(bestVideoStream()->codecpar);
 	bestVideoDecodeCodecContext.open_codec();
 

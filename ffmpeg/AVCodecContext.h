@@ -9,18 +9,21 @@ namespace FFmpeg
 	class AVCodecContext :public Wraper<::AVCodecContext>
 	{
 	public:// 生命周期
-		AVCodecContext() {}
-		/// <summary>
-		/// 通过编码器创建一个编码器上下文
-		/// </summary>
-		/// <param name="codec"></param>
-		AVCodecContext(FFmpeg::AVCodec codec)
+		AVCodecContext() :Wraper() {}
+		AVCodecContext(::AVCodecContext *p) :Wraper(p) {}
+		AVCodecContext(::AVCodecContext &ref) :Wraper(ref) {}
+
+	public:// 工厂函数
+		static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec)
 		{
-			_codec = codec;
-			_pWrapedObj = ::avcodec_alloc_context3(codec);
-			if (!_pWrapedObj)
+			FFmpeg::AVCodecContext ctx;
+			ctx._codec = codec;
+			ctx._pWrapedObj = ::avcodec_alloc_context3(codec);
+			if (!ctx._pWrapedObj)
 				throw "avcodec_alloc_context3失败";
+			return ctx;
 		}
+
 		AVCodecContext(FFmpeg::AVCodec codec, AVCodecParameters *param)
 		{
 			_codec = codec;
@@ -29,13 +32,32 @@ namespace FFmpeg
 				throw "avcodec_alloc_context3失败";
 			set_codec_param(param);
 		}
+
 		~AVCodecContext()
+		{
+			Dispose();
+		}
+
+		void Dispose()
 		{
 			if (should_dispose())
 			{
-				cout << "AVCodecContext 析构" << endl;
+				cout << "AVCodecContext 释放" << endl;
 				avcodec_free_context(&_pWrapedObj);
 			}
+		}
+
+	public:// 运算符重载
+		void operator=(const FFmpeg::AVCodecContext &ref)
+		{
+			// 防止自赋值
+			if (this == &ref) return;
+			cout << "AVCodecContext赋值运算符" << endl;
+			if (_pWrapedObj)
+				Dispose();
+			_pWrapedObj = ref._pWrapedObj;
+			// 递增引用计数，只要是复制 _pWrapedObj，必须同时复制 _refCount
+			_refCount = ref._refCount;
 		}
 
 	public://公共方法
