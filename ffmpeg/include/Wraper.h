@@ -7,6 +7,11 @@ using std::function;
 #include<memory>
 using std::shared_ptr;
 
+/// <summary>
+/// 这个类不定义纯虚函数。这个类不用来呈现多态，因为这个类用来给子类提供相同的功能，它并不是用来抽象
+/// 子类的。
+/// </summary>
+/// <typeparam name="T">被包装对象的类型</typeparam>
 template <class T>
 class Wraper
 {
@@ -21,7 +26,7 @@ public:
 	/// </summary>
 	/// <param name="wraper"></param>
 	/// 
-	Wraper(const Wraper& wraper)
+	Wraper(const Wraper &wraper)
 	{
 		// 复制共享指针，以此递增引用计数
 		_refCount = wraper._refCount;
@@ -41,7 +46,7 @@ private:
 	/// </summary>
 	/// <param name="ref"></param>
 	/// <returns></returns>
-	Wraper& operator=(const Wraper& ref) {}
+	void operator=(const Wraper &ref) {}
 
 protected:
 	/// <summary>
@@ -62,27 +67,27 @@ protected:
 	}
 
 public:
-	void operator=(T* pWrapedObj)
+	void operator=(T *pWrapedObj)
 	{
 		_pWrapedObj = pWrapedObj;
 	}
 
-	void operator=(T& ref_WrapedObj)
+	void operator=(T &ref_WrapedObj)
 	{
 		_pWrapedObj = &ref_WrapedObj;
 	}
 
-	T* operator()(void)
+	T *operator()(void)
 	{
 		return _pWrapedObj;
 	}
 
-	operator T** ()
+	operator T **()
 	{
 		return &_pWrapedObj;
 	}
 
-	operator T* ()
+	operator T *()
 	{
 		return _pWrapedObj;
 	}
@@ -93,5 +98,5 @@ public:
 	}
 
 protected:
-	T* _pWrapedObj = nullptr;
+	T *_pWrapedObj = nullptr;
 };

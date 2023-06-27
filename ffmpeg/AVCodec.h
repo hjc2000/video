@@ -8,7 +8,7 @@ namespace FFmpeg
 
 	class AVCodec :public Wraper<::AVCodec>
 	{
-	public:// 生命周期
+	public:// 构造函数、析构函数
 		AVCodec() {}
 		AVCodec(const ::AVCodec *p)
 		{
