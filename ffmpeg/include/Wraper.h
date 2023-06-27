@@ -22,6 +22,25 @@ public:
 	Wraper() {}
 
 	/// <summary>
+	/// 通过被包装对象的指针进行构造
+	/// </summary>
+	/// <param name="p"></param>
+	Wraper(const T *p)
+	{
+		_pWrapedObj = (T *)p;
+	}
+
+	/// <summary>
+	/// 通过被包装对象的引用进行构造
+	/// </summary>
+	/// <param name="ref"></param>
+	Wraper(const T &ref)
+	{
+		_pWrapedObj = (T *)&ref;
+	}
+
+
+	/// <summary>
 	/// 拷贝构造函数
 	/// </summary>
 	/// <param name="wraper"></param>

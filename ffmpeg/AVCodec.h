@@ -9,17 +9,16 @@ namespace FFmpeg
 	class AVCodec :public Wraper<::AVCodec>
 	{
 	public:// 构造函数、析构函数
-		AVCodec() {}
-		AVCodec(const ::AVCodec *p)
-		{
-			_pWrapedObj = (::AVCodec *)p;
-		}
-		AVCodec(::AVCodec &ref)
-		{
-			_pWrapedObj = &ref;
-		}
+		AVCodec() :Wraper() {}
+		AVCodec(const ::AVCodec *p) :Wraper(p) {}
+		AVCodec(::AVCodec &ref) :Wraper(ref) {}
 
 	public:// 工厂函数
+		/// <summary>
+		/// 通过编码器的名字查找编码器。找到则返回编码器，失败会抛出异常
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
 		static FFmpeg::AVCodec find_encoder_by_name(const char *name)
 		{
 			const ::AVCodec *ret = ::avcodec_find_encoder_by_name(name);
@@ -28,6 +27,11 @@ namespace FFmpeg
 			return ret;
 		}
 
+		/// <summary>
+		/// 通过编码器的 ID 查找编码器。找到则返回编码器，失败会抛出异常
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		static FFmpeg::AVCodec find_decoder_by_id(AVCodecID id)
 		{
 			::AVCodec *ret = (::AVCodec *)::avcodec_find_decoder(id);
