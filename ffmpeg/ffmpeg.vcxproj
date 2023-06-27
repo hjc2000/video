@@ -172,7 +172,6 @@
     <ClInclude Include="include\AVDictionary.h" />
     <ClInclude Include="include\AVError.h" />
     <ClInclude Include="include\AVFormatContext.h" />
-    <ClInclude Include="include\AVInputFormat.h" />
     <ClInclude Include="include\AVPacket.h" />
     <ClInclude Include="include\AVUtil.h" />
     <ClInclude Include="include\Wraper.h" />

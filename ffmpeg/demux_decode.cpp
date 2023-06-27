@@ -115,7 +115,7 @@ static void open_audio_codec_context(int *stream_idx,
 	AVCodecContext **dec_ctx, FFmpeg::AVFormatContext fmt_ctx, FFmpeg::AVMediaType type)
 {
 	FFmpeg::AVStream st = fmt_ctx.find_best_stream(type);
-	FFmpeg::AVCodec dec{st()->codecpar->codec_id};
+	FFmpeg::AVCodec dec = FFmpeg::AVCodec::find_decoder_by_id(st()->codecpar->codec_id);
 
 	/* Allocate a codec context for the decoder */
 	*dec_ctx = avcodec_alloc_context3(dec);
@@ -189,7 +189,7 @@ int demux_decode(const char *src_filename)
 	inputFormatCtx.find_stream_info();
 
 	FFmpeg::AVStream bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
-	FFmpeg::AVCodec bestVideoDecodeCodec{bestVideoStream()->codecpar->codec_id};
+	FFmpeg::AVCodec bestVideoDecodeCodec = FFmpeg::AVCodec::find_decoder_by_id(bestVideoStream()->codecpar->codec_id);
 	// 输出视频文件的解码器上下文
 	FFmpeg::AVCodecContext bestVideoDecodeCodecContext{bestVideoDecodeCodec};
 	bestVideoDecodeCodecContext.set_codec_param(bestVideoStream()->codecpar);
@@ -201,7 +201,7 @@ int demux_decode(const char *src_filename)
 		if (!video_dst_file)
 		{
 			cout << "无法打开" << video_dst_filename << endl;
-			throw -1;
+			throw - 1;
 		}
 
 		/* allocate image where the decoded image will be put */

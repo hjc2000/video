@@ -117,9 +117,6 @@
     <ClInclude Include="include\AVFormatContext.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\AVInputFormat.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\AVPacket.h">
       <Filter>include</Filter>
     </ClInclude>

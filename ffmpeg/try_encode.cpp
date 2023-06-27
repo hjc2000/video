@@ -34,7 +34,7 @@ void try_encode()
 	const char* filename = "output.mp4";
 
 	/* find the mpeg1video encoder */
-	FFmpeg::AVCodec codec{"mpeg1video"};
+	FFmpeg::AVCodec codec = FFmpeg::AVCodec::find_encoder_by_name("mpeg1video");
 	FFmpeg::AVCodecContext codec_context{codec};
 
 	/* put sample parameters */

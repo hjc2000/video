@@ -10,34 +10,31 @@ namespace FFmpeg
 	{
 	public:// 生命周期
 		AVCodec() {}
-		AVCodec(::AVCodec *pAVCodec)
+		AVCodec(const ::AVCodec *p)
 		{
-			_pWrapedObj = pAVCodec;
+			_pWrapedObj = (::AVCodec *)p;
 		}
-		AVCodec(const ::AVCodec *pAVCodec)
+		AVCodec(::AVCodec &ref)
 		{
-			_pWrapedObj = (::AVCodec *)pAVCodec;
+			_pWrapedObj = &ref;
 		}
-		AVCodec(::AVCodec &refAVCodec)
+
+	public:// 工厂函数
+		static FFmpeg::AVCodec find_encoder_by_name(const char *name)
 		{
-			_pWrapedObj = &refAVCodec;
-		}
-		AVCodec(const char *codec_name)
-		{
-			const ::AVCodec *ret = ::avcodec_find_encoder_by_name(codec_name);
+			const ::AVCodec *ret = ::avcodec_find_encoder_by_name(name);
 			if (ret == nullptr)
 				throw "查找编码器失败";
-			// 将 const 变量的指针强制转换为非 const 变量的指针。
-			// 这么做是为了兼容包装类。虽然这么做了，但是不要去修改这个指针指向的变量的内容
-			_pWrapedObj = (::AVCodec *)ret;
+			return ret;
 		}
-		AVCodec(AVCodecID id)
+
+		static FFmpeg::AVCodec find_decoder_by_id(AVCodecID id)
 		{
 			::AVCodec *ret = (::AVCodec *)::avcodec_find_decoder(id);
 			if (!ret)
 				throw "查找编码器失败";
 			else
-				_pWrapedObj = ret;
+				return ret;
 		}
 
 	public:
