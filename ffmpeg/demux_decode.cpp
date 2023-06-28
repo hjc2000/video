@@ -181,6 +181,7 @@ int demux_decode_main(const char *src_filename)
 	int ret = 0;
 	// 输入文件
 	FFmpeg::AVFormatContext inputFormatCtx{};
+	// 打开输入文件
 	inputFormatCtx.open_input(src_filename);
 	inputFormatCtx.find_stream_info();
 
@@ -188,18 +189,14 @@ int demux_decode_main(const char *src_filename)
 	FFmpeg::AVCodec bestVideoDecodeCodec = FFmpeg::AVCodec::find_decoder_by_id(bestVideoStream()->codecpar->codec_id);
 	// 输出视频文件的解码器上下文
 	FFmpeg::AVCodecContext bestVideoDecodeCodecContext;
-	bestVideoDecodeCodecContext = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec);
-	bestVideoDecodeCodecContext.set_codec_param(bestVideoStream()->codecpar);
+	bestVideoDecodeCodecContext = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec, bestVideoStream()->codecpar);
 	bestVideoDecodeCodecContext.open_codec();
 
 	try
 	{
 		video_dst_file = fopen("out_video.yuv", "wb");
 		if (!video_dst_file)
-		{
-			cout << "无法打开视频解码输出文件" << endl;
-			throw - 1;
-		}
+			throw "无法打开视频解码输出文件";
 
 		/* allocate image where the decoded image will be put */
 		width = bestVideoDecodeCodecContext()->width;

@@ -12,22 +12,18 @@ namespace FFmpeg
 {
 	class AVFormatContext : public Wraper<::AVFormatContext>
 	{
-	public:// 生命周期
+		#pragma region 生命周期
+	public:
 		AVFormatContext() {}
-		AVFormatContext(::AVFormatContext* pFormatContext)
-		{
-			_pWrapedObj = pFormatContext;
-		}
-		AVFormatContext(::AVFormatContext& refFormatContext)
-		{
-			_pWrapedObj = &refFormatContext;
-		}
+		AVFormatContext(::AVFormatContext *p) :Wraper(p) {}
+		AVFormatContext(::AVFormatContext &ref) :Wraper(ref) {}
+
 		~AVFormatContext()
 		{
 			if (should_dispose())
 			{
-				cout << "AVFormatContext 析构" << endl;
-				if (m_is_output)
+				cout << "AVFormatContext 释放" << endl;
+				if (_mode == Mode::output)
 				{
 					if (!(_pWrapedObj->oformat->flags & AVFMT_NOFILE))
 						avio_closep(&_pWrapedObj->pb);
@@ -38,22 +34,34 @@ namespace FFmpeg
 				::avformat_free_context(_pWrapedObj);
 			}
 		}
+		#pragma endregion
 
-	private:// 私有字段
-		bool m_is_input = false;
-		bool m_is_output = false;
-		bool _copyed = false;
+		#pragma region 私有字段
+	private:
+		/// <summary>
+		/// 标识 AVFormatContext 当前是哪一种模式
+		/// </summary>
+		enum Mode
+		{
+			unknow,
+			input,
+			output,
+		};
 
+		Mode _mode = Mode::unknow;
+		#pragma endregion
+
+		#pragma region 工厂函数
 	public:
 		/// @brief 打开指定 url 作为输入。作为输入后无法再将此对象变成输出
 		/// @param url 
 		/// @param fmt 
 		/// @param options 
-		inline void open_input(const char* url, const ::AVInputFormat* fmt = nullptr, ::AVDictionary** options = nullptr)
+		inline void open_input(const char *url, const ::AVInputFormat *fmt = nullptr, ::AVDictionary **options = nullptr)
 		{
-			if (m_is_output)
-				throw "该上下文已经是输出了，不允许作为输入打开";
-			m_is_input = true;
+			if (_mode != Mode::unknow)
+				throw "非法操作";
+			_mode = Mode::input;
 			int result = ::avformat_open_input(&_pWrapedObj, url, fmt, options);
 			if (result < 0)
 				throw result;
@@ -61,11 +69,11 @@ namespace FFmpeg
 
 		/// @brief 创建输出格式上下文。作为输出后无法再将此对象变成输入
 		/// @param filename 
-		void alloc_output_context2(const char* filename)
+		void alloc_output_context2(const char *filename)
 		{
-			if (m_is_input)
-				throw "该上下文已经是输入了，不允许作为输出打开";
-			m_is_output = true;
+			if (_mode != Mode::unknow)
+				throw "非法操作";
+			_mode = Mode::output;
 			int result = ::avformat_alloc_output_context2(&_pWrapedObj, nullptr, nullptr, filename);
 			if (result < 0)
 				throw result;
@@ -77,13 +85,16 @@ namespace FFmpeg
 					throw result;
 			}
 		}
+		#pragma endregion
 
+		#pragma region 包装方法
+	public:
 		/// @brief 对 FFmpeg 内部提供的打印流信息的函数的封装。会以官方格式打印流信息
 		/// @param index 想要打印信息的流的索引号
 		/// @param url 自定义的 url，比如这是一个输出文件，那么 url 就是你定义的输出文件路径。
 		/// 你随便输都没关系，这里的 url 的用途只有被显示
 		/// @param is_output 是否是输出文件。你也可以随便定，同样的，这个参数的用途只是用来被显示
-		void dump_format(int index, const char* url, int is_output)
+		void dump_format(int index, const char *url, int is_output)
 		{
 			::av_dump_format(_pWrapedObj, index, url, is_output);
 		}
@@ -91,7 +102,7 @@ namespace FFmpeg
 		/// @brief 通过读几个包来检测流信息。此操作不会导致读取进度向前推移，
 		/// 被读取的包会放在缓冲区下次读取的时候接着用
 		/// @param options 
-		inline void find_stream_info(::AVDictionary** options = nullptr)
+		inline void find_stream_info(::AVDictionary **options = nullptr)
 		{
 			int result = ::avformat_find_stream_info(_pWrapedObj, options);
 			if (result < 0)
@@ -125,16 +136,16 @@ namespace FFmpeg
 				throw result;
 		}
 
-		FFmpeg::AVStream create_new_stream(const ::AVCodec* pCodec = nullptr)
+		FFmpeg::AVStream create_new_stream(const ::AVCodec *pCodec = nullptr)
 		{
-			::AVStream* ps = avformat_new_stream(_pWrapedObj, pCodec);
+			::AVStream *ps = avformat_new_stream(_pWrapedObj, pCodec);
 			if (ps == nullptr)
 				throw "创建流失败";
 			else
 				return ps;
 		}
 
-		void write_header(FFmpeg::AVDictionary* dic = nullptr)
+		void write_header(FFmpeg::AVDictionary *dic = nullptr)
 		{
 			int result;
 			if (dic == nullptr)
@@ -159,10 +170,14 @@ namespace FFmpeg
 			if (ret < 0)
 				throw ret;
 		}
+		#pragma endregion
 
+		#pragma region 扩展包装方法
 	public:
 		/// <summary>
-		/// 获取视频时长
+		/// 获取视频时长。
+		/// 要先调用 find_stream_info 方法分析流信息后才能调用此方法，否则得到
+		/// 的结果是错误的
 		/// </summary>
 		/// <returns>返回结果是一个字符串，里面储存着格式化过的时间</returns>
 		inline std::string get_duration_as_formatted_time_string()
@@ -191,8 +206,7 @@ namespace FFmpeg
 		/// <returns></returns>
 		FFmpeg::AVStream get_stream(int stream_index)
 		{
-			// 将 stream_index 强制转换为 uint32_t，如果 stream_index 是负数，会
-			// 造成上溢，如果不是负数，但是大于 nb_streams，同样会造成上溢
+			// 强制转换为无符号类型就不用判断 stream_index >= 0 了
 			if ((uint32_t)stream_index >= _pWrapedObj->nb_streams)
 			{
 				throw "流索引号超出范围";
@@ -200,4 +214,5 @@ namespace FFmpeg
 			return FFmpeg::AVStream{_pWrapedObj->streams[stream_index]};
 		}
 	};
+	#pragma endregion
 }

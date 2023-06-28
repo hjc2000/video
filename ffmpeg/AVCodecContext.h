@@ -8,10 +8,12 @@ namespace FFmpeg
 {
 	class AVCodecContext :public Wraper<::AVCodecContext>
 	{
-	public:// 生命周期
+		#pragma region 生命周期
+	public:
 		AVCodecContext() :Wraper() {}
 		AVCodecContext(::AVCodecContext *p) :Wraper(p) {}
 		AVCodecContext(::AVCodecContext &ref) :Wraper(ref) {}
+
 		~AVCodecContext()
 		{
 			Dispose();
@@ -25,8 +27,15 @@ namespace FFmpeg
 				avcodec_free_context(&_pWrapedObj);
 			}
 		}
+		#pragma endregion
 
-	public:// 工厂函数
+		#pragma region 工厂函数
+	public:
+		/// <summary>
+		/// 通过 AVCodec 创建
+		/// </summary>
+		/// <param name="codec"></param>
+		/// <returns></returns>
 		static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec)
 		{
 			FFmpeg::AVCodecContext ctx;
@@ -37,35 +46,48 @@ namespace FFmpeg
 			return ctx;
 		}
 
+		/// <summary>
+		/// 通过 AVCodec 创建，然后复制指定的 AVCodecParameters 到本类对象中
+		/// </summary>
+		/// <param name="codec"></param>
+		/// <param name="param"></param>
+		/// <returns></returns>
 		static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec, AVCodecParameters *param)
 		{
-			FFmpeg::AVCodecContext ctx;
-			ctx._codec = codec;
-			ctx._pWrapedObj = ::avcodec_alloc_context3(codec);
-			if (!ctx._pWrapedObj)
-				throw "avcodec_alloc_context3失败";
+			FFmpeg::AVCodecContext ctx = create(codec);
 			int ret = ::avcodec_parameters_to_context(ctx._pWrapedObj, param);
 			if (ret < 0)
 			{
 				cout << "设置编解码器参数失败" << endl;
 				throw ret;
 			}
+			return ctx;
 		}
+		#pragma endregion
 
-	public:// 运算符重载
+		#pragma region 运算符重载
+	public:
+		/// <summary>
+		/// 重载赋值运算符
+		/// </summary>
+		/// <param name="ref"></param>
 		void operator=(const FFmpeg::AVCodecContext &ref)
 		{
 			// 防止自赋值
 			if (this == &ref) return;
 			cout << "AVCodecContext赋值运算符" << endl;
+			// 如果本对象已经分配 _pWrapedObj 资源了就要先释放
 			if (_pWrapedObj)
 				Dispose();
+			// 将对方的资源拿过来
 			_pWrapedObj = ref._pWrapedObj;
 			// 递增引用计数，只要是复制 _pWrapedObj，必须同时复制 _refCount
 			_refCount = ref._refCount;
 		}
+		#pragma endregion
 
-	public://公共方法
+		#pragma region 包装方法
+	public:
 		/// <summary>
 		/// 打开编码器
 		/// </summary>
@@ -136,11 +158,15 @@ namespace FFmpeg
 			if (ret < 0)
 				throw ret;
 		}
+		#pragma endregion
+
+		#pragma region 私有字段
 	private:
 		/// <summary>
-		/// 保存构造函数传进来的编码器参数
+		/// 与本类绑定的 AVCodec
 		/// </summary>
 		FFmpeg::AVCodec _codec;
+		#pragma endregion
 	};
 }
 
