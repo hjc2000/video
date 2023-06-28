@@ -4,7 +4,6 @@ FFmpeg::AVCodecContext audio_dec_ctx;
 static int width, height;
 static enum AVPixelFormat pix_fmt;
 static AVStream *audio_stream = NULL;
-static const char *audio_dst_filename = NULL;
 static FILE *video_dst_file = NULL;
 static FILE *audio_dst_file = NULL;
 
@@ -180,7 +179,6 @@ static int get_format_from_sample_fmt(const char **fmt,
 int demux_decode_main(const char *src_filename)
 {
 	int ret = 0;
-	audio_dst_filename = "out_audio.pcm";
 	// 输入文件
 	FFmpeg::AVFormatContext inputFormatCtx{};
 	inputFormatCtx.open_input(src_filename);
@@ -224,13 +222,9 @@ int demux_decode_main(const char *src_filename)
 	{
 		open_audio_codec_context(&audio_stream_idx, audio_dec_ctx, inputFormatCtx, FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
 		audio_stream = inputFormatCtx()->streams[audio_stream_idx];
-		audio_dst_file = fopen(audio_dst_filename, "wb");
+		audio_dst_file = fopen("out_audio.pcm", "wb");
 		if (!audio_dst_file)
-		{
-			fprintf(stderr, "Could not open destination file %s\n", audio_dst_filename);
-			ret = 1;
-			throw ret;
-		}
+			throw "无法打开音频解码输出文件";
 	}
 	catch (int err) {}
 
@@ -290,11 +284,6 @@ int demux_decode_main(const char *src_filename)
 
 		if ((ret = get_format_from_sample_fmt(&fmt, sfmt)) < 0)
 			goto end;
-
-		printf("Play the output audio file with the command:\n"
-			"ffplay -f %s -ac %d -ar %d %s\n",
-			fmt, n_channels, audio_dec_ctx()->sample_rate,
-			audio_dst_filename);
 	}
 
 end:
