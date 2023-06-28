@@ -12,6 +12,19 @@ namespace FFmpeg
 		AVCodecContext() :Wraper() {}
 		AVCodecContext(::AVCodecContext *p) :Wraper(p) {}
 		AVCodecContext(::AVCodecContext &ref) :Wraper(ref) {}
+		~AVCodecContext()
+		{
+			Dispose();
+		}
+
+		void Dispose()
+		{
+			if (should_dispose())
+			{
+				cout << "AVCodecContext 释放" << endl;
+				avcodec_free_context(&_pWrapedObj);
+			}
+		}
 
 	public:// 工厂函数
 		static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec)
@@ -24,26 +37,18 @@ namespace FFmpeg
 			return ctx;
 		}
 
-		AVCodecContext(FFmpeg::AVCodec codec, AVCodecParameters *param)
+		static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec, AVCodecParameters *param)
 		{
-			_codec = codec;
-			_pWrapedObj = ::avcodec_alloc_context3(codec);
-			if (!_pWrapedObj)
+			FFmpeg::AVCodecContext ctx;
+			ctx._codec = codec;
+			ctx._pWrapedObj = ::avcodec_alloc_context3(codec);
+			if (!ctx._pWrapedObj)
 				throw "avcodec_alloc_context3失败";
-			set_codec_param(param);
-		}
-
-		~AVCodecContext()
-		{
-			Dispose();
-		}
-
-		void Dispose()
-		{
-			if (should_dispose())
+			int ret = ::avcodec_parameters_to_context(ctx._pWrapedObj, param);
+			if (ret < 0)
 			{
-				cout << "AVCodecContext 释放" << endl;
-				avcodec_free_context(&_pWrapedObj);
+				cout << "设置编解码器参数失败" << endl;
+				throw ret;
 			}
 		}
 

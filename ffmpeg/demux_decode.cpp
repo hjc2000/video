@@ -4,7 +4,6 @@ FFmpeg::AVCodecContext audio_dec_ctx;
 static int width, height;
 static enum AVPixelFormat pix_fmt;
 static AVStream *audio_stream = NULL;
-static const char *video_dst_filename = NULL;
 static const char *audio_dst_filename = NULL;
 static FILE *video_dst_file = NULL;
 static FILE *audio_dst_file = NULL;
@@ -178,10 +177,9 @@ static int get_format_from_sample_fmt(const char **fmt,
 	return -1;
 }
 
-int demux_decode(const char *src_filename)
+int demux_decode_main(const char *src_filename)
 {
 	int ret = 0;
-	video_dst_filename = "out_video.yuv";
 	audio_dst_filename = "out_audio.pcm";
 	// 输入文件
 	FFmpeg::AVFormatContext inputFormatCtx{};
@@ -198,10 +196,10 @@ int demux_decode(const char *src_filename)
 
 	try
 	{
-		video_dst_file = fopen(video_dst_filename, "wb");
+		video_dst_file = fopen("out_video.yuv", "wb");
 		if (!video_dst_file)
 		{
-			cout << "无法打开" << video_dst_filename << endl;
+			cout << "无法打开视频解码输出文件" << endl;
 			throw - 1;
 		}
 
@@ -248,11 +246,6 @@ int demux_decode(const char *src_filename)
 
 	FFmpeg::AVFrame frame{};
 
-	if (bestVideoStream)
-		printf("Demuxing video from file '%s' into '%s'\n", src_filename, video_dst_filename);
-	if (audio_stream)
-		printf("Demuxing audio from file '%s' into '%s'\n", src_filename, audio_dst_filename);
-
 	FFmpeg::AVPacket pkt{};
 	/* read frames from the file */
 	try
@@ -278,14 +271,6 @@ int demux_decode(const char *src_filename)
 		decode_packet(audio_dec_ctx, NULL, frame);
 
 	printf("Demuxing succeeded.\n");
-
-	if (bestVideoStream)
-	{
-		printf("Play the output video file with the command:\n"
-			"ffplay -f rawvideo -pix_fmt %s -video_size %dx%d %s\n",
-			av_get_pix_fmt_name(pix_fmt), width, height,
-			video_dst_filename);
-	}
 
 	if (audio_stream)
 	{
