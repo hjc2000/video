@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AVStream.cpp" />
     <ClCompile Include="demux_decode.cpp" />
     <ClCompile Include="try_decode_video.cpp" />
     <ClCompile Include="ffmpeg.cpp" />

@@ -45,6 +45,9 @@
     <ClCompile Include="demux_decode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="AVStream.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(HOME)\ffmpeg_build\lib\avcodec-60.def">

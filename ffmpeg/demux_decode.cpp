@@ -180,13 +180,13 @@ int demux_decode_main(const char *src_filename)
 {
 	int ret = 0;
 	// 输入文件
-	FFmpeg::AVFormatContext inputFormatCtx{};
+	FFmpeg::AVFormatContext inputFormatCtx;
 	// 打开输入文件
 	inputFormatCtx.open_input(src_filename);
 	inputFormatCtx.find_stream_info();
 
 	FFmpeg::AVStream bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
-	FFmpeg::AVCodec bestVideoDecodeCodec = FFmpeg::AVCodec::find_decoder_by_id(bestVideoStream()->codecpar->codec_id);
+	FFmpeg::AVCodec bestVideoDecodeCodec = bestVideoStream.get_stream_codec();
 	// 输出视频文件的解码器上下文
 	FFmpeg::AVCodecContext bestVideoDecodeCodecContext;
 	bestVideoDecodeCodecContext = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec, bestVideoStream()->codecpar);
