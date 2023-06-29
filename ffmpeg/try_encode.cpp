@@ -35,16 +35,16 @@ void try_encode()
 
 	/* find the mpeg1video encoder */
 	FFmpeg::AVCodec codec = FFmpeg::AVCodec::find_encoder_by_name("mpeg1video");
-	FFmpeg::AVCodecContext codec_context = FFmpeg::AVCodecContext::create(codec);
+	FFmpeg::AVCodecContext codecCtx = FFmpeg::AVCodecContext::create(codec);
 
 	/* put sample parameters */
-	codec_context()->bit_rate = 400000;
+	codecCtx()->bit_rate = 400000;
 	/* resolution must be a multiple of two */
-	codec_context()->width = 352;
-	codec_context()->height = 288;
+	codecCtx()->width = 352;
+	codecCtx()->height = 288;
 	/* frames per second */
-	codec_context()->time_base = AVRational{ 1, 25 };
-	codec_context()->framerate = AVRational{ 25, 1 };
+	codecCtx()->time_base = AVRational{ 1, 25 };
+	codecCtx()->framerate = AVRational{ 25, 1 };
 
 	/* emit one intra frame every ten frames
 	* check frame pict_type before passing frame
@@ -52,20 +52,20 @@ void try_encode()
 	* then gop_size is ignored and the output of encoder
 	* will always be I frame irrespective to gop_size
 	*/
-	codec_context()->gop_size = 10;
-	codec_context()->max_b_frames = 1;
-	codec_context()->pix_fmt = AV_PIX_FMT_YUV420P;
+	codecCtx()->gop_size = 10;
+	codecCtx()->max_b_frames = 1;
+	codecCtx()->pix_fmt = AV_PIX_FMT_YUV420P;
 
 	if (codec()->id == AV_CODEC_ID_H264)
-		av_opt_set(codec_context()->priv_data, "preset", "slow", 0);
+		av_opt_set(codecCtx()->priv_data, "preset", "slow", 0);
 
 	/* open it */
-	codec_context.open_codec();
+	codecCtx.open_codec();
 
-	FFmpeg::AVFrame frame;
-	frame()->format = codec_context()->pix_fmt;
-	frame()->width = codec_context()->width;
-	frame()->height = codec_context()->height;
+	FFmpeg::AVFrame frame = FFmpeg::AVFrame::create();
+	frame()->format = codecCtx()->pix_fmt;
+	frame()->width = codecCtx()->width;
+	frame()->height = codecCtx()->height;
 	frame.av_frame_get_buffer(0);
 	/* encode 1 second of video */
 	for (i = 0; i < 25; i++)
@@ -88,18 +88,18 @@ void try_encode()
 		frame.
 		*/
 		/* Y */
-		for (y = 0; y < codec_context()->height; y++)
+		for (y = 0; y < codecCtx()->height; y++)
 		{
-			for (x = 0; x < codec_context()->width; x++)
+			for (x = 0; x < codecCtx()->width; x++)
 			{
 				frame()->data[0][y * frame()->linesize[0] + x] = x + y + i * 3;
 			}
 		}
 
 		/* Cb and Cr */
-		for (y = 0; y < codec_context()->height / 2; y++)
+		for (y = 0; y < codecCtx()->height / 2; y++)
 		{
-			for (x = 0; x < codec_context()->width / 2; x++)
+			for (x = 0; x < codecCtx()->width / 2; x++)
 			{
 				frame()->data[1][y * frame()->linesize[1] + x] = 128 + y + i * 2;
 				frame()->data[2][y * frame()->linesize[2] + x] = 64 + x + i * 5;
@@ -109,11 +109,11 @@ void try_encode()
 		frame()->pts = i;
 
 		/* encode the image */
-		encode(codec_context, frame, fs);
+		encode(codecCtx, frame, fs);
 	}
 
 	/* flush the encoder */
-	encode(codec_context, nullptr, fs);
+	encode(codecCtx, nullptr, fs);
 
 	/* Add sequence end code to have a real MPEG file.
 	It makes only sense because this tiny examples writes packets

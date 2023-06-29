@@ -7,16 +7,12 @@ namespace FFmpeg
 {
 	class AVStream :public Wraper<::AVStream>
 	{
+		#pragma region 生命周期
 	public:
-		AVStream() {}
-		AVStream(::AVStream *p)
-		{
-			_pWrapedObj = p;
-		}
-		AVStream(::AVStream &ref)
-		{
-			_pWrapedObj = &ref;
-		}
+		AVStream() :Wraper() {}
+		AVStream(::AVStream *p) :Wraper(p) {}
+		AVStream(::AVStream &ref) :Wraper(ref) {}
+		#pragma endregion
 
 		#pragma region 包装方法
 	public:

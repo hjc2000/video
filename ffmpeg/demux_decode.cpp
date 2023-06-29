@@ -188,9 +188,9 @@ int demux_decode_main(const char *src_filename)
 	FFmpeg::AVStream bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
 	FFmpeg::AVCodec bestVideoDecodeCodec = bestVideoStream.get_stream_codec();
 	// 输出视频文件的解码器上下文
-	FFmpeg::AVCodecContext bestVideoDecodeCodecContext;
-	bestVideoDecodeCodecContext = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec, bestVideoStream()->codecpar);
-	bestVideoDecodeCodecContext.open_codec();
+	FFmpeg::AVCodecContext bestVideoDecodeCtx;
+	bestVideoDecodeCtx = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec, bestVideoStream()->codecpar);
+	bestVideoDecodeCtx.open_codec();
 
 	try
 	{
@@ -199,9 +199,9 @@ int demux_decode_main(const char *src_filename)
 			throw "无法打开视频解码输出文件";
 
 		/* allocate image where the decoded image will be put */
-		width = bestVideoDecodeCodecContext()->width;
-		height = bestVideoDecodeCodecContext()->height;
-		pix_fmt = bestVideoDecodeCodecContext()->pix_fmt;
+		width = bestVideoDecodeCtx()->width;
+		height = bestVideoDecodeCtx()->height;
+		pix_fmt = bestVideoDecodeCtx()->pix_fmt;
 		ret = av_image_alloc(video_dst_data, video_dst_linesize, width, height, pix_fmt, 1);
 		if (ret < 0)
 		{
@@ -245,7 +245,7 @@ int demux_decode_main(const char *src_filename)
 		{
 			inputFormatCtx.read_frame(pkt);
 			if (pkt()->stream_index == bestVideoStream()->index)
-				ret = decode_packet(bestVideoDecodeCodecContext, pkt, frame);
+				ret = decode_packet(bestVideoDecodeCtx, pkt, frame);
 			else if (pkt()->stream_index == audio_stream_idx)
 				ret = decode_packet(audio_dec_ctx, pkt, frame);
 			pkt.unref();
@@ -256,8 +256,8 @@ int demux_decode_main(const char *src_filename)
 	catch (int err) {}
 
 	/* flush the decoders */
-	if (bestVideoDecodeCodecContext)
-		decode_packet(bestVideoDecodeCodecContext, NULL, frame);
+	if (bestVideoDecodeCtx)
+		decode_packet(bestVideoDecodeCtx, NULL, frame);
 	if (audio_dec_ctx)
 		decode_packet(audio_dec_ctx, NULL, frame);
 
