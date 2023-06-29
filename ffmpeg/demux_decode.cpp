@@ -179,21 +179,23 @@ static int get_format_from_sample_fmt(const char **fmt,
 int demux_decode_main(const char *src_filename)
 {
 	int ret = 0;
-	// 输入文件
-	FFmpeg::AVFormatContext inputFormatCtx;
 	// 打开输入文件
+	FFmpeg::AVFormatContext inputFormatCtx;
 	inputFormatCtx.open_input(src_filename);
 	inputFormatCtx.find_stream_info();
 
-	FFmpeg::AVStream bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
-	FFmpeg::AVCodec bestVideoDecodeCodec = bestVideoStream.get_stream_codec();
-	// 输出视频文件的解码器上下文
+	FFmpeg::AVStream bestVideoStream;
+	FFmpeg::AVCodec bestVideoDecodeCodec;
 	FFmpeg::AVCodecContext bestVideoDecodeCtx;
-	bestVideoDecodeCtx = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec, bestVideoStream()->codecpar);
-	bestVideoDecodeCtx.open_codec();
 
 	try
 	{
+		bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
+		bestVideoDecodeCodec = bestVideoStream.get_stream_codec();
+		// 输出视频文件的解码器上下文
+		bestVideoDecodeCtx = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec, bestVideoStream()->codecpar);
+		bestVideoDecodeCtx.open_codec();
+
 		video_dst_file = fopen("out_video.yuv", "wb");
 		if (!video_dst_file)
 			throw "无法打开视频解码输出文件";
@@ -211,19 +213,31 @@ int demux_decode_main(const char *src_filename)
 
 		video_dst_bufsize = ret;
 	}
-	catch (int err_code) {}
+	catch (int err_code)
+	{
+		cout << "查找视频流时发生异常" << endl;
+		cout << FFmpeg::error_code_to_str(err_code) << endl;
+	}
 
+	//FFmpeg::AVStream bestAudioStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
 	int audio_stream_idx = -1;
+	FFmpeg::AVStream bestAudioStream;
 
 	try
 	{
+		bestAudioStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
 		open_audio_codec_context(&audio_stream_idx, audio_dec_ctx, inputFormatCtx);
+		cout << "最好的音频流索引 = " << audio_stream_idx << endl;
 		audio_stream = inputFormatCtx()->streams[audio_stream_idx];
 		audio_dst_file = fopen("out_audio.pcm", "wb");
 		if (!audio_dst_file)
 			throw "无法打开音频解码输出文件";
 	}
-	catch (int err) {}
+	catch (int err)
+	{
+		cout << "查找音频流时发生异常" << endl;
+		cout << FFmpeg::error_code_to_str(err) << endl;
+	}
 
 	/* dump input information to stderr */
 	av_dump_format(inputFormatCtx, 0, src_filename, 0);
