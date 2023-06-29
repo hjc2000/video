@@ -1,6 +1,6 @@
 #include<FFmpeg.h>
 
-static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, fstream& outfile)
+static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, fstream &outfile)
 {
 	enc_ctx.avcodec_send_frame(frame);
 	FFmpeg::AVPacket pkt;
@@ -9,7 +9,7 @@ static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, fstrea
 		try
 		{
 			enc_ctx.avcodec_receive_packet(pkt);
-			outfile.write((char*)pkt()->data, pkt()->size);
+			outfile.write((char *)pkt()->data, pkt()->size);
 		}
 		catch (int err_code)
 		{
@@ -31,7 +31,7 @@ void try_encode()
 	int i, ret, x, y;
 	fstream fs{ "output.mp4", ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary };
 	uint8_t endcode[] = { 0, 0, 1, 0xb7 };
-	const char* filename = "output.mp4";
+	const char *filename = "output.mp4";
 
 	/* find the mpeg1video encoder */
 	FFmpeg::AVCodec codec = FFmpeg::AVCodec::find_encoder_by_name("mpeg1video");
@@ -62,7 +62,8 @@ void try_encode()
 	/* open it */
 	codecCtx.open_codec();
 
-	FFmpeg::AVFrame frame = FFmpeg::AVFrame::create();
+	FFmpeg::AVFrame frame;
+	frame = FFmpeg::AVFrame::create();
 	frame()->format = codecCtx()->pix_fmt;
 	frame()->width = codecCtx()->width;
 	frame()->height = codecCtx()->height;
@@ -122,7 +123,7 @@ void try_encode()
 	into a proper file format or protocol; see mux.c.
 	*/
 	if (codec()->id == AV_CODEC_ID_MPEG1VIDEO || codec()->id == AV_CODEC_ID_MPEG2VIDEO)
-		fs.write((char*)endcode, sizeof(endcode));
+		fs.write((char *)endcode, sizeof(endcode));
 
 	fs.flush();
 	fs.close();

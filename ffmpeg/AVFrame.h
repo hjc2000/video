@@ -8,16 +8,14 @@ namespace FFmpeg
 	{
 	public:
 		AVFrame() :Wraper() {}
-		AVFrame(::AVFrame *p)
-		{
-			_pWrapedObj = p;
-		}
+		AVFrame(::AVFrame *p) :Wraper(p) {}
+		AVFrame(::AVFrame &ref) :Wraper(ref) {}
 
 		~AVFrame()
 		{
 			Dispose();
 		}
-		
+
 		void Dispose()
 		{
 			if (should_dispose())
