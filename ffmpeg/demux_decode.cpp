@@ -235,7 +235,7 @@ int demux_decode_main(const char *src_filename)
 		throw ret;
 	}
 
-	FFmpeg::AVFrame frame{};
+	FFmpeg::AVFrame frame = FFmpeg::AVFrame::create();
 
 	FFmpeg::AVPacket pkt{};
 	/* read frames from the file */

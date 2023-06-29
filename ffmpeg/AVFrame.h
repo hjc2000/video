@@ -16,7 +16,7 @@ namespace FFmpeg
 			Dispose();
 		}
 
-		void Dispose()
+		void Dispose() override
 		{
 			if (should_dispose())
 			{
@@ -34,27 +34,6 @@ namespace FFmpeg
 			if (!frame._pWrapedObj)
 				throw "av_frame_alloc 失败";
 			return frame;
-		}
-		#pragma endregion
-
-		#pragma region 运算符重载
-	public:
-		/// <summary>
-		/// 重载赋值运算符
-		/// </summary>
-		/// <param name="ref"></param>
-		void operator=(const FFmpeg::AVFrame &ref)
-		{
-			// 防止自赋值
-			if (this == &ref) return;
-			cout << "AVFrame 赋值运算符" << endl;
-			// 如果本对象已经分配 _pWrapedObj 资源了就要先释放
-			if (_pWrapedObj)
-				Dispose();
-			// 将对方的资源拿过来
-			_pWrapedObj = ref._pWrapedObj;
-			// 递增引用计数，只要是复制 _pWrapedObj，必须同时复制 _refCount
-			_refCount = ref._refCount;
 		}
 		#pragma endregion
 

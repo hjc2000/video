@@ -15,6 +15,7 @@ using std::shared_ptr;
 template <class T>
 class Wraper
 {
+	#pragma region 生命周期
 public:
 	/// <summary>
 	/// 无参构造函数
@@ -55,18 +56,29 @@ public:
 
 	virtual ~Wraper() {}
 
-private:
+	virtual void Dispose() {}
+	#pragma endregion
+
+	#pragma region 运算符重载
+public:
 	/// <summary>
-	/// * 禁止使用一个已经构造完成的对象对另一个已经构造完成的对象赋值。如果不重载这个运算符并设为
-	/// private，编译器会生成一个默认的，这会导致内存泄漏，因为被赋值的对象的 _pWrapedObj 失去
-	/// 了原本指向的地址，无法对它进行释放了
-	/// * 父类 Wraper 重载这个运算符并设为 private 后，所有子类，如果不自己实现一个一个 public 的，
-	/// 都无法使用这个运算符了。注意，父类实现复制运算符并不是重写此运算符，因为这不是虚函数。而且前面也说了，
-	/// 包装类不是用来实现多态的，只是提供一些相同的功能，减少编写代码中的重复劳动而已。
+	/// 重载赋值运算符
 	/// </summary>
 	/// <param name="ref"></param>
-	/// <returns></returns>
-	void operator=(const Wraper &ref) {}
+	void operator=(const Wraper &ref)
+	{
+		// 防止自赋值
+		if (this == &ref) return;
+		cout << "Wraper 赋值运算符" << endl;
+		// 如果本对象已经分配 _pWrapedObj 资源了就要先释放
+		if (_pWrapedObj)
+			Dispose();
+		// 将对方的资源拿过来
+		_pWrapedObj = ref._pWrapedObj;
+		// 递增引用计数，只要是复制 _pWrapedObj，必须同时复制 _refCount
+		_refCount = ref._refCount;
+	}
+	#pragma endregion
 
 protected:
 	/// <summary>
