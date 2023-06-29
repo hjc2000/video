@@ -1,9 +1,8 @@
 #include<FFmpeg.h>
 
-FFmpeg::AVCodecContext audio_dec_ctx;
+FFmpeg::AVCodecContext bestAudioDecodeCtx;
 static int width, height;
 static enum AVPixelFormat pix_fmt;
-static AVStream *audio_stream = NULL;
 static FILE *video_dst_file = NULL;
 static FILE *audio_dst_file = NULL;
 
@@ -52,7 +51,7 @@ static int output_audio_frame(AVFrame *frame)
 	size_t unpadded_linesize = frame->nb_samples * av_get_bytes_per_sample((AVSampleFormat)frame->format);
 	printf("audio_frame n:%d nb_samples:%d pts:%s\n",
 		audio_frame_count++, frame->nb_samples,
-		av_ts_make_time_string(err_buff, frame->pts, &(audio_dec_ctx()->time_base)));
+		av_ts_make_time_string(err_buff, frame->pts, &(bestAudioDecodeCtx()->time_base)));
 
 	/* Write the raw audio data samples of the first plane. This works
 	 * fine for packed formats (e.g. AV_SAMPLE_FMT_S16). However,
@@ -109,40 +108,6 @@ static int decode_packet(FFmpeg::AVCodecContext dec, FFmpeg::AVPacket pkt, FFmpe
 	return 0;
 }
 
-static void open_audio_codec_context(int *stream_idx, AVCodecContext **dec_ctx, FFmpeg::AVFormatContext fmt_ctx)
-{
-	FFmpeg::AVStream st;
-	st = fmt_ctx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
-	FFmpeg::AVCodec dec = FFmpeg::AVCodec::find_decoder_by_id(st()->codecpar->codec_id);
-
-	/* Allocate a codec context for the decoder */
-	*dec_ctx = avcodec_alloc_context3(dec);
-	if (!*dec_ctx)
-	{
-		fprintf(stderr, "Failed to allocate the %s codec context\n",
-			av_get_media_type_string(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO));
-		throw AVERROR(ENOMEM);
-	}
-
-	/* Copy codec parameters from input stream to output codec context */
-	int ret;
-	if ((ret = avcodec_parameters_to_context(*dec_ctx, st()->codecpar)) < 0)
-	{
-		fprintf(stderr, "Failed to copy %s codec parameters to decoder context\n",
-			av_get_media_type_string(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO));
-		throw ret;
-	}
-
-	/* Init the decoders */
-	if ((ret = avcodec_open2(*dec_ctx, dec, NULL)) < 0)
-	{
-		fprintf(stderr, "Failed to open %s codec\n",
-			av_get_media_type_string(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO));
-		throw ret;
-	}
-	*stream_idx = st()->index;
-}
-
 static int get_format_from_sample_fmt(const char **fmt,
 	enum AVSampleFormat sample_fmt)
 {
@@ -192,7 +157,6 @@ int demux_decode_main(const char *src_filename)
 	{
 		bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
 		bestVideoDecodeCodec = bestVideoStream.get_stream_codec();
-		// 输出视频文件的解码器上下文
 		bestVideoDecodeCtx = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec, bestVideoStream()->codecpar);
 		bestVideoDecodeCtx.open_codec();
 
@@ -220,15 +184,15 @@ int demux_decode_main(const char *src_filename)
 	}
 
 	//FFmpeg::AVStream bestAudioStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
-	int audio_stream_idx = -1;
 	FFmpeg::AVStream bestAudioStream;
+	FFmpeg::AVCodec bestAudioDecodeCodec;
 
 	try
 	{
 		bestAudioStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
-		open_audio_codec_context(&audio_stream_idx, audio_dec_ctx, inputFormatCtx);
-		cout << "最好的音频流索引 = " << audio_stream_idx << endl;
-		audio_stream = inputFormatCtx()->streams[audio_stream_idx];
+		bestAudioDecodeCodec = bestAudioStream.get_stream_codec();
+		bestAudioDecodeCtx = FFmpeg::AVCodecContext::create(bestAudioDecodeCodec, bestAudioStream()->codecpar);
+		bestAudioDecodeCtx.open_codec();
 		audio_dst_file = fopen("out_audio.pcm", "wb");
 		if (!audio_dst_file)
 			throw "无法打开音频解码输出文件";
@@ -242,7 +206,7 @@ int demux_decode_main(const char *src_filename)
 	/* dump input information to stderr */
 	av_dump_format(inputFormatCtx, 0, src_filename, 0);
 
-	if (!audio_stream && !bestVideoStream)
+	if (!bestAudioStream && !bestVideoStream)
 	{
 		fprintf(stderr, "Could not find audio or video stream in the input, aborting\n");
 		ret = 1;
@@ -260,8 +224,8 @@ int demux_decode_main(const char *src_filename)
 			inputFormatCtx.read_frame(pkt);
 			if (pkt()->stream_index == bestVideoStream()->index)
 				ret = decode_packet(bestVideoDecodeCtx, pkt, frame);
-			else if (pkt()->stream_index == audio_stream_idx)
-				ret = decode_packet(audio_dec_ctx, pkt, frame);
+			else if (pkt()->stream_index == bestAudioStream()->index)
+				ret = decode_packet(bestAudioDecodeCtx, pkt, frame);
 			pkt.unref();
 			if (ret < 0)
 				break;
@@ -272,15 +236,15 @@ int demux_decode_main(const char *src_filename)
 	/* flush the decoders */
 	if (bestVideoDecodeCtx)
 		decode_packet(bestVideoDecodeCtx, NULL, frame);
-	if (audio_dec_ctx)
-		decode_packet(audio_dec_ctx, NULL, frame);
+	if (bestAudioDecodeCtx)
+		decode_packet(bestAudioDecodeCtx, NULL, frame);
 
 	printf("Demuxing succeeded.\n");
 
-	if (audio_stream)
+	if (bestAudioStream)
 	{
-		enum AVSampleFormat sfmt = audio_dec_ctx()->sample_fmt;
-		int n_channels = audio_dec_ctx()->ch_layout.nb_channels;
+		enum AVSampleFormat sfmt = bestAudioDecodeCtx()->sample_fmt;
+		int n_channels = bestAudioDecodeCtx()->ch_layout.nb_channels;
 		const char *fmt;
 
 		if (av_sample_fmt_is_planar(sfmt))
