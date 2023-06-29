@@ -89,11 +89,17 @@ namespace FFmpeg
 
 		#pragma region 包装方法
 	public:
-		/// @brief 对 FFmpeg 内部提供的打印流信息的函数的封装。会以官方格式打印流信息
-		/// @param index 想要打印信息的流的索引号
-		/// @param url 自定义的 url，比如这是一个输出文件，那么 url 就是你定义的输出文件路径。
+		/// <summary>
+		/// 对 FFmpeg 内部提供的打印流信息的函数的封装。会以官方格式打印流信息
+		/// </summary>
+		/// <param name="index">想要打印信息的流的索引号</param>
+		/// <param name="url">
+		/// 自定义的 url，比如这是一个输出文件，那么 url 就是你定义的输出文件路径。
 		/// 你随便输都没关系，这里的 url 的用途只有被显示
-		/// @param is_output 是否是输出文件。你也可以随便定，同样的，这个参数的用途只是用来被显示
+		/// </param>
+		/// <param name="is_output">
+		/// 是否是输出文件。你也可以随便定，同样的，这个参数的用途只是用来被显示
+		/// </param>
 		void dump_format(int index, const char *url, int is_output)
 		{
 			::av_dump_format(_pWrapedObj, index, url, is_output);

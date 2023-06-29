@@ -143,12 +143,12 @@ static int get_format_from_sample_fmt(const char **fmt,
 
 int demux_decode_main(const char *src_filename)
 {
-	int ret = 0;
 	// 打开输入文件
 	FFmpeg::AVFormatContext inputFormatCtx;
 	inputFormatCtx.open_input(src_filename);
 	inputFormatCtx.find_stream_info();
 
+	// 准备视频解码器
 	FFmpeg::AVStream bestVideoStream;
 	FFmpeg::AVCodec bestVideoDecodeCodec;
 	FFmpeg::AVCodecContext bestVideoDecodeCtx;
@@ -168,14 +168,14 @@ int demux_decode_main(const char *src_filename)
 		width = bestVideoDecodeCtx()->width;
 		height = bestVideoDecodeCtx()->height;
 		pix_fmt = bestVideoDecodeCtx()->pix_fmt;
-		ret = av_image_alloc(video_dst_data, video_dst_linesize, width, height, pix_fmt, 1);
-		if (ret < 0)
+		int size = av_image_alloc(video_dst_data, video_dst_linesize, width, height, pix_fmt, 1);
+		if (size < 0)
 		{
 			fprintf(stderr, "Could not allocate raw video buffer\n");
-			throw ret;
+			throw size;
 		}
 
-		video_dst_bufsize = ret;
+		video_dst_bufsize = size;
 	}
 	catch (int err_code)
 	{
@@ -183,7 +183,7 @@ int demux_decode_main(const char *src_filename)
 		cout << FFmpeg::error_code_to_str(err_code) << endl;
 	}
 
-	//FFmpeg::AVStream bestAudioStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
+	// 准备音频解码器
 	FFmpeg::AVStream bestAudioStream;
 	FFmpeg::AVCodec bestAudioDecodeCodec;
 
@@ -203,22 +203,19 @@ int demux_decode_main(const char *src_filename)
 		cout << FFmpeg::error_code_to_str(err) << endl;
 	}
 
-	/* dump input information to stderr */
-	av_dump_format(inputFormatCtx, 0, src_filename, 0);
+	// 打印流信息
+	inputFormatCtx.dump_format(bestVideoStream()->index, src_filename, 0);
 
 	if (!bestAudioStream && !bestVideoStream)
-	{
-		fprintf(stderr, "Could not find audio or video stream in the input, aborting\n");
-		ret = 1;
-		throw ret;
-	}
+		throw "找不到音频流和视频流";
 
 	FFmpeg::AVFrame frame = FFmpeg::AVFrame::create();
 
-	FFmpeg::AVPacket pkt{};
+	FFmpeg::AVPacket pkt;
 	/* read frames from the file */
 	try
 	{
+		int ret = -1;
 		while (1)
 		{
 			inputFormatCtx.read_frame(pkt);
@@ -257,7 +254,7 @@ int demux_decode_main(const char *src_filename)
 			n_channels = 1;
 		}
 
-		if ((ret = get_format_from_sample_fmt(&fmt, sfmt)) < 0)
+		if (get_format_from_sample_fmt(&fmt, sfmt) < 0)
 			goto end;
 	}
 
@@ -267,6 +264,4 @@ end:
 	if (audio_dst_file)
 		fclose(audio_dst_file);
 	av_free(video_dst_data[0]);
-
-	return ret < 0;
 }
