@@ -7,28 +7,31 @@ namespace FFmpeg
 {
 	class AVPacket : public Wraper<::AVPacket>
 	{
+		#pragma region 生命周期
 	public:
 		AVPacket()
 		{
 			_pWrapedObj = new ::AVPacket{};
 		}
-		AVPacket(::AVPacket *p)
-		{
-			_pWrapedObj = p;
-		}
-		AVPacket(::AVPacket &ref)
-		{
-			_pWrapedObj = &ref;
-		}
+		AVPacket(::AVPacket *p) :Wraper(p) {}
+		AVPacket(::AVPacket &ref) :Wraper(ref) {}
+
 		~AVPacket()
+		{
+			Dispose();
+		}
+
+		void Dispose() override
 		{
 			if (should_dispose() && _pWrapedObj)
 			{
 				cout << "AVPacket析构" << endl;
 				unref();
 				delete _pWrapedObj;
+				_pWrapedObj = nullptr;
 			}
 		}
+		#pragma endregion
 
 	public:
 		/// <summary>

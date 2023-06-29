@@ -18,7 +18,10 @@ int main(void)
 		// ffplay -f rawvideo -video_size 352x288 out_video.yuv
 		// ffplay -f f32le -ac 1 -ar 44100 out_audio.pcm
 		demux_decode_main("mpegts1.mp4");
-		//try_encode();
+		cout << endl;
+		cout << "*************************************************" << endl;
+		cout << endl;
+		try_encode();
 
 
 

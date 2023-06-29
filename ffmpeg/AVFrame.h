@@ -6,6 +6,7 @@ namespace FFmpeg
 {
 	class AVFrame :public Wraper<::AVFrame>
 	{
+		#pragma region 生命周期
 	public:
 		AVFrame() :Wraper() {}
 		AVFrame(::AVFrame *p) :Wraper(p) {}
@@ -20,10 +21,11 @@ namespace FFmpeg
 		{
 			if (should_dispose())
 			{
-				cout << "AVFrame 析构" << endl;
+				cout << "AVFrame 释放" << endl;
 				av_frame_free(&_pWrapedObj);
 			}
 		}
+		#pragma endregion
 
 		#pragma region 工厂函数
 	public:

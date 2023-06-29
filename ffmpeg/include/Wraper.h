@@ -56,6 +56,9 @@ public:
 
 	virtual ~Wraper() {}
 
+	/// <summary>
+	/// 子类如果需要释放资源，一定重写此方法以供父类在赋值运算符中调用
+	/// </summary>
 	virtual void Dispose() {}
 	#pragma endregion
 
@@ -69,7 +72,6 @@ public:
 	{
 		// 防止自赋值
 		if (this == &ref) return;
-		cout << "Wraper 赋值运算符" << endl;
 		// 如果本对象已经分配 _pWrapedObj 资源了就要先释放
 		if (_pWrapedObj)
 			Dispose();
