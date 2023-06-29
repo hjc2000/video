@@ -4,7 +4,7 @@ void try_encode();
 void try_remux();
 int try_decode_video();
 int try_transcode();
-int demux_decode_main(const char* src_filename);
+int demux_decode_main(const char *src_filename);
 
 int main(void)
 {
@@ -21,7 +21,7 @@ int main(void)
 		cout << endl;
 		cout << "*************************************************" << endl;
 		cout << endl;
-		try_encode();
+		//try_encode();
 
 
 
@@ -32,7 +32,7 @@ int main(void)
 	{
 		std::cerr << FFmpeg::error_code_to_str(err_code) << endl;
 	}
-	catch (const char* str)
+	catch (const char *str)
 	{
 		std::cerr << str << endl;
 	}

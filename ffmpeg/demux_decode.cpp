@@ -109,10 +109,10 @@ static int decode_packet(FFmpeg::AVCodecContext dec, FFmpeg::AVPacket pkt, FFmpe
 	return 0;
 }
 
-static void open_audio_codec_context(int *stream_idx,
-	AVCodecContext **dec_ctx, FFmpeg::AVFormatContext fmt_ctx, FFmpeg::AVMediaType type)
+static void open_audio_codec_context(int *stream_idx, AVCodecContext **dec_ctx, FFmpeg::AVFormatContext fmt_ctx)
 {
-	FFmpeg::AVStream st = fmt_ctx.find_best_stream(type);
+	FFmpeg::AVStream st;
+	st = fmt_ctx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
 	FFmpeg::AVCodec dec = FFmpeg::AVCodec::find_decoder_by_id(st()->codecpar->codec_id);
 
 	/* Allocate a codec context for the decoder */
@@ -120,7 +120,7 @@ static void open_audio_codec_context(int *stream_idx,
 	if (!*dec_ctx)
 	{
 		fprintf(stderr, "Failed to allocate the %s codec context\n",
-			av_get_media_type_string(type));
+			av_get_media_type_string(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO));
 		throw AVERROR(ENOMEM);
 	}
 
@@ -129,7 +129,7 @@ static void open_audio_codec_context(int *stream_idx,
 	if ((ret = avcodec_parameters_to_context(*dec_ctx, st()->codecpar)) < 0)
 	{
 		fprintf(stderr, "Failed to copy %s codec parameters to decoder context\n",
-			av_get_media_type_string(type));
+			av_get_media_type_string(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO));
 		throw ret;
 	}
 
@@ -137,7 +137,7 @@ static void open_audio_codec_context(int *stream_idx,
 	if ((ret = avcodec_open2(*dec_ctx, dec, NULL)) < 0)
 	{
 		fprintf(stderr, "Failed to open %s codec\n",
-			av_get_media_type_string(type));
+			av_get_media_type_string(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO));
 		throw ret;
 	}
 	*stream_idx = st()->index;
@@ -217,7 +217,7 @@ int demux_decode_main(const char *src_filename)
 
 	try
 	{
-		open_audio_codec_context(&audio_stream_idx, audio_dec_ctx, inputFormatCtx, FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
+		open_audio_codec_context(&audio_stream_idx, audio_dec_ctx, inputFormatCtx);
 		audio_stream = inputFormatCtx()->streams[audio_stream_idx];
 		audio_dst_file = fopen("out_audio.pcm", "wb");
 		if (!audio_dst_file)
