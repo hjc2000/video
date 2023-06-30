@@ -66,27 +66,6 @@ static int output_audio_frame(AVFrame *frame)
 	return 0;
 }
 
-static void decode_packet(FFmpeg::AVCodecContext decoderCtx, FFmpeg::AVPacket pkt, FFmpeg::AVFrame frame)
-{
-	// submit the packet to the decoder
-	decoderCtx.send_packet(pkt);
-	int ret = 0;
-
-	// get all the available frames from the decoder
-	while (decoderCtx.receive_frame(frame))
-	{
-		// write the frame data to output file
-		if (decoderCtx()->codec->type == AVMEDIA_TYPE_VIDEO)
-			ret = output_video_frame(frame);
-		else
-			ret = output_audio_frame(frame);
-
-		frame.unref();
-		if (ret < 0)
-			throw ret;
-	}
-}
-
 static int get_format_from_sample_fmt(const char **fmt,
 	enum AVSampleFormat sample_fmt)
 {
@@ -197,9 +176,36 @@ int demux_decode_main(const char *src_filename)
 		while (inputFormatCtx.read_packet(pkt))
 		{
 			if (pkt()->stream_index == bestVideoStream()->index)
-				decode_packet(bestVideoDecodeCtx, pkt, frame);
+			{
+				// 如果读到的包是视频流的包
+				// 向视频解码器发送包
+				bestVideoDecodeCtx.send_packet(pkt);
+				int ret = 0;
+				// 在循环中读取解码后的帧
+				while (bestVideoDecodeCtx.receive_frame(frame))
+				{
+					// write the frame data to output file
+					ret = output_video_frame(frame);
+					frame.unref();
+					if (ret < 0)
+						throw ret;
+				}
+			}
 			else if (pkt()->stream_index == bestAudioStream()->index)
-				decode_packet(bestAudioDecodeCtx, pkt, frame);
+			{
+				// 如果读取到的包是音频流的包
+				bestAudioDecodeCtx.send_packet(pkt);
+				int ret = 0;
+
+				// get all the available frames from the decoder
+				while (bestAudioDecodeCtx.receive_frame(frame))
+				{
+					ret = output_audio_frame(frame);
+					frame.unref();
+					if (ret < 0)
+						throw ret;
+				}
+			}
 			pkt.unref();
 		}
 	}
@@ -210,9 +216,48 @@ int demux_decode_main(const char *src_filename)
 
 	/* flush the decoders */
 	if (bestVideoDecodeCtx)
-		decode_packet(bestVideoDecodeCtx, NULL, frame);
+	{
+		try
+		{
+			bestVideoDecodeCtx.send_packet(nullptr);
+			int ret = 0;
+			// 在循环中读取解码后的帧
+			while (bestVideoDecodeCtx.receive_frame(frame))
+			{
+				// write the frame data to output file
+				ret = output_video_frame(frame);
+				frame.unref();
+				if (ret < 0)
+					throw ret;
+			}
+		}
+		catch (int err)
+		{
+			cout << "刷新视频解码器缓冲区时异常" << endl;
+		}
+	}
+
 	if (bestAudioDecodeCtx)
-		decode_packet(bestAudioDecodeCtx, NULL, frame);
+	{
+		try
+		{
+			bestAudioDecodeCtx.send_packet(nullptr);
+			int ret = 0;
+
+			// get all the available frames from the decoder
+			while (bestAudioDecodeCtx.receive_frame(frame))
+			{
+				ret = output_audio_frame(frame);
+				frame.unref();
+				if (ret < 0)
+					throw ret;
+			}
+		}
+		catch (int err)
+		{
+			cout << "刷新音频解码器缓冲区时异常" << endl;
+		}
+	}
 
 end:
 	if (video_dst_file)
