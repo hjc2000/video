@@ -53,5 +53,10 @@ namespace FFmpeg
 			if (ret < 0)
 				throw ret;
 		}
+
+		void unref()
+		{
+			::av_frame_unref(_pWrapedObj);
+		}
 	};
 }

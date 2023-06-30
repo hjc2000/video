@@ -66,41 +66,22 @@ static int output_audio_frame(AVFrame *frame)
 	return 0;
 }
 
-static int decode_packet(FFmpeg::AVCodecContext dec, FFmpeg::AVPacket pkt, FFmpeg::AVFrame frame)
+static int decode_packet(FFmpeg::AVCodecContext decoderCtx, FFmpeg::AVPacket pkt, FFmpeg::AVFrame frame)
 {
+	// submit the packet to the decoder
+	decoderCtx.send_packet(pkt);
 	int ret = 0;
 
-	// submit the packet to the decoder
-	ret = avcodec_send_packet(dec, pkt);
-	if (ret < 0)
-	{
-		char err_buff[64];
-		fprintf(stderr, "Error submitting a packet for decoding (%s)\n", av_make_error_string(err_buff, 64, ret));
-		return ret;
-	}
-
 	// get all the available frames from the decoder
-	while (ret >= 0)
+	while (decoderCtx.receive_frame(frame))
 	{
-		ret = avcodec_receive_frame(dec, frame);
-		if (ret < 0)
-		{
-			// those two return values are special and mean there is no output
-			// frame available, but there were no errors during decoding
-			if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN))
-				return 0;
-			char err_buff[64];
-			fprintf(stderr, "Error during decoding (%s)\n", av_make_error_string(err_buff, 64, ret));
-			return ret;
-		}
-
 		// write the frame data to output file
-		if (dec()->codec->type == AVMEDIA_TYPE_VIDEO)
+		if (decoderCtx()->codec->type == AVMEDIA_TYPE_VIDEO)
 			ret = output_video_frame(frame);
 		else
 			ret = output_audio_frame(frame);
 
-		av_frame_unref(frame);
+		frame.unref();
 		if (ret < 0)
 			return ret;
 	}
@@ -210,7 +191,6 @@ int demux_decode_main(const char *src_filename)
 		throw "找不到音频流和视频流";
 
 	FFmpeg::AVFrame frame = FFmpeg::AVFrame::create();
-
 	FFmpeg::AVPacket pkt;
 	/* read frames from the file */
 	try
