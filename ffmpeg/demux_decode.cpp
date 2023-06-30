@@ -66,7 +66,7 @@ static int output_audio_frame(AVFrame *frame)
 	return 0;
 }
 
-static int decode_packet(FFmpeg::AVCodecContext decoderCtx, FFmpeg::AVPacket pkt, FFmpeg::AVFrame frame)
+static void decode_packet(FFmpeg::AVCodecContext decoderCtx, FFmpeg::AVPacket pkt, FFmpeg::AVFrame frame)
 {
 	// submit the packet to the decoder
 	decoderCtx.send_packet(pkt);
@@ -83,10 +83,8 @@ static int decode_packet(FFmpeg::AVCodecContext decoderCtx, FFmpeg::AVPacket pkt
 
 		frame.unref();
 		if (ret < 0)
-			return ret;
+			throw ret;
 	}
-
-	return 0;
 }
 
 static int get_format_from_sample_fmt(const char **fmt,
@@ -196,16 +194,13 @@ int demux_decode_main(const char *src_filename)
 
 	try
 	{
-		int ret = -1;
 		while (inputFormatCtx.read_packet(pkt))
 		{
 			if (pkt()->stream_index == bestVideoStream()->index)
-				ret = decode_packet(bestVideoDecodeCtx, pkt, frame);
+				decode_packet(bestVideoDecodeCtx, pkt, frame);
 			else if (pkt()->stream_index == bestAudioStream()->index)
-				ret = decode_packet(bestAudioDecodeCtx, pkt, frame);
+				decode_packet(bestAudioDecodeCtx, pkt, frame);
 			pkt.unref();
-			if (ret < 0)
-				break;
 		}
 	}
 	catch (int err)
