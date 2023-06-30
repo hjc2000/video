@@ -46,7 +46,7 @@ void try_remux()
 		FFmpeg::AVPacket packet;
 		while (1)
 		{
-			iformat_context.read_frame(packet);
+			iformat_context.read_packet(packet);
 			FFmpeg::AVStream input_stream = iformat_context.get_stream(packet()->stream_index);
 			// 如果映射表中的目标索引号是负数，表示此流不被复制到输出格式中
 			if (stream_map[packet()->stream_index] >= 0)

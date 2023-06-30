@@ -193,10 +193,11 @@ int demux_decode_main(const char *src_filename)
 	FFmpeg::AVFrame frame = FFmpeg::AVFrame::create();
 	FFmpeg::AVPacket pkt;
 	/* read frames from the file */
+
 	try
 	{
 		int ret = -1;
-		while (inputFormatCtx.read_frame(pkt))
+		while (inputFormatCtx.read_packet(pkt))
 		{
 			if (pkt()->stream_index == bestVideoStream()->index)
 				ret = decode_packet(bestVideoDecodeCtx, pkt, frame);
@@ -207,7 +208,10 @@ int demux_decode_main(const char *src_filename)
 				break;
 		}
 	}
-	catch (int err) {}
+	catch (int err)
+	{
+		cout << "发生了异常" << endl;
+	}
 
 	/* flush the decoders */
 	if (bestVideoDecodeCtx)

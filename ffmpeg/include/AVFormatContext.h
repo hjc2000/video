@@ -131,12 +131,12 @@ namespace FFmpeg
 
 		/// <summary>
 		/// 读取一个包（未解码的音视频数据包）
-		/// * 如果已经到达文件末尾，或发生错误，会返回 false，否则返回 true
+		/// * 如果已经到达文件尾或发生错误，会返回 false，否则返回 true
 		/// * 可以将本方法作为循环条件，在循环中反复读取包
 		/// </summary>
 		/// <param name="packet"></param>
 		/// <returns></returns>
-		bool read_frame(FFmpeg::AVPacket packet)
+		bool read_packet(FFmpeg::AVPacket packet)
 		{
 			int result = ::av_read_frame(_pWrapedObj, packet);
 			if (result < 0)
