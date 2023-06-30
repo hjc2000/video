@@ -196,9 +196,8 @@ int demux_decode_main(const char *src_filename)
 	try
 	{
 		int ret = -1;
-		while (1)
+		while (inputFormatCtx.read_frame(pkt))
 		{
-			inputFormatCtx.read_frame(pkt);
 			if (pkt()->stream_index == bestVideoStream()->index)
 				ret = decode_packet(bestVideoDecodeCtx, pkt, frame);
 			else if (pkt()->stream_index == bestAudioStream()->index)
@@ -215,8 +214,6 @@ int demux_decode_main(const char *src_filename)
 		decode_packet(bestVideoDecodeCtx, NULL, frame);
 	if (bestAudioDecodeCtx)
 		decode_packet(bestAudioDecodeCtx, NULL, frame);
-
-	printf("Demuxing succeeded.\n");
 
 	if (bestAudioStream)
 	{
