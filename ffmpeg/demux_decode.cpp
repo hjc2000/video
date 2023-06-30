@@ -214,26 +214,6 @@ int demux_decode_main(const char *src_filename)
 	if (bestAudioDecodeCtx)
 		decode_packet(bestAudioDecodeCtx, NULL, frame);
 
-	if (bestAudioStream)
-	{
-		enum AVSampleFormat sfmt = bestAudioDecodeCtx()->sample_fmt;
-		int n_channels = bestAudioDecodeCtx()->ch_layout.nb_channels;
-		const char *fmt;
-
-		if (av_sample_fmt_is_planar(sfmt))
-		{
-			const char *packed = av_get_sample_fmt_name(sfmt);
-			printf("Warning: the sample format the decoder produced is planar "
-				"(%s). This example will output the first channel only.\n",
-				packed ? packed : "?");
-			sfmt = av_get_packed_sample_fmt(sfmt);
-			n_channels = 1;
-		}
-
-		if (get_format_from_sample_fmt(&fmt, sfmt) < 0)
-			goto end;
-	}
-
 end:
 	if (video_dst_file)
 		fclose(video_dst_file);
