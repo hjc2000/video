@@ -39,9 +39,9 @@ namespace FFmpeg
 
 		#pragma region 私有字段
 	private:
-		/// <summary>
-		/// 标识 AVFormatContext 当前是哪一种模式
-		/// </summary>
+		/**
+		 * @brief 用来标识 AVFormatContext 当前是哪一种模式的枚举类型
+		*/
 		enum Mode
 		{
 			unknow,
@@ -49,31 +49,38 @@ namespace FFmpeg
 			output,
 		};
 
+		/**
+		 * @brief 本对象当前是哪一种模式
+		*/
 		Mode _mode = Mode::unknow;
 		#pragma endregion
 
-		#pragma region 工厂函数
+		#pragma region 初始化函数
 	public:
-		/// @brief 打开指定 url 作为输入。作为输入后无法再将此对象变成输出
-		/// @param url 
-		/// @param fmt 
-		/// @param options 
+		/**
+		 * @brief 打开指定 url 作为输入。作为输入后无法再将此对象变成输出
+		 * @param url 
+		 * @param fmt 
+		 * @param options 
+		*/
 		inline void open_input(const char *url, const ::AVInputFormat *fmt = nullptr, ::AVDictionary **options = nullptr)
 		{
 			if (_mode != Mode::unknow)
-				throw "非法操作";
+				throw "非法操作，不要重复初始化";
 			_mode = Mode::input;
 			int result = ::avformat_open_input(&_pWrapedObj, url, fmt, options);
 			if (result < 0)
 				throw result;
 		}
 
-		/// @brief 创建输出格式上下文。作为输出后无法再将此对象变成输入
-		/// @param filename 
+		/**
+		 * @brief 创建输出格式上下文。作为输出后无法再将此对象变成输入
+		 * @param filename 
+		*/
 		void alloc_output_context2(const char *filename)
 		{
 			if (_mode != Mode::unknow)
-				throw "非法操作";
+				throw "非法操作，不要重复初始化";
 			_mode = Mode::output;
 			int result = ::avformat_alloc_output_context2(&_pWrapedObj, nullptr, nullptr, filename);
 			if (result < 0)
