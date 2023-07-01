@@ -130,16 +130,17 @@ namespace FFmpeg
 				throw ret;
 		}
 
-		/// <summary>
-		/// 向编码器发送包（未解码的数据）
-		/// </summary>
-		/// <param name="packet"></param>
+		/**
+		 * @brief 向编码器发送包（未解码的数据）
+		 * @param packet
+		*/
 		void send_packet(FFmpeg::AVPacket packet)
 		{
 			int ret = ::avcodec_send_packet(_pWrapedObj, packet);
 			if (ret < 0)
 			{
-				cout << "向编码器发送包失败" << endl;
+				cout << "向编码器发送包失败：" <<
+					FFmpeg::error_code_to_str(ret) << endl;
 				throw ret;
 			}
 		}
