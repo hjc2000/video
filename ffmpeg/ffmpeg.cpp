@@ -42,4 +42,8 @@ int main(void)
 	{
 		std::cerr << str << endl;
 	}
+	catch (FFmpegException e)
+	{
+		cout << e.what() << endl;
+	}
 }

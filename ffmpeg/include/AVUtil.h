@@ -10,15 +10,15 @@
  * typedef 一些 ffmpeg 中的数据类型，或者将 ffmpeg 中的宏定义转化为枚举类型
  */
 #pragma once
-extern "C"
-{
-#define __STDC_CONSTANT_MACROS
-#include <libavformat/avformat.h>
-#include <libavutil/avutil.h>
-#include <libavutil/timestamp.h>
-#include <libavcodec/avcodec.h>
-}
+#include<include_ffmpeg.h>
 #include <string>
+#include<iostream>
+#include<sstream>
+
+using std::string;
+using std::cout;
+using std::endl;
+using std::stringstream;
 
 namespace FFmpeg
 {

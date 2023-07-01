@@ -1,12 +1,18 @@
 #pragma once
-#include <string>
-extern "C"
-{
-#define __STDC_CONSTANT_MACROS
-#include <libavutil/error.h>
-}
+#include<include_ffmpeg.h>
+#include<string>
+
+using std::string;
 
 namespace FFmpeg
 {
 	std::string error_code_to_str(int error_code);
+
+	class FFmpegException :public std::exception
+	{
+	public:
+		FFmpegException(string msg) :exception(msg.c_str()) {}
+	};
 }
+
+using FFmpeg::FFmpegException;

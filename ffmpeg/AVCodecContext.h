@@ -3,6 +3,8 @@
 #include<AVCodec.h>
 #include<AVFrame.h>
 #include<include_ffmpeg.h>
+#include<AVUtil.h>
+#include<AVError.h>
 
 namespace FFmpeg
 {
@@ -125,17 +127,24 @@ namespace FFmpeg
 		/// 提前创建好的包对象。如果是在循环内调用本方法，请在循环外创建包对象，然后重复使用同一个包
 		/// 对象，避免频繁的堆内存分配和释放。在循环结束的时候别玩了调用包对象的 unref 方法。
 		/// </param>
+		/// <exception cref="exception">发生错误会抛出异常</exception>
 		void avcodec_receive_packet(FFmpeg::AVPacket pkt)
 		{
 			int ret = ::avcodec_receive_packet(_pWrapedObj, pkt);
 			if (ret < 0)
-				throw ret;
+				throw FFmpegException("avcodec_receive_packet 异常");
 		}
 
 		/**
 		 * @brief 向编码器发送包（未解码的数据）
 		 * @param packet
 		*/
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="packet"></param>
+		/// <exception cref="int"></exception>
 		void send_packet(FFmpeg::AVPacket packet)
 		{
 			int ret = ::avcodec_send_packet(_pWrapedObj, packet);
