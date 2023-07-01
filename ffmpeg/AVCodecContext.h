@@ -31,11 +31,11 @@ namespace FFmpeg
 
 		#pragma region 工厂函数
 	public:
-		/**
-		 * @brief 通过 AVCodec 创建 AVCodecContext
-		 * @param codec
-		 * @return
-		*/
+		/// <summary>
+		/// 通过 AVCodec 创建 AVCodecContext
+		/// </summary>
+		/// <param name="codec"></param>
+		/// <returns></returns>
 		static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec)
 		{
 			FFmpeg::AVCodecContext ctx;
@@ -46,12 +46,12 @@ namespace FFmpeg
 			return ctx;
 		}
 
-		/**
-		 * @brief 通过 AVCodec 创建 AVCodecContext，然后复制指定的 AVCodecParameters 到本类对象中
-		 * @param codec
-		 * @param param
-		 * @return
-		*/
+		/// <summary>
+		/// 通过 AVCodec 创建 AVCodecContext，然后复制指定的 AVCodecParameters 到本类对象中
+		/// </summary>
+		/// <param name="codec"></param>
+		/// <param name="param"></param>
+		/// <returns></returns>
 		static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec, AVCodecParameters *param)
 		{
 			FFmpeg::AVCodecContext ctx = create(codec);
@@ -81,6 +81,7 @@ namespace FFmpeg
 		/// <summary>
 		/// 将未编码帧送入编码器进行编码。随后可调用 avcodec_receive_packet 方法接收编码完成的包。
 		/// </summary>
+		/// 
 		/// <param name="frame"></param>
 		void avcodec_send_frame(FFmpeg::AVFrame frame)
 		{
@@ -119,6 +120,7 @@ namespace FFmpeg
 		/// * 如果是其他错误代码，说明发生了不正常的错误，需要重新抛出这个错误代码。
 		/// * 示例见上方紧跟着的块注释
 		/// </summary>
+		/// 
 		/// <param name="pkt">
 		/// 提前创建好的包对象。如果是在循环内调用本方法，请在循环外创建包对象，然后重复使用同一个包
 		/// 对象，避免频繁的堆内存分配和释放。在循环结束的时候别玩了调用包对象的 unref 方法。
