@@ -31,11 +31,11 @@ namespace FFmpeg
 
 		#pragma region 工厂函数
 	public:
-		/// <summary>
-		/// 通过 AVCodec 创建
-		/// </summary>
-		/// <param name="codec"></param>
-		/// <returns></returns>
+		/**
+		 * @brief 通过 AVCodec 创建 AVCodecContext
+		 * @param codec
+		 * @return
+		*/
 		static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec)
 		{
 			FFmpeg::AVCodecContext ctx;
@@ -46,12 +46,12 @@ namespace FFmpeg
 			return ctx;
 		}
 
-		/// <summary>
-		/// 通过 AVCodec 创建，然后复制指定的 AVCodecParameters 到本类对象中
-		/// </summary>
-		/// <param name="codec"></param>
-		/// <param name="param"></param>
-		/// <returns></returns>
+		/**
+		 * @brief 通过 AVCodec 创建 AVCodecContext，然后复制指定的 AVCodecParameters 到本类对象中
+		 * @param codec
+		 * @param param
+		 * @return
+		*/
 		static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec, AVCodecParameters *param)
 		{
 			FFmpeg::AVCodecContext ctx = create(codec);
