@@ -7,6 +7,7 @@
 #include<include_ffmpeg.h>
 #include <string>
 #include <sstream>
+#include<AVError.h>
 
 namespace FFmpeg
 {
@@ -89,17 +90,13 @@ namespace FFmpeg
 
 		#pragma region 包装方法
 	public:
-		/// <summary>
-		/// 对 FFmpeg 内部提供的打印流信息的函数的封装。会以官方格式打印流信息
-		/// </summary>
-		/// <param name="index">想要打印信息的流的索引号</param>
-		/// <param name="url">
-		/// 自定义的 url，比如这是一个输出文件，那么 url 就是你定义的输出文件路径。
-		/// 你随便输都没关系，这里的 url 的用途只有被显示
-		/// </param>
-		/// <param name="is_output">
-		/// 是否是输出文件。你也可以随便定，同样的，这个参数的用途只是用来被显示
-		/// </param>
+		/**
+		 * @brief	以官方格式打印流信息
+		 * @param index	想要打印信息的流的索引号
+		 * @param url	自定义的 url，比如这是一个输出文件，那么 url 就是你定义的输出文件路径。
+		 *				你随便输都没关系，这里的 url 的用途只有被显示
+		 * @param is_output 是否是输出文件。你也可以随便定，这个参数的用途只是用来被显示
+		*/
 		void dump_format(int index, const char *url, int is_output)
 		{
 			::av_dump_format(_pWrapedObj, index, url, is_output);
@@ -112,7 +109,10 @@ namespace FFmpeg
 		{
 			int result = ::avformat_find_stream_info(_pWrapedObj, options);
 			if (result < 0)
+			{
+				cout << "find_stream_info 方法发生异常：" << FFmpeg::error_code_to_str(result) << endl;
 				throw result;
+			}
 		}
 
 		/// <summary>
@@ -124,36 +124,62 @@ namespace FFmpeg
 		{
 			int result = ::av_find_best_stream(_pWrapedObj, type, -1, -1, nullptr, 0);
 			if (result < 0)
+			{
+				cout << "find_best_stream 方法发生异常：" << FFmpeg::error_code_to_str(result) << endl;
 				throw result;
+			}
 			else
+			{
 				return _pWrapedObj->streams[result];
+			}
 		}
 
-		/// <summary>
-		/// 读取一个包（未解码的音视频数据包）
-		/// * 如果已经到达文件尾或发生错误，会返回 false，否则返回 true
-		/// * 可以将本方法作为循环条件，在循环中反复读取包
-		/// </summary>
-		/// <param name="packet"></param>
-		/// <returns></returns>
+		/**
+		 * @brief	读取一个包（未解码的音视频数据包）
+		 *			如果已经到达文件尾或发生错误，会返回 false，否则返回 true
+		 *			可以将本方法作为循环条件，在循环中反复读取包
+		 *			如果发生错误，本方法会打印信息
+		 * @param packet
+		 * @return
+		*/
 		bool read_packet(FFmpeg::AVPacket packet)
 		{
 			int result = ::av_read_frame(_pWrapedObj, packet);
 			if (result < 0)
+			{
+				cout << "AVFormatContext 的 read_packet 方法发生错误：" <<
+					FFmpeg::error_code_to_str(result) << endl;
 				return false;
+			}
 			else
+			{
 				return true;
+			}
 		}
 
+		/**
+		 * @brief 只有输出格式才能使用这个函数
+		 * @param pCodec
+		 * @return
+		*/
 		FFmpeg::AVStream create_new_stream(const ::AVCodec *pCodec = nullptr)
 		{
 			::AVStream *ps = avformat_new_stream(_pWrapedObj, pCodec);
 			if (ps == nullptr)
+			{
+				cout << "create_new_stream 方法异常" << endl;
 				throw "创建流失败";
+			}
 			else
+			{
 				return ps;
+			}
 		}
 
+		/**
+		 * @brief 向格式写头部
+		 * @param dic
+		*/
 		void write_header(FFmpeg::AVDictionary *dic = nullptr)
 		{
 			int result;
@@ -163,21 +189,39 @@ namespace FFmpeg
 				result = ::avformat_write_header(_pWrapedObj, *dic);
 
 			if (result < 0)
+			{
+				cout << "write_header 方法异常：" << FFmpeg::error_code_to_str(result) << endl;
 				throw result;
+			}
 		}
 
-		void interleaved_write_frame(FFmpeg::AVPacket packet)
+		/**
+		 * @brief 以交织的方式向格式写入一个包。只有输出格式才能调用本方法。
+		 * @param packet
+		*/
+		void interleaved_write_packet(FFmpeg::AVPacket packet)
 		{
 			int ret = ::av_interleaved_write_frame(_pWrapedObj, packet);
 			if (ret < 0)
+			{
+				cout << "interleaved_write_packet 异常："
+					<< FFmpeg::error_code_to_str(ret) << endl;
 				throw ret;
+			}
 		}
 
+		/**
+		 * @brief 向格式写尾部
+		*/
 		void write_trailer()
 		{
 			int ret = ::av_write_trailer(_pWrapedObj);
 			if (ret < 0)
+			{
+				cout << "write_trailer 异常：" <<
+					FFmpeg::error_code_to_str(ret) << endl;
 				throw ret;
+			}
 		}
 		#pragma endregion
 

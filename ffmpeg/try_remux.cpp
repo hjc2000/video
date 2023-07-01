@@ -57,7 +57,7 @@ void try_remux()
 				FFmpeg::AVStream output_stream = oformat_context.get_stream(packet()->stream_index);
 				packet.av_packet_rescale_ts(input_stream()->time_base, output_stream()->time_base);
 				packet()->pos = -1;
-				oformat_context.interleaved_write_frame(packet);
+				oformat_context.interleaved_write_packet(packet);
 			}
 			packet.unref();
 		}

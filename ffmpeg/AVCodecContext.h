@@ -144,16 +144,16 @@ namespace FFmpeg
 			}
 		}
 
-		/// <summary>
-		/// * 从编码器中接收帧。向编码器发送一个包后，可以重复调用本方法读取解码出来的帧，因为
-		/// 一个包可能对应多个帧。
-		/// * 如果读取出帧，返回 true，如果没有读取出帧，表明编码器内没有
-		/// 有效的帧了，需要再次发送一个包，此时返回 false。
-		/// * 如果发生解码错误，会抛出异常。
-		/// * 可以将本方法放在循环语句的括号中作为循环条件
-		/// </summary>
-		/// <param name="frame"></param>
-		/// <returns></returns>
+		/**
+		 * @brief	从编码器中接收帧。向编码器发送一个包后，可以重复调用本方法读取解码出来的帧，因为
+		 *			一个包可能对应多个帧。
+		 *			如果读取出帧，返回 true，如果没有读取出帧，表明编码器内没有有效的帧了，
+		 *			需要再次发送一个包，此时返回 false。
+		 *			如果发生解码错误，会抛出异常。
+		 *			可以将本方法放在循环语句的括号中作为循环条件
+		 * @param frame
+		 * @return
+		*/
 		bool receive_frame(FFmpeg::AVFrame frame)
 		{
 			int ret = avcodec_receive_frame(_pWrapedObj, frame);

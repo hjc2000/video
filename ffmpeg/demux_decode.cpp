@@ -138,17 +138,18 @@ int demux_decode_main(const char *src_filename)
 	FFmpeg::AVPacket pkt;
 	/* read frames from the file */
 
-	try
+	while (inputFormatCtx.read_packet(pkt))
 	{
-		while (inputFormatCtx.read_packet(pkt))
+		if (pkt()->stream_index == bestVideoStream()->index)
 		{
-			if (pkt()->stream_index == bestVideoStream()->index)
+			// 如果读到的包是视频流的包
+			// 向视频解码器发送包
+			bestVideoDecodeCtx.send_packet(pkt);
+			int ret = 0;
+			// 在循环中读取解码后的帧
+
+			try
 			{
-				// 如果读到的包是视频流的包
-				// 向视频解码器发送包
-				bestVideoDecodeCtx.send_packet(pkt);
-				int ret = 0;
-				// 在循环中读取解码后的帧
 				while (bestVideoDecodeCtx.receive_frame(frame))
 				{
 					// write the frame data to output file
@@ -158,13 +159,21 @@ int demux_decode_main(const char *src_filename)
 						throw ret;
 				}
 			}
-			else if (pkt()->stream_index == bestAudioStream()->index)
+			catch (int err)
 			{
-				// 如果读取到的包是音频流的包
-				bestAudioDecodeCtx.send_packet(pkt);
-				int ret = 0;
+				cout << "视频发生了异常" << endl;
+				cout << FFmpeg::error_code_to_str(err) << endl;
+			}
+		}
+		else if (pkt()->stream_index == bestAudioStream()->index)
+		{
+			// 如果读取到的包是音频流的包
+			bestAudioDecodeCtx.send_packet(pkt);
+			int ret = 0;
 
-				// get all the available frames from the decoder
+			// get all the available frames from the decoder
+			try
+			{
 				while (bestAudioDecodeCtx.receive_frame(frame))
 				{
 					ret = output_audio_frame(frame);
@@ -173,12 +182,13 @@ int demux_decode_main(const char *src_filename)
 						throw ret;
 				}
 			}
-			pkt.unref();
+			catch (int err)
+			{
+				cout << "音频发生了异常" << endl;
+				cout << FFmpeg::error_code_to_str(err) << endl;
+			}
 		}
-	}
-	catch (int err)
-	{
-		cout << "发生了异常" << endl;
+		pkt.unref();
 	}
 
 	/* flush the decoders */
