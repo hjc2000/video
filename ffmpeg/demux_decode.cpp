@@ -1,4 +1,5 @@
 #include<FFmpeg.h>
+using FFmpeg::Exception;
 
 FFmpeg::AVCodecContext bestAudioDecodeCtx;
 static int width, height;
@@ -73,9 +74,12 @@ int demux_decode_main(const char *src_filename)
 	inputFormatCtx.open_input(src_filename);
 	inputFormatCtx.find_stream_info();
 
-	// 准备视频解码器
+	#pragma region 准备视频解码器
+	// 最好的视频流
 	FFmpeg::AVStream bestVideoStream;
+	// 用来解码最好的视频流的解码器
 	FFmpeg::AVCodec bestVideoDecodeCodec;
+	// 解码器上下文
 	FFmpeg::AVCodecContext bestVideoDecodeCtx;
 
 	try
@@ -87,7 +91,7 @@ int demux_decode_main(const char *src_filename)
 
 		video_dst_file = fopen("out_video.yuv", "wb");
 		if (!video_dst_file)
-			throw "无法打开视频解码输出文件";
+			throw Exception("无法打开视频解码输出文件");
 
 		/* allocate image where the decoded image will be put */
 		width = bestVideoDecodeCtx()->width;
@@ -96,19 +100,18 @@ int demux_decode_main(const char *src_filename)
 		int size = av_image_alloc(video_dst_data, video_dst_linesize, width, height, pix_fmt, 1);
 		if (size < 0)
 		{
-			fprintf(stderr, "Could not allocate raw video buffer\n");
-			throw Exception(size);
+			throw Exception("Could not allocate raw video buffer", size);
 		}
 
 		video_dst_bufsize = size;
 	}
-	catch (int err_code)
+	catch (Exception e)
 	{
-		cout << "查找视频流时发生异常" << endl;
-		cout << FFmpeg::error_code_to_str(err_code) << endl;
+		cout << e.what() << endl;
 	}
+	#pragma endregion
 
-	// 准备音频解码器
+	#pragma region 准备音频解码器
 	FFmpeg::AVStream bestAudioStream;
 	FFmpeg::AVCodec bestAudioDecodeCodec;
 
@@ -122,11 +125,11 @@ int demux_decode_main(const char *src_filename)
 		if (!audio_dst_file)
 			throw Exception("无法打开音频解码输出文件");
 	}
-	catch (int err)
+	catch (Exception e)
 	{
-		cout << "查找音频流时发生异常" << endl;
-		cout << FFmpeg::error_code_to_str(err) << endl;
+		cout << "查找音频流时发生异常：" << e.what() << endl;
 	}
+	#pragma endregion
 
 	// 打印流信息
 	inputFormatCtx.dump_format(bestVideoStream()->index, src_filename, 0);
@@ -136,33 +139,20 @@ int demux_decode_main(const char *src_filename)
 
 	FFmpeg::AVFrame frame = FFmpeg::AVFrame::create();
 	FFmpeg::AVPacket pkt;
-	/* read frames from the file */
-
+	// 在循环中读取格式中的包
 	while (inputFormatCtx.read_packet(pkt))
 	{
+		// 如果读到的包是视频流的包
 		if (pkt()->stream_index == bestVideoStream()->index)
 		{
-			// 如果读到的包是视频流的包
 			// 向视频解码器发送包
 			bestVideoDecodeCtx.send_packet(pkt);
-			int ret = 0;
-			// 在循环中读取解码后的帧
-
-			try
+			while (!bestVideoDecodeCtx.receive_frame(frame))
 			{
-				while (bestVideoDecodeCtx.receive_frame(frame))
-				{
-					// write the frame data to output file
-					ret = output_video_frame(frame);
-					frame.unref();
-					if (ret < 0)
-						throw Exception(ret);
-				}
-			}
-			catch (int err)
-			{
-				cout << "视频发生了异常" << endl;
-				cout << FFmpeg::error_code_to_str(err) << endl;
+				int	ret = output_video_frame(frame);
+				frame.unref();
+				if (ret < 0)
+					throw Exception("接收解码后的视频帧后执行 output_video_frame 失败", ret);
 			}
 		}
 		else if (pkt()->stream_index == bestAudioStream()->index)
@@ -171,21 +161,12 @@ int demux_decode_main(const char *src_filename)
 			bestAudioDecodeCtx.send_packet(pkt);
 			int ret = 0;
 
-			// get all the available frames from the decoder
-			try
+			while (!bestAudioDecodeCtx.receive_frame(frame))
 			{
-				while (bestAudioDecodeCtx.receive_frame(frame))
-				{
-					ret = output_audio_frame(frame);
-					frame.unref();
-					if (ret < 0)
-						throw Exception(ret);
-				}
-			}
-			catch (int err)
-			{
-				cout << "音频发生了异常" << endl;
-				cout << FFmpeg::error_code_to_str(err) << endl;
+				ret = output_audio_frame(frame);
+				frame.unref();
+				if (ret < 0)
+					throw Exception("接收解码后的音频帧后执行 output_video_frame 失败", ret);
 			}
 		}
 		pkt.unref();
@@ -194,45 +175,31 @@ int demux_decode_main(const char *src_filename)
 	/* flush the decoders */
 	if (bestVideoDecodeCtx)
 	{
-		try
+		bestVideoDecodeCtx.send_packet(nullptr);
+		int ret = 0;
+		// 在循环中读取解码后的帧
+		while (!bestVideoDecodeCtx.receive_frame(frame))
 		{
-			bestVideoDecodeCtx.send_packet(nullptr);
-			int ret = 0;
-			// 在循环中读取解码后的帧
-			while (bestVideoDecodeCtx.receive_frame(frame))
-			{
-				// write the frame data to output file
-				ret = output_video_frame(frame);
-				frame.unref();
-				if (ret < 0)
-					throw Exception(ret);
-			}
-		}
-		catch (int err)
-		{
-			cout << "刷新视频解码器缓冲区时异常" << endl;
+			// write the frame data to output file
+			ret = output_video_frame(frame);
+			frame.unref();
+			if (ret < 0)
+				throw Exception("刷新视频解码器缓冲区时异常：", ret);
 		}
 	}
 
 	if (bestAudioDecodeCtx)
 	{
-		try
-		{
-			bestAudioDecodeCtx.send_packet(nullptr);
-			int ret = 0;
+		bestAudioDecodeCtx.send_packet(nullptr);
+		int ret = 0;
 
-			// get all the available frames from the decoder
-			while (bestAudioDecodeCtx.receive_frame(frame))
-			{
-				ret = output_audio_frame(frame);
-				frame.unref();
-				if (ret < 0)
-					throw Exception(ret);
-			}
-		}
-		catch (int err)
+		// get all the available frames from the decoder
+		while (!bestAudioDecodeCtx.receive_frame(frame))
 		{
-			cout << "刷新音频解码器缓冲区时异常" << endl;
+			ret = output_audio_frame(frame);
+			frame.unref();
+			if (ret < 0)
+				throw Exception("刷新音频解码器缓冲区时异常：", ret);
 		}
 	}
 

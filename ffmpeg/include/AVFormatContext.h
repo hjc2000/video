@@ -4,9 +4,6 @@
 #include <AVPacket.h>
 #include<AVDictionary.h>
 #include<AVStream.h>
-#include<include_ffmpeg.h>
-#include <string>
-#include <sstream>
 #include<AVError.h>
 
 namespace FFmpeg
@@ -57,26 +54,26 @@ namespace FFmpeg
 
 		#pragma region 初始化函数
 	public:
-		/**
-		 * @brief 打开指定 url 作为输入。作为输入后无法再将此对象变成输出
-		 * @param url
-		 * @param fmt
-		 * @param options
-		*/
+		/// <summary>
+		/// 打开指定 url 作为输入。作为输入后无法再将此对象变成输出
+		/// </summary>
+		/// <param name="url"></param>
+		/// <param name="fmt"></param>
+		/// <param name="options"></param>
 		inline void open_input(const char *url, const ::AVInputFormat *fmt = nullptr, ::AVDictionary **options = nullptr)
 		{
 			if (_mode != Mode::unknow)
-				throw "非法操作，不要重复初始化";
+				throw Exception("非法操作，不要重复初始化");
 			_mode = Mode::input;
 			int ret = ::avformat_open_input(&_pWrapedObj, url, fmt, options);
 			if (ret < 0)
-				throw Exception(ret);
+				throw Exception("open_input", ret);
 		}
 
-		/**
-		 * @brief 创建输出格式上下文。作为输出后无法再将此对象变成输入
-		 * @param filename
-		*/
+		/// <summary>
+		/// 创建输出格式上下文。作为输出后无法再将此对象变成输入
+		/// </summary>
+		/// <param name="filename"></param>
 		void alloc_output_context2(const char *filename)
 		{
 			if (_mode != Mode::unknow)
@@ -84,13 +81,13 @@ namespace FFmpeg
 			_mode = Mode::output;
 			int ret = ::avformat_alloc_output_context2(&_pWrapedObj, nullptr, nullptr, filename);
 			if (ret < 0)
-				throw Exception(ret);
+				throw Exception("alloc_output_context2", ret);
 			// 如果没有打开 IO 则打开 IO
 			if (!(_pWrapedObj->oformat->flags & AVFMT_NOFILE))
 			{
 				int ret = avio_open(&_pWrapedObj->pb, filename, AVIO_FLAG_WRITE);
 				if (ret < 0)
-					throw Exception(ret);
+					throw Exception("alloc_output_context2", ret);
 			}
 		}
 		#pragma endregion
@@ -118,7 +115,7 @@ namespace FFmpeg
 			if (ret < 0)
 			{
 				cout << "find_stream_info 方法发生异常：" << FFmpeg::error_code_to_str(ret) << endl;
-				throw Exception(ret);
+				throw Exception("find_stream_info", ret);
 			}
 		}
 
@@ -133,7 +130,7 @@ namespace FFmpeg
 			if (ret < 0)
 			{
 				cout << "find_best_stream 方法发生异常：" << FFmpeg::error_code_to_str(ret) << endl;
-				throw Exception(ret);
+				throw Exception("find_best_stream", ret);
 			}
 			else
 			{
@@ -141,14 +138,14 @@ namespace FFmpeg
 			}
 		}
 
-		/**
-		 * @brief	读取一个包（未解码的音视频数据包）
-		 *			如果已经到达文件尾或发生错误，会返回 false，否则返回 true
-		 *			可以将本方法作为循环条件，在循环中反复读取包
-		 *			如果发生错误，本方法会打印信息
-		 * @param packet
-		 * @return
-		*/
+		/// <summary>
+		///		读取一个包（未解码的音视频数据包）
+		///		如果已经到达文件尾或发生错误，会返回 false，否则返回 true
+		///		可以将本方法作为循环条件，在循环中反复读取包
+		///		如果发生错误，本方法会打印信息
+		/// </summary>
+		/// <param name="packet"></param>
+		/// <returns></returns>
 		bool read_packet(FFmpeg::AVPacket packet)
 		{
 			int ret = ::av_read_frame(_pWrapedObj, packet);
@@ -164,11 +161,11 @@ namespace FFmpeg
 			}
 		}
 
-		/**
-		 * @brief 只有输出格式才能使用这个函数
-		 * @param pCodec
-		 * @return
-		*/
+		/// <summary>
+		///		只有输出格式才能使用这个函数
+		/// </summary>
+		/// <param name="pCodec"></param>
+		/// <returns></returns>
 		FFmpeg::AVStream create_new_stream(const ::AVCodec *pCodec = nullptr)
 		{
 			::AVStream *ps = avformat_new_stream(_pWrapedObj, pCodec);
@@ -183,10 +180,10 @@ namespace FFmpeg
 			}
 		}
 
-		/**
-		 * @brief 向格式写头部
-		 * @param dic
-		*/
+		/// <summary>
+		///		向格式写头部
+		/// </summary>
+		/// <param name="dic"></param>
 		void write_header(FFmpeg::AVDictionary *dic = nullptr)
 		{
 			int ret;
@@ -198,14 +195,14 @@ namespace FFmpeg
 			if (ret < 0)
 			{
 				cout << "write_header 方法异常：" << FFmpeg::error_code_to_str(ret) << endl;
-				throw Exception(ret);
+				throw Exception("write_header", ret);
 			}
 		}
 
-		/**
-		 * @brief 以交织的方式向格式写入一个包。只有输出格式才能调用本方法。
-		 * @param packet
-		*/
+		/// <summary>
+		///		以交织的方式向格式写入一个包。只有输出格式才能调用本方法。
+		/// </summary>
+		/// <param name="packet"></param>
 		void interleaved_write_packet(FFmpeg::AVPacket packet)
 		{
 			int ret = ::av_interleaved_write_frame(_pWrapedObj, packet);
@@ -213,13 +210,13 @@ namespace FFmpeg
 			{
 				cout << "interleaved_write_packet 异常："
 					<< FFmpeg::error_code_to_str(ret) << endl;
-				throw Exception(ret);
+				throw Exception("receive_frame", ret);
 			}
 		}
 
-		/**
-		 * @brief 向格式写尾部
-		*/
+		/// <summary>
+		///		向格式写尾部
+		/// </summary>
 		void write_trailer()
 		{
 			int ret = ::av_write_trailer(_pWrapedObj);
@@ -227,7 +224,7 @@ namespace FFmpeg
 			{
 				cout << "write_trailer 异常：" <<
 					FFmpeg::error_code_to_str(ret) << endl;
-				throw Exception(ret);
+				throw Exception("receive_frame", ret);
 			}
 		}
 		#pragma endregion
@@ -235,9 +232,8 @@ namespace FFmpeg
 		#pragma region 扩展包装方法
 	public:
 		/// <summary>
-		/// 获取视频时长。
-		/// 要先调用 find_stream_info 方法分析流信息后才能调用此方法，否则得到
-		/// 的结果是错误的
+		///		获取视频时长。要先调用 find_stream_info 方法分析流信息后才能调用此方法，否则得到
+		///		的结果是错误的
 		/// </summary>
 		/// <returns>返回结果是一个字符串，里面储存着格式化过的时间</returns>
 		inline std::string get_duration_as_formatted_time_string()
@@ -260,7 +256,7 @@ namespace FFmpeg
 		}
 
 		/// <summary>
-		/// 获取指定索引的流。流的索引号超出范围会抛出异常
+		///		获取指定索引的流。流的索引号超出范围会抛出异常
 		/// </summary>
 		/// <param name="stream_index"></param>
 		/// <returns></returns>

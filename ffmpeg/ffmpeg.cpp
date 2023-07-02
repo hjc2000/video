@@ -5,6 +5,7 @@ void try_remux();
 int try_decode_video();
 int try_transcode();
 int demux_decode_main(const char *src_filename);
+using FFmpeg::Exception;
 
 int main(void)
 {
