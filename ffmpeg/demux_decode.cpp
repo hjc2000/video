@@ -87,7 +87,7 @@ int demux_decode_main(const char *src_filename)
 	}
 	catch (Exception e)
 	{
-		cout << "查找音频流时发生异常：" << e.what() << endl;
+		cout << e << endl;
 	}
 	#pragma endregion
 

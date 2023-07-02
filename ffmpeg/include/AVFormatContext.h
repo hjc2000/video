@@ -67,7 +67,7 @@ namespace FFmpeg
 			_mode = Mode::input;
 			int ret = ::avformat_open_input(&_pWrapedObj, url, fmt, options);
 			if (ret < 0)
-				throw Exception("open_input", ret);
+				throw Exception("AVFormatContext::open_input", ret);
 		}
 
 		/// <summary>
@@ -87,7 +87,7 @@ namespace FFmpeg
 			{
 				int ret = avio_open(&_pWrapedObj->pb, filename, AVIO_FLAG_WRITE);
 				if (ret < 0)
-					throw Exception("alloc_output_context2", ret);
+					throw Exception("AVFormatContext::alloc_output_context2", ret);
 			}
 		}
 		#pragma endregion
@@ -113,10 +113,7 @@ namespace FFmpeg
 		{
 			int ret = ::avformat_find_stream_info(_pWrapedObj, options);
 			if (ret < 0)
-			{
-				cout << "find_stream_info 方法发生异常：" << FFmpeg::error_code_to_str(ret) << endl;
-				throw Exception("find_stream_info", ret);
-			}
+				throw Exception("AVFormatContext::find_stream_info", ret);
 		}
 
 		/// <summary>
@@ -128,14 +125,9 @@ namespace FFmpeg
 		{
 			int ret = ::av_find_best_stream(_pWrapedObj, type, -1, -1, nullptr, 0);
 			if (ret < 0)
-			{
-				cout << "find_best_stream 方法发生异常：" << FFmpeg::error_code_to_str(ret) << endl;
-				throw Exception("find_best_stream", ret);
-			}
+				throw Exception("AVFormatContext::find_best_stream(AVMediaType = " + FFmpeg::media_type_to_string(type) + ")", ret);
 			else
-			{
 				return _pWrapedObj->streams[ret];
-			}
 		}
 
 		/// <summary>
@@ -195,7 +187,7 @@ namespace FFmpeg
 			if (ret < 0)
 			{
 				cout << "write_header 方法异常：" << FFmpeg::error_code_to_str(ret) << endl;
-				throw Exception("write_header", ret);
+				throw Exception("AVFormatContext::write_header", ret);
 			}
 		}
 
@@ -210,7 +202,7 @@ namespace FFmpeg
 			{
 				cout << "interleaved_write_packet 异常："
 					<< FFmpeg::error_code_to_str(ret) << endl;
-				throw Exception("receive_frame", ret);
+				throw Exception("AVFormatContext::receive_frame", ret);
 			}
 		}
 
@@ -224,7 +216,7 @@ namespace FFmpeg
 			{
 				cout << "write_trailer 异常：" <<
 					FFmpeg::error_code_to_str(ret) << endl;
-				throw Exception("receive_frame", ret);
+				throw Exception("AVFormatContext::receive_frame", ret);
 			}
 		}
 		#pragma endregion

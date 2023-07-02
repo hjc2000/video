@@ -2,9 +2,14 @@
 #include <sstream>
 
 #pragma region AVMediaType 的相关操作
+std::string FFmpeg::media_type_to_string(FFmpeg::AVMediaType type)
+{
+	return std::string{ ::av_get_media_type_string(type) };
+}
+
 std::string &FFmpeg::operator<<(std::string &str, FFmpeg::AVMediaType const type)
 {
-	str = std::string{ ::av_get_media_type_string(type) };
+	str = media_type_to_string(type);
 	return str;
 }
 

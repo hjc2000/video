@@ -59,11 +59,9 @@ namespace FFmpeg
 			FFmpeg::AVCodecContext ctx = create(codec);
 			int ret = ::avcodec_parameters_to_context(ctx._pWrapedObj, param);
 			if (ret < 0)
-			{
-				cout << "设置编解码器参数失败" << endl;
-				throw Exception("create", ret);
-			}
-			return ctx;
+				throw Exception("AVCodecContext::create", ret);
+			else
+				return ctx;
 		}
 		#pragma endregion
 
@@ -77,7 +75,7 @@ namespace FFmpeg
 		{
 			int ret = ::avcodec_open2(_pWrapedObj, _codec, dic);
 			if (ret < 0)
-				throw Exception("open_codec", ret);
+				throw Exception("AVCodecContext::open_codec", ret);
 		}
 
 		/// <summary>
@@ -132,7 +130,7 @@ namespace FFmpeg
 		{
 			int ret = ::avcodec_receive_packet(_pWrapedObj, pkt);
 			if (ret < 0)
-				throw Exception("avcodec_receive_packet 异常");
+				throw Exception("AVCodecContext::avcodec_receive_packet", ret);
 		}
 
 		/// <summary>
@@ -144,11 +142,7 @@ namespace FFmpeg
 		{
 			int ret = ::avcodec_send_packet(_pWrapedObj, packet);
 			if (ret < 0)
-			{
-				cout << "向编码器发送包失败：" <<
-					FFmpeg::error_code_to_str(ret) << endl;
-				throw Exception("send_packet", ret);
-			}
+				throw Exception("AVCodecContext::send_packet", ret);
 		}
 
 		/// <summary>
@@ -165,7 +159,7 @@ namespace FFmpeg
 		{
 			int ret = ::avcodec_parameters_to_context(_pWrapedObj, param);
 			if (ret < 0)
-				throw Exception("set_codec_param", ret);
+				throw Exception("AVCodecContext::set_codec_param", ret);
 		}
 		#pragma endregion
 
