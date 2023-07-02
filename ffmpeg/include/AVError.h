@@ -1,6 +1,7 @@
 #pragma once
 #include<include_ffmpeg.h>
 #include<string>
+#include<iostream>
 
 using std::string;
 
@@ -52,5 +53,7 @@ namespace FFmpeg
 			return string{ "来自 " + err_source + " 的异常：" + FFmpeg::error_code_to_str(err_code) };
 		}
 	};
+
+	std::ostream &operator<<(std::ostream &os, FFmpeg::Exception e);
 }
 

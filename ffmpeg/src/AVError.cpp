@@ -9,3 +9,8 @@ std::string FFmpeg::error_code_to_str(int error_code)
 	else
 		return "找不到该错误代码";
 }
+
+std::ostream &FFmpeg::operator<<(std::ostream &os, FFmpeg::Exception e)
+{
+	return os << e.what();
+}
