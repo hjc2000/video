@@ -132,16 +132,11 @@ namespace FFmpeg
 		{
 			int ret = ::avcodec_receive_packet(_pWrapedObj, pkt);
 			if (ret < 0)
-				throw FFmpegException("avcodec_receive_packet 异常");
+				throw Exception("avcodec_receive_packet 异常");
 		}
 
-		/**
-		 * @brief 向编码器发送包（未解码的数据）
-		 * @param packet
-		*/
-
 		/// <summary>
-		/// 
+		/// 向编码器发送包（未解码的数据）
 		/// </summary>
 		/// <param name="packet"></param>
 		/// <exception cref="int"></exception>

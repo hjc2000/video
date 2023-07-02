@@ -34,15 +34,7 @@ int main(void)
 		//demux_decode_main("in.mp4");
 		return 0;
 	}
-	catch (int err_code)
-	{
-		std::cerr << FFmpeg::error_code_to_str(err_code) << endl;
-	}
-	catch (const char *str)
-	{
-		std::cerr << str << endl;
-	}
-	catch (FFmpegException e)
+	catch (Exception e)
 	{
 		cout << e.what() << endl;
 	}

@@ -9,3 +9,13 @@ std::string FFmpeg::error_code_to_str(int error_code)
 	else
 		return "找不到该错误代码";
 }
+
+bool FFmpeg::operator==(Exception e, ErrorType type)
+{
+	return e._type == type;
+}
+
+bool FFmpeg::operator==(ErrorType type, Exception e)
+{
+	return e._type == type;
+}
