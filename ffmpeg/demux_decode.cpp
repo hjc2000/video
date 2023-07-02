@@ -7,14 +7,13 @@ static enum AVPixelFormat pix_fmt;
 static FILE *video_dst_file = NULL;
 static FILE *audio_dst_file = NULL;
 
-static uint8_t *video_dst_data[4] = { NULL };
 static int video_dst_linesize[4];
 static int video_dst_bufsize;
 
 static int video_frame_count = 0;
 static int audio_frame_count = 0;
 
-static int output_video_frame(AVFrame *frame)
+static int output_video_frame(AVFrame *frame, uint8_t **video_dst_data)
 {
 	if (frame->width != width || frame->height != height ||
 		frame->format != pix_fmt)
@@ -69,6 +68,8 @@ static int output_audio_frame(AVFrame *frame)
 
 int demux_decode_main(const char *src_filename)
 {
+	uint8_t *video_dst_data[4] = { NULL };
+
 	// 打开输入文件
 	FFmpeg::AVFormatContext inputFormatCtx;
 	inputFormatCtx.open_input(src_filename);
@@ -149,7 +150,7 @@ int demux_decode_main(const char *src_filename)
 			bestVideoDecodeCtx.send_packet(pkt);
 			while (!bestVideoDecodeCtx.receive_frame(frame))
 			{
-				int	ret = output_video_frame(frame);
+				int	ret = output_video_frame(frame, video_dst_data);
 				frame.unref();
 				if (ret < 0)
 					throw Exception("接收解码后的视频帧后执行 output_video_frame 失败", ret);
@@ -178,7 +179,7 @@ int demux_decode_main(const char *src_filename)
 		while (!bestVideoDecodeCtx.receive_frame(frame))
 		{
 			// write the frame data to output file
-			int	ret = output_video_frame(frame);
+			int	ret = output_video_frame(frame, video_dst_data);
 			frame.unref();
 			if (ret < 0)
 				throw Exception("刷新视频解码器缓冲区时异常：", ret);
