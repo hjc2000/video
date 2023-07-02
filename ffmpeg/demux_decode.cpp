@@ -159,11 +159,9 @@ int demux_decode_main(const char *src_filename)
 		{
 			// 如果读取到的包是音频流的包
 			bestAudioDecodeCtx.send_packet(pkt);
-			int ret = 0;
-
 			while (!bestAudioDecodeCtx.receive_frame(frame))
 			{
-				ret = output_audio_frame(frame);
+				int	ret = output_audio_frame(frame);
 				frame.unref();
 				if (ret < 0)
 					throw Exception("接收解码后的音频帧后执行 output_video_frame 失败", ret);
@@ -176,12 +174,11 @@ int demux_decode_main(const char *src_filename)
 	if (bestVideoDecodeCtx)
 	{
 		bestVideoDecodeCtx.send_packet(nullptr);
-		int ret = 0;
 		// 在循环中读取解码后的帧
 		while (!bestVideoDecodeCtx.receive_frame(frame))
 		{
 			// write the frame data to output file
-			ret = output_video_frame(frame);
+			int	ret = output_video_frame(frame);
 			frame.unref();
 			if (ret < 0)
 				throw Exception("刷新视频解码器缓冲区时异常：", ret);
@@ -191,12 +188,10 @@ int demux_decode_main(const char *src_filename)
 	if (bestAudioDecodeCtx)
 	{
 		bestAudioDecodeCtx.send_packet(nullptr);
-		int ret = 0;
-
 		// get all the available frames from the decoder
 		while (!bestAudioDecodeCtx.receive_frame(frame))
 		{
-			ret = output_audio_frame(frame);
+			int	ret = output_audio_frame(frame);
 			frame.unref();
 			if (ret < 0)
 				throw Exception("刷新音频解码器缓冲区时异常：", ret);

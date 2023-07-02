@@ -5,19 +5,20 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="资源文件">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="include">
       <UniqueIdentifier>{c4f7e3a6-a301-4cbf-bcc0-fae8d7c75ed4}</UniqueIdentifier>
+	  <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{fb0fb2d0-d6dc-43a9-b5f9-6bb2d51ca8a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="example">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>c;cpp;h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -30,23 +31,23 @@
     <ClCompile Include="src\AVUtil.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="try_encode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="try_remux.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="try_decode_video.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="try_transcode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="demux_decode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="AVStream.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="demux_decode.cpp">
+      <Filter>example</Filter>
+    </ClCompile>
+    <ClCompile Include="try_decode_video.cpp">
+      <Filter>example</Filter>
+    </ClCompile>
+    <ClCompile Include="try_encode.cpp">
+      <Filter>example</Filter>
+    </ClCompile>
+    <ClCompile Include="try_remux.cpp">
+      <Filter>example</Filter>
+    </ClCompile>
+    <ClCompile Include="try_transcode.cpp">
+      <Filter>example</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
