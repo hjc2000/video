@@ -13,10 +13,10 @@ static int video_dst_bufsize;
 static int video_frame_count = 0;
 static int audio_frame_count = 0;
 
-static int output_video_frame(AVFrame *frame, uint8_t **video_dst_data, fstream &video_dst_file)
+static int output_video_frame(FFmpeg::AVFrame frame, uint8_t **video_dst_data, fstream &video_dst_file)
 {
-	if (frame->width != width || frame->height != height ||
-		frame->format != pix_fmt)
+	if (frame()->width != width || frame()->height != height ||
+		frame()->format != pix_fmt)
 	{
 		/* To handle this change, one could call av_image_alloc again and
 		 * decode the following frames into another rawvideo file. */
@@ -26,8 +26,8 @@ static int output_video_frame(AVFrame *frame, uint8_t **video_dst_data, fstream 
 			"old: width = %d, height = %d, format = %s\n"
 			"new: width = %d, height = %d, format = %s\n",
 			width, height, av_get_pix_fmt_name(pix_fmt),
-			frame->width, frame->height,
-			av_get_pix_fmt_name((AVPixelFormat)frame->format));
+			frame()->width, frame()->height,
+			av_get_pix_fmt_name((AVPixelFormat)frame()->format));
 		return -1;
 	}
 
@@ -37,7 +37,7 @@ static int output_video_frame(AVFrame *frame, uint8_t **video_dst_data, fstream 
 	/* copy decoded frame to destination buffer:
 	 * this is required since rawvideo expects non aligned data */
 	av_image_copy(video_dst_data, video_dst_linesize,
-		(const uint8_t **)(frame->data), frame->linesize,
+		(const uint8_t **)(frame()->data), frame()->linesize,
 		pix_fmt, width, height);
 
 	/* write to rawvideo file */

@@ -26,11 +26,14 @@ namespace FFmpeg
 	typedef ::AVDictionaryEntry AVDictionaryEntry;
 	typedef ::AVCodecID AVCodecID;
 	typedef ::AVCodecParameters AVCodecParameters;
+	typedef ::AVPixelFormat AVPixelFormat;
+	typedef ::AVRational AVRational;
+	typedef ::AVCodecParameters AVCodecParameters;
+	typedef ::AVCodecID AVCodecID;
 
-	/**
-	 * @brief 字典操作的枚举类型
-	 *
-	 */
+	/// <summary>
+	/// 字典操作的枚举类型
+	/// </summary>
 	enum AVDictionaryFlag
 	{
 		none = 0,
@@ -50,19 +53,29 @@ namespace FFmpeg
 		multikey = 64 /**< Allow to store several equal keys in the dictionary */
 	};
 
-	typedef ::AVRational AVRational;
-	typedef ::AVCodecParameters AVCodecParameters;
-	typedef ::AVCodecID AVCodecID;
+	#pragma region AVMediaType 的相关操作
+	std::string &operator<<(std::string &str, FFmpeg::AVMediaType const type);
+	std::ostream &operator<<(std::ostream &ostream, FFmpeg::AVMediaType const type);
+	void operator>>(std::string const &str, FFmpeg::AVMediaType &type);
+	#pragma endregion
+
+	#pragma region AVRational 的相关操作
+	std::string &operator<<(std::string &str, FFmpeg::AVRational const rational);
+	std::ostream &operator<<(std::ostream &ostream, FFmpeg::AVRational const rational);
+	double operator*(int64_t const duration, FFmpeg::AVRational const rational);
+	double operator*(FFmpeg::AVRational const rational, int64_t const duration);
+	#pragma endregion
+
+	#pragma region AVPixelFormat 相关操作
+	/// <summary>
+	/// 获取像素的名称。如果找不到指定的像素名称，返回空字符串
+	/// </summary>
+	/// <param name="pf"></param>
+	/// <returns></returns>
+	std::string get_pix_fmt_name(FFmpeg::AVPixelFormat pf);
+	std::string &operator<<(std::string &str, FFmpeg::AVPixelFormat pf);
+	std::ostream &operator<<(std::ostream &ostream, FFmpeg::AVPixelFormat pf);
+	#pragma endregion
+
 }
 
-#pragma region AVMediaType 的相关运算符重载
-std::string &operator<<(std::string &str, FFmpeg::AVMediaType const type);
-std::ostream &operator<<(std::ostream &ostream, FFmpeg::AVMediaType const type);
-void operator>>(std::string const &str, FFmpeg::AVMediaType &type);
-#pragma endregion AVMediaType 的相关运算符重载
-
-#pragma region AVRational 的相关运算符重载
-std::string &operator<<(std::string &str, FFmpeg::AVRational const rational);
-std::ostream &operator<<(std::ostream &ostream, FFmpeg::AVRational const rational);
-double operator*(int64_t const duration, FFmpeg::AVRational const rational);
-#pragma endregion AVRational 的相关运算符重载
