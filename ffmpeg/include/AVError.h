@@ -54,6 +54,6 @@ namespace FFmpeg
 		}
 	};
 
-	std::ostream &operator<<(std::ostream &os, FFmpeg::Exception e);
+	std::ostream &operator<<(std::ostream &os, std::exception e);
 }
 
