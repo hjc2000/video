@@ -165,18 +165,18 @@
     <Library Include="$(HOME)\ffmpeg_build\lib\libx265.dll.a" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AVCodec.h" />
-    <ClInclude Include="AVCodecContext.h" />
-    <ClInclude Include="AVFrame.h" />
-    <ClInclude Include="AVStream.h" />
-    <ClInclude Include="FFmpeg.h" />
+    <ClInclude Include="include\AVCodec.h" />
+    <ClInclude Include="include\AVCodecContext.h" />
     <ClInclude Include="include\AVDictionary.h" />
     <ClInclude Include="include\AVError.h" />
     <ClInclude Include="include\AVFormatContext.h" />
+    <ClInclude Include="include\AVFrame.h" />
     <ClInclude Include="include\AVPacket.h" />
+    <ClInclude Include="include\AVStream.h" />
     <ClInclude Include="include\AVUtil.h" />
+    <ClInclude Include="include\FFmpeg.h" />
+    <ClInclude Include="include\include_ffmpeg.h" />
     <ClInclude Include="include\Wraper.h" />
-    <ClInclude Include="include_ffmpeg.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
