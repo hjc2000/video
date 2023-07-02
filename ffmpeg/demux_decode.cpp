@@ -66,9 +66,9 @@ static int output_audio_frame(AVFrame *frame, FILE *audio_dst_file)
 
 int demux_decode_main(const char *src_filename)
 {
-	uint8_t *video_dst_data[4] = { NULL };
+	uint8_t *video_dst_data[4] = { nullptr };
 	FILE *audio_dst_file = nullptr;
-	static FILE *video_dst_file = NULL;
+	static FILE *video_dst_file = nullptr;
 
 	// 打开输入文件
 	FFmpeg::AVFormatContext inputFormatCtx;
