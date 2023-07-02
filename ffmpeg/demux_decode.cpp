@@ -1,4 +1,6 @@
 #include<FFmpeg.h>
+#include<fstream>
+using std::fstream;
 using FFmpeg::Exception;
 
 FFmpeg::AVCodecContext bestAudioDecodeCtx;
@@ -11,7 +13,7 @@ static int video_dst_bufsize;
 static int video_frame_count = 0;
 static int audio_frame_count = 0;
 
-static int output_video_frame(AVFrame *frame, uint8_t **video_dst_data, FILE *video_dst_file)
+static int output_video_frame(AVFrame *frame, uint8_t **video_dst_data, fstream &video_dst_file)
 {
 	if (frame->width != width || frame->height != height ||
 		frame->format != pix_fmt)
@@ -39,11 +41,11 @@ static int output_video_frame(AVFrame *frame, uint8_t **video_dst_data, FILE *vi
 		pix_fmt, width, height);
 
 	/* write to rawvideo file */
-	fwrite(video_dst_data[0], 1, video_dst_bufsize, video_dst_file);
+	video_dst_file.write((char *)video_dst_data[0], video_dst_bufsize);
 	return 0;
 }
 
-static int output_audio_frame(AVFrame *frame, FILE *audio_dst_file)
+static int output_audio_frame(AVFrame *frame, fstream &audio_dst_file)
 {
 	char err_buff[32];
 	size_t unpadded_linesize = frame->nb_samples * av_get_bytes_per_sample((AVSampleFormat)frame->format);
@@ -59,16 +61,15 @@ static int output_audio_frame(AVFrame *frame, FILE *audio_dst_file)
 	 * in these cases.
 	 * You should use libswresample or libavfilter to convert the frame
 	 * to packed data. */
-	fwrite(frame->extended_data[0], 1, unpadded_linesize, audio_dst_file);
-
+	audio_dst_file.write((char *)(frame->extended_data[0]), unpadded_linesize);
 	return 0;
 }
 
 int demux_decode_main(const char *src_filename)
 {
 	uint8_t *video_dst_data[4] = { nullptr };
-	FILE *audio_dst_file = nullptr;
-	static FILE *video_dst_file = nullptr;
+	fstream video_dst_file{ "out_video.yuv", ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary };
+	fstream audio_dst_file{ "out_audio.pcm", ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary };
 
 	// 打开输入文件
 	FFmpeg::AVFormatContext inputFormatCtx;
@@ -89,10 +90,6 @@ int demux_decode_main(const char *src_filename)
 		bestVideoDecodeCodec = bestVideoStream.get_stream_codec();
 		bestVideoDecodeCtx = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec, bestVideoStream()->codecpar);
 		bestVideoDecodeCtx.open_codec();
-
-		video_dst_file = fopen("out_video.yuv", "wb");
-		if (!video_dst_file)
-			throw Exception("无法打开视频解码输出文件");
 
 		/* allocate image where the decoded image will be put */
 		width = bestVideoDecodeCtx()->width;
@@ -122,9 +119,6 @@ int demux_decode_main(const char *src_filename)
 		bestAudioDecodeCodec = bestAudioStream.get_stream_codec();
 		bestAudioDecodeCtx = FFmpeg::AVCodecContext::create(bestAudioDecodeCodec, bestAudioStream()->codecpar);
 		bestAudioDecodeCtx.open_codec();
-		audio_dst_file = fopen("out_audio.pcm", "wb");
-		if (!audio_dst_file)
-			throw Exception("无法打开音频解码输出文件");
 	}
 	catch (Exception e)
 	{
@@ -201,8 +195,14 @@ int demux_decode_main(const char *src_filename)
 
 end:
 	if (video_dst_file)
-		fclose(video_dst_file);
+	{
+		video_dst_file.flush();
+		video_dst_file.close();
+	}
 	if (audio_dst_file)
-		fclose(audio_dst_file);
+	{
+		audio_dst_file.flush();
+		audio_dst_file.close();
+	}
 	av_free(video_dst_data[0]);
 }
