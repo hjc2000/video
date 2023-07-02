@@ -193,16 +193,17 @@ int demux_decode_main(const char *src_filename)
 		}
 	}
 
-end:
 	if (video_dst_file)
 	{
 		video_dst_file.flush();
 		video_dst_file.close();
 	}
+
 	if (audio_dst_file)
 	{
 		audio_dst_file.flush();
 		audio_dst_file.close();
 	}
+
 	av_free(video_dst_data[0]);
 }
