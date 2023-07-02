@@ -29,9 +29,6 @@ int main(void)
 		cout << "*************************************************" << endl;
 		cout << endl;
 		//try_encode();
-
-
-
 		//demux_decode_main("in.mp4");
 		return 0;
 	}
