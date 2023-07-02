@@ -4,8 +4,6 @@ using FFmpeg::Exception;
 FFmpeg::AVCodecContext bestAudioDecodeCtx;
 static int width, height;
 static enum AVPixelFormat pix_fmt;
-static FILE *video_dst_file = NULL;
-static FILE *audio_dst_file = NULL;
 
 static int video_dst_linesize[4];
 static int video_dst_bufsize;
@@ -13,7 +11,7 @@ static int video_dst_bufsize;
 static int video_frame_count = 0;
 static int audio_frame_count = 0;
 
-static int output_video_frame(AVFrame *frame, uint8_t **video_dst_data)
+static int output_video_frame(AVFrame *frame, uint8_t **video_dst_data, FILE *video_dst_file)
 {
 	if (frame->width != width || frame->height != height ||
 		frame->format != pix_fmt)
@@ -45,7 +43,7 @@ static int output_video_frame(AVFrame *frame, uint8_t **video_dst_data)
 	return 0;
 }
 
-static int output_audio_frame(AVFrame *frame)
+static int output_audio_frame(AVFrame *frame, FILE *audio_dst_file)
 {
 	char err_buff[32];
 	size_t unpadded_linesize = frame->nb_samples * av_get_bytes_per_sample((AVSampleFormat)frame->format);
@@ -69,6 +67,8 @@ static int output_audio_frame(AVFrame *frame)
 int demux_decode_main(const char *src_filename)
 {
 	uint8_t *video_dst_data[4] = { NULL };
+	FILE *audio_dst_file = nullptr;
+	static FILE *video_dst_file = NULL;
 
 	// 打开输入文件
 	FFmpeg::AVFormatContext inputFormatCtx;
@@ -150,7 +150,7 @@ int demux_decode_main(const char *src_filename)
 			bestVideoDecodeCtx.send_packet(pkt);
 			while (!bestVideoDecodeCtx.receive_frame(frame))
 			{
-				int	ret = output_video_frame(frame, video_dst_data);
+				int	ret = output_video_frame(frame, video_dst_data, video_dst_file);
 				frame.unref();
 				if (ret < 0)
 					throw Exception("接收解码后的视频帧后执行 output_video_frame 失败", ret);
@@ -162,7 +162,7 @@ int demux_decode_main(const char *src_filename)
 			bestAudioDecodeCtx.send_packet(pkt);
 			while (!bestAudioDecodeCtx.receive_frame(frame))
 			{
-				int	ret = output_audio_frame(frame);
+				int	ret = output_audio_frame(frame, audio_dst_file);
 				frame.unref();
 				if (ret < 0)
 					throw Exception("接收解码后的音频帧后执行 output_video_frame 失败", ret);
@@ -179,7 +179,7 @@ int demux_decode_main(const char *src_filename)
 		while (!bestVideoDecodeCtx.receive_frame(frame))
 		{
 			// write the frame data to output file
-			int	ret = output_video_frame(frame, video_dst_data);
+			int	ret = output_video_frame(frame, video_dst_data, video_dst_file);
 			frame.unref();
 			if (ret < 0)
 				throw Exception("刷新视频解码器缓冲区时异常：", ret);
@@ -192,7 +192,7 @@ int demux_decode_main(const char *src_filename)
 		// get all the available frames from the decoder
 		while (!bestAudioDecodeCtx.receive_frame(frame))
 		{
-			int	ret = output_audio_frame(frame);
+			int	ret = output_audio_frame(frame, audio_dst_file);
 			frame.unref();
 			if (ret < 0)
 				throw Exception("刷新音频解码器缓冲区时异常：", ret);
