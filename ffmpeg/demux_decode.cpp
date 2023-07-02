@@ -97,7 +97,7 @@ int demux_decode_main(const char *src_filename)
 		if (size < 0)
 		{
 			fprintf(stderr, "Could not allocate raw video buffer\n");
-			throw size;
+			throw Exception(size);
 		}
 
 		video_dst_bufsize = size;
@@ -120,7 +120,7 @@ int demux_decode_main(const char *src_filename)
 		bestAudioDecodeCtx.open_codec();
 		audio_dst_file = fopen("out_audio.pcm", "wb");
 		if (!audio_dst_file)
-			throw "无法打开音频解码输出文件";
+			throw Exception("无法打开音频解码输出文件");
 	}
 	catch (int err)
 	{
@@ -132,7 +132,7 @@ int demux_decode_main(const char *src_filename)
 	inputFormatCtx.dump_format(bestVideoStream()->index, src_filename, 0);
 
 	if (!bestAudioStream && !bestVideoStream)
-		throw "找不到音频流和视频流";
+		throw Exception("找不到音频流和视频流");
 
 	FFmpeg::AVFrame frame = FFmpeg::AVFrame::create();
 	FFmpeg::AVPacket pkt;
@@ -156,7 +156,7 @@ int demux_decode_main(const char *src_filename)
 					ret = output_video_frame(frame);
 					frame.unref();
 					if (ret < 0)
-						throw ret;
+						throw Exception(ret);
 				}
 			}
 			catch (int err)
@@ -179,7 +179,7 @@ int demux_decode_main(const char *src_filename)
 					ret = output_audio_frame(frame);
 					frame.unref();
 					if (ret < 0)
-						throw ret;
+						throw Exception(ret);
 				}
 			}
 			catch (int err)
@@ -205,7 +205,7 @@ int demux_decode_main(const char *src_filename)
 				ret = output_video_frame(frame);
 				frame.unref();
 				if (ret < 0)
-					throw ret;
+					throw Exception(ret);
 			}
 		}
 		catch (int err)
@@ -227,7 +227,7 @@ int demux_decode_main(const char *src_filename)
 				ret = output_audio_frame(frame);
 				frame.unref();
 				if (ret < 0)
-					throw ret;
+					throw Exception(ret);
 			}
 		}
 		catch (int err)

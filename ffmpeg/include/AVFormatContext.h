@@ -59,38 +59,38 @@ namespace FFmpeg
 	public:
 		/**
 		 * @brief 打开指定 url 作为输入。作为输入后无法再将此对象变成输出
-		 * @param url 
-		 * @param fmt 
-		 * @param options 
+		 * @param url
+		 * @param fmt
+		 * @param options
 		*/
 		inline void open_input(const char *url, const ::AVInputFormat *fmt = nullptr, ::AVDictionary **options = nullptr)
 		{
 			if (_mode != Mode::unknow)
 				throw "非法操作，不要重复初始化";
 			_mode = Mode::input;
-			int result = ::avformat_open_input(&_pWrapedObj, url, fmt, options);
-			if (result < 0)
-				throw result;
+			int ret = ::avformat_open_input(&_pWrapedObj, url, fmt, options);
+			if (ret < 0)
+				throw Exception(ret);
 		}
 
 		/**
 		 * @brief 创建输出格式上下文。作为输出后无法再将此对象变成输入
-		 * @param filename 
+		 * @param filename
 		*/
 		void alloc_output_context2(const char *filename)
 		{
 			if (_mode != Mode::unknow)
-				throw "非法操作，不要重复初始化";
+				throw Exception("非法操作，不要重复初始化");
 			_mode = Mode::output;
-			int result = ::avformat_alloc_output_context2(&_pWrapedObj, nullptr, nullptr, filename);
-			if (result < 0)
-				throw result;
+			int ret = ::avformat_alloc_output_context2(&_pWrapedObj, nullptr, nullptr, filename);
+			if (ret < 0)
+				throw Exception(ret);
 			// 如果没有打开 IO 则打开 IO
 			if (!(_pWrapedObj->oformat->flags & AVFMT_NOFILE))
 			{
-				int result = avio_open(&_pWrapedObj->pb, filename, AVIO_FLAG_WRITE);
-				if (result < 0)
-					throw result;
+				int ret = avio_open(&_pWrapedObj->pb, filename, AVIO_FLAG_WRITE);
+				if (ret < 0)
+					throw Exception(ret);
 			}
 		}
 		#pragma endregion
@@ -114,11 +114,11 @@ namespace FFmpeg
 		/// @param options 
 		inline void find_stream_info(::AVDictionary **options = nullptr)
 		{
-			int result = ::avformat_find_stream_info(_pWrapedObj, options);
-			if (result < 0)
+			int ret = ::avformat_find_stream_info(_pWrapedObj, options);
+			if (ret < 0)
 			{
-				cout << "find_stream_info 方法发生异常：" << FFmpeg::error_code_to_str(result) << endl;
-				throw result;
+				cout << "find_stream_info 方法发生异常：" << FFmpeg::error_code_to_str(ret) << endl;
+				throw Exception(ret);
 			}
 		}
 
@@ -129,15 +129,15 @@ namespace FFmpeg
 		/// <returns>返回找到的流</returns>
 		FFmpeg::AVStream find_best_stream(AVMediaType type)
 		{
-			int result = ::av_find_best_stream(_pWrapedObj, type, -1, -1, nullptr, 0);
-			if (result < 0)
+			int ret = ::av_find_best_stream(_pWrapedObj, type, -1, -1, nullptr, 0);
+			if (ret < 0)
 			{
-				cout << "find_best_stream 方法发生异常：" << FFmpeg::error_code_to_str(result) << endl;
-				throw result;
+				cout << "find_best_stream 方法发生异常：" << FFmpeg::error_code_to_str(ret) << endl;
+				throw Exception(ret);
 			}
 			else
 			{
-				return _pWrapedObj->streams[result];
+				return _pWrapedObj->streams[ret];
 			}
 		}
 
@@ -151,11 +151,11 @@ namespace FFmpeg
 		*/
 		bool read_packet(FFmpeg::AVPacket packet)
 		{
-			int result = ::av_read_frame(_pWrapedObj, packet);
-			if (result < 0)
+			int ret = ::av_read_frame(_pWrapedObj, packet);
+			if (ret < 0)
 			{
 				cout << "AVFormatContext 的 read_packet 方法发生错误：" <<
-					FFmpeg::error_code_to_str(result) << endl;
+					FFmpeg::error_code_to_str(ret) << endl;
 				return false;
 			}
 			else
@@ -175,7 +175,7 @@ namespace FFmpeg
 			if (ps == nullptr)
 			{
 				cout << "create_new_stream 方法异常" << endl;
-				throw "创建流失败";
+				throw Exception("创建流失败");
 			}
 			else
 			{
@@ -189,16 +189,16 @@ namespace FFmpeg
 		*/
 		void write_header(FFmpeg::AVDictionary *dic = nullptr)
 		{
-			int result;
+			int ret;
 			if (dic == nullptr)
-				result = ::avformat_write_header(_pWrapedObj, nullptr);
+				ret = ::avformat_write_header(_pWrapedObj, nullptr);
 			else
-				result = ::avformat_write_header(_pWrapedObj, *dic);
+				ret = ::avformat_write_header(_pWrapedObj, *dic);
 
-			if (result < 0)
+			if (ret < 0)
 			{
-				cout << "write_header 方法异常：" << FFmpeg::error_code_to_str(result) << endl;
-				throw result;
+				cout << "write_header 方法异常：" << FFmpeg::error_code_to_str(ret) << endl;
+				throw Exception(ret);
 			}
 		}
 
@@ -213,7 +213,7 @@ namespace FFmpeg
 			{
 				cout << "interleaved_write_packet 异常："
 					<< FFmpeg::error_code_to_str(ret) << endl;
-				throw ret;
+				throw Exception(ret);
 			}
 		}
 
@@ -227,7 +227,7 @@ namespace FFmpeg
 			{
 				cout << "write_trailer 异常：" <<
 					FFmpeg::error_code_to_str(ret) << endl;
-				throw ret;
+				throw Exception(ret);
 			}
 		}
 		#pragma endregion

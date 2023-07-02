@@ -44,7 +44,7 @@ namespace FFmpeg
 			ctx._codec = codec;
 			ctx._pWrapedObj = ::avcodec_alloc_context3(codec);
 			if (!ctx._pWrapedObj)
-				throw "avcodec_alloc_context3失败";
+				throw Exception("avcodec_alloc_context3失败");
 			return ctx;
 		}
 
@@ -61,7 +61,7 @@ namespace FFmpeg
 			if (ret < 0)
 			{
 				cout << "设置编解码器参数失败" << endl;
-				throw ret;
+				throw Exception(ret);
 			}
 			return ctx;
 		}
@@ -77,7 +77,7 @@ namespace FFmpeg
 		{
 			int ret = ::avcodec_open2(_pWrapedObj, _codec, dic);
 			if (ret < 0)
-				throw ret;
+				throw Exception(ret);
 		}
 
 		/// <summary>
@@ -147,7 +147,7 @@ namespace FFmpeg
 			{
 				cout << "向编码器发送包失败：" <<
 					FFmpeg::error_code_to_str(ret) << endl;
-				throw ret;
+				throw Exception(ret);
 			}
 		}
 
@@ -170,7 +170,7 @@ namespace FFmpeg
 				if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN))
 					return false;
 				else
-					throw ret;
+					throw Exception(ret);
 			}
 			else
 			{
@@ -182,7 +182,7 @@ namespace FFmpeg
 		{
 			int ret = ::avcodec_parameters_to_context(_pWrapedObj, param);
 			if (ret < 0)
-				throw ret;
+				throw Exception(ret);
 		}
 		#pragma endregion
 

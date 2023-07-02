@@ -33,11 +33,18 @@ namespace FFmpeg
 
 	class Exception :public std::exception
 	{
+		#pragma region 构造函数
 	public:
 		Exception(string msg, ErrorType type = ErrorType::unknow) :exception(msg.c_str())
 		{
 			_type = type;
 		}
+
+		Exception(int err_code, ErrorType type = ErrorType::unknow) :exception(FFmpeg::error_code_to_str(err_code).c_str())
+		{
+			_type = type;
+		}
+		#pragma endregion
 
 		friend bool operator==(Exception e, ErrorType type);
 		friend bool operator==(ErrorType type, Exception e);
