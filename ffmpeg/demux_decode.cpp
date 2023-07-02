@@ -6,16 +6,15 @@ using FFmpeg::Exception;
 static int video_dst_linesize[4];
 static int video_dst_bufsize;
 
-void output_video_frame(FFmpeg::AVFrame frame, uint8_t **video_dst_data, fstream &video_dst_file, FFmpeg::AVCodecContext videoCodecCtx)
+void output_video_frame(FFmpeg::AVFrame frame, uint8_t **video_dst_data, fstream &video_dst_file)
 {
 	static int video_frame_count = 0;
 	printf("video_frame n:%d\n", video_frame_count++);
 
-	/* copy decoded frame to destination buffer:
-	 * this is required since rawvideo expects non aligned data */
+	// 将解码帧复制到目标缓冲区：这是必需的，因为rawvideo需要不对齐的数据
 	av_image_copy(video_dst_data, video_dst_linesize,
 		(const uint8_t **)(frame()->data), frame()->linesize,
-		videoCodecCtx()->pix_fmt, videoCodecCtx()->width, videoCodecCtx()->height);
+		(FFmpeg::AVPixelFormat)frame()->format, frame()->width, frame()->height);
 
 	/* write to rawvideo file */
 	video_dst_file.write((char *)video_dst_data[0], video_dst_bufsize);
@@ -117,7 +116,7 @@ int demux_decode_main(const char *src_filename)
 			bestVideoDecodeCtx.send_packet(pkt);
 			while (!bestVideoDecodeCtx.receive_frame(frame))
 			{
-				output_video_frame(frame, video_dst_data, video_dst_file, bestVideoDecodeCtx);
+				output_video_frame(frame, video_dst_data, video_dst_file);
 				frame.unref();
 			}
 		}
@@ -142,7 +141,7 @@ int demux_decode_main(const char *src_filename)
 		while (!bestVideoDecodeCtx.receive_frame(frame))
 		{
 			// write the frame data to output file
-			output_video_frame(frame, video_dst_data, video_dst_file, bestVideoDecodeCtx);
+			output_video_frame(frame, video_dst_data, video_dst_file);
 			frame.unref();
 		}
 	}
