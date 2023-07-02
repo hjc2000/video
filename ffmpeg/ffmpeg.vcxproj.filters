@@ -1,153 +1,153 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="include">
-      <UniqueIdentifier>{c4f7e3a6-a301-4cbf-bcc0-fae8d7c75ed4}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="src">
-      <UniqueIdentifier>{fb0fb2d0-d6dc-43a9-b5f9-6bb2d51ca8a4}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="example">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>c;cpp;h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="库文件">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>a;dll;lib;def;</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="ffmpeg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\AVError.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\AVUtil.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="AVStream.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="demux_decode.cpp">
-      <Filter>example</Filter>
-    </ClCompile>
-    <ClCompile Include="try_decode_video.cpp">
-      <Filter>example</Filter>
-    </ClCompile>
-    <ClCompile Include="try_encode.cpp">
-      <Filter>example</Filter>
-    </ClCompile>
-    <ClCompile Include="try_remux.cpp">
-      <Filter>example</Filter>
-    </ClCompile>
-    <ClCompile Include="try_transcode.cpp">
-      <Filter>example</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="$(HOME)\ffmpeg_build\lib\avcodec-60.def">
-      <Filter>库文件</Filter>
-    </None>
-    <None Include="$(HOME)\ffmpeg_build\lib\avdevice-60.def">
-      <Filter>库文件</Filter>
-    </None>
-    <None Include="$(HOME)\ffmpeg_build\lib\avfilter-9.def">
-      <Filter>库文件</Filter>
-    </None>
-    <None Include="$(HOME)\ffmpeg_build\lib\avformat-60.def">
-      <Filter>库文件</Filter>
-    </None>
-    <None Include="$(HOME)\ffmpeg_build\lib\avutil-58.def">
-      <Filter>库文件</Filter>
-    </None>
-    <None Include="$(HOME)\ffmpeg_build\lib\postproc-57.def">
-      <Filter>库文件</Filter>
-    </None>
-    <None Include="$(HOME)\ffmpeg_build\lib\swresample-4.def">
-      <Filter>库文件</Filter>
-    </None>
-    <None Include="$(HOME)\ffmpeg_build\lib\swscale-7.def">
-      <Filter>库文件</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="$(HOME)\ffmpeg_build\lib\libavcodec.dll.a">
-      <Filter>库文件</Filter>
-    </Library>
-    <Library Include="$(HOME)\ffmpeg_build\lib\libavdevice.dll.a">
-      <Filter>库文件</Filter>
-    </Library>
-    <Library Include="$(HOME)\ffmpeg_build\lib\libavfilter.dll.a">
-      <Filter>库文件</Filter>
-    </Library>
-    <Library Include="$(HOME)\ffmpeg_build\lib\libavformat.dll.a">
-      <Filter>库文件</Filter>
-    </Library>
-    <Library Include="$(HOME)\ffmpeg_build\lib\libavutil.dll.a">
-      <Filter>库文件</Filter>
-    </Library>
-    <Library Include="$(HOME)\ffmpeg_build\lib\libpostproc.dll.a">
-      <Filter>库文件</Filter>
-    </Library>
-    <Library Include="$(HOME)\ffmpeg_build\lib\libswresample.dll.a">
-      <Filter>库文件</Filter>
-    </Library>
-    <Library Include="$(HOME)\ffmpeg_build\lib\libswscale.dll.a">
-      <Filter>库文件</Filter>
-    </Library>
-    <Library Include="$(HOME)\ffmpeg_build\lib\libx264.dll.a">
-      <Filter>库文件</Filter>
-    </Library>
-    <Library Include="$(HOME)\ffmpeg_build\lib\libx265.a">
-      <Filter>库文件</Filter>
-    </Library>
-    <Library Include="$(HOME)\ffmpeg_build\lib\libx265.dll.a">
-      <Filter>库文件</Filter>
-    </Library>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\include_ffmpeg.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\AVCodec.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\AVCodecContext.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\AVDictionary.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\AVError.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\AVFormatContext.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\AVFrame.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\AVPacket.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\AVStream.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\AVUtil.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FFmpeg.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Wraper.h">
-      <Filter>include</Filter>
-    </ClInclude>
-  </ItemGroup>
+	<ItemGroup>
+		<Filter Include="源文件">
+			<UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+			<Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+		</Filter>
+		<Filter Include="include">
+			<UniqueIdentifier>{c4f7e3a6-a301-4cbf-bcc0-fae8d7c75ed4}</UniqueIdentifier>
+			<Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+		</Filter>
+		<Filter Include="src">
+			<UniqueIdentifier>{fb0fb2d0-d6dc-43a9-b5f9-6bb2d51ca8a4}</UniqueIdentifier>
+			<Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+		</Filter>
+		<Filter Include="example">
+			<UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+			<Extensions>c;cpp;h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+		</Filter>
+		<Filter Include="库文件">
+			<UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+			<Extensions>a;dll;lib;def;</Extensions>
+		</Filter>
+	</ItemGroup>
+	<ItemGroup>
+		<ClCompile Include="ffmpeg.cpp">
+			<Filter>源文件</Filter>
+		</ClCompile>
+		<ClCompile Include="src\AVError.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\AVUtil.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="AVStream.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="demux_decode.cpp">
+			<Filter>example</Filter>
+		</ClCompile>
+		<ClCompile Include="try_decode_video.cpp">
+			<Filter>example</Filter>
+		</ClCompile>
+		<ClCompile Include="try_encode.cpp">
+			<Filter>example</Filter>
+		</ClCompile>
+		<ClCompile Include="try_remux.cpp">
+			<Filter>example</Filter>
+		</ClCompile>
+		<ClCompile Include="try_transcode.cpp">
+			<Filter>example</Filter>
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="$(HOME)\ffmpeg_build\lib\avcodec-60.def">
+			<Filter>库文件</Filter>
+		</None>
+		<None Include="$(HOME)\ffmpeg_build\lib\avdevice-60.def">
+			<Filter>库文件</Filter>
+		</None>
+		<None Include="$(HOME)\ffmpeg_build\lib\avfilter-9.def">
+			<Filter>库文件</Filter>
+		</None>
+		<None Include="$(HOME)\ffmpeg_build\lib\avformat-60.def">
+			<Filter>库文件</Filter>
+		</None>
+		<None Include="$(HOME)\ffmpeg_build\lib\avutil-58.def">
+			<Filter>库文件</Filter>
+		</None>
+		<None Include="$(HOME)\ffmpeg_build\lib\postproc-57.def">
+			<Filter>库文件</Filter>
+		</None>
+		<None Include="$(HOME)\ffmpeg_build\lib\swresample-4.def">
+			<Filter>库文件</Filter>
+		</None>
+		<None Include="$(HOME)\ffmpeg_build\lib\swscale-7.def">
+			<Filter>库文件</Filter>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<Library Include="$(HOME)\ffmpeg_build\lib\libavcodec.dll.a">
+			<Filter>库文件</Filter>
+		</Library>
+		<Library Include="$(HOME)\ffmpeg_build\lib\libavdevice.dll.a">
+			<Filter>库文件</Filter>
+		</Library>
+		<Library Include="$(HOME)\ffmpeg_build\lib\libavfilter.dll.a">
+			<Filter>库文件</Filter>
+		</Library>
+		<Library Include="$(HOME)\ffmpeg_build\lib\libavformat.dll.a">
+			<Filter>库文件</Filter>
+		</Library>
+		<Library Include="$(HOME)\ffmpeg_build\lib\libavutil.dll.a">
+			<Filter>库文件</Filter>
+		</Library>
+		<Library Include="$(HOME)\ffmpeg_build\lib\libpostproc.dll.a">
+			<Filter>库文件</Filter>
+		</Library>
+		<Library Include="$(HOME)\ffmpeg_build\lib\libswresample.dll.a">
+			<Filter>库文件</Filter>
+		</Library>
+		<Library Include="$(HOME)\ffmpeg_build\lib\libswscale.dll.a">
+			<Filter>库文件</Filter>
+		</Library>
+		<Library Include="$(HOME)\ffmpeg_build\lib\libx264.dll.a">
+			<Filter>库文件</Filter>
+		</Library>
+		<Library Include="$(HOME)\ffmpeg_build\lib\libx265.a">
+			<Filter>库文件</Filter>
+		</Library>
+		<Library Include="$(HOME)\ffmpeg_build\lib\libx265.dll.a">
+			<Filter>库文件</Filter>
+		</Library>
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="include\include_ffmpeg.h">
+			<Filter>include</Filter>
+		</ClInclude>
+		<ClInclude Include="include\AVCodec.h">
+			<Filter>include</Filter>
+		</ClInclude>
+		<ClInclude Include="include\AVCodecContext.h">
+			<Filter>include</Filter>
+		</ClInclude>
+		<ClInclude Include="include\AVDictionary.h">
+			<Filter>include</Filter>
+		</ClInclude>
+		<ClInclude Include="include\AVError.h">
+			<Filter>include</Filter>
+		</ClInclude>
+		<ClInclude Include="include\AVFormatContext.h">
+			<Filter>include</Filter>
+		</ClInclude>
+		<ClInclude Include="include\AVFrame.h">
+			<Filter>include</Filter>
+		</ClInclude>
+		<ClInclude Include="include\AVPacket.h">
+			<Filter>include</Filter>
+		</ClInclude>
+		<ClInclude Include="include\AVStream.h">
+			<Filter>include</Filter>
+		</ClInclude>
+		<ClInclude Include="include\AVUtil.h">
+			<Filter>include</Filter>
+		</ClInclude>
+		<ClInclude Include="include\FFmpeg.h">
+			<Filter>include</Filter>
+		</ClInclude>
+		<ClInclude Include="include\Wraper.h">
+			<Filter>include</Filter>
+		</ClInclude>
+	</ItemGroup>
 </Project>
