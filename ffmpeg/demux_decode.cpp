@@ -10,11 +10,8 @@ void output_video_frame(FFmpeg::AVFrame frame, uint8_t **video_dst_data, fstream
 {
 	static int video_frame_count = 0;
 	printf("video_frame n:%d\n", video_frame_count++);
-
 	// 将解码帧复制到目标缓冲区：这是必需的，因为rawvideo需要不对齐的数据
-	av_image_copy(video_dst_data, video_dst_linesize,
-		(const uint8_t **)(frame()->data), frame()->linesize,
-		(FFmpeg::AVPixelFormat)frame()->format, frame()->width, frame()->height);
+	frame.copy_image_to(video_dst_data, video_dst_linesize);
 
 	/* write to rawvideo file */
 	video_dst_file.write((char *)video_dst_data[0], video_dst_bufsize);

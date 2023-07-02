@@ -58,5 +58,12 @@ namespace FFmpeg
 		{
 			::av_frame_unref(_pWrapedObj);
 		}
+
+		void copy_image_to(uint8_t *dst_data[4], int dst_linesizes[4])
+		{
+			av_image_copy(dst_data, dst_linesizes,
+				(const uint8_t **)(_pWrapedObj->data), _pWrapedObj->linesize,
+				(FFmpeg::AVPixelFormat)_pWrapedObj->format, _pWrapedObj->width, _pWrapedObj->height);
+		}
 	};
 }
