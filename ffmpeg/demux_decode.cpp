@@ -6,17 +6,6 @@ using FFmpeg::Exception;
 static int video_dst_linesize[4];
 static int video_dst_bufsize;
 
-void output_video_frame(FFmpeg::AVFrame frame, uint8_t **video_dst_data, fstream &video_dst_file)
-{
-	static int video_frame_count = 0;
-	printf("video_frame n:%d\n", video_frame_count++);
-	// 将解码帧复制到目标缓冲区：这是必需的，因为rawvideo需要不对齐的数据
-	frame.copy_image_to(video_dst_data, video_dst_linesize);
-
-	/* write to rawvideo file */
-	video_dst_file.write((char *)video_dst_data[0], video_dst_bufsize);
-}
-
 void output_audio_frame(AVFrame *frame, fstream &audio_dst_file, FFmpeg::AVCodecContext bestAudioDecodeCtx)
 {
 	char err_buff[32];
@@ -113,7 +102,13 @@ int demux_decode_main(const char *src_filename)
 			bestVideoDecodeCtx.send_packet(pkt);
 			while (!bestVideoDecodeCtx.receive_frame(frame))
 			{
-				output_video_frame(frame, video_dst_data, video_dst_file);
+				static int video_frame_count = 0;
+				printf("video_frame n:%d\n", video_frame_count++);
+				// 将解码帧复制到目标缓冲区：这是必需的，因为rawvideo需要不对齐的数据
+				frame.copy_image_to(video_dst_data, video_dst_linesize);
+
+				/* write to rawvideo file */
+				video_dst_file.write((char *)video_dst_data[0], video_dst_bufsize);
 				frame.unref();
 			}
 		}
@@ -137,8 +132,11 @@ int demux_decode_main(const char *src_filename)
 		// 在循环中读取解码后的帧
 		while (!bestVideoDecodeCtx.receive_frame(frame))
 		{
-			// write the frame data to output file
-			output_video_frame(frame, video_dst_data, video_dst_file);
+			// 将解码帧复制到目标缓冲区：这是必需的，因为rawvideo需要不对齐的数据
+			frame.copy_image_to(video_dst_data, video_dst_linesize);
+
+			/* write to rawvideo file */
+			video_dst_file.write((char *)video_dst_data[0], video_dst_bufsize);
 			frame.unref();
 		}
 	}
