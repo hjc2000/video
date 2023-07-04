@@ -54,10 +54,11 @@ namespace FFmpeg
 		/// <summary>
 		/// 通过 AVCodec 创建 AVCodecContext，然后复制指定的 AVCodecParameters 到本类对象中
 		/// </summary>
-		/// <param name="codec"></param>
-		/// <param name="param"></param>
-		/// <returns></returns>
-		static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec, AVCodecParameters *param)
+		/// <param name="codec">编解码器</param>
+		/// <param name="param">编解码器参数</param>
+		/// <param name="autoOpen">创建编解码器上下文完成后自动打开</param>
+		/// <returns>返回创建完成的编解码器上下文</returns>
+		static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec, AVCodecParameters *param, bool autoOpen = false)
 		{
 			FFmpeg::AVCodecContext ctx = create(codec);
 			int ret = ::avcodec_parameters_to_context(ctx._pWrapedObj, param);
@@ -67,6 +68,11 @@ namespace FFmpeg
 			}
 			else
 			{
+				if (autoOpen)
+				{
+					ctx.open();
+				}
+
 				return ctx;
 			}
 		}

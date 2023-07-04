@@ -49,9 +49,7 @@ int demux_decode_main(const char *src_filename)
 		// 获取最好的视频流的解码器
 		bestVideoDecodeCodec = bestVideoStream.get_stream_codec();
 		// 使用解码器创建解码器上下文
-		bestVideoDecodeCtx = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec, bestVideoStream()->codecpar);
-		// 打开解码器上下文
-		bestVideoDecodeCtx.open();
+		bestVideoDecodeCtx = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec, bestVideoStream()->codecpar, true);
 	}
 	catch (Exception e)
 	{
@@ -68,8 +66,7 @@ int demux_decode_main(const char *src_filename)
 	{
 		bestAudioStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
 		bestAudioDecodeCodec = bestAudioStream.get_stream_codec();
-		bestAudioDecodeCtx = FFmpeg::AVCodecContext::create(bestAudioDecodeCodec, bestAudioStream()->codecpar);
-		bestAudioDecodeCtx.open();
+		bestAudioDecodeCtx = FFmpeg::AVCodecContext::create(bestAudioDecodeCodec, bestAudioStream()->codecpar, true);
 	}
 	catch (Exception e)
 	{
