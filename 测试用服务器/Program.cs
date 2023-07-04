@@ -79,11 +79,11 @@ app.MapGet("/ts.ts", async (HttpContext context) =>
 			using FileStream fileStream = File.OpenRead(_webRootPath + $"/ts{i}.ts");
 			await Task.Delay(6000);
 			// 在这里使用 ChunkEncoder 从文件流中读取数据，写到 http 响应流中
-			await ChunkEncoder.WriteContentAsync(fileStream, context.Response.Body);
+			await ChunkEncoder.ChunkWriteContentToAsync(fileStream, context.Response.Body);
 			Console.WriteLine($"发送{i}");
 		}
-		// 所有数据都写完了需要调用 WriteTrailerAsync 写入结束标志从而结束本次传输
-		await ChunkEncoder.WriteTrailerAsync(context.Response.Body);
+		// 所有数据都写完了需要调用 ChunkWriteTrailerAsync 写入结束标志从而结束本次传输
+		await ChunkEncoder.ChunkWriteTrailerAsync(context.Response.Body);
 	}
 	catch (Exception ex)
 	{
@@ -97,9 +97,9 @@ app.MapGet("/test.txt", async (HttpContext context) =>
 	{
 		context.Response.Headers.Add("Transfer-Encoding", "chunked");
 		context.Response.Headers.ContentType = "text/plain";
-		FileStream fileStream = File.OpenRead(_webRootPath + "/test.txt");
-		await ChunkEncoder.WriteContentAsync(fileStream, context.Response.Body);
-		await ChunkEncoder.WriteTrailerAsync(context.Response.Body);
+		using FileStream fileStream = File.Open(_webRootPath + "/test.txt", FileMode.Open);
+		await fileStream.ChunkWriteContentToAsync(context.Response.Body);
+		await context.Response.Body.ChunkWriteTrailerAsync();
 	}
 	catch (Exception ex)
 	{
