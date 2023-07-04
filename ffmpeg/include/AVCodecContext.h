@@ -44,7 +44,10 @@ namespace FFmpeg
 			ctx._codec = codec;
 			ctx._pWrapedObj = ::avcodec_alloc_context3(codec);
 			if (!ctx._pWrapedObj)
-				throw Exception("avcodec_alloc_context3失败");
+			{
+				throw Exception("FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec) 失败");
+			}
+
 			return ctx;
 		}
 
@@ -59,9 +62,13 @@ namespace FFmpeg
 			FFmpeg::AVCodecContext ctx = create(codec);
 			int ret = ::avcodec_parameters_to_context(ctx._pWrapedObj, param);
 			if (ret < 0)
+			{
 				throw Exception("AVCodecContext::create", ret);
+			}
 			else
+			{
 				return ctx;
+			}
 		}
 		#pragma endregion
 
@@ -71,11 +78,13 @@ namespace FFmpeg
 		/// 打开编码器
 		/// </summary>
 		/// <param name="dic"></param>
-		void open_codec(FFmpeg::AVDictionary dic = nullptr)
+		void open(FFmpeg::AVDictionary dic = nullptr)
 		{
 			int ret = ::avcodec_open2(_pWrapedObj, _codec, dic);
 			if (ret < 0)
-				throw Exception("AVCodecContext::open_codec", ret);
+			{
+				throw Exception("AVCodecContext::open", ret);
+			}
 		}
 
 		/// <summary>
@@ -130,7 +139,9 @@ namespace FFmpeg
 		{
 			int ret = ::avcodec_receive_packet(_pWrapedObj, pkt);
 			if (ret < 0)
+			{
 				throw Exception("AVCodecContext::avcodec_receive_packet", ret);
+			}
 		}
 
 		/// <summary>
@@ -142,7 +153,9 @@ namespace FFmpeg
 		{
 			int ret = ::avcodec_send_packet(_pWrapedObj, packet);
 			if (ret < 0)
+			{
 				throw Exception("AVCodecContext::send_packet", ret);
+			}
 		}
 
 		/// <summary>
@@ -159,7 +172,9 @@ namespace FFmpeg
 		{
 			int ret = ::avcodec_parameters_to_context(_pWrapedObj, param);
 			if (ret < 0)
+			{
 				throw Exception("AVCodecContext::set_codec_param", ret);
+			}
 		}
 		#pragma endregion
 

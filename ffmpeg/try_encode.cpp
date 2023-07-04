@@ -60,7 +60,7 @@ void try_encode()
 		av_opt_set(codecCtx()->priv_data, "preset", "slow", 0);
 
 	/* open it */
-	codecCtx.open_codec();
+	codecCtx.open();
 
 	FFmpeg::AVFrame frame;
 	frame = FFmpeg::AVFrame::create();

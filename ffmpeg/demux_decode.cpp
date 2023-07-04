@@ -25,11 +25,11 @@ void output_audio_frame(AVFrame *frame, fstream &audio_dst_file, FFmpeg::AVCodec
 
 int demux_decode_main(const char *src_filename)
 {
-	uint8_t *video_dst_data[4] = { nullptr };
+	// 准备音频解码输出文件、视频解码输出文件的文件流
 	fstream video_dst_file{ "out_video.yuv", ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary };
 	fstream audio_dst_file{ "out_audio.pcm", ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary };
 
-	// 打开输入文件
+	// 打开输入格式
 	FFmpeg::AVFormatContext inputFormatCtx;
 	inputFormatCtx.open_input(src_filename);
 	inputFormatCtx.find_stream_info();
@@ -44,10 +44,14 @@ int demux_decode_main(const char *src_filename)
 
 	try
 	{
+		// 查找最好的视频流
 		bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
+		// 获取最好的视频流的解码器
 		bestVideoDecodeCodec = bestVideoStream.get_stream_codec();
+		// 使用解码器创建解码器上下文
 		bestVideoDecodeCtx = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec, bestVideoStream()->codecpar);
-		bestVideoDecodeCtx.open_codec();
+		// 打开解码器上下文
+		bestVideoDecodeCtx.open();
 	}
 	catch (Exception e)
 	{
@@ -65,7 +69,7 @@ int demux_decode_main(const char *src_filename)
 		bestAudioStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
 		bestAudioDecodeCodec = bestAudioStream.get_stream_codec();
 		bestAudioDecodeCtx = FFmpeg::AVCodecContext::create(bestAudioDecodeCodec, bestAudioStream()->codecpar);
-		bestAudioDecodeCtx.open_codec();
+		bestAudioDecodeCtx.open();
 	}
 	catch (Exception e)
 	{
@@ -77,17 +81,24 @@ int demux_decode_main(const char *src_filename)
 	inputFormatCtx.dump_format(bestVideoStream()->index, src_filename, 0);
 
 	if (!bestAudioStream && !bestVideoStream)
+	{
 		throw Exception("找不到音频流和视频流");
+	}
 
 	FFmpeg::AVFrame frame = FFmpeg::AVFrame::create();
 	FFmpeg::AVPacket pkt;
 	int video_dst_linesize[4];
 	int video_dst_bufsize;
+	uint8_t *video_dst_data[4] = { nullptr };
 
 	int size = av_image_alloc(video_dst_data, video_dst_linesize,
-		bestVideoDecodeCtx()->width, bestVideoDecodeCtx()->height, bestVideoDecodeCtx()->pix_fmt, 1);
+		bestVideoDecodeCtx()->width, bestVideoDecodeCtx()->height,
+		bestVideoDecodeCtx()->pix_fmt, 1);
+
 	if (size < 0)
+	{
 		throw Exception("Could not allocate raw video buffer", size);
+	}
 
 	video_dst_bufsize = size;
 
@@ -119,6 +130,7 @@ int demux_decode_main(const char *src_filename)
 				frame.unref();
 			}
 		}
+
 		pkt.unref();
 	}
 
