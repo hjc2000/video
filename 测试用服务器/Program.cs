@@ -6,7 +6,6 @@ using System.Net.WebSockets;
 
 #region 设置服务器根路径
 string _webRootPath = Environment.GetEnvironmentVariable("WEBROOT") ?? "./";
-_webRootPath += "/wwwroot";
 _webRootPath = _webRootPath.Replace("\\", "/");
 #endregion
 
@@ -141,6 +140,6 @@ app.UseStaticFiles(new StaticFileOptions
 
 /*兜底的。如果 URL 指向一个什么都没有的地址，这个地址又不是对文件的请求，就返回 index.html 给请求者。
  通过 URL 的最后一级是否含有点号可知道是否是对文件的请求。MapFallbackToFile 只对非文件请求进行重定向*/
-app.MapFallbackToFile("index.html");
+app.MapFallbackToFile("web/index.html");
 
 app.Run();
