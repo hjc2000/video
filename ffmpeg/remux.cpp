@@ -14,8 +14,11 @@ void remux_main()
 	// 输入文件的流数量
 	int intput_stream_count = inputFormatCtx()->nb_streams;
 	// 创建流映射数组
+	// 数组的长度等于输入流的长度。
+	// map 中的单元格与输入格式中的流一一对应。每个单元格中储存的数字表示对应的输入流要被复制到
+	// 该输出流。单元格中储存 -1 则表示对应的输入流不被复制到输出中
 	int *stream_map = new int[intput_stream_count];
-	// 流要复制到的目标索引
+	// 用于给 map 的单元格赋值
 	int dst_stream_index = 0;
 	// 遍历每一个输入流，对输入流进行过滤，为输出格式创建流，将通过过滤的输入流的信息复制到输出流
 	for (int i = 0; i < intput_stream_count; i++)
@@ -58,6 +61,7 @@ void remux_main()
 			packet()->pos = -1;
 			outputFormatCtx.interleaved_write_packet(packet);
 		}
+
 		packet.unref();
 	}
 
