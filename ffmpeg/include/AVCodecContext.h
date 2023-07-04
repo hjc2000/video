@@ -5,6 +5,8 @@
 #include<include_ffmpeg.h>
 #include<AVUtil.h>
 #include<AVError.h>
+#include<AVPacket.h>
+#include<AVDictionary.h>
 
 namespace FFmpeg
 {
@@ -81,17 +83,15 @@ namespace FFmpeg
 		#pragma region 包装方法
 	public:
 		/// <summary>
-		/// 打开编码器
+		/// 打开编解码器。注意，打开前一定要设置编码器上下文的参数。要么调用
+		/// FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec) 
+		/// 创建一个编解码器上下文后手动赋值来设置，要么使用
+		///	static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec, AVCodecParameters *param, bool autoOpen = false)
+		/// 来根据 AVCodecParameters 创建一个初始化完参数的编解码器。
+		/// 当然，也可以随时调用 set_codec_param 来设置编解码器上下文参数。
 		/// </summary>
 		/// <param name="dic"></param>
-		void open(FFmpeg::AVDictionary dic = nullptr)
-		{
-			int ret = ::avcodec_open2(_pWrapedObj, _codec, dic);
-			if (ret < 0)
-			{
-				throw Exception("AVCodecContext::open", ret);
-			}
-		}
+		void open(FFmpeg::AVDictionary dic = nullptr);
 
 		/// <summary>
 		/// 将未编码帧送入编码器进行编码。随后可调用 avcodec_receive_packet 方法接收编码完成的包。
@@ -103,51 +103,14 @@ namespace FFmpeg
 			::avcodec_send_frame(_pWrapedObj, frame);
 		}
 
-		/*
-		enc_ctx.avcodec_send_frame(frame);
-		FFmpeg::AVPacket pkt;
-		while (1)
-		{
-			try
-			{
-				enc_ctx.avcodec_receive_packet(pkt);
-				FFmpeg::AVPacket pkt1;
-				fwrite(pkt()->data, 1, pkt()->size, outfile);
-			}
-			catch (int err_code)
-			{
-				if (err_code == AVERROR(EAGAIN) || err_code == AVERROR_EOF)
-					return;
-				else if (err_code < 0)
-					throw err_code;
-			}
-
-			pkt.unref();
-		}
-
-		*/
 		/// <summary>
-		/// 接收编码完成的包。
-		/// * 在死循环内接收。当发生错误或需要送入新的未编码帧时本方法会抛出异常。
-		/// * 在 catch 块中接收 int 类型的错误代码。当错误代码值等于 AVERROR(EAGAIN) 或
-		///	AVERROR_EOF 时是正常现象。
-		/// * AVERROR(EAGAIN) 错误码意味着需要送入新的未编码帧才能继续读出编码完成的包。
-		/// * 如果是其他错误代码，说明发生了不正常的错误，需要重新抛出这个错误代码。
-		/// * 示例见上方紧跟着的块注释
+		/// 从编码器接受包。成功返回 0，失败返回错误代码
 		/// </summary>
-		/// 
-		/// <param name="pkt">
-		/// 提前创建好的包对象。如果是在循环内调用本方法，请在循环外创建包对象，然后重复使用同一个包
-		/// 对象，避免频繁的堆内存分配和释放。在循环结束的时候别玩了调用包对象的 unref 方法。
-		/// </param>
-		/// <exception cref="exception">发生错误会抛出异常</exception>
-		void avcodec_receive_packet(FFmpeg::AVPacket pkt)
+		/// <param name="pkt"></param>
+		/// <returns></returns>
+		int avcodec_receive_packet(FFmpeg::AVPacket pkt)
 		{
-			int ret = ::avcodec_receive_packet(_pWrapedObj, pkt);
-			if (ret < 0)
-			{
-				throw Exception("AVCodecContext::avcodec_receive_packet", ret);
-			}
+			return ::avcodec_receive_packet(_pWrapedObj, pkt);
 		}
 
 		/// <summary>

@@ -4,21 +4,9 @@ static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, fstrea
 {
 	enc_ctx.avcodec_send_frame(frame);
 	FFmpeg::AVPacket pkt;
-	while (1)
+	while (!enc_ctx.avcodec_receive_packet(pkt))
 	{
-		try
-		{
-			enc_ctx.avcodec_receive_packet(pkt);
-			outfile.write((char *)pkt()->data, pkt()->size);
-		}
-		catch (int err_code)
-		{
-			if (err_code == AVERROR(EAGAIN) || err_code == AVERROR_EOF)
-				return;
-			else if (err_code < 0)
-				throw err_code;
-		}
-
+		outfile.write((char *)pkt()->data, pkt()->size);
 		pkt.unref();
 	}
 }
@@ -26,12 +14,12 @@ static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, fstrea
 /// <summary>
 /// 尝试编码
 /// </summary>
-void try_encode()
+void encode_main()
 {
 	int i, ret, x, y;
 	fstream fs{ "output.mp4", ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary };
 	uint8_t endcode[] = { 0, 0, 1, 0xb7 };
-	const char *filename = "output.mp4";
+	const char *outputFileName = "output.mp4";
 
 	/* find the mpeg1video encoder */
 	FFmpeg::AVCodec codec = FFmpeg::AVCodec::find_encoder_by_name("mpeg1video");

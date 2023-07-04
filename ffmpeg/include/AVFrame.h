@@ -1,5 +1,6 @@
 #pragma once
 #include<Wraper.h>
+#include<AVUtil.h>
 #include<include_ffmpeg.h>
 
 namespace FFmpeg

@@ -134,12 +134,13 @@
   <ItemGroup>
     <ClCompile Include="AVStream.cpp" />
     <ClCompile Include="demux_decode.cpp" />
+    <ClCompile Include="include\AVCodecContext.cpp" />
     <ClCompile Include="include\AVFormatContext.cpp" />
     <ClCompile Include="try_decode_video.cpp" />
     <ClCompile Include="ffmpeg.cpp" />
     <ClCompile Include="src\AVError.cpp" />
     <ClCompile Include="src\AVUtil.cpp" />
-    <ClCompile Include="try_encode.cpp" />
+    <ClCompile Include="encode.cpp" />
     <ClCompile Include="try_remux.cpp" />
     <ClCompile Include="try_transcode.cpp" />
   </ItemGroup>
