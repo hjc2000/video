@@ -2,6 +2,7 @@
 #include<include_ffmpeg.h>
 #include<Wraper.h>
 #include<AVCodec.h>
+#include<AVError.h>
 
 namespace FFmpeg
 {
@@ -22,9 +23,11 @@ namespace FFmpeg
 		/// <param name="dst_stream"></param>
 		void copy_parameters_to(FFmpeg::AVStream dst_stream)
 		{
-			int result = avcodec_parameters_copy(dst_stream()->codecpar, _pWrapedObj->codecpar);
+			int result = ::avcodec_parameters_copy(dst_stream()->codecpar, _pWrapedObj->codecpar);
 			if (result < 0)
-				throw result;
+			{
+				throw Exception("AVStream::copy_parameters_to", result);
+			}
 		}
 		#pragma endregion
 

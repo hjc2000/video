@@ -72,19 +72,9 @@ FFmpeg::AVStream FFmpeg::AVFormatContext::find_best_stream(AVMediaType type)
 		return _pWrapedObj->streams[ret];
 }
 
-bool FFmpeg::AVFormatContext::read_packet(FFmpeg::AVPacket packet)
+int FFmpeg::AVFormatContext::read_packet(FFmpeg::AVPacket packet)
 {
-	int ret = ::av_read_frame(_pWrapedObj, packet);
-	if (ret < 0)
-	{
-		cout << "AVFormatContext 的 read_packet 方法发生错误：" <<
-			FFmpeg::error_code_to_str(ret) << endl;
-		return false;
-	}
-	else
-	{
-		return true;
-	}
+	return ::av_read_frame(_pWrapedObj, packet);
 }
 
 FFmpeg::AVStream FFmpeg::AVFormatContext::create_new_stream(const::AVCodec *pCodec)
@@ -162,7 +152,8 @@ FFmpeg::AVStream FFmpeg::AVFormatContext::get_stream(int stream_index)
 	// 强制转换为无符号类型就不用判断 stream_index >= 0 了
 	if ((uint32_t)stream_index >= _pWrapedObj->nb_streams)
 	{
-		throw "流索引号超出范围";
+		throw Exception("流索引号超出范围");
 	}
+
 	return FFmpeg::AVStream{_pWrapedObj->streams[stream_index]};
 }

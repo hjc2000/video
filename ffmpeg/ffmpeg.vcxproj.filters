@@ -44,7 +44,7 @@
     <ClCompile Include="encode.cpp">
       <Filter>example</Filter>
     </ClCompile>
-    <ClCompile Include="try_remux.cpp">
+    <ClCompile Include="remux.cpp">
       <Filter>example</Filter>
     </ClCompile>
     <ClCompile Include="try_transcode.cpp">
@@ -54,6 +54,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="include\AVCodecContext.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="include\AVFrame.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -104,14 +104,11 @@ namespace FFmpeg
 		FFmpeg::AVStream find_best_stream(AVMediaType type);
 
 		/// <summary>
-		///		读取一个包（未解码的音视频数据包）
-		///		如果已经到达文件尾或发生错误，会返回 false，否则返回 true
-		///		可以将本方法作为循环条件，在循环中反复读取包
-		///		如果发生错误，本方法会打印信息
+		/// 成功返回 0，失败返回错误代码
 		/// </summary>
 		/// <param name="packet"></param>
 		/// <returns></returns>
-		bool read_packet(FFmpeg::AVPacket packet);
+		int read_packet(FFmpeg::AVPacket packet);
 
 		/// <summary>
 		///		只有输出格式才能使用这个函数
@@ -148,7 +145,7 @@ namespace FFmpeg
 		std::string get_duration_as_formatted_time_string();
 
 		/// <summary>
-		///		获取指定索引的流。流的索引号超出范围会抛出异常
+		///	获取指定索引的流。流的索引号超出范围会抛出异常
 		/// </summary>
 		/// <param name="stream_index"></param>
 		/// <returns></returns>

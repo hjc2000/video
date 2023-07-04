@@ -1,7 +1,7 @@
 ﻿#include<FFmpeg.h>
 
 void encode_main();
-void try_remux();
+void remux_main();
 int try_decode_video();
 int try_transcode();
 int demux_decode_main(const char *src_filename);
@@ -11,7 +11,7 @@ int main(void)
 {
 	try
 	{
-		//try_remux();
+		remux_main();
 		//try_decode_video();
 		//try_transcode();
 
@@ -39,7 +39,7 @@ int main(void)
 		#pragma endregion
 
 		#pragma region 生成裸流并编码
-		encode_main();
+		//encode_main();
 		#pragma endregion
 
 

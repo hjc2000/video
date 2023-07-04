@@ -72,8 +72,9 @@ void encode_main()
 		av_frame_make_writable() checks that and allocates a new buffer
 		for the frame only if necessary.
 		*/
-		frame.av_frame_make_writable();
+		frame.make_writable();
 
+		#pragma region 在数组中生成视频裸流
 		/* Prepare a dummy image.
 		In real code, this is where you would have your own logic for
 		filling the frame. FFmpeg does not care what you put in the
@@ -97,6 +98,7 @@ void encode_main()
 				frame()->data[2][y * frame()->linesize[2] + x] = 64 + x + i * 5;
 			}
 		}
+		#pragma endregion
 
 		frame()->pts = i;
 
