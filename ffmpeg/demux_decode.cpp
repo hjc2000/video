@@ -100,7 +100,7 @@ int demux_decode_main(const char *src_filename)
 	video_dst_bufsize = size;
 
 	// 在循环中读取格式中的包
-	while (inputFormatCtx.read_packet(pkt))
+	while (!inputFormatCtx.read_packet(pkt))
 	{
 		// 如果读到的包是视频流的包
 		if (pkt()->stream_index == bestVideoStream()->index)

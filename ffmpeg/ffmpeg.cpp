@@ -2,8 +2,6 @@
 
 void encode_main();
 void remux_main();
-int try_decode_video();
-int try_transcode();
 int demux_decode_main(const char *src_filename);
 using FFmpeg::Exception;
 
@@ -11,9 +9,9 @@ int main(void)
 {
 	try
 	{
-		remux_main();
-		//try_decode_video();
-		//try_transcode();
+		#pragma region 转封装
+		//remux_main();
+		#pragma endregion
 
 		#pragma region 解码 mpegts1.mp4
 		/*

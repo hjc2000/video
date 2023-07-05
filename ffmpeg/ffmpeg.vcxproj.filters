@@ -38,16 +38,10 @@
     <ClCompile Include="demux_decode.cpp">
       <Filter>example</Filter>
     </ClCompile>
-    <ClCompile Include="try_decode_video.cpp">
-      <Filter>example</Filter>
-    </ClCompile>
     <ClCompile Include="encode.cpp">
       <Filter>example</Filter>
     </ClCompile>
     <ClCompile Include="remux.cpp">
-      <Filter>example</Filter>
-    </ClCompile>
-    <ClCompile Include="try_transcode.cpp">
       <Filter>example</Filter>
     </ClCompile>
     <ClCompile Include="include\AVFormatContext.cpp">
