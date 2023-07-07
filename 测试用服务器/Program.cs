@@ -53,6 +53,8 @@ app.UseRouting();
 app.UseWebSockets();
 
 #region 8630 代理
+// http://localhost:8848/web/
+
 app.MapGet("/request", async (HttpContext context) =>
 {
 	Console.WriteLine(context.Request.Path);
@@ -94,7 +96,8 @@ app.MapPost("/request", async (HttpContext context) =>
 
 	try
 	{
-		HttpResponseMessage msg = await client.GetAsync("request" + context.Request.QueryString);
+		StreamContent requestContent = new(context.Request.Body);
+		HttpResponseMessage msg = await client.PostAsync("request" + context.Request.QueryString, requestContent);
 		if (msg.IsSuccessStatusCode)
 		{
 			Stream retStream = await msg.Content.ReadAsStreamAsync();
