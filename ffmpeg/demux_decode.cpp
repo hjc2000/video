@@ -38,18 +38,18 @@ int demux_decode_main(const char *src_filename)
 	// 最好的视频流
 	FFmpeg::AVStream bestVideoStream;
 	// 用来解码最好的视频流的解码器
-	FFmpeg::AVCodec bestVideoDecodeCodec;
+	FFmpeg::AVCodec bestVideoDecoder;
 	// 解码器上下文
-	FFmpeg::AVCodecContext bestVideoDecodeCtx;
+	FFmpeg::AVCodecContext bestVideoDecoderCtx;
 
 	try
 	{
 		// 查找最好的视频流
 		bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
 		// 获取最好的视频流的解码器
-		bestVideoDecodeCodec = bestVideoStream.get_stream_codec();
+		bestVideoDecoder = bestVideoStream.get_stream_codec();
 		// 使用解码器创建解码器上下文
-		bestVideoDecodeCtx = FFmpeg::AVCodecContext::create(bestVideoDecodeCodec, bestVideoStream()->codecpar, true);
+		bestVideoDecoderCtx = FFmpeg::AVCodecContext::create(bestVideoDecoder, bestVideoStream()->codecpar, true);
 	}
 	catch (Exception e)
 	{
@@ -59,14 +59,14 @@ int demux_decode_main(const char *src_filename)
 
 	#pragma region 准备音频解码器
 	FFmpeg::AVStream bestAudioStream;
-	FFmpeg::AVCodec bestAudioDecodeCodec;
-	FFmpeg::AVCodecContext bestAudioDecodeCtx;
+	FFmpeg::AVCodec bestAudioDecoder;
+	FFmpeg::AVCodecContext bestAudioDecoderCtx;
 
 	try
 	{
 		bestAudioStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
-		bestAudioDecodeCodec = bestAudioStream.get_stream_codec();
-		bestAudioDecodeCtx = FFmpeg::AVCodecContext::create(bestAudioDecodeCodec, bestAudioStream()->codecpar, true);
+		bestAudioDecoder = bestAudioStream.get_stream_codec();
+		bestAudioDecoderCtx = FFmpeg::AVCodecContext::create(bestAudioDecoder, bestAudioStream()->codecpar, true);
 	}
 	catch (Exception e)
 	{
@@ -84,20 +84,25 @@ int demux_decode_main(const char *src_filename)
 
 	FFmpeg::AVFrame frame = FFmpeg::AVFrame::create();
 	FFmpeg::AVPacket pkt;
-	int video_dst_linesize[4];
-	int video_dst_bufsize;
-	uint8_t *video_dst_data[4] = { nullptr };
+	/* uint8_t * 指针变量的数组，数组中每个单元格储存一个 uint8_t * 指针。
+	* 每个指针都指向一个 uint8_t 数组的首地址
+	* video_dst_datas 是一个每一行可能不等长的二维数组。第一行储存 Y 数组，
+	* 第二行储存 U 数组，第三行储存 V 数组。第四行是预留的用来扩展的。*/
+	uint8_t *video_dst_datas[4] = { nullptr };
 
-	int size = av_image_alloc(video_dst_data, video_dst_linesize,
-		bestVideoDecodeCtx()->width, bestVideoDecodeCtx()->height,
-		bestVideoDecodeCtx()->pix_fmt, 1);
+	/* 上面说了 video_dst_datas 是一个每一行可能不等长的二维数组，这个变量是用来储存每一行
+	的长度的 */
+	int video_dst_datas_linesizes[4];
+
+	/* 为 video_dst_datas 在堆中分配内存 */
+	int size = av_image_alloc(video_dst_datas, video_dst_datas_linesizes,
+		bestVideoDecoderCtx()->width, bestVideoDecoderCtx()->height,
+		bestVideoDecoderCtx()->pix_fmt, 1);
 
 	if (size < 0)
 	{
 		throw Exception("Could not allocate raw video buffer", size);
 	}
-
-	video_dst_bufsize = size;
 
 	// 在循环中读取格式中的包
 	while (!inputFormatCtx.read_packet(pkt))
@@ -106,24 +111,24 @@ int demux_decode_main(const char *src_filename)
 		if (pkt()->stream_index == bestVideoStream()->index)
 		{
 			// 向视频解码器发送包
-			bestVideoDecodeCtx.send_packet(pkt);
-			while (!bestVideoDecodeCtx.receive_frame(frame))
+			bestVideoDecoderCtx.send_packet(pkt);
+			while (!bestVideoDecoderCtx.receive_frame(frame))
 			{
 				static int video_frame_count = 0;
 				printf("video_frame n:%d\n", video_frame_count++);
 				// 将解码帧复制到目标缓冲区：这是必需的，因为rawvideo需要不对齐的数据
-				frame.copy_image_to(video_dst_data, video_dst_linesize);
-				video_dst_file.write((char *)video_dst_data[0], video_dst_bufsize);
+				frame.copy_image_to(video_dst_datas, video_dst_datas_linesizes);
+				video_dst_file.write((char *)video_dst_datas[0], size);
 				frame.unref();
 			}
 		}
 		else if (pkt()->stream_index == bestAudioStream()->index)
 		{
 			// 如果读取到的包是音频流的包
-			bestAudioDecodeCtx.send_packet(pkt);
-			while (!bestAudioDecodeCtx.receive_frame(frame))
+			bestAudioDecoderCtx.send_packet(pkt);
+			while (!bestAudioDecoderCtx.receive_frame(frame))
 			{
-				output_audio_frame(frame, audio_dst_file, bestAudioDecodeCtx);
+				output_audio_frame(frame, audio_dst_file, bestAudioDecoderCtx);
 				frame.unref();
 			}
 		}
@@ -132,26 +137,26 @@ int demux_decode_main(const char *src_filename)
 	}
 
 	/* flush the decoders */
-	if (bestVideoDecodeCtx)
+	if (bestVideoDecoderCtx)
 	{
-		bestVideoDecodeCtx.send_packet(nullptr);
+		bestVideoDecoderCtx.send_packet(nullptr);
 		// 在循环中读取解码后的帧
-		while (!bestVideoDecodeCtx.receive_frame(frame))
+		while (!bestVideoDecoderCtx.receive_frame(frame))
 		{
 			// 将解码帧复制到目标缓冲区：这是必需的，因为rawvideo需要不对齐的数据
-			frame.copy_image_to(video_dst_data, video_dst_linesize);
-			video_dst_file.write((char *)video_dst_data[0], video_dst_bufsize);
+			frame.copy_image_to(video_dst_datas, video_dst_datas_linesizes);
+			video_dst_file.write((char *)video_dst_datas[0], size);
 			frame.unref();
 		}
 	}
 
-	if (bestAudioDecodeCtx)
+	if (bestAudioDecoderCtx)
 	{
-		bestAudioDecodeCtx.send_packet(nullptr);
+		bestAudioDecoderCtx.send_packet(nullptr);
 		// get all the available frames from the decoder
-		while (!bestAudioDecodeCtx.receive_frame(frame))
+		while (!bestAudioDecoderCtx.receive_frame(frame))
 		{
-			output_audio_frame(frame, audio_dst_file, bestAudioDecodeCtx);
+			output_audio_frame(frame, audio_dst_file, bestAudioDecoderCtx);
 			frame.unref();
 		}
 	}
@@ -168,5 +173,5 @@ int demux_decode_main(const char *src_filename)
 		audio_dst_file.close();
 	}
 
-	av_free(video_dst_data[0]);
+	av_free(video_dst_datas[0]);
 }
