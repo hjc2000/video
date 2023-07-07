@@ -63,13 +63,20 @@ app.MapGet("/request", async (HttpContext context) =>
 		BaseAddress = new Uri("http://192.168.0.221:9000/"),
 	};
 
-	HttpResponseMessage msg = await client.GetAsync("request" + context.Request.QueryString);
-	if (msg.IsSuccessStatusCode)
+	try
 	{
-		Stream retStream = await msg.Content.ReadAsStreamAsync();
-		await retStream.CopyToAsync(context.Response.Body);
+		HttpResponseMessage msg = await client.GetAsync("request" + context.Request.QueryString);
+		if (msg.IsSuccessStatusCode)
+		{
+			Stream retStream = await msg.Content.ReadAsStreamAsync();
+			await retStream.CopyToAsync(context.Response.Body);
+		}
+		else
+		{
+			context.Response.StatusCode = 404;
+		}
 	}
-	else
+	catch
 	{
 		context.Response.StatusCode = 404;
 	}
@@ -85,13 +92,20 @@ app.MapPost("/request", async (HttpContext context) =>
 		BaseAddress = new Uri("http://192.168.0.221:9000/"),
 	};
 
-	HttpResponseMessage msg = await client.GetAsync("request" + context.Request.QueryString);
-	if (msg.IsSuccessStatusCode)
+	try
 	{
-		Stream retStream = await msg.Content.ReadAsStreamAsync();
-		await retStream.CopyToAsync(context.Response.Body);
+		HttpResponseMessage msg = await client.GetAsync("request" + context.Request.QueryString);
+		if (msg.IsSuccessStatusCode)
+		{
+			Stream retStream = await msg.Content.ReadAsStreamAsync();
+			await retStream.CopyToAsync(context.Response.Body);
+		}
+		else
+		{
+			context.Response.StatusCode = 404;
+		}
 	}
-	else
+	catch
 	{
 		context.Response.StatusCode = 404;
 	}
