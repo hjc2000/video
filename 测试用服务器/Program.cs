@@ -47,8 +47,54 @@ app.Use(async (HttpContext context, RequestDelegate next) =>
 #endregion
 
 #region 配置路由
+// 放在“自定义中间件”的后面，让路由中间件在“自定义中间件”之后进行匹配，
+// 也就是说一个请求会先经过“自定义中间件”的处理然后再传给路由中间件
 app.UseRouting();
 app.UseWebSockets();
+
+app.MapGet("/web/request", async (HttpContext context) =>
+{
+	Console.WriteLine(context.Request.Path);
+	Console.WriteLine(context.Request.QueryString);
+
+	HttpClient client = new()
+	{
+		BaseAddress = new Uri("http://192.168.0.221:9000/"),
+	};
+
+	HttpResponseMessage msg = await client.GetAsync("request" + context.Request.QueryString);
+	if (msg.IsSuccessStatusCode)
+	{
+		Stream retStream = await msg.Content.ReadAsStreamAsync();
+		await retStream.CopyToAsync(context.Response.Body);
+	}
+	else
+	{
+		context.Response.StatusCode = 404;
+	}
+});
+
+app.MapPost("/web/request", async (HttpContext context) =>
+{
+	Console.WriteLine(context.Request.Path);
+	Console.WriteLine(context.Request.QueryString);
+
+	HttpClient client = new()
+	{
+		BaseAddress = new Uri("http://192.168.0.221:9000/"),
+	};
+
+	HttpResponseMessage msg = await client.GetAsync("request" + context.Request.QueryString);
+	if (msg.IsSuccessStatusCode)
+	{
+		Stream retStream = await msg.Content.ReadAsStreamAsync();
+		await retStream.CopyToAsync(context.Response.Body);
+	}
+	else
+	{
+		context.Response.StatusCode = 404;
+	}
+});
 
 app.MapGet("/ws", async (HttpContext context) =>
 {
@@ -113,12 +159,6 @@ app.MapGet("/test.txt", async (HttpContext context) =>
 /// 文件content-type提供者
 /// </summary>
 FileExtensionContentTypeProvider provider = new();
-
-/* 添加mime表的内容。如果不添加，provider 的默认mime表内没有dll等文件的
- * content-type，会造成浏览器接收文件后以错误的方式处理*/
-provider.Mappings[".dll"] = "application/octet-stream";
-provider.Mappings[".dat"] = "application/octet-stream";
-provider.Mappings[".blat"] = "application/octet-stream";
 provider.Mappings[".m3u8"] = "application/x-mpegURL";
 provider.Mappings[".ts"] = "video/MP2T ";
 
@@ -141,5 +181,4 @@ app.UseStaticFiles(new StaticFileOptions
 /*兜底的。如果 URL 指向一个什么都没有的地址，这个地址又不是对文件的请求，就返回 index.html 给请求者。
  通过 URL 的最后一级是否含有点号可知道是否是对文件的请求。MapFallbackToFile 只对非文件请求进行重定向*/
 app.MapFallbackToFile("web/index.html");
-
 app.Run();
