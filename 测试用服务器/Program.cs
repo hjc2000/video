@@ -53,7 +53,7 @@ app.UseRouting();
 app.UseWebSockets();
 
 #region 8630 代理
-app.MapGet("/web/request", async (HttpContext context) =>
+app.MapGet("/request", async (HttpContext context) =>
 {
 	Console.WriteLine(context.Request.Path);
 	Console.WriteLine(context.Request.QueryString);
@@ -75,7 +75,7 @@ app.MapGet("/web/request", async (HttpContext context) =>
 	}
 });
 
-app.MapPost("/web/request", async (HttpContext context) =>
+app.MapPost("/request", async (HttpContext context) =>
 {
 	Console.WriteLine(context.Request.Path);
 	Console.WriteLine(context.Request.QueryString);
@@ -143,14 +143,15 @@ app.MapGet("/test.txt", async (HttpContext context) =>
 {
 	try
 	{
+		using FileStream fileStream = File.Open(_webRootPath + "/test.txt", FileMode.Open);
 		context.Response.Headers.Add("Transfer-Encoding", "chunked");
 		context.Response.Headers.ContentType = "text/plain";
-		using FileStream fileStream = File.Open(_webRootPath + "/test.txt", FileMode.Open);
 		await fileStream.ChunkWriteContentToAsync(context.Response.Body);
 		await context.Response.Body.ChunkWriteTrailerAsync();
 	}
 	catch (Exception ex)
 	{
+		context.Response.StatusCode = 404;
 		Console.WriteLine(ex.Message);
 	}
 });
