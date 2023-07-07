@@ -52,6 +52,7 @@ app.Use(async (HttpContext context, RequestDelegate next) =>
 app.UseRouting();
 app.UseWebSockets();
 
+#region 8630 代理
 app.MapGet("/web/request", async (HttpContext context) =>
 {
 	Console.WriteLine(context.Request.Path);
@@ -95,6 +96,7 @@ app.MapPost("/web/request", async (HttpContext context) =>
 		context.Response.StatusCode = 404;
 	}
 });
+#endregion
 
 app.MapGet("/ws", async (HttpContext context) =>
 {
