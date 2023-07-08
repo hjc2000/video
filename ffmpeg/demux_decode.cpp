@@ -50,7 +50,7 @@ int demux_decode_main(const char *src_filename)
 		// 获取最好的视频流的解码器
 		bestVideoDecoder = bestVideoStream.get_stream_codec();
 		// 使用解码器创建解码器上下文
-		bestVideoDecoderCtx = FFmpeg::AVCodecContext(bestVideoDecoder, bestVideoStream()->codecpar, true);
+		bestVideoDecoderCtx = FFmpeg::AVCodecContext{ bestVideoDecoder, bestVideoStream()->codecpar, true };
 	}
 	catch (Exception e)
 	{

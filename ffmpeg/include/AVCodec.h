@@ -9,7 +9,7 @@ namespace FFmpeg
 	class AVCodec :public Wraper<::AVCodec>
 	{
 	public:// 构造函数、析构函数
-		AVCodec() :Wraper() {}
+		AVCodec() {}
 		AVCodec(const ::AVCodec *p) :Wraper(p) {}
 		AVCodec(::AVCodec &ref) :Wraper(ref) {}
 

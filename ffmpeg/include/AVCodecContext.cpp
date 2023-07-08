@@ -17,7 +17,7 @@ FFmpeg::AVCodecContext::AVCodecContext(FFmpeg::AVCodec codec)
 	}
 }
 
-FFmpeg::AVCodecContext::AVCodecContext(FFmpeg::AVCodec codec, AVCodecParameters *param, bool autoOpen)
+FFmpeg::AVCodecContext::AVCodecContext(FFmpeg::AVCodec codec, AVCodecParameters *param, bool autoOpen) 
 {
 	_codec = codec;
 	_pWrapedObj = ::avcodec_alloc_context3(codec);

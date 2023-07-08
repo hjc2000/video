@@ -13,7 +13,7 @@ namespace FFmpeg
 	{
 		#pragma region 生命周期
 	public:
-		AVCodecContext() :Wraper() {}
+		AVCodecContext() {}
 		AVCodecContext(::AVCodecContext *p) :Wraper(p) {}
 		AVCodecContext(::AVCodecContext &ref) :Wraper(ref) {}
 		AVCodecContext(FFmpeg::AVCodec codec);
