@@ -4,14 +4,9 @@
 using std::fstream;
 using FFmpeg::Exception;
 
-void output_audio_frame(AVFrame *frame, fstream &audio_dst_file, FFmpeg::AVCodecContext bestAudioDecodeCtx)
+void output_audio_frame(FFmpeg::AVFrame frame, fstream &audio_dst_file, FFmpeg::AVCodecContext bestAudioDecodeCtx)
 {
-	char err_buff[32];
-	static int audio_frame_count = 0;
-	size_t unpadded_linesize = frame->nb_samples * av_get_bytes_per_sample((AVSampleFormat)frame->format);
-	printf("audio_frame n:%d nb_samples:%d pts:%s\n",
-		audio_frame_count++, frame->nb_samples,
-		av_ts_make_time_string(err_buff, frame->pts, &(bestAudioDecodeCtx()->time_base)));
+	size_t unpadded_linesize = frame()->nb_samples * av_get_bytes_per_sample((AVSampleFormat)frame()->format);
 
 	/* Write the raw audio data samples of the first plane. This works
 	 * fine for packed formats (e.g. AV_SAMPLE_FMT_S16). However,
@@ -21,7 +16,7 @@ void output_audio_frame(AVFrame *frame, fstream &audio_dst_file, FFmpeg::AVCodec
 	 * in these cases.
 	 * You should use libswresample or libavfilter to convert the frame
 	 * to packed data. */
-	audio_dst_file.write((char *)(frame->extended_data[0]), unpadded_linesize);
+	audio_dst_file.write((char *)(frame()->extended_data[0]), unpadded_linesize);
 }
 
 int demux_decode_main(const char *src_filename)
