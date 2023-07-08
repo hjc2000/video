@@ -1,5 +1,6 @@
 #include "AVFrame.h"
 #include<AVUtil.h>
+#include<ImageBuffer.h>
 
 void FFmpeg::AVFrame::Dispose()
 {
@@ -41,9 +42,9 @@ void FFmpeg::AVFrame::unref()
 	::av_frame_unref(_pWrapedObj);
 }
 
-void FFmpeg::AVFrame::copy_image_to_arr(uint8_t *dst_data[4], int dst_linesizes[4])
+void FFmpeg::AVFrame::copy_image_to_arr(FFmpeg::ImageBuffer buffer)
 {
-	av_image_copy(dst_data, dst_linesizes,
+	av_image_copy(buffer._pointers, buffer._linesizes,
 		(const uint8_t **)(_pWrapedObj->data), _pWrapedObj->linesize,
 		(FFmpeg::AVPixelFormat)_pWrapedObj->format, _pWrapedObj->width, _pWrapedObj->height);
 }

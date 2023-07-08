@@ -1,5 +1,7 @@
 #include<FFmpeg.h>
+#include<ImageBuffer.h>
 #include<fstream>
+
 using std::fstream;
 using FFmpeg::Exception;
 
@@ -84,27 +86,7 @@ int demux_decode_main(const char *src_filename)
 
 	FFmpeg::AVFrame frame = FFmpeg::AVFrame::create();
 	FFmpeg::AVPacket pkt;
-
-	/* uint8_t * 指针变量的数组，数组中每个单元格储存一个 uint8_t * 指针。
-	* 每个指针都指向一个 uint8_t 数组的首地址
-	* 这么看来 video_dst_datas 是一个每一行可能不等长的二维数组。第一行储存 Y 数组，
-	  第二行储存 U 数组，第三行储存 V 数组。第四行是预留的用来扩展的。*/
-	uint8_t *video_dst_datas[4] = { nullptr };
-
-	/* 上面说了 video_dst_datas 是一个每一行可能不等长的二维数组，这个变量是用来储存每一行
-	的长度的 */
-	int video_dst_datas_linesizes[4];
-
-	/* 为 video_dst_datas 在堆中分配内存。
-	整个二维数组在堆中是连续的，然后将其中的特定位置的指针赋值给 video_dst_datas 中的每个单元格*/
-	int size = av_image_alloc(video_dst_datas, video_dst_datas_linesizes,
-		bestVideoDecoderCtx()->width, bestVideoDecoderCtx()->height,
-		bestVideoDecoderCtx()->pix_fmt, 1);
-
-	if (size < 0)
-	{
-		throw Exception("Could not allocate raw video buffer", size);
-	}
+	FFmpeg::ImageBuffer buffer{bestVideoDecoderCtx, 1};
 
 	// 在循环中读取格式中的包
 	while (!inputFormatCtx.read_packet(pkt))
@@ -119,7 +101,7 @@ int demux_decode_main(const char *src_filename)
 				static int video_frame_count = 0;
 				printf("video_frame n:%d\n", video_frame_count++);
 				// 将解码帧复制到目标缓冲区：这是必需的，因为rawvideo需要不对齐的数据
-				frame.copy_image_to_arr(video_dst_datas, video_dst_datas_linesizes);
+				frame.copy_image_to_arr(buffer);
 				/* video_dst_datas 是一个长度为 4 的指针数组，里面储存着 4 个指针。前面说过，
 				video_dst_datas 也可以当作是一个二维数组。只不过每一行的长度可能不同。
 				* video_dst_datas[0] 是这个指针数组里的第一个指针，指向这个二维数组的第一行的头部。
@@ -127,7 +109,7 @@ int demux_decode_main(const char *src_filename)
 				第二行的位置紧跟在第二行后面），所以 video_dst_datas[0] 内的指针指向的是整个缓冲区的头部，
 				而 size 是整个缓冲区的大小（每一行的长度相加）。
 				* 下面的这句就相当于在循环中遍历 video_dst_datas 中的每一行并写入文件。*/
-				video_dst_file.write((char *)video_dst_datas[0], size);
+				video_dst_file.write((char *)buffer._pointers[0], buffer._size);
 				frame.unref();
 			}
 		}
@@ -153,8 +135,8 @@ int demux_decode_main(const char *src_filename)
 		while (!bestVideoDecoderCtx.receive_frame(frame))
 		{
 			// 将解码帧复制到目标缓冲区：这是必需的，因为rawvideo需要不对齐的数据
-			frame.copy_image_to_arr(video_dst_datas, video_dst_datas_linesizes);
-			video_dst_file.write((char *)video_dst_datas[0], size);
+			frame.copy_image_to_arr(buffer);
+			video_dst_file.write((char *)buffer._pointers[0], buffer._size);
 			frame.unref();
 		}
 	}
@@ -181,6 +163,4 @@ int demux_decode_main(const char *src_filename)
 		audio_dst_file.flush();
 		audio_dst_file.close();
 	}
-
-	av_free(video_dst_datas[0]);
 }

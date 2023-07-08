@@ -4,6 +4,8 @@
 
 namespace FFmpeg
 {
+	class ImageBuffer;
+
 	class AVFrame :public Wraper<::AVFrame>
 	{
 		#pragma region 生命周期
@@ -34,6 +36,6 @@ namespace FFmpeg
 		/// </summary>
 		/// <param name="dst_data"></param>
 		/// <param name="dst_linesizes"></param>
-		void copy_image_to_arr(uint8_t *dst_data[4], int dst_linesizes[4]);
+		void copy_image_to_arr(FFmpeg::ImageBuffer buffer);
 	};
 }

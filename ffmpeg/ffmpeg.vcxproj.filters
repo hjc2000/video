@@ -54,7 +54,7 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="ImageBuffer.cpp">
-      <Filter>源文件</Filter>
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
