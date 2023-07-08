@@ -21,6 +21,7 @@ void output_audio_frame(FFmpeg::AVFrame frame, fstream &audio_dst_file, FFmpeg::
 
 int demux_decode_main(const char *src_filename)
 {
+	::avformat_network_init();
 	// 准备音频解码输出文件、视频解码输出文件的文件流
 	fstream video_out_fs{ "out_video.yuv", ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary };
 	fstream audio_dst_file{ "out_audio.pcm", ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary };
@@ -157,4 +158,6 @@ int demux_decode_main(const char *src_filename)
 		audio_dst_file.flush();
 		audio_dst_file.close();
 	}
+
+	::avformat_network_deinit();
 }

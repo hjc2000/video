@@ -33,8 +33,17 @@ int main(void)
 		ffplay -f s16le -ac 1 -ar 44100 out_audio.pcm
 		ffplay -f rawvideo -video_size  480x480 out_video.yuv
 		*/
-		demux_decode_main("input_audio.flac");
+		//demux_decode_main("input_audio.flac");
 		#pragma endregion
+
+		/* 可以使用下面这条命令查看 PCM 的格式字符串
+		* ffmpeg -formats | findstr PCM
+		* 格式字符串是使用 ffplay 播放 PCM 文件时要用的
+		
+		ffplay -f rawvideo -video_size  1920*1080 out_video.yuv
+		ffplay -f f32le -ac 1 -ar 44100 out_audio.pcm
+		*/
+		demux_decode_main("http://localhost:8080/");
 
 		#pragma region 生成裸流并编码
 		//encode_main();
