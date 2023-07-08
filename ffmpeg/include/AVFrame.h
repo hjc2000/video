@@ -36,6 +36,6 @@ namespace FFmpeg
 		/// </summary>
 		/// <param name="dst_data"></param>
 		/// <param name="dst_linesizes"></param>
-		void copy_image_to_arr(FFmpeg::ImageBuffer buffer);
+		void copy_image_to_buffer(FFmpeg::ImageBuffer buffer);
 	};
 }

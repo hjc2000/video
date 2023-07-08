@@ -1,5 +1,6 @@
 #pragma once
 #include<include_ffmpeg.h>
+#include<fstream>
 
 namespace FFmpeg
 {
@@ -18,5 +19,7 @@ namespace FFmpeg
 		int _linesizes[4];
 		int _size;
 	};
+
+	std::fstream &operator <<(std::fstream &fs, FFmpeg::ImageBuffer buffer);
 }
 

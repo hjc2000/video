@@ -42,7 +42,7 @@ void FFmpeg::AVFrame::unref()
 	::av_frame_unref(_pWrapedObj);
 }
 
-void FFmpeg::AVFrame::copy_image_to_arr(FFmpeg::ImageBuffer buffer)
+void FFmpeg::AVFrame::copy_image_to_buffer(FFmpeg::ImageBuffer buffer)
 {
 	av_image_copy(buffer._pointers, buffer._linesizes,
 		(const uint8_t **)(_pWrapedObj->data), _pWrapedObj->linesize,

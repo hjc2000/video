@@ -14,3 +14,9 @@ FFmpeg::ImageBuffer::ImageBuffer(FFmpeg::AVCodecContext ctx, int align)
 		throw Exception("ImageBuffer", _size);
 	}
 }
+
+std::fstream &FFmpeg::operator<<(std::fstream &fs, FFmpeg::ImageBuffer buffer)
+{
+	fs.write((char *)buffer._pointers[0], buffer._size);
+	return fs;
+}

@@ -27,7 +27,7 @@ void output_audio_frame(AVFrame *frame, fstream &audio_dst_file, FFmpeg::AVCodec
 int demux_decode_main(const char *src_filename)
 {
 	// 准备音频解码输出文件、视频解码输出文件的文件流
-	fstream video_dst_file{ "out_video.yuv", ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary };
+	fstream video_out_fs{ "out_video.yuv", ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary };
 	fstream audio_dst_file{ "out_audio.pcm", ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary };
 
 	// 打开输入格式
@@ -100,7 +100,7 @@ int demux_decode_main(const char *src_filename)
 				static int video_frame_count = 0;
 				printf("video_frame n:%d\n", video_frame_count++);
 				// 将解码帧复制到目标缓冲区：这是必需的，因为rawvideo需要不对齐的数据
-				frame.copy_image_to_arr(buffer);
+				frame.copy_image_to_buffer(buffer);
 				/* video_dst_datas 是一个长度为 4 的指针数组，里面储存着 4 个指针。前面说过，
 				video_dst_datas 也可以当作是一个二维数组。只不过每一行的长度可能不同。
 				* video_dst_datas[0] 是这个指针数组里的第一个指针，指向这个二维数组的第一行的头部。
@@ -108,7 +108,7 @@ int demux_decode_main(const char *src_filename)
 				第二行的位置紧跟在第二行后面），所以 video_dst_datas[0] 内的指针指向的是整个缓冲区的头部，
 				而 size 是整个缓冲区的大小（每一行的长度相加）。
 				* 下面的这句就相当于在循环中遍历 video_dst_datas 中的每一行并写入文件。*/
-				video_dst_file.write((char *)buffer._pointers[0], buffer._size);
+				video_out_fs << buffer;
 				frame.unref();
 			}
 		}
@@ -134,8 +134,8 @@ int demux_decode_main(const char *src_filename)
 		while (!bestVideoDecoderCtx.receive_frame(frame))
 		{
 			// 将解码帧复制到目标缓冲区：这是必需的，因为rawvideo需要不对齐的数据
-			frame.copy_image_to_arr(buffer);
-			video_dst_file.write((char *)buffer._pointers[0], buffer._size);
+			frame.copy_image_to_buffer(buffer);
+			video_out_fs << buffer;
 			frame.unref();
 		}
 	}
@@ -151,10 +151,10 @@ int demux_decode_main(const char *src_filename)
 		}
 	}
 
-	if (video_dst_file)
+	if (video_out_fs)
 	{
-		video_dst_file.flush();
-		video_dst_file.close();
+		video_out_fs.flush();
+		video_out_fs.close();
 	}
 
 	if (audio_dst_file)
