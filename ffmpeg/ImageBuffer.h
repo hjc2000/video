@@ -1,10 +1,10 @@
 #pragma once
 #include<include_ffmpeg.h>
-#include<AVUtil.h>
-#include<AVCodecContext.h>
 
 namespace FFmpeg
 {
+	class AVCodecContext;
+
 	/// <summary>
 	/// 配合 AVFrame 使用。封装字节数组，用来储存一帧图像
 	/// </summary>

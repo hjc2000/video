@@ -12,6 +12,8 @@
 #include <AVCodec.h>
 #include <AVCodecContext.h>
 #include <AVFrame.h>
+#include<ImageBuffer.h>
+
 #include <iostream>
 #include <fstream>
 #include <string>

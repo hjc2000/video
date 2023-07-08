@@ -1,5 +1,4 @@
 #include<FFmpeg.h>
-#include<ImageBuffer.h>
 #include<fstream>
 
 using std::fstream;
