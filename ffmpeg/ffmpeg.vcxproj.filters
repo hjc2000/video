@@ -53,6 +53,9 @@
     <ClCompile Include="include\AVFrame.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="ImageBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(HOME)\ffmpeg_build\lib\avcodec-60.def">
@@ -150,6 +153,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Wraper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageBuffer.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="AVStream.cpp" />
     <ClCompile Include="demux_decode.cpp" />
+    <ClCompile Include="ImageBuffer.cpp" />
     <ClCompile Include="include\AVCodecContext.cpp" />
     <ClCompile Include="include\AVFormatContext.cpp" />
     <ClCompile Include="include\AVFrame.cpp" />
@@ -167,6 +168,7 @@
     <Library Include="$(HOME)\ffmpeg_build\lib\libx265.dll.a" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ImageBuffer.h" />
     <ClInclude Include="include\AVCodec.h" />
     <ClInclude Include="include\AVCodecContext.h" />
     <ClInclude Include="include\AVDictionary.h" />

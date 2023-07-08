@@ -42,13 +42,13 @@ namespace FFmpeg
 		}
 
 		/// <summary>
-		/// * 将图像复制到缓冲区。注意，此方法以来 AVFrame 中的参数，如果有某些情况下 AVFrame 中的
+		/// * 将图像复制到缓冲区。注意，此方法依赖 AVFrame 中的参数，如果有某些情况下 AVFrame 中的
 		/// 参数没有被设置，则无法使用此方法。
-		/// * 音频和视频的包解码后都是得到 AVFrame，只有视频帧才能调用此方法
+		/// * 虽然音频和视频的包解码后都是得到 AVFrame，但只有视频帧的 AVFrame 才能调用此方法
 		/// </summary>
 		/// <param name="dst_data"></param>
 		/// <param name="dst_linesizes"></param>
-		void copy_image_to(uint8_t *dst_data[4], int dst_linesizes[4])
+		void copy_image_to_arr(uint8_t *dst_data[4], int dst_linesizes[4])
 		{
 			av_image_copy(dst_data, dst_linesizes,
 				(const uint8_t **)(_pWrapedObj->data), _pWrapedObj->linesize,

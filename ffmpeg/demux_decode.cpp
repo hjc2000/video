@@ -119,7 +119,7 @@ int demux_decode_main(const char *src_filename)
 				static int video_frame_count = 0;
 				printf("video_frame n:%d\n", video_frame_count++);
 				// 将解码帧复制到目标缓冲区：这是必需的，因为rawvideo需要不对齐的数据
-				frame.copy_image_to(video_dst_datas, video_dst_datas_linesizes);
+				frame.copy_image_to_arr(video_dst_datas, video_dst_datas_linesizes);
 				/* video_dst_datas 是一个长度为 4 的指针数组，里面储存着 4 个指针。前面说过，
 				video_dst_datas 也可以当作是一个二维数组。只不过每一行的长度可能不同。
 				* video_dst_datas[0] 是这个指针数组里的第一个指针，指向这个二维数组的第一行的头部。
@@ -153,7 +153,7 @@ int demux_decode_main(const char *src_filename)
 		while (!bestVideoDecoderCtx.receive_frame(frame))
 		{
 			// 将解码帧复制到目标缓冲区：这是必需的，因为rawvideo需要不对齐的数据
-			frame.copy_image_to(video_dst_datas, video_dst_datas_linesizes);
+			frame.copy_image_to_arr(video_dst_datas, video_dst_datas_linesizes);
 			video_dst_file.write((char *)video_dst_datas[0], size);
 			frame.unref();
 		}
