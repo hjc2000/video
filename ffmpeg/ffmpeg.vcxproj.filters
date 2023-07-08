@@ -56,6 +56,9 @@
     <ClCompile Include="ImageBuffer.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="include\AVCodec.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(HOME)\ffmpeg_build\lib\avcodec-60.def">

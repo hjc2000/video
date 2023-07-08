@@ -135,6 +135,7 @@
     <ClCompile Include="AVStream.cpp" />
     <ClCompile Include="demux_decode.cpp" />
     <ClCompile Include="ImageBuffer.cpp" />
+    <ClCompile Include="include\AVCodec.cpp" />
     <ClCompile Include="include\AVCodecContext.cpp" />
     <ClCompile Include="include\AVFormatContext.cpp" />
     <ClCompile Include="include\AVFrame.cpp" />

@@ -1,15 +1,14 @@
 #pragma once
 #include<Wraper.h>
 #include<AVCodec.h>
-#include<AVFrame.h>
 #include<include_ffmpeg.h>
-#include<AVUtil.h>
-#include<AVError.h>
-#include<AVPacket.h>
-#include<AVDictionary.h>
 
 namespace FFmpeg
 {
+	class AVFrame;
+	class AVPacket;
+	class AVDictionary;
+
 	class AVCodecContext :public Wraper<::AVCodecContext>
 	{
 		#pragma region 生命周期
@@ -51,60 +50,37 @@ namespace FFmpeg
 		/// 当然，也可以随时调用 set_codec_param 来设置编解码器上下文参数。
 		/// </summary>
 		/// <param name="dic"></param>
-		void open(FFmpeg::AVDictionary dic = nullptr);
+		void open(FFmpeg::AVDictionary *dic = nullptr);
 
 		/// <summary>
 		/// 将未编码帧送入编码器进行编码。随后可调用 avcodec_receive_packet 方法接收编码完成的包。
 		/// </summary>
 		/// 
 		/// <param name="frame"></param>
-		void avcodec_send_frame(FFmpeg::AVFrame frame)
-		{
-			::avcodec_send_frame(_pWrapedObj, frame);
-		}
+		void avcodec_send_frame(FFmpeg::AVFrame frame);
 
 		/// <summary>
 		/// 从编码器接受包。成功返回 0，失败返回错误代码
 		/// </summary>
 		/// <param name="pkt"></param>
 		/// <returns></returns>
-		int avcodec_receive_packet(FFmpeg::AVPacket pkt)
-		{
-			return ::avcodec_receive_packet(_pWrapedObj, pkt);
-		}
+		int avcodec_receive_packet(FFmpeg::AVPacket pkt);
 
 		/// <summary>
 		/// 向编码器发送包（未解码的数据）
 		/// </summary>
 		/// <param name="packet"></param>
 		/// <exception cref="int"></exception>
-		void send_packet(FFmpeg::AVPacket packet)
-		{
-			int ret = ::avcodec_send_packet(_pWrapedObj, packet);
-			if (ret < 0)
-			{
-				throw Exception("AVCodecContext::send_packet", ret);
-			}
-		}
+		void send_packet(FFmpeg::AVPacket packet);
 
 		/// <summary>
 		/// 接收解码后的帧，接收成功返回 0，失败返回错误代码
 		/// </summary>
 		/// <param name="frame"></param>
 		/// <returns></returns>
-		int receive_frame(FFmpeg::AVFrame frame)
-		{
-			return ::avcodec_receive_frame(_pWrapedObj, frame);
-		}
+		int receive_frame(FFmpeg::AVFrame frame);
 
-		void set_codec_param(AVCodecParameters *param)
-		{
-			int ret = ::avcodec_parameters_to_context(_pWrapedObj, param);
-			if (ret < 0)
-			{
-				throw Exception("AVCodecContext::set_codec_param", ret);
-			}
-		}
+		void set_codec_param(AVCodecParameters *param);
 		#pragma endregion
 
 		#pragma region 私有字段

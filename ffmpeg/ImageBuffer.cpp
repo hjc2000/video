@@ -1,6 +1,7 @@
 #include "ImageBuffer.h"
 #include<AVUtil.h>
 #include<AVCodecContext.h>
+#include<AVError.h>
 
 FFmpeg::ImageBuffer::ImageBuffer(FFmpeg::AVCodecContext ctx, int align)
 {
