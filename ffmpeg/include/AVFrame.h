@@ -1,6 +1,5 @@
 #pragma once
 #include<Wraper.h>
-#include<AVUtil.h>
 #include<include_ffmpeg.h>
 
 namespace FFmpeg
@@ -22,24 +21,11 @@ namespace FFmpeg
 		#pragma endregion
 
 	public:
-		void av_frame_get_buffer(int align)
-		{
-			int ret = ::av_frame_get_buffer(_pWrapedObj, align);
-			if (ret < 0)
-				throw ret;
-		}
+		void av_frame_get_buffer(int align);
 
-		void make_writable()
-		{
-			int ret = ::av_frame_make_writable(_pWrapedObj);
-			if (ret < 0)
-				throw ret;
-		}
+		void make_writable();
 
-		void unref()
-		{
-			::av_frame_unref(_pWrapedObj);
-		}
+		void unref();
 
 		/// <summary>
 		/// * 将图像复制到缓冲区。注意，此方法依赖 AVFrame 中的参数，如果有某些情况下 AVFrame 中的
@@ -48,11 +34,6 @@ namespace FFmpeg
 		/// </summary>
 		/// <param name="dst_data"></param>
 		/// <param name="dst_linesizes"></param>
-		void copy_image_to_arr(uint8_t *dst_data[4], int dst_linesizes[4])
-		{
-			av_image_copy(dst_data, dst_linesizes,
-				(const uint8_t **)(_pWrapedObj->data), _pWrapedObj->linesize,
-				(FFmpeg::AVPixelFormat)_pWrapedObj->format, _pWrapedObj->width, _pWrapedObj->height);
-		}
+		void copy_image_to_arr(uint8_t *dst_data[4], int dst_linesizes[4]);
 	};
 }
