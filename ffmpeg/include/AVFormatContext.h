@@ -1,13 +1,13 @@
 #pragma once
 #include<Wraper.h>
-#include<AVUtil.h>
-#include<AVPacket.h>
-#include<AVDictionary.h>
-#include<AVStream.h>
-#include<AVError.h>
+#include<include_ffmpeg.h>
 
 namespace FFmpeg
 {
+	class AVPacket;
+	class AVStream;
+	class AVDictionary;
+
 	class AVFormatContext : public Wraper<::AVFormatContext>
 	{
 		#pragma region 生命周期

@@ -1,4 +1,9 @@
 #include "AVFormatContext.h"
+#include<AVUtil.h>
+#include<AVPacket.h>
+#include<AVDictionary.h>
+#include<AVStream.h>
+#include<AVError.h>
 
 FFmpeg::AVFormatContext::~AVFormatContext()
 {
