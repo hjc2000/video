@@ -16,27 +16,10 @@ namespace FFmpeg
 		AVCodecContext() :Wraper() {}
 		AVCodecContext(::AVCodecContext *p) :Wraper(p) {}
 		AVCodecContext(::AVCodecContext &ref) :Wraper(ref) {}
+		AVCodecContext(FFmpeg::AVCodec codec);
+		AVCodecContext(FFmpeg::AVCodec codec, AVCodecParameters *param, bool autoOpen = false);
 		~AVCodecContext() { Dispose(); }
 		void Dispose() override;
-		#pragma endregion
-
-		#pragma region 工厂函数
-	public:
-		/// <summary>
-		/// 通过 AVCodec 创建 AVCodecContext
-		/// </summary>
-		/// <param name="codec"></param>
-		/// <returns></returns>
-		static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec);
-
-		/// <summary>
-		/// 通过 AVCodec 创建 AVCodecContext，然后复制指定的 AVCodecParameters 到本类对象中
-		/// </summary>
-		/// <param name="codec">编解码器</param>
-		/// <param name="param">编解码器参数</param>
-		/// <param name="autoOpen">创建编解码器上下文完成后自动打开</param>
-		/// <returns>返回创建完成的编解码器上下文</returns>
-		static FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec, AVCodecParameters *param, bool autoOpen = false);
 		#pragma endregion
 
 		#pragma region 包装方法

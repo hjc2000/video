@@ -22,7 +22,7 @@ void encode_main()
 
 	/* find the mpeg1video encoder */
 	FFmpeg::AVCodec encoder = FFmpeg::AVCodec::find_encoder_by_name("mpeg1video");
-	FFmpeg::AVCodecContext encoderCtx = FFmpeg::AVCodecContext::create(encoder);
+	FFmpeg::AVCodecContext encoderCtx = FFmpeg::AVCodecContext{ encoder };
 
 	#pragma region 手动设置编码器上下文的参数
 	/* put sample parameters */

@@ -50,7 +50,7 @@ int demux_decode_main(const char *src_filename)
 		// 获取最好的视频流的解码器
 		bestVideoDecoder = bestVideoStream.get_stream_codec();
 		// 使用解码器创建解码器上下文
-		bestVideoDecoderCtx = FFmpeg::AVCodecContext::create(bestVideoDecoder, bestVideoStream()->codecpar, true);
+		bestVideoDecoderCtx = FFmpeg::AVCodecContext(bestVideoDecoder, bestVideoStream()->codecpar, true);
 	}
 	catch (Exception e)
 	{
@@ -67,7 +67,7 @@ int demux_decode_main(const char *src_filename)
 	{
 		bestAudioStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
 		bestAudioDecoder = bestAudioStream.get_stream_codec();
-		bestAudioDecoderCtx = FFmpeg::AVCodecContext::create(bestAudioDecoder, bestAudioStream()->codecpar, true);
+		bestAudioDecoderCtx = FFmpeg::AVCodecContext{ bestAudioDecoder, bestAudioStream()->codecpar, true };
 	}
 	catch (Exception e)
 	{
@@ -84,7 +84,7 @@ int demux_decode_main(const char *src_filename)
 	}
 
 	FFmpeg::AVFrame frame = FFmpeg::AVFrame::create();
-	FFmpeg::AVPacket pkt;
+	FFmpeg::AVPacket pkt{};
 	FFmpeg::ImageBuffer buffer{bestVideoDecoderCtx, 1};
 
 	// 在循环中读取格式中的包
