@@ -1,11 +1,11 @@
 #pragma once
 #include<include_ffmpeg.h>
 #include<Wraper.h>
-#include<AVCodec.h>
-#include<AVError.h>
 
 namespace FFmpeg
 {
+	class AVCodec;
+
 	class AVStream :public Wraper<::AVStream>
 	{
 		#pragma region 生命周期
@@ -21,14 +21,7 @@ namespace FFmpeg
 		/// 将此流的参数复制到指定的流
 		/// </summary>
 		/// <param name="dst_stream"></param>
-		void copy_parameters_to(FFmpeg::AVStream dst_stream)
-		{
-			int result = ::avcodec_parameters_copy(dst_stream()->codecpar, _pWrapedObj->codecpar);
-			if (result < 0)
-			{
-				throw Exception("AVStream::copy_parameters_to", result);
-			}
-		}
+		void copy_parameters_to(FFmpeg::AVStream dst_stream);
 		#pragma endregion
 
 		#pragma region 扩展方法
