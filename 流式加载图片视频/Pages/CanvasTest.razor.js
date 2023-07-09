@@ -20,55 +20,60 @@ export class Canvas
 	{
 		this.canvas = canvas;
 		this.context = this.canvas.getContext(context);
-		this.buffer = new Uint8ClampedArray(this.canvas.width * this.canvas.height * 4);
-		this.imageData = new ImageData(this.buffer, canvas.width, canvas.height);
+		this.bufferLength = this.canvas.width * this.canvas.height * 4;
+		this.arrayBuffer = new ArrayBuffer(this.bufferLength);
+		this.uint8Buffer = new Uint8Array(this.arrayBuffer);
+		this.imageBuffer = new Uint8ClampedArray(this.arrayBuffer);
+		this.imageData = new ImageData(this.imageBuffer, canvas.width, canvas.height);
 	}
 
-	/**获取画布高度 */
-	get height()
+	/**
+	 * 
+	 * @param {Uint8Array} buffer
+	 */
+	putUint8Buffer(buffer)
 	{
-		return this.canvas.height;
+		let imageBuffer = new Uint8ClampedArray(buffer.buffer);
+		let imageData = new ImageData(imageBuffer, this.canvas.width, this.canvas.height);
+		this.context.putImageData(imageData, 0, 0);
 	}
 
-	/**获取画布宽度 */
-	get width()
+	/**将图像放置到画布中 */
+	__putImage()
 	{
-		return this.canvas.width;
-	}
-
-	/**获取缓冲区长度 */
-	get bufferLength()
-	{
-		return this.buffer.length;
+		this.context.putImageData(this.imageData, 0, 0);
 	}
 
 	play()
 	{
 		let bar_width = 100;
 		let left = -bar_width;
+		let width = this.canvas.width;
+		let bufferLength = this.bufferLength;
+		let buffer = this.imageBuffer;
 
 		setInterval(() =>
 		{
-			for (let i = 0; i < this.bufferLength; i += 4)
+			for (let i = 0; i < bufferLength; i += 4)
 			{
-				let col = ((i + 1) / 4) % this.width;
+				let col = ((i + 1) / 4) % width;
 				if (col > left && col <= left + bar_width)
 				{
-					this.imageData.data[i] = 0;
-					this.imageData.data[i + 1] = 100;
-					this.imageData.data[i + 2] = 0;
+					buffer[i] = 0;
+					buffer[i + 1] = 100;
+					buffer[i + 2] = 0;
 				}
 				else
 				{
-					this.imageData.data[i] = 255;
-					this.imageData.data[i + 1] = 255;
-					this.imageData.data[i + 2] = 255;
+					buffer[i] = 255;
+					buffer[i + 1] = 255;
+					buffer[i + 2] = 255;
 				}
 
-				this.imageData.data[i + 3] = 255;
+				buffer[i + 3] = 255;
 			}
 
-			if (left < this.width)
+			if (left < width)
 			{
 				left++;
 			}
@@ -77,10 +82,8 @@ export class Canvas
 				left = -bar_width;
 			}
 
-			this.context.putImageData(this.imageData, 0, 0);
+			this.__putImage();
 		},
 			1 / 30);
-
-		return this.imageData;
 	}
 }
