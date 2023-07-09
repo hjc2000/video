@@ -1,0 +1,22 @@
+.root {
+	width: fit-content;
+	overflow: auto;
+	padding: 10px 20px;
+	font-size: 18px;
+}
+
+	.root > div {
+		margin: 10px 0;
+	}
+
+a {
+	display: block;
+	padding: 10px 0;
+	text-decoration-line: none;
+	width: 100%;
+	color: black;
+}
+
+	a:active {
+		background-color: yellow;
+	}
