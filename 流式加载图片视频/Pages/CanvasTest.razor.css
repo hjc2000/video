@@ -11,3 +11,7 @@ canvas {
 .buttonBox {
 	margin: 10px 0px;
 }
+
+[_focus] {
+	background-color: rebeccapurple;
+}

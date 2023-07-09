@@ -19,10 +19,8 @@ public partial class CanvasTest
 		await _js_canvas.InvokeVoidAsync("play");
 	}
 
-	//private int _width = 1280;
-	//private int _height = 720;
-	private int _width = 720;
-	private int _height = 480;
+	private int _width = 1280;
+	private int _height = 720;
 
 	[Inject]
 	private IJSRuntime JS { get; set; } = default!;

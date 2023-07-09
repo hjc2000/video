@@ -20,24 +20,42 @@ export class Canvas
 	{
 		this.canvas = canvas;
 		this.context = this.canvas.getContext(context);
-		this.imageData = new ImageData(canvas.width, canvas.height);
+		this.buffer = new Uint8ClampedArray(this.canvas.width * this.canvas.height * 4);
+		this.imageData = new ImageData(this.buffer, canvas.width, canvas.height);
+	}
+
+	/**获取画布高度 */
+	get height()
+	{
+		return this.canvas.height;
+	}
+
+	/**获取画布宽度 */
+	get width()
+	{
+		return this.canvas.width;
+	}
+
+	/**获取缓冲区长度 */
+	get bufferLength()
+	{
+		return this.buffer.length;
 	}
 
 	play()
 	{
 		let bar_width = 100;
 		let left = -bar_width;
-		let col_num = this.imageData.data.length / 4 / this.canvas.height;
 
 		setInterval(() =>
 		{
-			for (let i = 0; i < this.imageData.data.length; i += 4)
+			for (let i = 0; i < this.bufferLength; i += 4)
 			{
-				let col = ((i + 1) / 4) % this.canvas.width;
+				let col = ((i + 1) / 4) % this.width;
 				if (col > left && col <= left + bar_width)
 				{
 					this.imageData.data[i] = 0;
-					this.imageData.data[i + 1] = 0;
+					this.imageData.data[i + 1] = 100;
 					this.imageData.data[i + 2] = 0;
 				}
 				else
@@ -46,10 +64,11 @@ export class Canvas
 					this.imageData.data[i + 1] = 255;
 					this.imageData.data[i + 2] = 255;
 				}
+
 				this.imageData.data[i + 3] = 255;
 			}
 
-			if (left < col_num)
+			if (left < this.width)
 			{
 				left++;
 			}
@@ -60,7 +79,8 @@ export class Canvas
 
 			this.context.putImageData(this.imageData, 0, 0);
 		},
-			1 / 60);
+			1 / 30);
+
 		return this.imageData;
 	}
 }
