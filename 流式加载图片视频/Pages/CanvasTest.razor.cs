@@ -30,9 +30,9 @@ public partial class CanvasTest
 		await _initTcs.Task;
 		int barWidth = 100;
 		int left = -barWidth;
-
-		CancellationTokenSource cts = new();
-		TimerLib.ScheduledTasks.ExecuteUntilCancel((int)(1.0 / 20 * 1000), async () =>
+		_cts?.Cancel();
+		_cts = new CancellationTokenSource();
+		TimerLib.ScheduledTasks.ExecuteUntilCancel((int)(1.0 / 10 * 1000), async () =>
 		{
 			for (int i = 0; i < _buffer.Length; i += 4)
 			{
@@ -63,7 +63,7 @@ public partial class CanvasTest
 			}
 
 			await _js_canvas.InvokeVoidAsync("putUint8Buffer", _buffer);
-		}, cts.Token);
+		}, _cts.Token);
 	}
 
 	private int _width = 1280;
@@ -77,4 +77,5 @@ public partial class CanvasTest
 	private ElementReference _canvas = default!;
 	private IJSObjectReference _js_canvas = default!;
 	private byte[] _buffer;
+	private CancellationTokenSource? _cts;
 }
