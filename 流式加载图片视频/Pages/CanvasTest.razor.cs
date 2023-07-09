@@ -31,7 +31,8 @@ public partial class CanvasTest
 		int barWidth = 100;
 		int left = -barWidth;
 
-		while (true)
+		CancellationTokenSource cts = new();
+		TimerLib.ScheduledTasks.ExecuteUntilCancel((int)(1.0 / 20 * 1000), async () =>
 		{
 			for (int i = 0; i < _buffer.Length; i += 4)
 			{
@@ -62,11 +63,11 @@ public partial class CanvasTest
 			}
 
 			await _js_canvas.InvokeVoidAsync("putUint8Buffer", _buffer);
-		}
+		}, cts.Token);
 	}
 
-	private int _width = 720;
-	private int _height = 480;
+	private int _width = 1280;
+	private int _height = 720;
 
 	[Inject]
 	private IJSRuntime JS { get; set; } = default!;
