@@ -85,6 +85,9 @@
     <None Include="$(HOME)\ffmpeg_build\lib\swscale-7.def">
       <Filter>库文件</Filter>
     </None>
+    <None Include="SDL2\lib\x64\SDL2.dll">
+      <Filter>库文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Library Include="$(HOME)\ffmpeg_build\lib\libavcodec.dll.a">
@@ -118,6 +121,15 @@
       <Filter>库文件</Filter>
     </Library>
     <Library Include="$(HOME)\ffmpeg_build\lib\libx265.dll.a">
+      <Filter>库文件</Filter>
+    </Library>
+    <Library Include="SDL2\lib\x64\SDL2test.lib">
+      <Filter>库文件</Filter>
+    </Library>
+    <Library Include="SDL2\lib\x64\SDL2.lib">
+      <Filter>库文件</Filter>
+    </Library>
+    <Library Include="SDL2\lib\x64\SDL2main.lib">
       <Filter>库文件</Filter>
     </Library>
   </ItemGroup>

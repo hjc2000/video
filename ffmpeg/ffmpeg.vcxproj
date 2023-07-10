@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(HOME)\ffmpeg_build\include;$(ProjectDir);$(ProjectDir)\include</IncludePath>
+    <IncludePath>$(HOME)\ffmpeg_build\include;$(ProjectDir);$(ProjectDir)\include;$(ProjectDir)\SDL2\include</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -154,6 +154,7 @@
     <None Include="$(HOME)\ffmpeg_build\lib\postproc-57.def" />
     <None Include="$(HOME)\ffmpeg_build\lib\swresample-4.def" />
     <None Include="$(HOME)\ffmpeg_build\lib\swscale-7.def" />
+    <None Include="SDL2\lib\x64\SDL2.dll" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="$(HOME)\ffmpeg_build\lib\libavcodec.dll.a" />
@@ -167,6 +168,9 @@
     <Library Include="$(HOME)\ffmpeg_build\lib\libx264.dll.a" />
     <Library Include="$(HOME)\ffmpeg_build\lib\libx265.a" />
     <Library Include="$(HOME)\ffmpeg_build\lib\libx265.dll.a" />
+    <Library Include="SDL2\lib\x64\SDL2.lib" />
+    <Library Include="SDL2\lib\x64\SDL2main.lib" />
+    <Library Include="SDL2\lib\x64\SDL2test.lib" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImageBuffer.h" />
