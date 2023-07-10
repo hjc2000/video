@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.StaticFiles;
 using NetLib.HttpLib;
+using StringLib.Parse;
 using System.Net;
 using System.Net.Sockets;
 using System.Net.WebSockets;
@@ -57,6 +58,7 @@ app.UseWebSockets();
 
 app.MapGet("/request", async (HttpContext context) =>
 {
+	Console.WriteLine("GET请求");
 	Console.WriteLine(context.Request.Path);
 	Console.WriteLine(context.Request.QueryString);
 
@@ -78,14 +80,16 @@ app.MapGet("/request", async (HttpContext context) =>
 			context.Response.StatusCode = 404;
 		}
 	}
-	catch
+	catch (Exception ex)
 	{
+		Console.WriteLine(ex.ToString());
 		context.Response.StatusCode = 404;
 	}
 });
 
 app.MapPost("/request", async (HttpContext context) =>
 {
+	Console.WriteLine("POST请求");
 	Console.WriteLine(context.Request.Path);
 	Console.WriteLine(context.Request.QueryString);
 
@@ -96,7 +100,18 @@ app.MapPost("/request", async (HttpContext context) =>
 
 	try
 	{
-		StreamContent requestContent = new(context.Request.Body);
+		foreach (KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> item in context.Request.Headers)
+		{
+			Console.WriteLine($"{item.Key}:{item.Value}");
+		}
+
+		string lengthStr = context.Request.Headers["Content-Length"];
+		Console.WriteLine($"长度：{lengthStr}");
+		byte[] sendBuffer = new byte[lengthStr.ToInt32()];
+		MemoryStream mstream = new(sendBuffer);
+		await context.Request.Body.CopyToAsync(mstream);
+		mstream.Position = 0;
+		StreamContent requestContent = new(mstream);
 		HttpResponseMessage msg = await client.PostAsync("request" + context.Request.QueryString, requestContent);
 		if (msg.IsSuccessStatusCode)
 		{
@@ -108,8 +123,53 @@ app.MapPost("/request", async (HttpContext context) =>
 			context.Response.StatusCode = 404;
 		}
 	}
-	catch
+	catch (Exception ex)
 	{
+		Console.WriteLine(ex.ToString());
+		context.Response.StatusCode = 404;
+	}
+});
+
+app.MapGet("/request/record/{filename}", async (HttpContext context, string filename) =>
+{
+	Console.WriteLine("录流");
+	Console.WriteLine(context.Request.Path);
+	Console.WriteLine(context.Request.QueryString);
+
+	HttpClient client = new()
+	{
+		BaseAddress = new Uri("http://192.168.0.221:9000/"),
+	};
+
+	try
+	{
+		HttpResponseMessage msg = await client.GetAsync($"request/record/{filename}" + context.Request.QueryString);
+		if (msg.IsSuccessStatusCode)
+		{
+			Stream retStream = await msg.Content.ReadAsStreamAsync();
+			context.Response.Headers.Add("Connection", "Keep-Alive");
+			context.Response.Headers.Add("Proxy-Connection", "Keep-Alive");
+			context.Response.Headers.Add("Cache-Control", "no-cache");
+			context.Response.Headers.Add("Pragma", "no-cache");
+			context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+			context.Response.Headers.Add("Transfer-Encoding", "chunked");
+			context.Response.Headers.ContentType = "video/mp2t";
+			foreach (KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> item in context.Response.Headers)
+			{
+				Console.WriteLine($"--------{item.Key}:{item.Value}");
+			}
+
+			await retStream.ChunkWriteContentToAsync(context.Response.Body);
+			await context.Response.Body.ChunkWriteTrailerAsync();
+		}
+		else
+		{
+			context.Response.StatusCode = 404;
+		}
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex.ToString());
 		context.Response.StatusCode = 404;
 	}
 });
@@ -144,11 +204,11 @@ app.MapGet("/ts.ts", async (HttpContext context) =>
 			using FileStream fileStream = File.OpenRead(_webRootPath + $"/ts{i}.ts");
 			await Task.Delay(6000);
 			// 在这里使用 ChunkEncoder 从文件流中读取数据，写到 http 响应流中
-			await ChunkEncoder.ChunkWriteContentToAsync(fileStream, context.Response.Body);
+			await fileStream.ChunkWriteContentToAsync(context.Response.Body);
 			Console.WriteLine($"发送{i}");
 		}
 		// 所有数据都写完了需要调用 ChunkWriteTrailerAsync 写入结束标志从而结束本次传输
-		await ChunkEncoder.ChunkWriteTrailerAsync(context.Response.Body);
+		await context.Response.Body.ChunkWriteTrailerAsync();
 	}
 	catch (Exception ex)
 	{
