@@ -232,7 +232,7 @@ app.MapGet("/test.txt", async (HttpContext context) =>
 	}
 });
 
-// http://localhost:8848/qq.mp4
+// http://localhost:8848/baidu
 app.MapGet("/qq.mp4", async (HttpContext context) =>
 {
 	Console.WriteLine("---------qq.mp4");
@@ -244,6 +244,35 @@ app.MapGet("/qq.mp4", async (HttpContext context) =>
 		context.Response.Headers.ContentType = "video/mp4";
 		await fileStream.ChunkWriteContentToAsync(context.Response.Body);
 		await context.Response.Body.ChunkWriteTrailerAsync();
+	}
+	catch (Exception ex)
+	{
+		context.Response.StatusCode = 404;
+		Console.WriteLine(ex.Message);
+	}
+});
+
+// http://localhost:8848/big_buck_bunny.mp4
+app.MapGet("/big_buck_bunny.mp4", async (HttpContext context) =>
+{
+	Console.WriteLine("---------  big_buck_bunny.mp4");
+	try
+	{
+		HttpClient client = new();
+		HttpResponseMessage msg = await client.GetAsync("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+		if (msg.IsSuccessStatusCode)
+		{
+			Stream retStream = await msg.Content.ReadAsStreamAsync();
+			context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"big_buck_bunny.mp4\"");
+			context.Response.Headers.Add("Transfer-Encoding", "chunked");
+			context.Response.Headers.ContentType = "video/mp4";
+			await retStream.ChunkWriteContentToAsync(context.Response.Body);
+			await context.Response.Body.ChunkWriteTrailerAsync();
+		}
+		else
+		{
+			context.Response.StatusCode = 404;
+		}
 	}
 	catch (Exception ex)
 	{
