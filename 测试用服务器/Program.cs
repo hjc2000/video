@@ -147,10 +147,7 @@ app.MapGet("/request/record/{filename}", async (HttpContext context, string file
 		if (msg.IsSuccessStatusCode)
 		{
 			Stream retStream = await msg.Content.ReadAsStreamAsync();
-			context.Response.Headers.Add("Connection", "Keep-Alive");
-			context.Response.Headers.Add("Proxy-Connection", "Keep-Alive");
-			context.Response.Headers.Add("Cache-Control", "no-cache");
-			context.Response.Headers.Add("Pragma", "no-cache");
+			context.Response.Headers.Add("Content-Disposition", $"attachment; filename=\"{filename}\"");
 			context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
 			context.Response.Headers.Add("Transfer-Encoding", "chunked");
 			context.Response.Headers.ContentType = "video/mp2t";
@@ -240,6 +237,7 @@ app.MapGet("/qq.mp4", async (HttpContext context) =>
 	try
 	{
 		using FileStream fileStream = File.Open(_webRootPath + "/qq.mp4", FileMode.Open, FileAccess.Read, FileShare.Read);
+		context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"qq.mp4\"");
 		context.Response.Headers.Add("Transfer-Encoding", "chunked");
 		context.Response.Headers.ContentType = "video/mp4";
 		await fileStream.ChunkWriteContentToAsync(context.Response.Body);
