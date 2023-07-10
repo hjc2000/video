@@ -56,6 +56,8 @@ app.UseWebSockets();
 #region 8630 代理
 // http://localhost:8848/web/
 
+Uri st8630Addr = new("http://192.168.0.221:9000/");
+
 app.MapGet("/request", async (HttpContext context) =>
 {
 	Console.WriteLine("GET请求");
@@ -64,7 +66,7 @@ app.MapGet("/request", async (HttpContext context) =>
 
 	HttpClient client = new()
 	{
-		BaseAddress = new Uri("http://192.168.0.221:9000/"),
+		BaseAddress = st8630Addr,
 	};
 
 	try
@@ -95,7 +97,7 @@ app.MapPost("/request", async (HttpContext context) =>
 
 	HttpClient client = new()
 	{
-		BaseAddress = new Uri("http://192.168.0.221:9000/"),
+		BaseAddress = st8630Addr,
 	};
 
 	try
@@ -138,7 +140,7 @@ app.MapGet("/request/record/{filename}", async (HttpContext context, string file
 
 	HttpClient client = new()
 	{
-		BaseAddress = new Uri("http://192.168.0.221:9000/"),
+		BaseAddress = st8630Addr,
 	};
 
 	try
@@ -237,7 +239,7 @@ app.MapGet("/qq.mp4", async (HttpContext context) =>
 	try
 	{
 		using FileStream fileStream = File.Open(_webRootPath + "/qq.mp4", FileMode.Open, FileAccess.Read, FileShare.Read);
-		context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"qq.mp4\"");
+		//context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"qq.mp4\"");
 		context.Response.Headers.Add("Transfer-Encoding", "chunked");
 		context.Response.Headers.ContentType = "video/mp4";
 		await fileStream.ChunkWriteContentToAsync(context.Response.Body);
