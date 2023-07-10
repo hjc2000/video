@@ -65,8 +65,8 @@
 #include <iostream>
 #include <SDL.h>
 
-const int screen_width = 800;
-const int screen_height = 600;
+const int screen_width = 1280;
+const int screen_height = 720;
 int main(int, char **)
 {
 	SDL_Init(SDL_INIT_VIDEO);
