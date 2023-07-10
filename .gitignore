@@ -362,9 +362,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-/ffmpegLearn/out.*
-!/ffmpegLearn/ffmpeg_build
-!/ffmpegLearn/ffmpeg_build/*
+!/ffmpeg/SDL2/**
 /ffmpeg/output.ts
 /ffmpeg/output.mp4
 /ffmpeg/out_video.yuv
