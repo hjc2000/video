@@ -14,7 +14,7 @@ namespace FFmpeg
 		/// <summary>
 		/// 暂时没有放入此枚举类型的错误
 		/// </summary>
-		unknow,
+		unset,
 
 		/// <summary>
 		/// AVERROR_EOF
@@ -46,7 +46,7 @@ namespace FFmpeg
 		#pragma endregion
 
 	private:
-		FFmpeg::ErrorType _type = FFmpeg::ErrorType::unknow;
+		FFmpeg::ErrorType _type = FFmpeg::ErrorType::unset;
 
 		static string make_err_string(string err_source, int err_code)
 		{

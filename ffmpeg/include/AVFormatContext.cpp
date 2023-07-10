@@ -24,28 +24,41 @@ FFmpeg::AVFormatContext::~AVFormatContext()
 
 void FFmpeg::AVFormatContext::open_input(const char *url, const::AVInputFormat *fmt, ::AVDictionary **options)
 {
-	if (_mode != Mode::unknow)
+	if (_mode != Mode::unset)
+	{
 		throw Exception("非法操作，不要重复初始化");
+	}
+
 	_mode = Mode::input;
 	int ret = ::avformat_open_input(&_pWrapedObj, url, fmt, options);
 	if (ret < 0)
+	{
 		throw Exception("AVFormatContext::open_input", ret);
+	}
 }
 
 void FFmpeg::AVFormatContext::alloc_output_context2(const char *filename)
 {
-	if (_mode != Mode::unknow)
+	if (_mode != Mode::unset)
+	{
 		throw Exception("非法操作，不要重复初始化");
+	}
+
 	_mode = Mode::output;
 	int ret = ::avformat_alloc_output_context2(&_pWrapedObj, nullptr, nullptr, filename);
 	if (ret < 0)
+	{
 		throw Exception("alloc_output_context2", ret);
+	}
+
 	// 如果没有打开 IO 则打开 IO
 	if (!(_pWrapedObj->oformat->flags & AVFMT_NOFILE))
 	{
 		int ret = avio_open(&_pWrapedObj->pb, filename, AVIO_FLAG_WRITE);
 		if (ret < 0)
+		{
 			throw Exception("AVFormatContext::alloc_output_context2", ret);
+		}
 	}
 }
 

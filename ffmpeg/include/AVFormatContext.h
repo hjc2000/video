@@ -25,21 +25,32 @@ namespace FFmpeg
 		/// </summary>
 		enum Mode
 		{
-			unknow,
+			/// <summary>
+			/// 表示 AVFormatContext 对象还没被初始化，即它以后可能是输入格式，也可能是输出格式
+			/// </summary>
+			unset,
+
+			/// <summary>
+			/// 表示 AVFormatContext 对象已经被初始化为输入格式了
+			/// </summary>
 			input,
+
+			/// <summary>
+			/// 表示 AVFormatContext 对象已经被初始化为输出格式了
+			/// </summary>
 			output,
 		};
 
 		/// <summary>
 		/// 本对象当前是哪一种模式
 		/// </summary>
-		Mode _mode = Mode::unknow;
+		Mode _mode = Mode::unset;
 		#pragma endregion
 
 		#pragma region 初始化函数
 	public:
 		/// <summary>
-		/// 打开指定 url 作为输入。作为输入后无法再将此对象变成输出
+		/// 打开指定 url 作为输入源。会将此 AVFormatContext 对象初始化为输入格式。
 		/// </summary>
 		/// <param name="url"></param>
 		/// <param name="fmt"></param>
@@ -47,7 +58,7 @@ namespace FFmpeg
 		void open_input(const char *url, const ::AVInputFormat *fmt = nullptr, ::AVDictionary **options = nullptr);
 
 		/// <summary>
-		/// 创建输出格式上下文。作为输出后无法再将此对象变成输入
+		/// 创建输出格式上下文。会将此 AVFormatContext 对象变成输出格式
 		/// </summary>
 		/// <param name="filename"></param>
 		void alloc_output_context2(const char *filename);
