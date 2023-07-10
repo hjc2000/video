@@ -232,6 +232,25 @@ app.MapGet("/test.txt", async (HttpContext context) =>
 		Console.WriteLine(ex.Message);
 	}
 });
+
+// http://localhost:8848/qq.mp4
+app.MapGet("/qq.mp4", async (HttpContext context) =>
+{
+	Console.WriteLine("---------qq.mp4");
+	try
+	{
+		using FileStream fileStream = File.Open(_webRootPath + "/qq.mp4", FileMode.Open, FileAccess.Read, FileShare.Read);
+		context.Response.Headers.Add("Transfer-Encoding", "chunked");
+		context.Response.Headers.ContentType = "video/mp4";
+		await fileStream.ChunkWriteContentToAsync(context.Response.Body);
+		await context.Response.Body.ChunkWriteTrailerAsync();
+	}
+	catch (Exception ex)
+	{
+		context.Response.StatusCode = 404;
+		Console.WriteLine(ex.Message);
+	}
+});
 #endregion
 
 #region 设置静态文件服务
