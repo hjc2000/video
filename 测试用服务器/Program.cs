@@ -158,7 +158,7 @@ app.MapGet("/request/record/{filename}", async (HttpContext context, string file
 		}
 
 		ChunkEncoder ce = new(retStream, context.Response.Body);
-		await ce.WriteToDstStreamAsync();
+		await ce.WriteToDstStreamAsync(context.RequestAborted);
 		await ce.WriteTrailerAsync();
 	}
 	catch (Exception ex)
@@ -195,7 +195,7 @@ app.MapGet("/qq.mp4", async (HttpContext context) =>
 		context.Response.Headers.Add("Transfer-Encoding", "chunked");
 		context.Response.Headers.ContentType = "video/mp4";
 		ChunkEncoder ce = new(fileStream, context.Response.Body);
-		await ce.WriteToDstStreamAsync();
+		await ce.WriteToDstStreamAsync(context.RequestAborted);
 		await ce.WriteTrailerAsync();
 	}
 	catch (Exception ex)
