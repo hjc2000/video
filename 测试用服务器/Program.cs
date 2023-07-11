@@ -141,30 +141,25 @@ app.MapGet("/request/record/{filename}", async (HttpContext context, string file
 	HttpClient client = new()
 	{
 		BaseAddress = st8630Addr,
+		Timeout = new TimeSpan(0, 0, 10),
+		MaxResponseContentBufferSize = (long)10e6,
 	};
 
 	try
 	{
-		HttpResponseMessage msg = await client.GetAsync($"request/record/{filename}" + context.Request.QueryString);
-		if (msg.IsSuccessStatusCode)
+		Stream retStream = await client.GetStreamAsync($"request/record/{filename}" + context.Request.QueryString);
+		context.Response.Headers.Add("Content-Disposition", $"attachment; filename=\"{filename}\"");
+		context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+		context.Response.Headers.Add("Transfer-Encoding", "chunked");
+		context.Response.Headers.ContentType = "video/mp2t";
+		foreach (KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> item in context.Response.Headers)
 		{
-			Stream retStream = await msg.Content.ReadAsStreamAsync();
-			context.Response.Headers.Add("Content-Disposition", $"attachment; filename=\"{filename}\"");
-			context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-			context.Response.Headers.Add("Transfer-Encoding", "chunked");
-			context.Response.Headers.ContentType = "video/mp2t";
-			foreach (KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> item in context.Response.Headers)
-			{
-				Console.WriteLine($"--------{item.Key}:{item.Value}");
-			}
+			Console.WriteLine($"--------{item.Key}:{item.Value}");
+		}
 
-			await retStream.ChunkWriteContentToAsync(context.Response.Body);
-			await context.Response.Body.ChunkWriteTrailerAsync();
-		}
-		else
-		{
-			context.Response.StatusCode = 404;
-		}
+		ChunkEncoder ce = new(retStream, context.Response.Body);
+		await ce.WriteToDstStreamAsync();
+		await ce.WriteTrailerAsync();
 	}
 	catch (Exception ex)
 	{
@@ -189,50 +184,7 @@ app.MapGet("/ws", async (HttpContext context) =>
 	}
 });
 
-app.MapGet("/ts.ts", async (HttpContext context) =>
-{
-	try
-	{
-		Console.WriteLine("请求视频文件");
-		//context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"ts.mp4\"");
-		context.Response.Headers.Add("Transfer-Encoding", "chunked");
-		context.Response.Headers.ContentType = "video/mp2t";
-		DateTime now = DateTime.Now;
-		for (int i = 0; i <= 4; i++)
-		{
-			using FileStream fileStream = File.OpenRead(_webRootPath + $"/ts{i}.ts");
-			await Task.Delay(6000);
-			// 在这里使用 ChunkEncoder 从文件流中读取数据，写到 http 响应流中
-			await fileStream.ChunkWriteContentToAsync(context.Response.Body);
-			Console.WriteLine($"发送{i}");
-		}
-		// 所有数据都写完了需要调用 ChunkWriteTrailerAsync 写入结束标志从而结束本次传输
-		await context.Response.Body.ChunkWriteTrailerAsync();
-	}
-	catch (Exception ex)
-	{
-		Console.WriteLine(ex.Message);
-	}
-});
-
-app.MapGet("/test.txt", async (HttpContext context) =>
-{
-	try
-	{
-		using FileStream fileStream = File.Open(_webRootPath + "/test.txt", FileMode.Open);
-		context.Response.Headers.Add("Transfer-Encoding", "chunked");
-		context.Response.Headers.ContentType = "text/plain";
-		await fileStream.ChunkWriteContentToAsync(context.Response.Body);
-		await context.Response.Body.ChunkWriteTrailerAsync();
-	}
-	catch (Exception ex)
-	{
-		context.Response.StatusCode = 404;
-		Console.WriteLine(ex.Message);
-	}
-});
-
-// http://localhost:8848/baidu
+// http://localhost:8848/qq.mp4
 app.MapGet("/qq.mp4", async (HttpContext context) =>
 {
 	Console.WriteLine("---------qq.mp4");
@@ -242,37 +194,9 @@ app.MapGet("/qq.mp4", async (HttpContext context) =>
 		//context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"qq.mp4\"");
 		context.Response.Headers.Add("Transfer-Encoding", "chunked");
 		context.Response.Headers.ContentType = "video/mp4";
-		await fileStream.ChunkWriteContentToAsync(context.Response.Body);
-		await context.Response.Body.ChunkWriteTrailerAsync();
-	}
-	catch (Exception ex)
-	{
-		context.Response.StatusCode = 404;
-		Console.WriteLine(ex.Message);
-	}
-});
-
-// http://localhost:8848/big_buck_bunny.mp4
-app.MapGet("/big_buck_bunny.mp4", async (HttpContext context) =>
-{
-	Console.WriteLine("---------  big_buck_bunny.mp4");
-	try
-	{
-		HttpClient client = new();
-		HttpResponseMessage msg = await client.GetAsync("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
-		if (msg.IsSuccessStatusCode)
-		{
-			Stream retStream = await msg.Content.ReadAsStreamAsync();
-			context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"big_buck_bunny.mp4\"");
-			context.Response.Headers.Add("Transfer-Encoding", "chunked");
-			context.Response.Headers.ContentType = "video/mp4";
-			await retStream.ChunkWriteContentToAsync(context.Response.Body);
-			await context.Response.Body.ChunkWriteTrailerAsync();
-		}
-		else
-		{
-			context.Response.StatusCode = 404;
-		}
+		ChunkEncoder ce = new(fileStream, context.Response.Body);
+		await ce.WriteToDstStreamAsync();
+		await ce.WriteTrailerAsync();
 	}
 	catch (Exception ex)
 	{
