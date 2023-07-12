@@ -55,7 +55,7 @@ namespace FFmpeg
 		/// <param name="url"></param>
 		/// <param name="fmt"></param>
 		/// <param name="options"></param>
-		void open_input(const char *url, const ::AVInputFormat *fmt = nullptr, ::AVDictionary **options = nullptr);
+		static shared_ptr< FFmpeg::AVFormatContext> open_input(const char *url, const ::AVInputFormat *fmt = nullptr, ::AVDictionary **options = nullptr);
 
 		/// <summary>
 		/// 创建输出格式上下文。会将此 AVFormatContext 对象变成输出格式

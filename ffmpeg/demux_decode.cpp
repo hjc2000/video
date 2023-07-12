@@ -27,9 +27,8 @@ int demux_decode_main(const char *src_filename)
 	fstream audio_dst_file{ "out_audio.pcm", ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary };
 
 	// 打开输入格式
-	FFmpeg::AVFormatContext inputFormatCtx;
-	inputFormatCtx.open_input(src_filename);
-	inputFormatCtx.find_stream_info();
+	shared_ptr<FFmpeg::AVFormatContext> pInputFormatCtx = FFmpeg::AVFormatContext::open_input(src_filename);
+	pInputFormatCtx->find_stream_info();
 
 	#pragma region 准备视频解码器
 	// 最好的视频流
@@ -42,7 +41,7 @@ int demux_decode_main(const char *src_filename)
 	try
 	{
 		// 查找最好的视频流
-		bestVideoStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
+		bestVideoStream = pInputFormatCtx->find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
 		// 获取最好的视频流的解码器
 		bestVideoDecoder = bestVideoStream.get_stream_codec();
 		// 使用解码器创建解码器上下文
@@ -61,7 +60,7 @@ int demux_decode_main(const char *src_filename)
 
 	try
 	{
-		bestAudioStream = inputFormatCtx.find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
+		bestAudioStream = pInputFormatCtx->find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
 		bestAudioDecoder = bestAudioStream.get_stream_codec();
 		bestAudioDecoderCtx = FFmpeg::AVCodecContext{ bestAudioDecoder, bestAudioStream()->codecpar, true };
 	}
@@ -72,7 +71,7 @@ int demux_decode_main(const char *src_filename)
 	#pragma endregion
 
 	// 打印流信息
-	inputFormatCtx.dump_format(bestVideoStream()->index, src_filename, 0);
+	pInputFormatCtx->dump_format(bestVideoStream()->index, src_filename, 0);
 
 	if (!bestAudioStream && !bestVideoStream)
 	{
@@ -84,7 +83,7 @@ int demux_decode_main(const char *src_filename)
 	FFmpeg::ImageBuffer buffer{bestVideoDecoderCtx, 1};
 
 	// 在循环中读取格式中的包
-	while (!inputFormatCtx.read_packet(pkt))
+	while (!pInputFormatCtx->read_packet(pkt))
 	{
 		// 如果读到的包是视频流的包
 		if (pkt()->stream_index == bestVideoStream()->index)

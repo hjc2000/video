@@ -22,19 +22,15 @@ FFmpeg::AVFormatContext::~AVFormatContext()
 	}
 }
 
-void FFmpeg::AVFormatContext::open_input(const char *url, const::AVInputFormat *fmt, ::AVDictionary **options)
+shared_ptr<FFmpeg::AVFormatContext> FFmpeg::AVFormatContext::open_input(const char *url, const::AVInputFormat *fmt, ::AVDictionary **options)
 {
-	if (_mode != Mode::unset)
-	{
-		throw Exception("非法操作，不要重复初始化");
-	}
-
-	_mode = Mode::input;
-	int ret = ::avformat_open_input(&_pWrapedObj, url, fmt, options);
+	shared_ptr<FFmpeg::AVFormatContext> p{new FFmpeg::AVFormatContext()};
+	int ret = ::avformat_open_input(&p->_pWrapedObj, url, fmt, options);
 	if (ret < 0)
 	{
 		throw Exception("AVFormatContext::open_input", ret);
 	}
+	return p;
 }
 
 void FFmpeg::AVFormatContext::alloc_output_context2(const char *filename)
