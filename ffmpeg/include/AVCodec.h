@@ -19,14 +19,14 @@ namespace FFmpeg
 		/// </summary>
 		/// <param name="name"></param>
 		/// <returns></returns>
-		static FFmpeg::AVCodec find_encoder_by_name(const char *name);
+		static shared_ptr<FFmpeg::AVCodec> find_encoder_by_name(const char *name);
 
 		/// <summary>
 		/// 通过编码器的 ID 查找编码器。找到则返回编码器，失败会抛出异常
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		static FFmpeg::AVCodec find_decoder_by_id(AVCodecID id);
+		static shared_ptr<FFmpeg::AVCodec> find_decoder_by_id(AVCodecID id);
 
 	public:
 		void operator=(const FFmpeg::AVCodec &ref);

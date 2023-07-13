@@ -21,7 +21,7 @@ void encode_main()
 	const char *outputFileName = "output.mp4";
 
 	/* find the mpeg1video encoder */
-	FFmpeg::AVCodec encoder = FFmpeg::AVCodec::find_encoder_by_name("mpeg1video");
+	shared_ptr<FFmpeg::AVCodec> encoder = FFmpeg::AVCodec::find_encoder_by_name("mpeg1video");
 	FFmpeg::AVCodecContext encoderCtx = FFmpeg::AVCodecContext{ encoder };
 
 	#pragma region 手动设置编码器上下文的参数
@@ -45,7 +45,7 @@ void encode_main()
 	encoderCtx()->pix_fmt = AV_PIX_FMT_YUV420P;
 	#pragma endregion
 
-	if (encoder()->id == AV_CODEC_ID_H264)
+	if (encoder->w->id == AV_CODEC_ID_H264)
 	{
 		av_opt_set(encoderCtx()->priv_data, "preset", "slow", 0);
 	}
@@ -114,7 +114,7 @@ void encode_main()
 	codecs. To create a valid file, you usually need to write packets
 	into a proper file format or protocol; see mux.c.
 	*/
-	if (encoder()->id == AV_CODEC_ID_MPEG1VIDEO || encoder()->id == AV_CODEC_ID_MPEG2VIDEO)
+	if (encoder->w->id == AV_CODEC_ID_MPEG1VIDEO || encoder->w->id == AV_CODEC_ID_MPEG2VIDEO)
 	{
 		outputFS.write((char *)endcode, sizeof(endcode));
 	}

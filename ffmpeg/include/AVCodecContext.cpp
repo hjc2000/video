@@ -7,20 +7,20 @@
 #include<AVUtil.h>
 #include<AVDictionary.h>
 
-FFmpeg::AVCodecContext::AVCodecContext(FFmpeg::AVCodec codec)
+FFmpeg::AVCodecContext::AVCodecContext(shared_ptr<FFmpeg::AVCodec> codec)
 {
 	_codec = codec;
-	w = ::avcodec_alloc_context3(codec);
+	w = ::avcodec_alloc_context3(codec->w);
 	if (!w)
 	{
 		throw Exception("FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec) 失败");
 	}
 }
 
-FFmpeg::AVCodecContext::AVCodecContext(FFmpeg::AVCodec codec, AVCodecParameters *param, bool autoOpen)
+FFmpeg::AVCodecContext::AVCodecContext(shared_ptr<FFmpeg::AVCodec> codec, AVCodecParameters *param, bool autoOpen)
 {
 	_codec = codec;
-	w = ::avcodec_alloc_context3(codec);
+	w = ::avcodec_alloc_context3(codec->w);
 	if (!w)
 	{
 		throw Exception("FFmpeg::AVCodecContext create(FFmpeg::AVCodec codec) 失败");
@@ -54,11 +54,11 @@ void FFmpeg::AVCodecContext::open(FFmpeg::AVDictionary *dic)
 	int ret;
 	if (dic != nullptr)
 	{
-		ret = ::avcodec_open2(w, _codec, *dic);
+		ret = ::avcodec_open2(w, _codec->w, *dic);
 	}
 	else
 	{
-		ret = ::avcodec_open2(w, _codec, nullptr);
+		ret = ::avcodec_open2(w, _codec->w, nullptr);
 	}
 
 	if (ret < 0)

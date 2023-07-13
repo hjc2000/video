@@ -32,9 +32,9 @@ int demux_decode_main(const char *src_filename)
 
 	#pragma region 准备视频解码器
 	// 最好的视频流
-	shared_ptr< FFmpeg::AVStream> spBestVideoStream = nullptr;
+	shared_ptr<FFmpeg::AVStream> spBestVideoStream = nullptr;
 	// 用来解码最好的视频流的解码器
-	FFmpeg::AVCodec bestVideoDecoder;
+	shared_ptr<FFmpeg::AVCodec> bestVideoDecoder;
 	// 解码器上下文
 	FFmpeg::AVCodecContext bestVideoDecoderCtx;
 
@@ -55,7 +55,7 @@ int demux_decode_main(const char *src_filename)
 
 	#pragma region 准备音频解码器
 	shared_ptr<FFmpeg::AVStream> spBestAudioStream;
-	FFmpeg::AVCodec bestAudioDecoder;
+	shared_ptr<FFmpeg::AVCodec> bestAudioDecoder;
 	shared_ptr<FFmpeg::AVCodecContext> spBestAudioDecoderCtx;
 
 	try

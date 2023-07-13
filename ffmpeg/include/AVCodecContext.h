@@ -16,8 +16,8 @@ namespace FFmpeg
 		AVCodecContext() {}
 		AVCodecContext(::AVCodecContext *p) :Wraper(p) {}
 		AVCodecContext(::AVCodecContext &ref) :Wraper(ref) {}
-		AVCodecContext(FFmpeg::AVCodec codec);
-		AVCodecContext(FFmpeg::AVCodec codec, AVCodecParameters *param, bool autoOpen = false);
+		AVCodecContext(shared_ptr<FFmpeg::AVCodec> codec);
+		AVCodecContext(shared_ptr<FFmpeg::AVCodec> codec, AVCodecParameters *param, bool autoOpen = false);
 		~AVCodecContext() { Dispose(); }
 		void Dispose() override;
 		#pragma endregion
@@ -71,7 +71,7 @@ namespace FFmpeg
 		/// <summary>
 		/// 与本类绑定的 AVCodec
 		/// </summary>
-		FFmpeg::AVCodec _codec;
+		shared_ptr<FFmpeg::AVCodec> _codec;
 		#pragma endregion
 	};
 }

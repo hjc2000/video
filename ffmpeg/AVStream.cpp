@@ -13,7 +13,7 @@ void FFmpeg::AVStream::copy_parameters_to(FFmpeg::AVStream dst_stream)
 	}
 }
 
-FFmpeg::AVCodec FFmpeg::AVStream::get_stream_codec()
+shared_ptr<FFmpeg::AVCodec> FFmpeg::AVStream::get_stream_codec()
 {
 	return FFmpeg::AVCodec::find_decoder_by_id(w->codecpar->codec_id);
 }

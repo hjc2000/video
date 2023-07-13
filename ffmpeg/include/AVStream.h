@@ -28,7 +28,7 @@ namespace FFmpeg
 		/// 获取此流对应的编解码器
 		/// </summary>
 		/// <returns></returns>
-		FFmpeg::AVCodec get_stream_codec();
+		shared_ptr<FFmpeg::AVCodec> get_stream_codec();
 		#pragma endregion
 
 	};
