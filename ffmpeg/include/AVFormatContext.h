@@ -61,7 +61,7 @@ namespace FFmpeg
 		/// 创建输出格式上下文。会将此 AVFormatContext 对象变成输出格式
 		/// </summary>
 		/// <param name="filename"></param>
-		void alloc_output_context2(const char *filename);
+		static shared_ptr<FFmpeg::AVFormatContext> alloc_output_context2(const char *filename);
 		#pragma endregion
 
 		#pragma region 包装方法
@@ -112,7 +112,7 @@ namespace FFmpeg
 		/// </summary>
 		/// <param name="type"></param>
 		/// <returns>返回找到的流</returns>
-		FFmpeg::AVStream find_best_stream(AVMediaType type);
+		shared_ptr<FFmpeg::AVStream> find_best_stream(AVMediaType type);
 
 		/// <summary>
 		/// 成功返回 0，失败返回错误代码

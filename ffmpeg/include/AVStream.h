@@ -10,7 +10,6 @@ namespace FFmpeg
 	{
 		#pragma region 生命周期
 	public:
-		AVStream()  {}
 		AVStream(::AVStream *p) :Wraper(p) {}
 		AVStream(::AVStream &ref) :Wraper(ref) {}
 		#pragma endregion

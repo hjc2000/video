@@ -4,7 +4,7 @@
 using std::fstream;
 using FFmpeg::Exception;
 
-void output_audio_frame(FFmpeg::AVFrame frame, fstream &audio_dst_file, FFmpeg::AVCodecContext bestAudioDecodeCtx)
+void output_audio_frame(FFmpeg::AVFrame frame, fstream &audio_dst_file, shared_ptr<FFmpeg::AVCodecContext> bestAudioDecodeCtx)
 {
 	size_t unpadded_linesize = frame()->nb_samples * av_get_bytes_per_sample((AVSampleFormat)frame()->format);
 
@@ -32,7 +32,7 @@ int demux_decode_main(const char *src_filename)
 
 	#pragma region 准备视频解码器
 	// 最好的视频流
-	FFmpeg::AVStream bestVideoStream;
+	shared_ptr< FFmpeg::AVStream> pBestVideoStream = nullptr;
 	// 用来解码最好的视频流的解码器
 	FFmpeg::AVCodec bestVideoDecoder;
 	// 解码器上下文
@@ -41,11 +41,11 @@ int demux_decode_main(const char *src_filename)
 	try
 	{
 		// 查找最好的视频流
-		bestVideoStream = pInputFormatCtx->find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
+		pBestVideoStream = pInputFormatCtx->find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_VIDEO);
 		// 获取最好的视频流的解码器
-		bestVideoDecoder = bestVideoStream.get_stream_codec();
+		bestVideoDecoder = pBestVideoStream->get_stream_codec();
 		// 使用解码器创建解码器上下文
-		bestVideoDecoderCtx = FFmpeg::AVCodecContext{ bestVideoDecoder, bestVideoStream()->codecpar, true };
+		bestVideoDecoderCtx = FFmpeg::AVCodecContext{ bestVideoDecoder, (*pBestVideoStream)()->codecpar, true };
 	}
 	catch (Exception e)
 	{
@@ -54,15 +54,15 @@ int demux_decode_main(const char *src_filename)
 	#pragma endregion
 
 	#pragma region 准备音频解码器
-	FFmpeg::AVStream bestAudioStream;
+	shared_ptr<FFmpeg::AVStream> bestAudioStream;
 	FFmpeg::AVCodec bestAudioDecoder;
-	FFmpeg::AVCodecContext bestAudioDecoderCtx;
+	shared_ptr<FFmpeg::AVCodecContext> spBestAudioDecoderCtx;
 
 	try
 	{
 		bestAudioStream = pInputFormatCtx->find_best_stream(FFmpeg::AVMediaType::AVMEDIA_TYPE_AUDIO);
-		bestAudioDecoder = bestAudioStream.get_stream_codec();
-		bestAudioDecoderCtx = FFmpeg::AVCodecContext{ bestAudioDecoder, bestAudioStream()->codecpar, true };
+		bestAudioDecoder = bestAudioStream->get_stream_codec();
+		spBestAudioDecoderCtx = shared_ptr<FFmpeg::AVCodecContext>(new FFmpeg::AVCodecContext{ bestAudioDecoder, (*bestAudioStream)()->codecpar, true });
 	}
 	catch (Exception e)
 	{
@@ -71,25 +71,25 @@ int demux_decode_main(const char *src_filename)
 	#pragma endregion
 
 	// 打印流信息
-	pInputFormatCtx->dump_format(bestVideoStream()->index, src_filename, 0);
+	pInputFormatCtx->dump_format((*pBestVideoStream)()->index, src_filename, 0);
 
-	if (!bestAudioStream && !bestVideoStream)
+	if (!bestAudioStream && !pBestVideoStream)
 	{
 		throw Exception("找不到音频流和视频流");
 	}
 
 	FFmpeg::AVFrame frame = FFmpeg::AVFrame::create();
-	FFmpeg::AVPacket pkt{};
+	shared_ptr<FFmpeg::AVPacket> pkt{new FFmpeg::AVPacket{}};
 	FFmpeg::ImageBuffer buffer{bestVideoDecoderCtx, 1};
 
 	// 在循环中读取格式中的包
-	while (!pInputFormatCtx->read_packet(pkt))
+	while (!pInputFormatCtx->read_packet(*pkt))
 	{
 		// 如果读到的包是视频流的包
-		if (pkt()->stream_index == bestVideoStream()->index)
+		if (pkt->w->stream_index == pBestVideoStream->w->index)
 		{
 			// 向视频解码器发送包
-			bestVideoDecoderCtx.send_packet(pkt);
+			bestVideoDecoderCtx.send_packet(*pkt);
 			while (!bestVideoDecoderCtx.receive_frame(frame))
 			{
 				static int video_frame_count = 0;
@@ -107,18 +107,18 @@ int demux_decode_main(const char *src_filename)
 				frame.unref();
 			}
 		}
-		else if (pkt()->stream_index == bestAudioStream()->index)
+		else if (pkt->w->stream_index == (*bestAudioStream)()->index)
 		{
 			// 如果读取到的包是音频流的包
-			bestAudioDecoderCtx.send_packet(pkt);
-			while (!bestAudioDecoderCtx.receive_frame(frame))
+			spBestAudioDecoderCtx->send_packet(*pkt);
+			while (!spBestAudioDecoderCtx->receive_frame(frame))
 			{
-				output_audio_frame(frame, audio_dst_file, bestAudioDecoderCtx);
+				output_audio_frame(frame, audio_dst_file, spBestAudioDecoderCtx);
 				frame.unref();
 			}
 		}
 
-		pkt.unref();
+		pkt->unref();
 	}
 
 	/* flush the decoders */
@@ -135,13 +135,13 @@ int demux_decode_main(const char *src_filename)
 		}
 	}
 
-	if (bestAudioDecoderCtx)
+	if (spBestAudioDecoderCtx)
 	{
-		bestAudioDecoderCtx.send_packet(nullptr);
+		spBestAudioDecoderCtx->send_packet(nullptr);
 		// get all the available frames from the decoder
-		while (!bestAudioDecoderCtx.receive_frame(frame))
+		while (!spBestAudioDecoderCtx->receive_frame(frame))
 		{
-			output_audio_frame(frame, audio_dst_file, bestAudioDecoderCtx);
+			output_audio_frame(frame, audio_dst_file, spBestAudioDecoderCtx);
 			frame.unref();
 		}
 	}

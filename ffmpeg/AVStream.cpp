@@ -6,7 +6,7 @@
 
 void FFmpeg::AVStream::copy_parameters_to(FFmpeg::AVStream dst_stream)
 {
-	int result = ::avcodec_parameters_copy(dst_stream()->codecpar, _pWrapedObj->codecpar);
+	int result = ::avcodec_parameters_copy(dst_stream()->codecpar, w->codecpar);
 	if (result < 0)
 	{
 		throw Exception("AVStream::copy_parameters_to", result);
@@ -15,5 +15,5 @@ void FFmpeg::AVStream::copy_parameters_to(FFmpeg::AVStream dst_stream)
 
 FFmpeg::AVCodec FFmpeg::AVStream::get_stream_codec()
 {
-	return FFmpeg::AVCodec::find_decoder_by_id(_pWrapedObj->codecpar->codec_id);
+	return FFmpeg::AVCodec::find_decoder_by_id(w->codecpar->codec_id);
 }

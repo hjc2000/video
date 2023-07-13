@@ -11,7 +11,7 @@ namespace FFmpeg
 	public:
 		AVPacket()
 		{
-			_pWrapedObj = new ::AVPacket{};
+			w = new ::AVPacket{};
 		}
 		AVPacket(::AVPacket *p) :Wraper(p) {}
 		AVPacket(::AVPacket &ref) :Wraper(ref) {}
@@ -23,12 +23,12 @@ namespace FFmpeg
 
 		void Dispose() override
 		{
-			if (should_dispose() && _pWrapedObj)
+			if (should_dispose() && w)
 			{
 				cout << "AVPacket析构" << endl;
 				unref();
-				delete _pWrapedObj;
-				_pWrapedObj = nullptr;
+				delete w;
+				w = nullptr;
 			}
 		}
 		#pragma endregion
@@ -39,7 +39,7 @@ namespace FFmpeg
 		/// </summary>
 		void unref()
 		{
-			::av_packet_unref(_pWrapedObj);
+			::av_packet_unref(w);
 		}
 
 		void av_packet_rescale_ts(AVRational tb_src, AVRational tb_dst)
@@ -49,7 +49,7 @@ namespace FFmpeg
 			//packet()->dts = av_rescale_q_rnd(packet()->dts, input_stream()->time_base, output_stream()->time_base, ::AVRounding(AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
 			//packet()->duration = av_rescale_q(packet()->duration, input_stream()->time_base, output_stream()->time_base);
 			// 直接一个函数完成 3 个函数的工作
-			::av_packet_rescale_ts(_pWrapedObj, tb_src, tb_dst);
+			::av_packet_rescale_ts(w, tb_src, tb_dst);
 		}
 	};
 }

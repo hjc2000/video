@@ -28,7 +28,7 @@ public:
 	/// <param name="p"></param>
 	Wraper(const T *p)
 	{
-		_pWrapedObj = (T *)p;
+		w = (T *)p;
 	}
 
 	/// <summary>
@@ -37,7 +37,7 @@ public:
 	/// <param name="ref"></param>
 	Wraper(const T &ref)
 	{
-		_pWrapedObj = (T *)&ref;
+		w = (T *)&ref;
 	}
 
 
@@ -51,7 +51,7 @@ public:
 		// 复制共享指针，以此递增引用计数
 		_refCount = wraper._refCount;
 		// 将对方的指针复制过来
-		_pWrapedObj = wraper._pWrapedObj;
+		w = wraper.w;
 	}
 
 	virtual ~Wraper() {}
@@ -61,6 +61,11 @@ public:
 	/// </summary>
 	virtual void Dispose() {}
 	#pragma endregion
+
+	/// <summary>
+	/// 被包装的对象的指针
+	/// </summary>
+	T *w = nullptr;
 
 	#pragma region 运算符重载
 public:
@@ -72,43 +77,43 @@ public:
 	{
 		// 防止自赋值
 		if (this == &ref) return;
-		// 如果本对象已经分配 _pWrapedObj 资源了就要先释放
-		if (_pWrapedObj)
+		// 如果本对象已经分配 w 资源了就要先释放
+		if (w)
 			Dispose();
 		// 将对方的资源拿过来
-		_pWrapedObj = ref._pWrapedObj;
+		w = ref.w;
 		// 递增引用计数，只要是复制 _pWrapedObj，必须同时复制 _refCount
 		_refCount = ref._refCount;
 	}
 
 	void operator=(T *pWrapedObj)
 	{
-		_pWrapedObj = pWrapedObj;
+		w = pWrapedObj;
 	}
 
 	void operator=(T &ref_WrapedObj)
 	{
-		_pWrapedObj = &ref_WrapedObj;
+		w = &ref_WrapedObj;
 	}
 
 	T *operator()(void)
 	{
-		return _pWrapedObj;
+		return w;
 	}
 
 	operator T **()
 	{
-		return &_pWrapedObj;
+		return &w;
 	}
 
 	operator T *()
 	{
-		return _pWrapedObj;
+		return w;
 	}
 
 	operator bool()
 	{
-		return _pWrapedObj;
+		return w;
 	}
 	#pragma endregion
 
@@ -129,6 +134,4 @@ protected:
 	{
 		return _refCount.use_count() <= 1;
 	}
-
-	T *_pWrapedObj = nullptr;
 };

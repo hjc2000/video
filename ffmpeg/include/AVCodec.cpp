@@ -19,5 +19,5 @@ FFmpeg::AVCodec FFmpeg::AVCodec::find_decoder_by_id(AVCodecID id)
 
 void FFmpeg::AVCodec::operator=(const FFmpeg::AVCodec &ref)
 {
-	_pWrapedObj = ref._pWrapedObj;
+	w = ref.w;
 }
