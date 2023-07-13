@@ -46,23 +46,23 @@ void remux_main()
 	outputFormatCtx.dump_format(0, "file", 1);
 	cout << "--------------------------" << endl;
 	outputFormatCtx.write_header();
-	FFmpeg::AVPacket packet;
+	shared_ptr<FFmpeg::AVPacket> packet{new FFmpeg::AVPacket{}};
 	while (!inputFormatCtx.read_packet(packet))
 	{
-		FFmpeg::AVStream input_stream = inputFormatCtx.get_stream(packet()->stream_index);
+		FFmpeg::AVStream input_stream = inputFormatCtx.get_stream(packet->w->stream_index);
 		// 如果映射表中的目标索引号是负数，表示此流不被复制到输出格式中
-		if (stream_map[packet()->stream_index] >= 0)
+		if (stream_map[packet->w->stream_index] >= 0)
 		{
 			// 将此包的流索引号改为目标流索引号，这样这个包就会被写入输出格式的中的目标索引号
 			// 的流中
-			packet()->stream_index = stream_map[packet()->stream_index];
-			FFmpeg::AVStream output_stream = outputFormatCtx.get_stream(packet()->stream_index);
-			packet.av_packet_rescale_ts(input_stream()->time_base, output_stream()->time_base);
-			packet()->pos = -1;
-			outputFormatCtx.interleaved_write_packet(packet);
+			packet->w->stream_index = stream_map[packet->w->stream_index];
+			FFmpeg::AVStream output_stream = outputFormatCtx.get_stream(packet->w->stream_index);
+			packet->av_packet_rescale_ts(input_stream()->time_base, output_stream()->time_base);
+			packet->w->pos = -1;
+			outputFormatCtx.interleaved_write_packet(*packet);
 		}
 
-		packet.unref();
+		packet->unref();
 	}
 
 	delete[] stream_map;

@@ -10,16 +10,11 @@ namespace FFmpeg
 	{
 		#pragma region 生命周期
 	public:
-		AVFrame() {}
+		AVFrame();
 		AVFrame(::AVFrame *p) :Wraper(p) {}
 		AVFrame(::AVFrame &ref) :Wraper(ref) {}
 		~AVFrame() { Dispose(); }
 		void Dispose() override;
-		#pragma endregion
-
-		#pragma region 工厂函数
-	public:
-		static FFmpeg::AVFrame create();
 		#pragma endregion
 
 	public:

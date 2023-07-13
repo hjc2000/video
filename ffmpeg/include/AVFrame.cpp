@@ -2,6 +2,15 @@
 #include<AVUtil.h>
 #include<ImageBuffer.h>
 
+FFmpeg::AVFrame::AVFrame()
+{
+	w = av_frame_alloc();
+	if (!w)
+	{
+		throw "FFmpeg::AVFrame::create 失败";
+	}
+}
+
 void FFmpeg::AVFrame::Dispose()
 {
 	if (should_dispose())
@@ -9,18 +18,6 @@ void FFmpeg::AVFrame::Dispose()
 		cout << "AVFrame 释放" << endl;
 		av_frame_free(&w);
 	}
-}
-
-FFmpeg::AVFrame FFmpeg::AVFrame::create()
-{
-	FFmpeg::AVFrame frame;
-	frame.w = av_frame_alloc();
-	if (!frame.w)
-	{
-		throw "FFmpeg::AVFrame::create 失败";
-	}
-
-	return frame;
 }
 
 void FFmpeg::AVFrame::av_frame_get_buffer(int align)

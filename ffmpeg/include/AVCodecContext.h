@@ -40,7 +40,7 @@ namespace FFmpeg
 		/// </summary>
 		/// 
 		/// <param name="frame"></param>
-		void avcodec_send_frame(FFmpeg::AVFrame frame);
+		void avcodec_send_frame(shared_ptr<FFmpeg::AVFrame> frame);
 
 		/// <summary>
 		/// 从编码器接受包。成功返回 0，失败返回错误代码
@@ -54,14 +54,14 @@ namespace FFmpeg
 		/// </summary>
 		/// <param name="packet"></param>
 		/// <exception cref="int"></exception>
-		void send_packet(FFmpeg::AVPacket packet);
+		void send_packet(shared_ptr<FFmpeg::AVPacket> packet);
 
 		/// <summary>
 		/// 接收解码后的帧，接收成功返回 0，失败返回错误代码
 		/// </summary>
 		/// <param name="frame"></param>
 		/// <returns></returns>
-		int receive_frame(FFmpeg::AVFrame frame);
+		int receive_frame(shared_ptr<FFmpeg::AVFrame> frame);
 
 		void set_codec_param(AVCodecParameters *param);
 		#pragma endregion

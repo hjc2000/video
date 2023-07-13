@@ -119,7 +119,7 @@ namespace FFmpeg
 		/// </summary>
 		/// <param name="packet"></param>
 		/// <returns></returns>
-		int read_packet(FFmpeg::AVPacket packet);
+		int read_packet(shared_ptr<FFmpeg::AVPacket> packet);
 
 		/// <summary>
 		///		只有输出格式才能使用这个函数

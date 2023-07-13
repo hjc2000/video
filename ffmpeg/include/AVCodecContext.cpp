@@ -17,7 +17,7 @@ FFmpeg::AVCodecContext::AVCodecContext(FFmpeg::AVCodec codec)
 	}
 }
 
-FFmpeg::AVCodecContext::AVCodecContext(FFmpeg::AVCodec codec, AVCodecParameters *param, bool autoOpen) 
+FFmpeg::AVCodecContext::AVCodecContext(FFmpeg::AVCodec codec, AVCodecParameters *param, bool autoOpen)
 {
 	_codec = codec;
 	w = ::avcodec_alloc_context3(codec);
@@ -67,9 +67,9 @@ void FFmpeg::AVCodecContext::open(FFmpeg::AVDictionary *dic)
 	}
 }
 
-void FFmpeg::AVCodecContext::avcodec_send_frame(FFmpeg::AVFrame frame)
+void FFmpeg::AVCodecContext::avcodec_send_frame(shared_ptr<FFmpeg::AVFrame> frame)
 {
-	::avcodec_send_frame(w, frame);
+	::avcodec_send_frame(w, frame->w);
 }
 
 int FFmpeg::AVCodecContext::avcodec_receive_packet(FFmpeg::AVPacket pkt)
@@ -77,18 +77,18 @@ int FFmpeg::AVCodecContext::avcodec_receive_packet(FFmpeg::AVPacket pkt)
 	return ::avcodec_receive_packet(w, pkt);
 }
 
-void FFmpeg::AVCodecContext::send_packet(FFmpeg::AVPacket packet)
+void FFmpeg::AVCodecContext::send_packet(shared_ptr<FFmpeg::AVPacket> packet)
 {
-	int ret = ::avcodec_send_packet(w, packet);
+	int	ret = ::avcodec_send_packet(w, packet ? packet->w : nullptr);
 	if (ret < 0)
 	{
 		throw Exception("AVCodecContext::send_packet", ret);
 	}
 }
 
-int FFmpeg::AVCodecContext::receive_frame(FFmpeg::AVFrame frame)
+int FFmpeg::AVCodecContext::receive_frame(shared_ptr<FFmpeg::AVFrame> frame)
 {
-	return ::avcodec_receive_frame(w, frame);
+	return ::avcodec_receive_frame(w, frame->w);
 }
 
 void FFmpeg::AVCodecContext::set_codec_param(AVCodecParameters *param)

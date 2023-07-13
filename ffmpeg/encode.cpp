@@ -1,6 +1,6 @@
 #include<FFmpeg.h>
 
-static void encode(FFmpeg::AVCodecContext enc_ctx, FFmpeg::AVFrame frame, fstream &outfile)
+static void encode(FFmpeg::AVCodecContext enc_ctx, shared_ptr<FFmpeg::AVFrame> frame, fstream &outfile)
 {
 	enc_ctx.avcodec_send_frame(frame);
 	FFmpeg::AVPacket pkt;
@@ -36,7 +36,7 @@ void encode_main()
 
 	/* emit one intra frame every ten frames
 	* check frame pict_type before passing frame
-	* to encoder, if frame()->pict_type is AV_PICTURE_TYPE_I
+	* to encoder, if frame->w->pict_type is AV_PICTURE_TYPE_I
 	* then gop_size is ignored and the output of encoder
 	* will always be I frame irrespective to gop_size
 	*/
@@ -53,12 +53,11 @@ void encode_main()
 	/* open it */
 	encoderCtx.open();
 
-	FFmpeg::AVFrame frame;
-	frame = FFmpeg::AVFrame::create();
-	frame()->format = encoderCtx()->pix_fmt;
-	frame()->width = encoderCtx()->width;
-	frame()->height = encoderCtx()->height;
-	frame.av_frame_get_buffer(0);
+	shared_ptr<FFmpeg::AVFrame> frame{new FFmpeg::AVFrame{}};
+	frame->w->format = encoderCtx()->pix_fmt;
+	frame->w->width = encoderCtx()->width;
+	frame->w->height = encoderCtx()->height;
+	frame->av_frame_get_buffer(0);
 	/* encode 1 second of video */
 	for (int i = 0; i < 25; i++)
 	{
@@ -72,7 +71,7 @@ void encode_main()
 		av_frame_make_writable() checks that and allocates a new buffer
 		for the frame only if necessary.
 		*/
-		frame.make_writable();
+		frame->make_writable();
 
 		#pragma region 在数组中生成视频裸流
 		/* Prepare a dummy image.
@@ -85,7 +84,7 @@ void encode_main()
 		{
 			for (int x = 0; x < encoderCtx()->width; x++)
 			{
-				frame()->data[0][y * frame()->linesize[0] + x] = x + y + i * 3;
+				frame->w->data[0][y * frame->w->linesize[0] + x] = x + y + i * 3;
 			}
 		}
 
@@ -94,13 +93,13 @@ void encode_main()
 		{
 			for (int x = 0; x < encoderCtx()->width / 2; x++)
 			{
-				frame()->data[1][y * frame()->linesize[1] + x] = 128 + y + i * 2;
-				frame()->data[2][y * frame()->linesize[2] + x] = 64 + x + i * 5;
+				frame->w->data[1][y * frame->w->linesize[1] + x] = 128 + y + i * 2;
+				frame->w->data[2][y * frame->w->linesize[2] + x] = 64 + x + i * 5;
 			}
 		}
 		#pragma endregion
 
-		frame()->pts = i;
+		frame->w->pts = i;
 
 		/* encode the image */
 		encode(encoderCtx, frame, outputFS);

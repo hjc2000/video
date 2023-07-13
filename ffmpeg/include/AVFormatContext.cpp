@@ -87,9 +87,9 @@ shared_ptr<FFmpeg::AVStream> FFmpeg::AVFormatContext::find_best_stream(AVMediaTy
 	}
 }
 
-int FFmpeg::AVFormatContext::read_packet(FFmpeg::AVPacket packet)
+int FFmpeg::AVFormatContext::read_packet(shared_ptr<FFmpeg::AVPacket> packet)
 {
-	return ::av_read_frame(w, packet);
+	return ::av_read_frame(w, packet->w);
 }
 
 FFmpeg::AVStream FFmpeg::AVFormatContext::create_new_stream(const::AVCodec *pCodec)

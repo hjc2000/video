@@ -18,18 +18,10 @@ namespace FFmpeg
 
 		~AVPacket()
 		{
-			Dispose();
-		}
-
-		void Dispose() override
-		{
-			if (should_dispose() && w)
-			{
-				cout << "AVPacket析构" << endl;
-				unref();
-				delete w;
-				w = nullptr;
-			}
+			cout << "AVPacket析构" << endl;
+			unref();
+			delete w;
+			w = nullptr;
 		}
 		#pragma endregion
 
