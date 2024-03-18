@@ -67,7 +67,7 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/jccpp)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/PInvokeNativeHelper)
 add_subdirectory(${CMAKE_SOURCE_DIR}/ffmpeg-wrapper)
-add_subdirectory(${CMAKE_SOURCE_DIR}/libtsduck)
+add_subdirectory(${CMAKE_SOURCE_DIR}/tsduck)
 add_subdirectory(${CMAKE_SOURCE_DIR}/a3)
 add_subdirectory(${CMAKE_SOURCE_DIR}/libusb-wrapper)
 add_subdirectory(${CMAKE_SOURCE_DIR}/sdl2-wrapper)

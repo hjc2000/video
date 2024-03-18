@@ -1,12 +1,11 @@
-setup_project(libtsduck)
+setup_project(tsduck)
 
 function(setup_target target_name)
-    target_add_source_recurse(${target_name} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
-
     # 将资源目录用预定义传给 C++ 程序
     target_compile_definitions(${target_name} PRIVATE TS_NO_SRT=1)
     target_compile_definitions(${target_name} PRIVATE TS_NO_RIST=1)
 
+    target_add_source_recurse(${target_name} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
     add_and_install_include_dir_recurse(${target_name} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 endfunction()
 
