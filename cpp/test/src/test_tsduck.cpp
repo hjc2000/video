@@ -13,29 +13,20 @@ void test_tsduck()
 	// 输入文件
 	shared_ptr<FileStream> input_file_stream = FileStream::Open("不老梦.ts");
 	TSPacketStreamReader ts_packet_reader{ input_file_stream };
-	PatParser pat_handler;
-	ts::TSPacket packet;
+	shared_ptr<PatParser> pat_handler{ new PatParser{} };
 
-	auto loop_read_packet = [&]()
+	ITSPacketSource::ReadPacketResult pump_result = ts_packet_reader.PumpTo(pat_handler);
+	switch (pump_result)
 	{
-		while (true)
+	case ITSPacketSource::ReadPacketResult::NoMorePacket:
 		{
-			ITSPacketSource::ReadPacketResult read_packet_result = ts_packet_reader.ReadPacket(packet);
-			switch (read_packet_result)
-			{
-			case ITSPacketSource::ReadPacketResult::Success:
-				{
-					pat_handler.SendPacket(&packet);
-					break;
-				}
-			default:
-				{
-					cout << "ReadPacket 返回错误代码，结束读取" << endl;
-					return;
-				}
-			}
+			cout << "读取完成，没有更多包了" << endl;
+			break;
 		}
-	};
-
-	loop_read_packet();
+	default:
+		{
+			cout << "其他错误" << endl;
+			break;
+		}
+	}
 }

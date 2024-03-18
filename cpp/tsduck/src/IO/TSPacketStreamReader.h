@@ -17,5 +17,7 @@ namespace video
 
 	public:
 		ReadPacketResult ReadPacket(ts::TSPacket &packet) override;
+
+		using ITSPacketSource::PumpTo;
 	};
 }

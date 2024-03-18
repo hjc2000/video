@@ -23,25 +23,11 @@ namespace video
 	public:
 		virtual ITSPacketSource::ReadPacketResult ReadPacket(ts::TSPacket &packet) = 0;
 
-		virtual ITSPacketSource::ReadPacketResult PumpTo(shared_ptr<ITsPacketConsumer> consumer)
-		{
-			ts::TSPacket packet;
-			while (true)
-			{
-				ITSPacketSource::ReadPacketResult read_packet_result = ReadPacket(packet);
-				switch (read_packet_result)
-				{
-				case ITSPacketSource::ReadPacketResult::Success:
-					{
-						consumer->SendPacket(&packet);
-						break;
-					}
-				default:
-					{
-						return read_packet_result;
-					}
-				}
-			}
-		}
+		/// <summary>
+		///		将本对象的包泵送给 consumer
+		/// </summary>
+		/// <param name="consumer"></param>
+		/// <returns></returns>
+		virtual ITSPacketSource::ReadPacketResult PumpTo(shared_ptr<ITsPacketConsumer> consumer);
 	};
 }
