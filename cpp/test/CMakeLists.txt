@@ -10,7 +10,6 @@ endfunction()
 
 # 定义生成规则
 if(1)
-    # 生成可执行文件
     add_executable(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
     setup_target(${ProjectName})
 endif()
@@ -19,7 +18,5 @@ endif()
 # 定义安装规则
 if(1)
     install_dll_from_dir(${libs_path}/ffmpeg/bin/)
-
-    # 安装本项目编译出的目标
     install_target_to_standard_paths(${ProjectName})
 endif()
