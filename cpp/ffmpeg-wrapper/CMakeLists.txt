@@ -8,7 +8,6 @@ function(setup_target target_name)
 
     add_and_install_include_dir_recurse(${target_name} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
     add_and_install_include_dir(${target_name} ${libs_path}/ffmpeg/include/)
-    add_and_install_include_dir(${target_name} ${libs_path}/sdl2/include/SDL2)
 
     target_link_libraries(${target_name} PUBLIC jccpp libtsduck)
     target_auto_link_lib(${target_name} libavcodec ${libs_path}/ffmpeg/lib/)
@@ -19,7 +18,6 @@ function(setup_target target_name)
     target_auto_link_lib(${target_name} libpostproc ${libs_path}/ffmpeg/lib/)
     target_auto_link_lib(${target_name} libswresample ${libs_path}/ffmpeg/lib/)
     target_auto_link_lib(${target_name} libswscale ${libs_path}/ffmpeg/lib/)
-    target_auto_link_lib(${target_name} SDL2 ${libs_path}/sdl2/lib/)
 endfunction()
 
 
@@ -38,7 +36,6 @@ endif()
 # 定义安装规则
 if(1)
     install_dll_from_dir(${libs_path}/ffmpeg/bin/)
-    install_dll_from_dir(${libs_path}/sdl2/bin/)
 
     # 安装本项目编译出的目标
     install_target_to_standard_paths("lib${ProjectName}")

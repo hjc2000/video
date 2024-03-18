@@ -1,7 +1,6 @@
 #pragma once
 #include<include_ffmpeg.h>
 #include<AVError.h>
-#include<SDL_Util.h>
 
 namespace video
 {
