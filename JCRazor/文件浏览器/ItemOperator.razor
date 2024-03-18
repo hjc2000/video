@@ -1,0 +1,20 @@
+<JCRazor.WindowComponents.EnsureDialog @ref="_delete_ensure_dialog"
+									   EnsureCallback="OnEnsureCallbackAsync">
+	<span>Are you sure to delete?</span>
+</JCRazor.WindowComponents.EnsureDialog>
+
+<JCRazor.WindowComponents.Dialog @ref="_operating_list_dialog">
+	<div class="operating_list">
+		@{
+			foreach (IDirectoryInfos dir in SelectedDirectories)
+			{
+				<div>@dir.FullPath</div>
+			}
+
+			foreach (IFileInfos file in SelectedFiles)
+			{
+				<div>@file.FullPath</div>
+			}
+		}
+	</div>
+</JCRazor.WindowComponents.Dialog>

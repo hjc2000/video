@@ -1,0 +1,31 @@
+.root {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	border-style: none;
+	display: flex;
+	flex-direction: column;
+}
+
+.head {
+	border-bottom: #583131 2px dashed;
+	overflow: hidden;
+}
+
+/*
+	装表单项的盒子
+*/
+.body {
+	flex: 1;
+	margin: 0;
+	border-style: none;
+	overflow: auto;
+	display: grid;
+}
+
+
+.foot {
+	overflow: hidden;
+}

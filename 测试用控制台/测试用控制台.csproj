@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\PInvokeLib\PInvokeLib.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="ts1.ts">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+</Project>

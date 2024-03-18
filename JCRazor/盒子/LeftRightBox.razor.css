@@ -1,0 +1,19 @@
+.root {
+	display: grid;
+	width: 100%;
+	align-content: center;
+	align-items: center;
+	white-space: nowrap;
+}
+
+.left {
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+.right {
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}

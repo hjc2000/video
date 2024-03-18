@@ -1,0 +1,10 @@
+﻿dialog {
+	width: fit-content;
+	height: fit-content;
+	max-height: 100vh;
+	max-width: 100vw;
+	margin: auto;
+	border-style: none;
+	padding: 0;
+	overflow: auto;
+}

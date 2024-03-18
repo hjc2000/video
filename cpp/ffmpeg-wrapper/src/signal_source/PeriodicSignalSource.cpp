@@ -1,0 +1,68 @@
+#include "PeriodicSignalSource.h"
+#include<AVChannelLayoutExtension.h>
+
+using namespace video;
+
+double video::PeriodicSignalSource::sample()
+{
+	// 保存当前时间
+	double current_t = _sample_t;
+
+	// 递增采样时间，为下一次采样做准备
+	_sample_t += sample_interval();
+
+	// 截断时间
+	if (_truncate_time)
+	{
+		// https://www.yuque.com/qiaodangyi/yrin4p/mfwzxoy0dicvbke0
+		_sample_t = truncate_time_into_a_period(_sample_t);
+	}
+
+	// y = sin(2 * pi * f * t)
+	return sample(current_t);
+}
+
+void video::PeriodicSignalSource::set_sample_rate(int value)
+{
+	throw jc::NotSupportedException("不支持设置采样率。请重新构造一个 PeriodicSignalSource");
+}
+
+AVRational video::PeriodicSignalSource::time_base()
+{
+	return AVRational{ 1,sample_rate() };
+}
+
+void video::PeriodicSignalSource::set_time_base(AVRational value)
+{
+	throw jc::NotSupportedException();
+}
+
+AVSampleFormat video::PeriodicSignalSource::sample_format()
+{
+	return AVSampleFormat::AV_SAMPLE_FMT_DBL;
+}
+
+void video::PeriodicSignalSource::set_sample_format(AVSampleFormat value)
+{
+	throw jc::NotSupportedException();
+}
+
+AVChannelLayout video::PeriodicSignalSource::ch_layout()
+{
+	return _ch_layout;
+}
+
+void video::PeriodicSignalSource::set_ch_layout(AVChannelLayout value)
+{
+	_ch_layout = value;
+}
+
+int video::PeriodicSignalSource::nb_samples()
+{
+	return _nb_samples;
+}
+
+void video::PeriodicSignalSource::set_nb_samples(int value)
+{
+	_nb_samples = value;
+}

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- 引用外部DLL，并确保它们被复制到输出目录 -->
+		<None Include="$(SolutionDir)/cpp/out/install/x64-debug/bin/*.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>false</Visible>
+		</None>
+	</ItemGroup>
+</Project>

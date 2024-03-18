@@ -1,0 +1,64 @@
+.root {
+	padding: 10px;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	background-color: #ededed;
+}
+
+	/* 导航条 */
+	.root .nav-bar {
+		display: flex;
+		flex-wrap: nowrap;
+		width: 100%;
+		overflow: hidden;
+	}
+
+		/*导航条右侧表示各级路径的按钮盒*/
+		.root .nav-bar .path-button-box {
+			flex: 1;
+			display: flex;
+			border-style: solid;
+			border-width: 1px;
+			padding: 2px;
+			overflow: auto;
+		}
+
+			.root .nav-bar .path-button-box button {
+				width: max-content;
+				padding: 2px 5px;
+			}
+
+	/* 主体 */
+	.root .body {
+		flex: 1;
+		display: flex;
+		overflow: hidden;
+	}
+
+		/*主体左侧的文件夹内容区*/
+		.root .body .directory-content-box {
+			flex: 1;
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			border-style: solid;
+			border-width: 1px;
+			display: grid;
+			grid-template-columns: repeat(4,max-content);
+			justify-content: start;
+			align-content: start;
+			overflow: auto;
+		}
+
+		/*主体部分右侧的上传记录*/
+		.root .body .uploading-list-box {
+			width: 300px;
+			height: 100%;
+			border-style: solid;
+			border-width: 1px;
+			border-left-style: none;
+		}

@@ -1,0 +1,23 @@
+div {
+	padding: 6px 12px;
+	margin: 0;
+	height: 35px;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-right-color: gray;
+	overflow: hidden;
+	font-weight: bold;
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	grid-row: 1;
+	display: flex;
+	align-items: center;
+	background-color: #ededed;
+}
+
+input {
+	width: 18px;
+	height: 18px;
+	transform: translateY(1.5px);
+}

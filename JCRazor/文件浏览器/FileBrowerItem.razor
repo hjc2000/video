@@ -1,0 +1,74 @@
+﻿<div>
+	<input class="check-box" @bind:get="Selected" @bind:set="OnSelectedChange" type="checkbox" />
+</div>
+
+@if (Directory is not null)
+{
+	<div @onclick="OnClickAsync"
+		 @ondblclick="OnDoubleClickAsync"
+		 _focus="@(Selected)"
+		 tabindex="-1">
+
+		<div class="name-box">
+			<div>📁&nbsp;</div>
+			<div style="flex:1;">
+				<input _hide="@(!_editting_name)"
+					   @key="Directory.Name"
+					   @bind:get="Directory.Name" @bind:set="OnNameChangeAsync"
+					   @onfocusout="OnFocusoutAsync"
+					   @onkeyup="OnEnterKeyPress"
+					   @ref="_dir_name_input_element" />
+
+				<span @ref="_dir_name_span_element" tabindex="-1" style="outline:none;" _hide="@(_editting_name)">@Directory.Name</span>
+			</div>
+		</div>
+	</div>
+
+	<div @onclick="OnClickAsync"
+		 @ondblclick="OnDoubleClickAsync"
+		 _focus="@(Selected)"
+		 tabindex="-1">
+	</div>
+
+	<div @onclick="OnClickAsync"
+		 @ondblclick="OnDoubleClickAsync"
+		 _focus="@(Selected)"
+		 tabindex="-1">
+
+		@Directory.LastModifyTime
+	</div>
+}
+else if (File is not null)
+{
+	<div @onclick="OnClickAsync"
+		 @ondblclick="OnDoubleClickAsync"
+		 _focus="@(Selected)"
+		 tabindex="-1">
+
+		<div class="name-box">
+			<input _hide="@(!_editting_name)"
+				   @key="File.Name"
+				   @bind:get="File.Name" @bind:set="OnNameChangeAsync"
+				   @onfocusout="OnFocusoutAsync"
+				   @onkeyup="OnEnterKeyPress"
+				   @ref="_file_name_input_element" />
+
+			<span @ref="_file_name_span_element" tabindex="-1" style="outline:none;" _hide="@(_editting_name)">@File.Name</span>
+		</div>
+	</div>
+
+	<div @onclick="OnClickAsync"
+		 @ondblclick="OnDoubleClickAsync"
+		 _focus="@(Selected)"
+		 tabindex="-1">
+		@File.Size
+	</div>
+
+	<div @onclick="OnClickAsync"
+		 @ondblclick="OnDoubleClickAsync"
+		 _focus="@(Selected)"
+		 tabindex="-1">
+
+		@File.LastModifyTime
+	</div>
+}

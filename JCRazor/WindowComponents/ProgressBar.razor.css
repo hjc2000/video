@@ -1,0 +1,96 @@
+.root {
+	display: flex;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	align-items: center;
+	align-content: center;
+	overflow: hidden;
+}
+
+	.root > * {
+		margin: 0;
+		padding: 0;
+	}
+
+.description-content-box {
+	margin: 0;
+	padding: 0;
+}
+
+.progress-box {
+	flex: 1;
+	height: 20px;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	border-radius: 10px;
+	border-style: solid;
+	border-width: 1.5px;
+	border-color: black;
+	display: flex;
+	align-content: center;
+	align-items: center;
+}
+
+/* 进度条标签样式 */
+progress {
+	width: 100%;
+	height: 20px;
+	margin: 0;
+	padding: 0;
+	border-style: none;
+	border-radius: 10px;
+}
+
+	/* 表示总长度背景色 */
+	progress::-webkit-progress-bar {
+		height: 20px;
+		margin: 0;
+		padding: 0;
+		background-color: whitesmoke;
+		border-style: none;
+		border-radius: 10px;
+	}
+
+	/* 表示已完成进度背景色 */
+	progress::-webkit-progress-value {
+		height: 20px;
+		margin: 0;
+		padding: 0;
+		background-color: rgb(0 150 60);
+		border-style: none;
+		border-radius: 10px;
+		transition: 0.4s linear;
+		transition-property: width, background-color;
+		background-image: linear-gradient(90deg, #0f0, #0ff);
+	}
+
+.progress-indication-box {
+	padding: 0;
+	margin: 0;
+}
+
+.cancel-button {
+	width: 30px;
+	height: 30px;
+	overflow: hidden;
+	user-select: none;
+	text-align: center;
+	vertical-align: central;
+}
+
+	.cancel-button:hover {
+		background-color: lightblue;
+	}
+
+	.cancel-button:active {
+		background-color: lightcoral;
+	}
+
+	.cancel-button span {
+		font-size: 30px;
+		height: 30px;
+		line-height: 25px;
+		color: red;
+	}

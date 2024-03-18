@@ -1,0 +1,59 @@
+#pragma once
+#include<AVError.h>
+#include<SDL_Util.h>
+#include<include_ffmpeg.h>
+
+namespace video
+{
+	class AVPixelFormatExtension
+	{
+		AVPixelFormatExtension() = delete;
+
+	public:
+		static SDL_PixelFormatEnum AVPixelFormat_to_SDL_PixelFormatEnum(AVPixelFormat fmt)
+		{
+			switch (fmt)
+			{
+			case AVPixelFormat::AV_PIX_FMT_YUV420P:
+				{
+					return SDL_PixelFormatEnum::SDL_PIXELFORMAT_IYUV;
+				}
+			case AVPixelFormat::AV_PIX_FMT_YUV422P:
+				{
+					return SDL_PixelFormatEnum::SDL_PIXELFORMAT_YUY2;
+				}
+			case  AVPixelFormat::AV_PIX_FMT_RGB24:
+				{
+					return SDL_PixelFormatEnum::SDL_PIXELFORMAT_RGB888;
+				}
+			default:
+				{
+					throw jc::NotImplementedException("暂不支持");
+				}
+			}
+		}
+
+		static AVPixelFormat SDL_PixelFormatEnum_to_AVPixelFormat(SDL_PixelFormatEnum fmt)
+		{
+			switch (fmt)
+			{
+			case SDL_PixelFormatEnum::SDL_PIXELFORMAT_IYUV:
+				{
+					return AVPixelFormat::AV_PIX_FMT_YUV420P;
+				}
+			case SDL_PixelFormatEnum::SDL_PIXELFORMAT_YUY2:
+				{
+					return AVPixelFormat::AV_PIX_FMT_YUV422P;
+				}
+			case SDL_PixelFormatEnum::SDL_PIXELFORMAT_RGB888:
+				{
+					return AVPixelFormat::AV_PIX_FMT_RGB24;
+				}
+			default:
+				{
+					throw jc::NotImplementedException("暂不支持");
+				}
+			}
+		}
+	};
+}

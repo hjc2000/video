@@ -1,0 +1,38 @@
+.root {
+	max-width: 80vw;
+	max-height: 80vh;
+	overflow: hidden;
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+	padding: 0 10px;
+	display: flex;
+	flex-direction: column;
+	background-color: rgba(215, 141, 12, 0.4);
+}
+
+.text-box {
+	flex: 1;
+	padding: 10px 0 10px 0;
+	overflow: auto;
+}
+
+.button-box {
+	overflow: hidden;
+	padding: 0 0 10px 0;
+	display: flex;
+	justify-content: space-around;
+	justify-items: center;
+}
+
+	.button-box button {
+		margin-right: 10px;
+		padding: 2px 5px;
+		min-width: 3em;
+		width: fit-content;
+		user-select: none;
+	}
+
+		.button-box button:active {
+			transform: translateY(1px);
+		}

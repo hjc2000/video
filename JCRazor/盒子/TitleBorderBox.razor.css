@@ -1,0 +1,35 @@
+.root {
+	width: 100%;
+	height: 100%;
+	display: grid;
+	grid-template-columns: auto;
+	grid-template-rows: auto 1fr;
+	position: relative;
+	overflow: hidden;
+}
+
+.border-title {
+	width: fit-content;
+	position: relative;
+	top: 0;
+	grid-row: 1;
+	transform: translate(10px, 40%);
+	background-color: #ededed;
+	color: rgb(110 50 40);
+	font-weight: 600;
+	padding: 0 1em;
+}
+
+.border-box {
+	grid-row: 2;
+	width: 100%;
+	height: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	border-color: rgb(120,90,90);
+	border-width: 1mm;
+	border-style: ridge;
+	box-shadow: 0px 0px 2px 1px rgba(130, 117, 117, 0.5);
+	background-color: #ededed;
+	overflow: hidden;
+}

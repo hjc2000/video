@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+	<PropertyGroup>
+		<RootNamespace>无尽播放器</RootNamespace>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Include="wwwroot\css\app.css" />
+	  <None Include="wwwroot\index.html" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="8.0.6" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\JCNET\JCNET.csproj" />
+	  <ProjectReference Include="..\JCRazor\JCRazor.csproj" />
+	  <ProjectReference Include="..\PInvokeLib\PInvokeLib.csproj" />
+	</ItemGroup>
+</Project>
