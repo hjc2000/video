@@ -27,21 +27,21 @@ public:
 	virtual void SetLength(int64_t value) = 0;
 
 	/// <summary>
-	///		读取指定的字节数到目标缓冲区中
+	///		从流中读取数据写入 buffer。
 	/// </summary>
-	/// <param name="dst_buf">要将读取到的数据写入的缓冲区。</param>
+	/// <param name="buffer">要将读取到的数据写入的缓冲区。</param>
 	/// <param name="offset">将读取到的数据写入 dst_buf 时的起始位置。</param>
 	/// <param name="count">要读取的字节数。</param>
 	/// <returns>实际读取的字节数。如果返回 0，说明此流结束。</returns>
-	virtual int64_t Read(uint8_t *dst_buf, int64_t offset, int64_t count) = 0;
+	virtual int64_t Read(uint8_t *buffer, int64_t offset, int64_t count) = 0;
 
 	/// <summary>
-	///		将 src_buf 中的数据从 offset 处开始往后，一共 count 个字节写入流中。
+	///		将 buffer 中的数据写入流中。
 	/// </summary>
-	/// <param name="src_buf">src_buf 数据源缓冲区。</param>
-	/// <param name="offset">从 src_buf 中取数据的起始位置。</param>
-	/// <param name="count">从 src_buf 中取多少个数据。</param>
-	virtual void Write(uint8_t *src_buf, int64_t offset, int64_t count) = 0;
+	/// <param name="buffer">数据源缓冲区。</param>
+	/// <param name="offset">从 buffer 中取数据的起始位置。</param>
+	/// <param name="count">从 buffer 中取多少个字节。</param>
+	virtual void Write(uint8_t *buffer, int64_t offset, int64_t count) = 0;
 
 	/// <summary>
 	///		* 对于写入的数据，作用是将其从内部缓冲区转移到底层。
@@ -50,16 +50,7 @@ public:
 	virtual void Flush() = 0;
 
 	/// <summary>
-	///		关闭或结束流。
-	/// 
-	///		* 不一定要在关闭后禁止读写操作，可以只禁止写入，不禁止读取。因为关闭后可能还需要读出残留数据。
-	///		  应该具体情况具体分析，派生类应该详细注释。
-	/// 
-	///		* 不管是什么原因，原则上应该避免关闭后还能写入，最多只能允许关闭后继续读取残留数据。
-	/// 
-	///		* 关闭也可以是为了取消信号量的阻塞，或者停止内部线程之类的。
-	/// 
-	///		* 对于网络流之类的，Close 方法一般设计为关闭套接字，可以考虑关闭后，Read 方法永远返回 0，表示流结束了。
+	///		关闭后对流的操作将会引发异常。
 	/// </summary>
 	virtual void Close() = 0;
 
