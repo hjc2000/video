@@ -1,5 +1,6 @@
 #pragma once
 #include<Stream.h>
+#include<define.h>
 
 class FileStream :public Stream
 {
@@ -19,12 +20,11 @@ public:
 	#pragma region 工厂函数
 	/// <summary>
 	///		用创建模式打开文件流，无论如何都会创建一个新的空白文件。会覆盖旧的。
-	/// </summary>
-	/// <remark>
+	/// 
 	///		创建模式就是：
 	///		* 如果文件不存在，创建一个新的。
 	///		* 如果文件存在，会打开，然后将长度截断为 0，相当于创建了一个新文件然后覆盖。
-	/// </remark>
+	/// </summary>
 	/// <param name="url">文件路径</param>
 	/// <returns>创建文件成功则返回 FileStream 对象</returns>
 	static shared_ptr<FileStream> CreateNewAnyway(const char *url);
@@ -33,8 +33,11 @@ public:
 	///		用打开模式打开一个文件。如果文件不存在，此函数不会创建文件。
 	/// </summary>
 	/// <param name="url">文件路径</param>
-	/// <returns>如果文件存在，且成功打开，则返回 FileStream 对象。如果文件不存在，返回空指针。</returns>
-	/// <exception cref="Exception 如果传进来的 url 不是文件，而是目录，会抛出异常"></exception>
+	/// <returns>如果文件存在，且成功打开，则返回 FileStream 对象。</returns>
+	/// <exception cref="Exception">
+	///		* 如果文件不存在，会引发异常。
+	///		* 如果传进来的 url 不是文件，而是目录，会引发异常
+	/// </exception>
 	static shared_ptr<FileStream> Open(const char *url);
 	#pragma endregion
 
