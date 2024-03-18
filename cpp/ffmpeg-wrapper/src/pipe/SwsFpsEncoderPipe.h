@@ -3,7 +3,6 @@
 #include<FpsAdjustPipe.h>
 #include<OutputFormat.h>
 #include<SwsPipe.h>
-#include<VideoFrameDisplayer.h>
 #include<VideoStreamInfoCollection.h>
 
 namespace video
@@ -16,8 +15,7 @@ namespace video
 			char const *codec_name,
 			IVideoStreamInfoCollection &desire_out_video_stream_infos,
 			shared_ptr<OutputFormat> out_fmt_ctx,
-			int64_t video_bitrate,
-			bool display_sws_out_frame
+			int64_t video_bitrate
 		)
 		{
 			_video_encoder_pipe = shared_ptr<EncoderPipe>{
@@ -39,22 +37,11 @@ namespace video
 
 			_sws_pipe = shared_ptr<SwsPipe>{ new SwsPipe {desire_out_video_stream_infos} };
 			_sws_pipe->AddFrameConsumer(_fps_adjust_pipe);
-
-			if (display_sws_out_frame)
-			{
-				VideoFrameDisplayer::Options options{ desire_out_video_stream_infos };
-				options._x = 0;
-				options._y = 70;
-				_displayer = shared_ptr<VideoFrameDisplayer>{ new VideoFrameDisplayer{options} };
-				_fps_adjust_pipe->AddFrameConsumer(_displayer);
-			}
-
 		}
 
 	private:
 		shared_ptr<EncoderPipe> _video_encoder_pipe;
 		shared_ptr<SwsPipe> _sws_pipe;
-		shared_ptr<VideoFrameDisplayer> _displayer;
 		shared_ptr<FpsAdjustPipe> _fps_adjust_pipe;
 
 	public:

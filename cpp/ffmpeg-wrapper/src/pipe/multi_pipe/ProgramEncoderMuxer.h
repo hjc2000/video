@@ -16,7 +16,6 @@
 #include<ProgramDecoder.h>
 #include<SwrEncoderPipe.h>
 #include<SwsFpsEncoderPipe.h>
-#include<VideoFrameDisplayer.h>
 
 namespace video
 {
@@ -71,8 +70,7 @@ namespace video
 			IVideoStreamInfoCollection &out_stream_infos,
 			std::string codec_name,
 			int64_t out_bittare,
-			int out_pid,
-			bool display_frame
+			int out_pid
 		);
 
 		/// <summary>
@@ -104,8 +102,7 @@ namespace video
 			shared_ptr<IMultiStreamPipeFrameSource> multi_source,
 			std::string video_codec_name,
 			std::string audio_codec_name,
-			int out_audio_sample_rate,
-			bool display_video_frame
+			int out_audio_sample_rate
 		);
 
 		/// <summary>

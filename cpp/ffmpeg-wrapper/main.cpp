@@ -1,5 +1,4 @@
-﻿#include<AVPacketPlayer.h>
-#include<InfiniteVideoStream.h>
+﻿#include<InfiniteVideoStream.h>
 #include<test_tsduck.h>
 
 using namespace video;

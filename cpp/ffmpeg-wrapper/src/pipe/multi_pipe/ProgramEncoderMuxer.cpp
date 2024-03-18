@@ -9,8 +9,7 @@ shared_ptr<MpegtsVideoStreamEncodeMuxPipe> video::ProgramEncoderMuxer::AddVideoS
 	IVideoStreamInfoCollection &out_stream_infos,
 	std::string codec_name,
 	int64_t out_bittare,
-	int out_pid,
-	bool display_frame
+	int out_pid
 )
 {
 	shared_ptr<MpegtsVideoStreamEncodeMuxPipe> pipe{
@@ -21,7 +20,6 @@ shared_ptr<MpegtsVideoStreamEncodeMuxPipe> video::ProgramEncoderMuxer::AddVideoS
 			codec_name,
 			out_bittare,
 			out_pid,
-			display_frame
 		}
 	};
 
@@ -51,8 +49,7 @@ void video::ProgramEncoderMuxer::AddMultiStream(
 	shared_ptr<IMultiStreamPipeFrameSource> multi_source,
 	std::string video_codec_name,
 	std::string audio_codec_name,
-	int out_audio_sample_rate,
-	bool display_video_frame
+	int out_audio_sample_rate
 )
 {
 	for (AVStreamInfoCollection &stream : multi_source->StreamList())
@@ -65,8 +62,7 @@ void video::ProgramEncoderMuxer::AddMultiStream(
 					stream,
 					video_codec_name,
 					-1,
-					-1,
-					display_video_frame
+					-1
 				);
 
 				shared_ptr<IPipeFrameSource> pipe_frame_source = multi_source->GetPipeFrameSourceByStreamIndex(stream._stream_index);
@@ -170,8 +166,7 @@ void video::test_ProgramEncoderMuxer()
 		best_stream_demux_decoder,
 		"hevc_amf",
 		"aac",
-		44100,
-		true
+		44100
 	);
 
 	// 开始数据传输
@@ -179,7 +174,6 @@ void video::test_ProgramEncoderMuxer()
 	best_stream_demux_decoder->StartPump();
 
 	// 等待退出事件到来后执行清理工作
-	SDL_EventGetter event_getter;
-	event_getter.WaitQuitEvent();
+	cin.get();
 	best_stream_demux_decoder->Dispose();
 }

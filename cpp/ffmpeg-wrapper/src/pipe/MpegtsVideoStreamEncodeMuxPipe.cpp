@@ -12,8 +12,7 @@ void MpegtsVideoStreamEncodeMuxPipe::InitEncodePipe()
 				_out_stream_infos,
 				_out_fmt_ctx,
 				_out_bitrate,
-				_display_frame
-		}
+			}
 		};
 	}
 	catch (...)
@@ -24,8 +23,7 @@ void MpegtsVideoStreamEncodeMuxPipe::InitEncodePipe()
 				_out_stream_infos,
 				_out_fmt_ctx,
 				_out_bitrate,
-				_display_frame
-		}
+			}
 		};
 	}
 

@@ -23,15 +23,13 @@ namespace video
 		/// <param name="codec_name">编码器名称。会先使用该名称查找编码器，如果找不到，会回退到 libx265。</param>
 		/// <param name="out_bittare">传入小于等于 0 的数表示使用默认值。</param>
 		/// <param name="pid">传入小于等于 0 的数表示使用默认值。</param>
-		/// <param name="display_frame">显示视频帧。</param>
 		MpegtsVideoStreamEncodeMuxPipe(
 			shared_ptr<OutputFormat> out_fmt_ctx,
 			AVProgramWrapper program,
 			IVideoStreamInfoCollection &out_stream_infos,
 			std::string codec_name,
 			int64_t out_bittare,
-			int pid,
-			bool display_frame
+			int pid
 		)
 		{
 			_out_fmt_ctx = out_fmt_ctx;
@@ -40,7 +38,6 @@ namespace video
 			_codec_name = codec_name;
 			_out_bitrate = out_bittare;
 			_pid = pid;
-			_display_frame = display_frame;
 
 			_out_stream_infos.set_time_base(AVRational(1, 90000));
 			InitEncodePipe();
@@ -55,7 +52,6 @@ namespace video
 		std::string _codec_name;
 		int64_t _out_bitrate = -1;
 		int _pid = -1;
-		bool _display_frame;
 
 		void InitEncodePipe();
 

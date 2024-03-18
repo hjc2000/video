@@ -50,8 +50,7 @@ void video::InfiniteVideoStream::Init()
 		_best_stream_demux_decoder,
 		"hevc_amf",
 		"aac",
-		44100,
-		false
+		44100
 	);
 
 	// 开始数据传输
