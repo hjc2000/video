@@ -4,14 +4,14 @@ using namespace video;
 
 video::InfiniteVideoStream::InfiniteVideoStream()
 {
-	_format_list.Add(std::format("{}/{}", Predefine_ResourceDir, "idol.ts"));
-	_format_list.Add(std::format("{}/{}", Predefine_ResourceDir, "渡尘.mp4"));
-	_format_list.Add(std::format("{}/{}", Predefine_ResourceDir, "moon.mp4"));
-	_format_list.Add(std::format("{}/{}", Predefine_ResourceDir, "越权访问.mkv"));
-	_format_list.Add(std::format("{}/{}", Predefine_ResourceDir, "zf.ts"));
-	_format_list.Add(std::format("{}/{}", Predefine_ResourceDir, "水龙吟.ts"));
-	_format_list.Add(std::format("{}/{}", Predefine_ResourceDir, "崩坏世界的歌姬.ts"));
-	_format_list.Add(std::format("{}/{}", Predefine_ResourceDir, "不老梦.ts"));
+	_format_list.Add("idol.ts");
+	_format_list.Add("渡尘.mp4");
+	_format_list.Add("moon.mp4");
+	_format_list.Add("越权访问.mkv");
+	_format_list.Add("zf.ts");
+	_format_list.Add("水龙吟.ts");
+	_format_list.Add("崩坏世界的歌姬.ts");
+	_format_list.Add("不老梦.ts");
 	_loop = true;
 	Init();
 }

@@ -9,8 +9,6 @@ using namespace video;
 
 void test_tsduck()
 {
-	std::filesystem::current_path(Predefine_ResourceDir);
-
 	// 输入文件
 	ts::TSFile in_tsfile{};
 	bool ret = in_tsfile.openRead(u"不老梦.ts", 0, ts::CerrReport::Instance());

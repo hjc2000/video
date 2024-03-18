@@ -97,7 +97,6 @@ namespace video
 		///		不采用 multi_source 中各个音频流的原始采样率，而是使用自定义值。可以将输出音频流转换到目标采样率上。
 		///		* 输入 -1 表示使用原始的采样率。
 		/// </param>
-		/// <param name="display_video_frame">是否显示视频帧。</param>
 		void AddMultiStream(
 			shared_ptr<IMultiStreamPipeFrameSource> multi_source,
 			std::string video_codec_name,

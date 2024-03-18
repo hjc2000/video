@@ -135,7 +135,6 @@ void video::ProgramEncoderMuxer::WriteHeader()
 
 void video::test_ProgramEncoderMuxer()
 {
-	std::filesystem::current_path(Predefine_ResourceDir);
 	List<std::string> format_list;
 	format_list.Add("moon.mp4");
 	format_list.Add("崩坏世界的歌姬.ts");
