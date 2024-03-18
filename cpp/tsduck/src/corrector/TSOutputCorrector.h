@@ -26,6 +26,7 @@ namespace video
 		void ClearConsumers() override;
 		#pragma endregion
 
+		using ITsPacketConsumer::SendPacket;
 		void SendPacket(ts::TSPacket *packet) override;
 	};
 }

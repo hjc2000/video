@@ -1,8 +1,8 @@
 #pragma once
 #include<AutoChangeIdProgramMux.h>
-#include<FileTsOutput.h>
 #include<TSDumper.h>
 #include<TSOutputCorrector.h>
+#include<TSPacketToStream.h>
 #include<TableOperator.h>
 #include<TsDuckToString.h>
 #include<iostream>
@@ -31,7 +31,7 @@ namespace video
 			_duck = shared_ptr<ts::DuckContext>{ new ts::DuckContext{&ts::CerrReport::Instance()} };
 
 			_output_corrector->AddTsPacketConsumer(_packet_dumper);
-			_output_corrector->AddTsPacketConsumer(_file_ts_outputter);
+			_output_corrector->AddTsPacketConsumer(_ts_packet_to_stream);
 			_auto_change_id_program_mux->AddTsPacketConsumer(_output_corrector);
 
 			_input_port = _auto_change_id_program_mux->GetNewInputPort();
@@ -42,7 +42,8 @@ namespace video
 		shared_ptr<ts::DuckContext> _duck;
 
 		shared_ptr<TSOutputCorrector> _output_corrector{ new TSOutputCorrector{} };
-		shared_ptr<FileTsOutput> _file_ts_outputter{ new FileTsOutput{ "out.ts" } };
+		shared_ptr<TSPacketToStream> _ts_packet_to_stream{ new TSPacketToStream{FileStream::CreateNewAnyway("out.ts")} };
+
 		shared_ptr<TSDumper> _packet_dumper{ new TSDumper{} };
 		shared_ptr<AutoChangeIdProgramMux> _auto_change_id_program_mux{ new AutoChangeIdProgramMux{} };
 		shared_ptr<ITsPacketConsumer> _input_port;
