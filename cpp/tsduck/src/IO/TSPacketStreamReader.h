@@ -10,10 +10,7 @@ namespace video
 	class TSPacketStreamReader :ITSPacketSource
 	{
 	public:
-		TSPacketStreamReader(shared_ptr<Stream> input_stream)
-		{
-			_input_stream = input_stream;
-		}
+		TSPacketStreamReader(shared_ptr<Stream> input_stream);
 
 	private:
 		shared_ptr<Stream> _input_stream;

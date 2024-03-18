@@ -4,7 +4,6 @@
 #include<TSPacketStreamReader.h>
 #include<filesystem>
 #include<tsCerrReport.h>
-#include<tsTSFile.h>
 
 using namespace std;
 using namespace video;
@@ -16,20 +15,27 @@ void test_tsduck()
 	TSPacketStreamReader ts_packet_reader{ input_file_stream };
 	PatParser pat_handler;
 	ts::TSPacket packet;
-	while (true)
+
+	auto loop_read_packet = [&]()
 	{
-		ITSPacketSource::ReadPacketResult read_packet_result = ts_packet_reader.ReadPacket(packet);
-		switch (read_packet_result)
+		while (true)
 		{
-		case ITSPacketSource::ReadPacketResult::Success:
+			ITSPacketSource::ReadPacketResult read_packet_result = ts_packet_reader.ReadPacket(packet);
+			switch (read_packet_result)
 			{
-				pat_handler.SendPacket(&packet);
-				break;
-			}
-		default:
-			{
-				return;
+			case ITSPacketSource::ReadPacketResult::Success:
+				{
+					pat_handler.SendPacket(&packet);
+					break;
+				}
+			default:
+				{
+					cout << "ReadPacket 返回错误代码，结束读取" << endl;
+					return;
+				}
 			}
 		}
-	}
+	};
+
+	loop_read_packet();
 }
