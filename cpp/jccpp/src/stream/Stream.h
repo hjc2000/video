@@ -50,6 +50,19 @@ public:
 	virtual int64_t ReadAtLeast(uint8_t *buffer, int64_t offset, int64_t minimum_bytes);
 
 	/// <summary>
+	///		从流中读取精确数量的字节数写入 buffer 中。
+	///		如果遇到流末尾，无法满足要求，则读取到的字节数会小于 count。
+	/// </summary>
+	/// <param name="buffer"></param>
+	/// <param name="offset"></param>
+	/// <param name="count"></param>
+	/// <returns>
+	///		返回读取到的字节数。一般等于 count，除非到达流末尾，无法满足要求了。
+	///		调用者应该检查返回值，判断是否满足要求。
+	/// </returns>
+	virtual int64_t ReadExactly(uint8_t *buffer, int64_t offset, int64_t count);
+
+	/// <summary>
 	///		将 buffer 中的数据写入流中。
 	/// </summary>
 	/// <param name="buffer">数据源缓冲区。</param>
