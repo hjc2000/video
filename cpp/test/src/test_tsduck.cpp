@@ -11,7 +11,7 @@ using namespace video;
 void test_tsduck()
 {
 	// 输入文件
-	shared_ptr<FileStream> input_file_stream = FileStream::Open("不老梦.ts");
+	shared_ptr<FileStream> input_file_stream = FileStream::Open("fallen-down.ts");
 	TSPacketStreamReader ts_packet_reader{ input_file_stream };
 	shared_ptr<PatParser> pat_handler{ new PatParser{} };
 
