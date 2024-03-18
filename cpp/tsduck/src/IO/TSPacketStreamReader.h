@@ -1,3 +1,5 @@
+#pragma once
+#include<ITSPacketSource.h>
 #include<Stream.h>
 
 namespace video
@@ -5,7 +7,7 @@ namespace video
 	/// <summary>
 	///		用于从流中读取 ts 包。
 	/// </summary>
-	class TSPacketStreamReader
+	class TSPacketStreamReader :ITSPacketSource
 	{
 	public:
 		TSPacketStreamReader(shared_ptr<Stream> input_stream)
@@ -15,5 +17,8 @@ namespace video
 
 	private:
 		shared_ptr<Stream> _input_stream;
+
+	public:
+		ReadPacketResult ReadPacket(ts::TSPacket &packet) override;
 	};
 }

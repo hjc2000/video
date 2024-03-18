@@ -1,6 +1,7 @@
 #include "test_tsduck.h"
 #include<FileStream.h>
 #include<PatParser.h>
+#include<TSPacketStreamReader.h>
 #include<filesystem>
 #include<tsCerrReport.h>
 #include<tsTSFile.h>
@@ -11,25 +12,24 @@ using namespace video;
 void test_tsduck()
 {
 	// 输入文件
-	ts::TSFile in_tsfile{};
-	bool ret = in_tsfile.openRead(u"不老梦.ts", 0, ts::CerrReport::Instance());
-	if (!ret)
-	{
-		cout << "打开输入文件失败" << endl;
-		return;
-	}
-
-	cout << in_tsfile.getFileName() << endl;
+	shared_ptr<FileStream> input_file_stream = FileStream::Open("不老梦.ts");
+	TSPacketStreamReader ts_packet_reader{ input_file_stream };
 	PatParser pat_handler;
 	ts::TSPacket packet;
-	while (1)
+	while (true)
 	{
-		size_t have_read = in_tsfile.readPackets(&packet, nullptr, 1, ts::CerrReport::Instance());
-		if (have_read == 0)
+		ITSPacketSource::ReadPacketResult read_packet_result = ts_packet_reader.ReadPacket(packet);
+		switch (read_packet_result)
 		{
-			break;
+		case ITSPacketSource::ReadPacketResult::Success:
+			{
+				pat_handler.SendPacket(&packet);
+				break;
+			}
+		default:
+			{
+				return;
+			}
 		}
-
-		pat_handler.SendPacket(&packet);
 	}
 }
