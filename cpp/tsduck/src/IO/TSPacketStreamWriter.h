@@ -7,10 +7,10 @@ namespace video
 	/// <summary>
 	///		送入 ts 包，会输出到文件。
 	/// </summary>
-	class TSPacketToStream :public ITsPacketConsumer
+	class TSPacketStreamWriter :public ITsPacketConsumer
 	{
 	public:
-		TSPacketToStream(shared_ptr<Stream> out_stream)
+		TSPacketStreamWriter(shared_ptr<Stream> out_stream)
 		{
 			if (out_stream == nullptr)
 			{

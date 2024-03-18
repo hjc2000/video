@@ -3,6 +3,7 @@
 #include<PatParser.h>
 #include<filesystem>
 #include<tsCerrReport.h>
+#include<tsTSFile.h>
 
 using namespace std;
 using namespace video;

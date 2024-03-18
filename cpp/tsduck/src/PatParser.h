@@ -1,21 +1,11 @@
 #pragma once
 #include<AutoChangeIdProgramMux.h>
+#include<FileStream.h>
 #include<TSDumper.h>
 #include<TSOutputCorrector.h>
-#include<TSPacketToStream.h>
+#include<TSPacketStreamWriter.h>
 #include<TableOperator.h>
-#include<TsDuckToString.h>
-#include<iostream>
-#include<memory>
-#include<tsAES.h>
-#include<tsBinaryTable.h>
-#include<tsCyclingPacketizer.h>
 #include<tsDuckContext.h>
-#include<tsNIT.h>
-#include<tsPES.h>
-#include<tsSDT.h>
-#include<tsSectionDemux.h>
-#include<tsTSFile.h>
 
 namespace video
 {
@@ -42,7 +32,7 @@ namespace video
 		shared_ptr<ts::DuckContext> _duck;
 
 		shared_ptr<TSOutputCorrector> _output_corrector{ new TSOutputCorrector{} };
-		shared_ptr<TSPacketToStream> _ts_packet_to_stream{ new TSPacketToStream{FileStream::CreateNewAnyway("out.ts")} };
+		shared_ptr<TSPacketStreamWriter> _ts_packet_to_stream{ new TSPacketStreamWriter{FileStream::CreateNewAnyway("out.ts")} };
 
 		shared_ptr<TSDumper> _packet_dumper{ new TSDumper{} };
 		shared_ptr<AutoChangeIdProgramMux> _auto_change_id_program_mux{ new AutoChangeIdProgramMux{} };
@@ -50,6 +40,7 @@ namespace video
 		shared_ptr<ITsPacketConsumer> _input_port1;
 
 	public:
+		using ITsPacketConsumer::SendPacket;
 		void SendPacket(ts::TSPacket *packet) override
 		{
 			_input_port->SendPacket(packet);
