@@ -36,6 +36,20 @@ public:
 	virtual int64_t Read(uint8_t *buffer, int64_t offset, int64_t count) = 0;
 
 	/// <summary>
+	///		读取数据，并且要求至少要读出 minimum_bytes 个字节。除非到达流末尾了。
+	///		如果到达流末尾，此时读取到的字节数将会小于 minimum_bytes。
+	/// </summary>
+	/// <param name="buffer"></param>
+	/// <param name="offset"></param>
+	/// <param name="minimum_bytes"></param>
+	/// <returns>
+	///		返回读取到的字节数。
+	///		一般会大于等于 minimum_bytes，除非到达流结尾了。如果到达流结尾，返回值会小于 minimum_bytes，
+	///		此时实际读取到的字节数就是小于 minimum_bytes。
+	/// </returns>
+	virtual int64_t ReadAtLeast(uint8_t *buffer, int64_t offset, int64_t minimum_bytes);
+
+	/// <summary>
 	///		将 buffer 中的数据写入流中。
 	/// </summary>
 	/// <param name="buffer">数据源缓冲区。</param>
