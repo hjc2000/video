@@ -1,6 +1,6 @@
 #pragma once
 #include<Counter.h>
-#include<ITsPacketConsumer.h>
+#include<ITSPacketConsumer.h>
 #include<PipeTsPacketSource.h>
 #include<map>
 #include<memory>

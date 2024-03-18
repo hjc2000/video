@@ -1,5 +1,5 @@
 #pragma once
-#include<ITsPacketConsumer.h>
+#include<ITSPacketConsumer.h>
 #include<PipeTsPacketSource.h>
 #include<TableHandler.h>
 #include<TableOperator.h>

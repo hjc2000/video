@@ -1,6 +1,6 @@
 #pragma once
 #include<Exception.h>
-#include<ITsPacketConsumer.h>
+#include<ITSPacketConsumer.h>
 #include<PipeTsPacketSource.h>
 #include<TableOperator.h>
 #include<TableVersionChangeHandler.h>

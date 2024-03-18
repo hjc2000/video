@@ -1,5 +1,5 @@
 #pragma once
-#include<ITsPacketConsumer.h>
+#include<ITSPacketConsumer.h>
 #include<TableHandler.h>
 #include<TsDuckToString.h>
 #include<fstream>
