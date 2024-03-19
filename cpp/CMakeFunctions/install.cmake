@@ -5,24 +5,12 @@
 #   target_name - 需要安装的目标名称。这应该是之前使用 add_executable 或 add_library 创建的目标。
 #
 function(install_target_to_standard_paths target_name)
-    # 查询目标类型
-    get_target_property(target_type ${target_name} TYPE)
-
-    # 对于可执行文件和动态库 (共享库和DLL)，设置正确的安装路径
-    if(target_type STREQUAL "EXECUTABLE" OR target_type STREQUAL "SHARED_LIBRARY")
-        install(TARGETS ${target_name}
-                RUNTIME DESTINATION bin # 可执行文件和DLL到 bin
-                LIBRARY DESTINATION lib # 共享库 (.so) 到 lib
-                )
-    elseif(target_type STREQUAL "STATIC_LIBRARY")
-        # 静态库 (.a) 安装到 lib 目录
-        install(TARGETS ${target_name} ARCHIVE DESTINATION lib)
-    else()
-        message(WARNING "Unsupported target type: ${target_type} for target: ${target_name}.")
-    endif()
-
-    # 注意：这里我们假设 DLL 作为运行时目标处理，因此它们将被安装到 bin 目录。
-    # 如果目标有其他特定的文件需要安装，你可能需要扩展这个函数来处理那些情况。
+    install(
+        TARGETS ${target_name}
+        RUNTIME DESTINATION bin # 可执行文件和DLL到 bin
+        LIBRARY DESTINATION lib # 共享库 (.so) 到 lib
+        ARCHIVE DESTINATION lib
+    )
 endfunction()
 
 

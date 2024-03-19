@@ -16,7 +16,7 @@ if(1)
     setup_target(${ProjectName})
 
     # 生成静态库
-    add_library("lib${ProjectName}" STATIC)
+    add_library("lib${ProjectName}" SHARED)
     setup_target("lib${ProjectName}")
 endif()
 
