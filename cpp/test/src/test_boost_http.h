@@ -1,1 +1,0 @@
-void boost_send_http_request_to_baidu();

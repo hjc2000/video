@@ -1,1 +1,0 @@
-void test_beast_http_request();

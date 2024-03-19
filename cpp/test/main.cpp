@@ -21,8 +21,7 @@
 //}
 
 #include<iostream>
-#include<test_boost_http.h>
-#include<test_beast_http_request.h>
+#include<test_boost_asio.h>
 
 int main()
 {
