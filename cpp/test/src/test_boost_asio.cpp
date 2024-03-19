@@ -73,18 +73,29 @@ void receive_udp_message()
 	boost::asio::io_service io_service;
 
 	// 创建一个UDP socket来监听9999端口
-	udp::socket socket(io_service, udp::endpoint(udp::v4(), 9999));
+	//udp::socket socket(io_service, udp::endpoint(udp::v4(), 9999));
+	udp::socket socket{
+		io_service,
+		udp::endpoint{
+			boost::asio::ip::address::from_string("192.168.8.5"),
+			9999
+		}
+	};
 
-	for (;;)
+	while (true)
 	{
 		// 无限循环，持续监听
-		char recv_buf[1024]; // 使用原生数组作为接收缓冲区
+		char recv_buf[1024];
 		udp::endpoint remote_endpoint;
 		boost::system::error_code error;
 
 		// 阻塞直到接收到消息
-		size_t len = socket.receive_from(boost::asio::buffer(recv_buf),
-			remote_endpoint, 0, error);
+		size_t len = socket.receive_from(
+			boost::asio::buffer(recv_buf),
+			remote_endpoint,
+			0,
+			error
+		);
 
 		if (error && error != boost::asio::error::message_size)
 		{
