@@ -52,8 +52,8 @@ if(MSVC)
 	# 导出动态库的所有符号
 	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
-	add_compile_options(/wd26819)
-	add_compile_options(/wd26439)
+	#add_compile_options(/wd26819)
+	#add_compile_options(/wd26439)
 
 	# 下面是如何禁用链接器警告
 	# add_link_options(/ignore:4099 /ignore:4006)

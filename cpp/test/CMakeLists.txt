@@ -2,9 +2,18 @@ setup_project(test)
 
 function(setup_target target_name)
     target_compile_definitions(${target_name} PRIVATE Predefine_ResourceDir="${CMAKE_CURRENT_SOURCE_DIR}/资源")
+
     target_add_source_recurse(${target_name} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
+
     add_and_install_include_dir_recurse(${target_name} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
+    add_and_install_include_dir(${target_name} ${libs_path}/boost/include/)
+
     target_link_libraries(${target_name} PUBLIC jccpp tsduck ffmpeg-wrapper)
+    if(WIN32)
+        # 定义 windows API 版本
+        target_compile_definitions(${target_name} PRIVATE -D_WIN32_WINNT=0x0A00)
+        target_link_libraries(${target_name} PUBLIC ws2_32)
+    endif()
 endfunction()
 
 
