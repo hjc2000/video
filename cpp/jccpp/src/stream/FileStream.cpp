@@ -34,7 +34,7 @@ shared_ptr<FileStream> FileStream::CreateNewAnyway(const char *url)
 
 	if (fs->_fs->fail())
 	{
-		throw jc::Exception(std::format("{} 创建 {} 失败", CODE_POS_STR, url));
+		throw jc::Exception(std::format("{} 创建 {} 失败。检查文件是不是只读的。", CODE_POS_STR, url));
 	}
 
 	fs->_can_read = true;
@@ -66,7 +66,7 @@ shared_ptr<FileStream> FileStream::Open(const char *url)
 
 	if (fs->_fs->fail())
 	{
-		throw jc::Exception(std::format("{} 打开 {} 失败", CODE_POS_STR, url));
+		throw jc::Exception(std::format("{} 打开 {} 失败。检查文件是不是只读的。", CODE_POS_STR, url));
 	}
 
 	fs->_can_read = true;
