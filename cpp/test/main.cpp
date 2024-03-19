@@ -22,13 +22,13 @@
 
 #include<iostream>
 #include<test_boost_asio.h>
+#include<thread>
 
 int main()
 {
 	try
 	{
-		//boost_send_http_request_to_baidu();
-		test_beast_http_request();
+
 	}
 	catch (std::exception &e)
 	{

@@ -68,46 +68,6 @@ void boost_send_http_request_to_baidu()
 	}
 }
 
-void receive_udp_message()
-{
-	boost::asio::io_service io_service;
-
-	// 创建一个UDP socket来监听9999端口
-	//udp::socket socket(io_service, udp::endpoint(udp::v4(), 9999));
-	udp::socket socket{
-		io_service,
-		udp::endpoint{
-			boost::asio::ip::address::from_string("192.168.8.5"),
-			9999
-		}
-	};
-
-	while (true)
-	{
-		// 无限循环，持续监听
-		char recv_buf[1024];
-		udp::endpoint remote_endpoint;
-		boost::system::error_code error;
-
-		// 阻塞直到接收到消息
-		size_t len = socket.receive_from(
-			boost::asio::buffer(recv_buf),
-			remote_endpoint,
-			0,
-			error
-		);
-
-		if (error && error != boost::asio::error::message_size)
-		{
-			throw boost::system::system_error(error);
-		}
-
-		std::cout << "Received: ";
-		std::cout.write(recv_buf, len);
-		std::cout << std::endl;
-	}
-}
-
 void test_beast_http_request()
 {
 	// Set up an I/O context and a resolver
@@ -148,4 +108,80 @@ void test_beast_http_request()
 	}
 
 	// If we get here then the connection is closed gracefully
+}
+
+void receive_udp_message()
+{
+	boost::asio::io_service io_service;
+
+	// 创建一个UDP socket来监听9999端口
+	//udp::socket socket(io_service, udp::endpoint(udp::v4(), 9999));
+	udp::socket socket{
+		io_service,
+		udp::endpoint{
+			boost::asio::ip::address::from_string("192.168.8.5"),
+			9999
+	}
+	};
+
+	while (true)
+	{
+		// 无限循环，持续监听
+		char recv_buf[1024];
+		udp::endpoint remote_endpoint;
+		boost::system::error_code error;
+
+		// 阻塞直到接收到消息
+		size_t len = socket.receive_from(
+			boost::asio::buffer(recv_buf),
+			remote_endpoint,
+			0,
+			error
+		);
+
+		if (error && error != boost::asio::error::message_size)
+		{
+			throw boost::system::system_error(error);
+		}
+
+		std::cout << "Received: ";
+		std::cout.write(recv_buf, len);
+		std::cout << std::endl;
+	}
+}
+
+void send_udp_message()
+{
+	try
+	{
+		boost::asio::io_service io_service;
+
+		// 创建UDP socket
+		udp::socket socket(io_service);
+
+		// 打开socket为IPv4通信
+		socket.open(udp::v4());
+
+		// 目标端点，替换成你的目标IP地址和端口
+		udp::endpoint target_endpoint(boost::asio::ip::address::from_string("127.0.0.1"), 9999);
+
+		// 消息内容，替换成你想发送的消息
+		std::string message = "Hello UDP";
+
+		while (1)
+		{
+			// 发送数据
+			socket.send_to(boost::asio::buffer(message), target_endpoint);
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+		}
+
+		// 关闭socket（可选）
+		socket.close();
+
+		std::cout << "Message sent: " << message << std::endl;
+	}
+	catch (std::exception &e)
+	{
+		std::cerr << "Exception: " << e.what() << std::endl;
+	}
 }
