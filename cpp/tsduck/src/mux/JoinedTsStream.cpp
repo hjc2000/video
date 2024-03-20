@@ -47,6 +47,9 @@ ITSPacketSource::ReadPacketResult video::JoinedTsStream::ReadPacket(ts::TSPacket
 		/* 到这里说明读取失败，将 _current_ts_packet_source 置为空指针，
 		下轮循环将尝试取出一个新的 ITSPacketSource*/
 		_current_ts_packet_source = nullptr;
+
+		// 更新表格版本号
+
 	}
 }
 
