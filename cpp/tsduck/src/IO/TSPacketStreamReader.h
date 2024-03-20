@@ -11,6 +11,10 @@ namespace video
 	class TSPacketStreamReader :ITSPacketSource
 	{
 	public:
+		/// <summary>
+		///		传入一个流。读取包时将会在流中寻找同步字节，解析出 ts 包。能够自适应各种类型的 ts 包。
+		/// </summary>
+		/// <param name="input_stream"></param>
 		TSPacketStreamReader(shared_ptr<Stream> input_stream);
 
 	private:

@@ -10,27 +10,17 @@ namespace video
 	class TSPacketStreamWriter :public ITsPacketConsumer
 	{
 	public:
-		TSPacketStreamWriter(shared_ptr<Stream> out_stream)
-		{
-			if (out_stream == nullptr)
-			{
-				throw jc::ArgumentNullException("不允许传入空指针");
-			}
-
-			_out_stream = out_stream;
-		}
+		TSPacketStreamWriter(shared_ptr<Stream> out_stream);
 
 	private:
 		shared_ptr<Stream> _out_stream;
 
 	public:
 		using ITsPacketConsumer::SendPacket;
+
 		/// <summary>
 		///		送入包，会被写入文件。
 		/// </summary>
-		void SendPacket(ts::TSPacket *packet) override
-		{
-			_out_stream->Write(packet->b, 0, 188);
-		}
+		void SendPacket(ts::TSPacket *packet) override;
 	};
 }
