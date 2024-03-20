@@ -1,7 +1,6 @@
 #pragma once
 #include<AutoPidChanger.h>
 #include<AutoServiceIdChanger.h>
-#include<ProgramMux.h>
 
 namespace video
 {
@@ -31,11 +30,13 @@ namespace video
 		);
 
 	private:
-		shared_ptr<ProgramMux> _program_mux{ new ProgramMux{} };
-		shared_ptr<PidProvider> _pid_provider{ new PidProvider{} };
-		shared_ptr<ServiceIdProvider> _service_id_provider{ new ServiceIdProvider{} };
 		std::map<uint16_t, uint16_t> _preset_pid_map;
+		shared_ptr<PidProvider> _pid_provider{ new PidProvider{} };
 		std::map<uint16_t, uint16_t> _preset_service_id_map;
+		shared_ptr<ServiceIdProvider> _service_id_provider{ new ServiceIdProvider{} };
+
+		class ProgramMux;
+		shared_ptr<ProgramMux> _program_mux;
 
 	public:
 		/// <summary>
