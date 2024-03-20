@@ -3,10 +3,8 @@
 using namespace video;
 using namespace std;
 
-/***********************************************************************************/
-/* 类型区 */
-/***********************************************************************************/
 
+#pragma region 内部类
 class AutoChangeIdProgramMux::ProgramMux :
 	public ITSPacketConsumer,
 	public PipeTsPacketSource,
@@ -89,13 +87,13 @@ public:
 		}
 	}
 };
+#pragma endregion
 
 
 
 
-/***********************************************************************************/
-/* 函数区 */
-/***********************************************************************************/
+
+
 
 video::AutoChangeIdProgramMux::AutoChangeIdProgramMux(
 	std::map<uint16_t, uint16_t> const &preset_pid_map,
