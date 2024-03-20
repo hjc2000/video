@@ -2,7 +2,9 @@
 # 并且会保持原来的目录结构。
 function(add_and_install_include_dir target_name include_dir)
     target_include_directories(${target_name} PUBLIC ${include_dir})
-    install_from_dir(${include_dir} include "*.h*")
+    if(${INSTALL_HEADERS})
+        install_from_dir(${include_dir} include "*.h*")
+    endif()
 endfunction()
 
 

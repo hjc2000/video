@@ -20,7 +20,10 @@ if(1)
 	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/get-source-and-build.cmake)
 endif()
 
-
+if()
+	# 安装时是否安装头文件
+	option(INSTALL_HEADERS OFF)
+endif()
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 

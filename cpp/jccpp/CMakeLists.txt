@@ -1,7 +1,7 @@
 setup_project(jccpp)
 
 # 编译目标
-add_library(${ProjectName} STATIC)
+add_library(${ProjectName} SHARED)
 target_add_source_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
 add_and_install_include_dir_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/src/)

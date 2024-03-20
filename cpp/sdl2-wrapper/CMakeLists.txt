@@ -17,7 +17,7 @@ endfunction()
 # 定义生成规则
 if(1)
     # 生成静态库
-    add_library("${ProjectName}" STATIC)
+    add_library("${ProjectName}" SHARED)
     setup_target("${ProjectName}")
 endif()
 
