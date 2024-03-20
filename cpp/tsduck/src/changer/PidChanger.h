@@ -50,10 +50,9 @@ namespace video
 		void SendPacket(ts::TSPacket *packet) override;
 
 		/// <summary>
-		///		如果表解析已经完成，这里设置后不会生效，必须送进来新版本的 PAT 才能生效。
-		/// 
-		///		* 可以在每次送入新的 PMT 之前设置 pid_map，映射规则会对新送进来的
-		///		  PMT 中指示的流 PID 和 PCR PID 生效。
+		///		调用者可能需要边解析 ts 边设置映射规则。例如，解析完 PAT 后可以先设置
+		///		PMT PID 的映射规则。等到解析到 PMT 时才有办法设置 PCR PID 和各个流的映射规则。
+		///		所以这个函数提供了一个更改映射表的途径。
 		/// </summary>
 		/// <param name="pid_map"></param>
 		void SetPidMap(std::map<uint16_t, uint16_t> const &pid_map);
