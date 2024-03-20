@@ -14,10 +14,10 @@
 #pragma once
 #include "tsAbstractReadStreamInterface.h"
 #include "tsAbstractWriteStreamInterface.h"
+#include "tsEnumeration.h"
+#include "tsTSPacket.h"
 #include "tsTSPacketFormat.h"
 #include "tsTSPacketMetadata.h"
-#include "tsTSPacket.h"
-#include "tsEnumeration.h"
 
 namespace ts
 {
@@ -38,7 +38,11 @@ namespace ts
 		//! @param [in] reader Reader interface. If null, all read operations will fail.
 		//! @param [in] writer Writer interface. If null, all write operations will fail.
 		//!
-		TSPacketStream(TSPacketFormat format = TSPacketFormat::AUTODETECT, AbstractReadStreamInterface *reader = nullptr, AbstractWriteStreamInterface *writer = nullptr);
+		TSPacketStream(
+			TSPacketFormat format = TSPacketFormat::AUTODETECT,
+			AbstractReadStreamInterface *reader = nullptr,
+			AbstractWriteStreamInterface *writer = nullptr
+		);
 
 		//!
 		//! Destructor.

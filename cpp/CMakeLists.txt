@@ -9,7 +9,7 @@ endif()
 
 if(1)
 	# 安装时是否安装头文件
-	option(option_install_headers ON)
+	option(option_install_headers true)
 endif()
 
 
