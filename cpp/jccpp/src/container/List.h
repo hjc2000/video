@@ -1,7 +1,7 @@
 #pragma once
+#include<Exception.h>
 #include<IList.h>
-#include <stdexcept>
-#include <vector>
+#include<vector>
 
 template<typename T>
 class List :public IList<T>
@@ -46,7 +46,7 @@ public:
 	{
 		if (index<0 || index > _vector.size())
 		{
-			throw std::out_of_range("Index out of range");
+			throw jc::OutOfRangeException();
 		}
 
 		_vector.insert(_vector.begin() + index, item);
@@ -70,7 +70,7 @@ public:
 	{
 		if (index < 0 || index >= _vector.size())
 		{
-			throw std::out_of_range("Index out of range");
+			throw jc::OutOfRangeException();
 		}
 
 		_vector.erase(_vector.begin() + index);
@@ -111,7 +111,7 @@ public:
 	{
 		if (index < 0 || index >= _vector.size())
 		{
-			throw std::out_of_range("Index out of range");
+			throw jc::OutOfRangeException();
 		}
 
 		return _vector[index];

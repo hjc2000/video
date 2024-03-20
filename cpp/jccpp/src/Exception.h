@@ -97,14 +97,22 @@ namespace jc
 		ObjectDisposedException(std::string msg) :Exception(std::string(__func__) + " " + msg) {}
 	};
 
-	/**
-	 * @brief 缓冲区写入时发生上溢。
-	*/
+	/// <summary>
+	///		缓冲区写入时发生上溢。
+	/// </summary>
 	class BufferOverflowException :public Exception
 	{
 	public:
 		BufferOverflowException() :Exception(__func__) {}
 		BufferOverflowException(const char *msg) :Exception(std::string(__func__) + " " + msg) {}
 		BufferOverflowException(std::string msg) :Exception(std::string(__func__) + " " + msg) {}
+	};
+
+	class OutOfRangeException :public Exception
+	{
+	public:
+		OutOfRangeException() :Exception(__func__) {}
+		OutOfRangeException(const char *msg) :Exception(std::string(__func__) + " " + msg) {}
+		OutOfRangeException(std::string msg) :Exception(std::string(__func__) + " " + msg) {}
 	};
 }
