@@ -1,7 +1,7 @@
 #include<ITSPacketConsumer.h>
 #include<ITSPacketSource.h>
+#include<Queue.h>
 #include<functional>
-#include<vector>
 
 namespace video
 {
@@ -10,19 +10,13 @@ namespace video
 	public:
 		JoinedTsStream() {}
 
-		/// <summary>
-		///		从 ts_packet_sources 中取出 ITSPacketSource 对象，从中读取 ts 包。
-		///		一个 ITSPacketSource 对象的 ts 包读完了就取出下一个继续读取，直到
-		///		ts_packet_sources 耗尽。
-		/// </summary>
-		/// <param name="ts_packet_sources"></param>
-		JoinedTsStream(std::vector<shared_ptr<ITSPacketSource>> ts_packet_sources)
-		{
-			_ts_packet_sources = ts_packet_sources;
-		}
-
 	private:
-		std::vector<shared_ptr<ITSPacketSource>> _ts_packet_sources;
+		Queue<shared_ptr<ITSPacketSource>> _ts_packet_source_queue;
+
+		/// <summary>
+		///		当前正在被读取的 ITSPacketSource。
+		/// </summary>
+		shared_ptr<ITSPacketSource> _current_ts_packet_source;
 
 	public:
 		/// <summary>
@@ -34,7 +28,18 @@ namespace video
 		/// </summary>
 		std::function<void(void)> _on_ts_packet_source_list_exhausted;
 
-		// 通过 ITSPacketSource 继承
+		/// <summary>
+		///		从中读取包。来自不同 ITSPacketSource 的 ts 流会被拼接起来。
+		///		本类会自动处理切换 ts 时的表格版本号。
+		/// </summary>
+		/// <param name="packet"></param>
+		/// <returns></returns>
 		ITSPacketSource::ReadPacketResult ReadPacket(ts::TSPacket &packet) override;
+
+		/// <summary>
+		///		向队列添加一个 ITSPacketSource 对象。
+		/// </summary>
+		/// <param name="source"></param>
+		void AddSource(shared_ptr<ITSPacketSource> source);
 	};
 }

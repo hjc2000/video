@@ -120,6 +120,7 @@ shared_ptr<ITSPacketConsumer> video::AutoChangeIdProgramMux::GetNewInputPort()
 			_preset_service_id_map
 		}
 	};
+
 	auto_service_id_changer->AddTsPacketConsumer(auto_pid_changer);
 	return auto_service_id_changer;
 }
