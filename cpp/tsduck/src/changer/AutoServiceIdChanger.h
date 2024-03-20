@@ -1,5 +1,4 @@
 #pragma once
-#include<ServiceIdChanger.h>
 #include<ServiceIdProvider.h>
 #include<TableRepeater.h>
 #include<TableVersionChangeHandler.h>
@@ -26,6 +25,7 @@ namespace video
 		);
 
 	private:
+		class ServiceIdChanger;
 		shared_ptr<ServiceIdChanger> _service_id_changer;
 		shared_ptr<ServiceIdProvider> _service_id_provider;
 		std::map<uint16_t, uint16_t> _preset_service_id_map;
