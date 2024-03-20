@@ -2,8 +2,18 @@
 	"version": 3,
 	"configurePresets": [
 		{
+			"name": "options",
+			"hidden": true,
+			"cacheVariables": {
+				"option_install_headers": false
+			}
+		},
+
+
+		{
 			"name": "windows-base",
 			"hidden": true,
+			"inherits": "options",
 			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/out/build/${presetName}",
 			"installDir": "${sourceDir}/out/install/${presetName}",
@@ -65,6 +75,7 @@
 		{
 			"name": "linux-debug",
 			"displayName": "Linux Debug",
+			"inherits": "options",
 			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/out/build/${presetName}",
 			"installDir": "${sourceDir}/out/install/${presetName}",
@@ -88,6 +99,7 @@
 		{
 			"name": "linux-arm-debug",
 			"displayName": "Linux Arm Debug",
+			"inherits": "options",
 			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/out/build/${presetName}",
 			"installDir": "${sourceDir}/out/install/${presetName}",

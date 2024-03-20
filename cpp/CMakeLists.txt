@@ -7,6 +7,10 @@ if(1)
 	set(CMAKE_BUILD_PARALLEL_LEVEL 12)
 endif()
 
+if(1)
+	# 安装时是否安装头文件
+	option(option_install_headers ON)
+endif()
 
 
 # 导入我的 cmake 函数
@@ -17,11 +21,6 @@ if(1)
 	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/copy.cmake)
 	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/source_and_headers.cmake)
 	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/get-source-and-build.cmake)
-endif()
-
-if()
-	# 安装时是否安装头文件
-	option(INSTALL_HEADERS OFF)
 endif()
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)

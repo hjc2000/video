@@ -115,14 +115,14 @@ void receive_udp_message()
 	boost::asio::io_service io_service;
 
 	// 创建一个UDP socket来监听9999端口
-	//udp::socket socket(io_service, udp::endpoint(udp::v4(), 9999));
-	udp::socket socket{
-		io_service,
-		udp::endpoint{
-			boost::asio::ip::address::from_string("192.168.8.5"),
-			9999
-	}
-	};
+	udp::socket socket(io_service, udp::endpoint(udp::v4(), 9999));
+	//udp::socket socket{
+	//	io_service,
+	//	udp::endpoint{
+	//		boost::asio::ip::address::from_string("192.168.8.5"),
+	//		9999
+	//	}
+	//};
 
 	while (true)
 	{
