@@ -10,7 +10,7 @@ namespace video
 	///		将多节目的 ts 变成单节目的 ts。只保留其中一个节目，其它节目都将被过滤掉。
 	/// </summary>
 	class MptsToSpts :
-		public ITsPacketConsumer,
+		public ITSPacketConsumer,
 		public PipeTsPacketSource,
 		public TableHandler
 	{
@@ -35,7 +35,7 @@ namespace video
 		void HandleSDT(ts::BinaryTable const &table) override;
 
 	public:
-		using ITsPacketConsumer::SendPacket;
+		using ITSPacketConsumer::SendPacket;
 		void SendPacket(ts::TSPacket *packet) override;
 	};
 }

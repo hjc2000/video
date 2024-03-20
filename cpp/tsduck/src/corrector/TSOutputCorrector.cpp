@@ -8,12 +8,12 @@ video::TSOutputCorrector::TSOutputCorrector()
 	_repeater->AddTsPacketConsumer(_cccorrect);
 }
 
-void video::TSOutputCorrector::AddTsPacketConsumer(shared_ptr<ITsPacketConsumer> packet_comsumer)
+void video::TSOutputCorrector::AddTsPacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
 {
 	_cccorrect->AddTsPacketConsumer(packet_comsumer);
 }
 
-bool video::TSOutputCorrector::RemovePacketComsumer(shared_ptr<ITsPacketConsumer> packet_comsumer)
+bool video::TSOutputCorrector::RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
 {
 	return _cccorrect->RemovePacketComsumer(packet_comsumer);
 }

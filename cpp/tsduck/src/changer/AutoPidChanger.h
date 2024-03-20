@@ -8,7 +8,7 @@ namespace video
 {
 	class AutoPidChanger :
 		public TableVersionChangeHandler,
-		public ITsPacketConsumer,
+		public ITSPacketConsumer,
 		public PipeTsPacketSource
 	{
 	public:
@@ -34,8 +34,8 @@ namespace video
 
 		#pragma region PipeTsPacketSource
 	public:
-		virtual void AddTsPacketConsumer(shared_ptr<ITsPacketConsumer> packet_comsumer) override;
-		virtual bool RemovePacketComsumer(shared_ptr<ITsPacketConsumer> packet_comsumer) override;
+		virtual void AddTsPacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
+		virtual bool RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
 		virtual void ClearConsumers() override;
 		#pragma endregion
 

@@ -28,6 +28,6 @@ namespace video
 		/// </summary>
 		/// <param name="consumer"></param>
 		/// <returns></returns>
-		virtual ITSPacketSource::ReadPacketResult PumpTo(shared_ptr<ITsPacketConsumer> consumer);
+		virtual ITSPacketSource::ReadPacketResult PumpTo(shared_ptr<ITSPacketConsumer> consumer);
 	};
 }

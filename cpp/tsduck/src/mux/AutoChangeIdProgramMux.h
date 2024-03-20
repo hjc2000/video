@@ -45,11 +45,11 @@ namespace video
 		///		再次调用 GetNewInputPort 获取输入端口后，也只是让输出多了几个 PID 的流而已，无法从丢失的流继续。
 		/// </summary>
 		/// <returns></returns>
-		shared_ptr<ITsPacketConsumer> GetNewInputPort();
+		shared_ptr<ITSPacketConsumer> GetNewInputPort();
 
 		#pragma region 通过 IPipeTsPacketSource 继承
-		void AddTsPacketConsumer(shared_ptr<ITsPacketConsumer> packet_comsumer) override;
-		bool RemovePacketComsumer(shared_ptr<ITsPacketConsumer> packet_comsumer) override;
+		void AddTsPacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
+		bool RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
 		void ClearConsumers() override;
 		#pragma endregion
 	};

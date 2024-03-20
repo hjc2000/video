@@ -10,7 +10,7 @@ namespace video
 	/// </summary>
 	class TSOutputCorrector :
 		public IPipeTsPacketSource,
-		public ITsPacketConsumer
+		public ITSPacketConsumer
 	{
 	public:
 		TSOutputCorrector();
@@ -21,12 +21,12 @@ namespace video
 
 	public:
 		#pragma region 通过 IPipeTsPacketSource 继承
-		void AddTsPacketConsumer(shared_ptr<ITsPacketConsumer> packet_comsumer) override;
-		bool RemovePacketComsumer(shared_ptr<ITsPacketConsumer> packet_comsumer) override;
+		void AddTsPacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
+		bool RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
 		void ClearConsumers() override;
 		#pragma endregion
 
-		using ITsPacketConsumer::SendPacket;
+		using ITSPacketConsumer::SendPacket;
 		void SendPacket(ts::TSPacket *packet) override;
 	};
 }

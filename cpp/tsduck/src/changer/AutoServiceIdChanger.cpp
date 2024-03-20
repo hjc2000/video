@@ -8,7 +8,7 @@ using namespace std;
 /**************************************************************************************/
 
 class video::AutoServiceIdChanger::ServiceIdChanger :
-	public ITsPacketConsumer,
+	public ITSPacketConsumer,
 	public PipeTsPacketSource,
 	public TableVersionChangeHandler
 {
@@ -94,7 +94,7 @@ private:
 	}
 
 public:
-	using ITsPacketConsumer::SendPacket;
+	using ITSPacketConsumer::SendPacket;
 	void SendPacket(ts::TSPacket *packet) override
 	{
 		_demux->feedPacket(*packet);

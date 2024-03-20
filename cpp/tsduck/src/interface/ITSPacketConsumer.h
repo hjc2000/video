@@ -7,10 +7,10 @@ namespace video
 {
 	using std::shared_ptr;
 
-	class ITsPacketConsumer
+	class ITSPacketConsumer
 	{
 	public:
-		virtual ~ITsPacketConsumer() {}
+		virtual ~ITSPacketConsumer() {}
 
 	public:
 		virtual void SendPacket(ts::TSPacket *packet) = 0;

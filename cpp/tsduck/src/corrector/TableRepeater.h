@@ -10,7 +10,7 @@
 namespace video
 {
 	class TableRepeater :
-		public ITsPacketConsumer,
+		public ITSPacketConsumer,
 		public PipeTsPacketSource,
 		public TableVersionChangeHandler
 	{
@@ -32,7 +32,7 @@ namespace video
 		void SendTable();
 
 	public:
-		using ITsPacketConsumer::SendPacket;
+		using ITSPacketConsumer::SendPacket;
 		void SendPacket(ts::TSPacket *packet) override;
 
 		/// <summary>

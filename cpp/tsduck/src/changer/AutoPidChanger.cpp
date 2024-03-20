@@ -15,7 +15,7 @@ using namespace video;
 ///		  只专注于修改，不专注重复 PAT 和 PMT。
 /// </summary>
 class video::AutoPidChanger::PidChanger :
-	public ITsPacketConsumer,
+	public ITSPacketConsumer,
 	public PipeTsPacketSource,
 	public TableVersionChangeHandler
 {
@@ -105,7 +105,7 @@ private:
 	}
 
 public:
-	using ITsPacketConsumer::SendPacket;
+	using ITSPacketConsumer::SendPacket;
 	void SendPacket(ts::TSPacket *packet) override
 	{
 		_demux->feedPacket(*packet);
@@ -215,7 +215,7 @@ void video::AutoPidChanger::HandlePmtVersionChange(ts::PMT &pmt, uint16_t source
 }
 
 #pragma region PipeTsPacketSource
-void video::AutoPidChanger::AddTsPacketConsumer(shared_ptr<ITsPacketConsumer> packet_comsumer)
+void video::AutoPidChanger::AddTsPacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
 {
 	PipeTsPacketSource::AddTsPacketConsumer(packet_comsumer);
 	if (_pid_changer)
@@ -224,7 +224,7 @@ void video::AutoPidChanger::AddTsPacketConsumer(shared_ptr<ITsPacketConsumer> pa
 	}
 }
 
-bool video::AutoPidChanger::RemovePacketComsumer(shared_ptr<ITsPacketConsumer> packet_comsumer)
+bool video::AutoPidChanger::RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
 {
 	bool ret = false;
 	ret |= PipeTsPacketSource::RemovePacketComsumer(packet_comsumer);

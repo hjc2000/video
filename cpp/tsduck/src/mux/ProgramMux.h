@@ -9,7 +9,7 @@
 namespace video
 {
 	class ProgramMux :
-		public ITsPacketConsumer,
+		public ITSPacketConsumer,
 		public PipeTsPacketSource,
 		public TableHandler
 	{

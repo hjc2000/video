@@ -5,7 +5,7 @@ using namespace std;
 
 void video::PipeTsPacketSource::SendPacketToEachConsumer(ts::TSPacket *packet)
 {
-	for (shared_ptr<ITsPacketConsumer> &consumer : _consumer_list)
+	for (shared_ptr<ITSPacketConsumer> &consumer : _consumer_list)
 	{
 		consumer->SendPacket(packet);
 	}
@@ -27,7 +27,7 @@ void video::PipeTsPacketSource::SendPacketToEachConsumer(std::vector<std::vector
 	}
 }
 
-void video::PipeTsPacketSource::AddTsPacketConsumer(shared_ptr<ITsPacketConsumer> packet_comsumer)
+void video::PipeTsPacketSource::AddTsPacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
 {
 	if (!packet_comsumer)
 	{
@@ -38,7 +38,7 @@ void video::PipeTsPacketSource::AddTsPacketConsumer(shared_ptr<ITsPacketConsumer
 	_consumer_list.Add(packet_comsumer);
 }
 
-bool video::PipeTsPacketSource::RemovePacketComsumer(shared_ptr<ITsPacketConsumer> packet_comsumer)
+bool video::PipeTsPacketSource::RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
 {
 	if (!packet_comsumer)
 	{
@@ -50,7 +50,7 @@ bool video::PipeTsPacketSource::RemovePacketComsumer(shared_ptr<ITsPacketConsume
 
 void video::PipeTsPacketSource::AddTsPacketConsumerFromAnother(PipeTsPacketSource &another)
 {
-	for (shared_ptr<ITsPacketConsumer> &consumer : another._consumer_list)
+	for (shared_ptr<ITSPacketConsumer> &consumer : another._consumer_list)
 	{
 		AddTsPacketConsumer(consumer);
 	}

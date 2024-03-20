@@ -13,7 +13,7 @@ namespace video
 	using std::cout;
 	using std::endl;
 
-	class PatParser :public ITsPacketConsumer
+	class PatParser :public ITSPacketConsumer
 	{
 	public:
 		PatParser()
@@ -36,11 +36,11 @@ namespace video
 
 		shared_ptr<TSDumper> _packet_dumper{ new TSDumper{} };
 		shared_ptr<AutoChangeIdProgramMux> _auto_change_id_program_mux{ new AutoChangeIdProgramMux{} };
-		shared_ptr<ITsPacketConsumer> _input_port;
-		shared_ptr<ITsPacketConsumer> _input_port1;
+		shared_ptr<ITSPacketConsumer> _input_port;
+		shared_ptr<ITSPacketConsumer> _input_port1;
 
 	public:
-		using ITsPacketConsumer::SendPacket;
+		using ITSPacketConsumer::SendPacket;
 		void SendPacket(ts::TSPacket *packet) override
 		{
 			_input_port->SendPacket(packet);

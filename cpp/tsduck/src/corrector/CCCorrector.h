@@ -15,7 +15,7 @@ namespace video
 	///		
 	///		* 如果某个包有非连续指示，则会将本对象内部的计数器的值设置为该包的计数值。
 	/// </summary>
-	class CCCorrector :public ITsPacketConsumer, public PipeTsPacketSource
+	class CCCorrector :public ITSPacketConsumer, public PipeTsPacketSource
 	{
 	private:
 		/// <summary>
@@ -30,7 +30,7 @@ namespace video
 		void CorrectCC(ts::TSPacket &packet);
 
 	public:
-		using ITsPacketConsumer::SendPacket;
+		using ITSPacketConsumer::SendPacket;
 		void SendPacket(ts::TSPacket *packet) override;
 	};
 }

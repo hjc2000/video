@@ -10,7 +10,7 @@ namespace video
 	/// </summary>
 	class AutoServiceIdChanger :
 		public TableVersionChangeHandler,
-		public ITsPacketConsumer,
+		public ITSPacketConsumer,
 		public PipeTsPacketSource
 	{
 	public:

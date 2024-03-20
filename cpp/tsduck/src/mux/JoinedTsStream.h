@@ -5,7 +5,7 @@
 
 namespace video
 {
-	class JoinedTsStream
+	class JoinedTsStream :public ITSPacketSource
 	{
 	public:
 		JoinedTsStream() {}
@@ -33,5 +33,8 @@ namespace video
 		///		这会导致自引用，导致智能指针无法析构，从而导致内存泄漏。
 		/// </summary>
 		std::function<void(void)> _on_ts_packet_source_list_exhausted;
+
+		// 通过 ITSPacketSource 继承
+		ITSPacketSource::ReadPacketResult ReadPacket(ts::TSPacket &packet) override;
 	};
 }

@@ -8,7 +8,7 @@
 namespace video
 {
 	class TSDumper :
-		public ITsPacketConsumer,
+		public ITSPacketConsumer,
 		public TableHandler
 	{
 	public:
@@ -28,7 +28,7 @@ namespace video
 		}
 
 	public:
-		using ITsPacketConsumer::SendPacket;
+		using ITSPacketConsumer::SendPacket;
 		void SendPacket(ts::TSPacket *packet) override;
 
 		bool _dump_packet = true;

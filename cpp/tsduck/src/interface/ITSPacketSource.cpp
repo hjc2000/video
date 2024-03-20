@@ -2,7 +2,7 @@
 
 using namespace video;
 
-ITSPacketSource::ReadPacketResult ITSPacketSource::PumpTo(shared_ptr<ITsPacketConsumer> consumer)
+ITSPacketSource::ReadPacketResult ITSPacketSource::PumpTo(shared_ptr<ITSPacketConsumer> consumer)
 {
 	ts::TSPacket packet;
 	while (true)

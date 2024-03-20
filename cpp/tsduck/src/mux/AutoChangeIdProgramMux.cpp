@@ -12,7 +12,7 @@ video::AutoChangeIdProgramMux::AutoChangeIdProgramMux(
 	_preset_service_id_map = preset_service_id_map;
 }
 
-shared_ptr<ITsPacketConsumer> video::AutoChangeIdProgramMux::GetNewInputPort()
+shared_ptr<ITSPacketConsumer> video::AutoChangeIdProgramMux::GetNewInputPort()
 {
 	shared_ptr<AutoPidChanger> auto_pid_changer{ new AutoPidChanger{_pid_provider,_preset_pid_map} };
 	auto_pid_changer->AddTsPacketConsumer(_program_mux);
@@ -31,12 +31,12 @@ shared_ptr<ITsPacketConsumer> video::AutoChangeIdProgramMux::GetNewInputPort()
 	return auto_service_id_changer;
 }
 
-void video::AutoChangeIdProgramMux::AddTsPacketConsumer(shared_ptr<ITsPacketConsumer> packet_comsumer)
+void video::AutoChangeIdProgramMux::AddTsPacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
 {
 	_program_mux->AddTsPacketConsumer(packet_comsumer);
 }
 
-bool video::AutoChangeIdProgramMux::RemovePacketComsumer(shared_ptr<ITsPacketConsumer> packet_comsumer)
+bool video::AutoChangeIdProgramMux::RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
 {
 	return _program_mux->RemovePacketComsumer(packet_comsumer);
 }
