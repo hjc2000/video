@@ -41,6 +41,7 @@ private:
 		auto it = _pid_map.find(pmt.pcr_pid);
 		if (it != _pid_map.end())
 		{
+			// 如果映射表中找得到 PCR PID，将 PCR PID 改掉。
 			pmt.pcr_pid = it->second;
 		}
 
@@ -51,6 +52,7 @@ private:
 			auto it = pmt.streams.find(map_pair.first);
 			if (it != pmt.streams.end())
 			{
+				// 如果该 PMT 里有流的 PID 在映射表里找得到，删除该流。
 				pmt.streams.erase(it);
 			}
 		}
@@ -60,6 +62,8 @@ private:
 			auto it = backup_pmt.streams.find(map_pair.first);
 			if (it != backup_pmt.streams.end())
 			{
+				/* 如果先前备份的 PMT 中有流的 PID 在映射表中找得到，
+				将这个流用映射后的 PID 放入原来的 PMT 中。*/
 				pmt.streams[map_pair.second] = it->second;
 			}
 		}
