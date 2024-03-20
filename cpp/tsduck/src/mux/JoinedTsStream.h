@@ -1,6 +1,7 @@
 #include<ITSPacketConsumer.h>
 #include<ITSPacketSource.h>
 #include<Queue.h>
+#include<define.h>
 #include<functional>
 
 namespace video
@@ -26,7 +27,7 @@ namespace video
 		///		禁止将 lambda 表达式赋值给此字段，然后 lambda 表达式用值捕获指向本对象的智能指针。
 		///		这会导致自引用，导致智能指针无法析构，从而导致内存泄漏。
 		/// </summary>
-		std::function<void(void)> _on_ts_packet_source_list_exhausted;
+		std::function<void()> _on_ts_packet_source_list_exhausted;
 
 		/// <summary>
 		///		从中读取包。来自不同 ITSPacketSource 的 ts 流会被拼接起来。
