@@ -23,7 +23,7 @@ namespace video
 
 	private:
 		void handleTable(ts::SectionDemux &demux, ts::BinaryTable const &table) final override;
-		ts::PIDSet _listened_pid_set;
+		ts::PIDSet _default_listened_pid_set;
 
 	protected:
 		shared_ptr<ts::DuckContext> _duck;
@@ -33,9 +33,8 @@ namespace video
 		virtual void HandlePMT(ts::BinaryTable const &table) {}
 		virtual void HandleSDT(ts::BinaryTable const &table) {}
 
-	public:
 		/// <summary>
-		///		重置监听的 PID。
+		///		重置监听的 PID。重置后将会仅监听几个默认的 PID。
 		/// </summary>
 		void ResetListenedPids();
 
@@ -44,11 +43,5 @@ namespace video
 		/// </summary>
 		/// <param name="pat"></param>
 		void ListenOnPmtPids(ts::PAT const &pat);
-
-		/// <summary>
-		///		先重置监听的 PID，然后监听 pat 中指示的 PMT PID。
-		/// </summary>
-		/// <param name="pat"></param>
-		void ResetListenedPmtPids(ts::PAT const &pat);
 	};
 }

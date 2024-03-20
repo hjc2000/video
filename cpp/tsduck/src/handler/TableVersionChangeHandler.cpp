@@ -17,7 +17,8 @@ void video::TableVersionChangeHandler::HandlePAT(ts::BinaryTable const &table)
 	_sdt_version = -1;
 	_pmt_versions.clear();
 	_streams_pid_set.reset();
-	ResetListenedPmtPids(pat);
+	ResetListenedPids();
+	ListenOnPmtPids(pat);
 
 	if (_on_before_handling_pat_version_change)
 	{

@@ -36,7 +36,8 @@ void video::ProgramMux::UpdatePat()
 	_pat.version = _pat_version++;
 	SendPacketToEachConsumer(TableOperator::ToTsPacket(*_duck, _pat));
 	_streams_pid_set.reset();
-	ResetListenedPmtPids(_pat);
+	ResetListenedPids();
+	ListenOnPmtPids(_pat);
 	_demux->reset();
 }
 

@@ -11,9 +11,9 @@ video::TableHandler::TableHandler()
 			ts::PIDSet{}
 		}
 	};
-	_listened_pid_set[0] = 1;
-	_listened_pid_set[0x11] = 1;
-	_demux->setPIDFilter(_listened_pid_set);
+	_default_listened_pid_set[0] = 1;
+	_default_listened_pid_set[0x11] = 1;
+	_demux->setPIDFilter(_default_listened_pid_set);
 	_demux->setTableHandler(this);
 }
 
@@ -41,8 +41,8 @@ void video::TableHandler::handleTable(ts::SectionDemux &demux, ts::BinaryTable c
 
 void video::TableHandler::ResetListenedPids()
 {
-	// _listened_pid_set 在构造函数中被初始化，对需要的 PID 对应的位进行置位。
-	_demux->setPIDFilter(_listened_pid_set);
+	// _default_listened_pid_set 在构造函数中被初始化，对需要的 PID 对应的位进行置位。
+	_demux->setPIDFilter(_default_listened_pid_set);
 }
 
 void video::TableHandler::ListenOnPmtPids(ts::PAT const &pat)
@@ -51,10 +51,4 @@ void video::TableHandler::ListenOnPmtPids(ts::PAT const &pat)
 	{
 		_demux->addPID(pmt.second);
 	}
-}
-
-void video::TableHandler::ResetListenedPmtPids(ts::PAT const &pat)
-{
-	ResetListenedPids();
-	ListenOnPmtPids(pat);
 }
