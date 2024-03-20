@@ -11,7 +11,6 @@ endif()
 
 # 导入我的 cmake 函数
 if(1)
-	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/setup.cmake)
 	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/install.cmake)
 	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/collect.cmake)
 	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/link.cmake)

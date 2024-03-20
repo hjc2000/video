@@ -1,39 +1,39 @@
-﻿//#include<InfiniteVideoStream.h>
-//#include<test_tsduck.h>
-//
-//using namespace video;
+﻿#include<InfiniteVideoStream.h>
+#include<test_tsduck.h>
 
-//int main(void)
-//{
-//	try
-//	{
-//		std::filesystem::current_path(Predefine_ResourceDir);
-//		//test_ProgramEncoderMuxer();
-//		//test_AVPacketPlayer();
-//		test_tsduck();
-//		return 0;
-//	}
-//	catch (jc::Exception &e)
-//	{
-//		cout << e.what() << endl;
-//		throw;
-//	}
-//}
+using namespace video;
 
-#include<iostream>
-#include<test_boost_asio.h>
-#include<thread>
-
-int main()
+int main(void)
 {
 	try
 	{
-
+		std::filesystem::current_path(Predefine_ResourceDir);
+		//test_ProgramEncoderMuxer();
+		//test_AVPacketPlayer();
+		test_tsduck();
+		return 0;
 	}
-	catch (std::exception &e)
+	catch (jc::Exception &e)
 	{
-		std::cerr << "Exception: " << e.what() << "\n";
+		cout << e.what() << endl;
+		throw;
 	}
-
-	return 0;
 }
+
+//#include<iostream>
+//#include<test_boost_asio.h>
+//#include<thread>
+//
+//int main()
+//{
+//	try
+//	{
+//
+//	}
+//	catch (std::exception &e)
+//	{
+//		std::cerr << "Exception: " << e.what() << "\n";
+//	}
+//
+//	return 0;
+//}

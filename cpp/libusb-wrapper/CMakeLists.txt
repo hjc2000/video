@@ -1,4 +1,12 @@
-setup_project(libusb-wrapper)
+if(1)
+    cmake_minimum_required(VERSION 3.8)
+
+    set(ProjectName libusb-wrapper)
+    project(${ProjectName})
+
+    set(CMAKE_CXX_STANDARD 20)
+    set(CMAKE_C_STANDARD 17)
+endif()
 
 function(setup_target target_name)
     target_add_source_recurse(${target_name} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
@@ -13,7 +21,6 @@ endfunction()
 
 # 定义生成规则
 if(1)
-    # 生成静态库
     add_library("${ProjectName}" SHARED)
     setup_target("${ProjectName}")
 endif()
