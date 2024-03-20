@@ -20,12 +20,12 @@ void video::TableVersionChangeHandler::HandlePAT(ts::BinaryTable const &table)
 	ResetListenedPids();
 	ListenOnPmtPids(pat);
 
-	if (_on_before_handling_pat_version_change)
+	if (_on_before_handling_new_version_pat)
 	{
-		_on_before_handling_pat_version_change(_old_pat, pat);
+		_on_before_handling_new_version_pat(_current_pat, pat);
 	}
 
-	_old_pat = pat;
+	_current_pat = pat;
 	HandlePatVersionChange(pat);
 	_demux->reset();
 }

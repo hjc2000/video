@@ -20,7 +20,7 @@ namespace video
 		///		key=pmt_pid, value=pmt_version
 		/// </summary>
 		std::map<uint16_t, uint8_t> _pmt_versions;
-		ts::PAT _old_pat;
+		ts::PAT _current_pat;
 
 	private:
 		void HandlePAT(ts::BinaryTable const &table) final override;
@@ -41,9 +41,9 @@ namespace video
 		/// <summary>
 		///		版本发生变化后，在调用 HandlePatVersionChange 之前会触发此回调。
 		///		回调时会传入参数：
-		///			* old_pat：老版本的 PAT
-		///			* new_pat：新版本的 PAT
+		///			* current_pat：当前版本的 PAT。此时还未处理新的 PAT。
+		///			* new_pat：新版本的 PAT。此时还没被处理。
 		/// </summary>
-		std::function<void(ts::PAT const &old_pat, ts::PAT &new_pat)> _on_before_handling_pat_version_change;
+		std::function<void(ts::PAT const &current_pat, ts::PAT &new_pat)> _on_before_handling_new_version_pat;
 	};
 }

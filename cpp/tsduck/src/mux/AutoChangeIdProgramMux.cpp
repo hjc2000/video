@@ -16,7 +16,7 @@ shared_ptr<ITsPacketConsumer> video::AutoChangeIdProgramMux::GetNewInputPort()
 {
 	shared_ptr<AutoPidChanger> auto_pid_changer{ new AutoPidChanger{_pid_provider,_preset_pid_map} };
 	auto_pid_changer->AddTsPacketConsumer(_program_mux);
-	auto_pid_changer->_on_before_handling_pat_version_change = [&](ts::PAT const &old_pat, ts::PAT &new_pat)
+	auto_pid_changer->_on_before_handling_new_version_pat = [&](ts::PAT const &old_pat, ts::PAT &new_pat)
 	{
 		_program_mux->OnPatVersionChange(old_pat);
 	};
