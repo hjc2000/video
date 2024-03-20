@@ -37,7 +37,8 @@ namespace video
 		ITSPacketSource::ReadPacketResult ReadPacket(ts::TSPacket &packet) override;
 
 		/// <summary>
-		///		向队列添加一个 ITSPacketSource 对象。
+		///		向队列添加一个 ITSPacketSource 对象。不要在 _on_ts_packet_source_list_exhausted
+		///		回调以外的地方调用本方法，内部队列不是线程安全的，不能边退队边入队。
 		/// </summary>
 		/// <param name="source"></param>
 		void AddSource(shared_ptr<ITSPacketSource> source);
