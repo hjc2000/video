@@ -1,16 +1,16 @@
 #pragma once
-#include<OutputFormat.h>
+#include<OutputFormatBase.h>
 #include<AVIOContextWrapper.h>
 
 namespace video
 {
-	class CustomOutputFormatContext :public OutputFormat
+	class CustomOutputFormatContext :public OutputFormatBase
 	{
 	public:
 		/// <summary>
-		///		url 这里的 url 不是用来创建文件的，而是让 ffmpeg 根据后缀名分析封装格式的。
+		///		
 		/// </summary>
-		/// <param name="url"></param>
+		/// <param name="url">这里的 url 不是用来创建文件的，而是让 ffmpeg 根据后缀名分析封装格式的。</param>
 		/// <param name="io_context"></param>
 		CustomOutputFormatContext(char const *url, shared_ptr<AVIOContextWrapper> io_context);
 

@@ -5,7 +5,7 @@ using namespace video;
 EncoderPipe::EncoderPipe(
 	char const *codec_name,
 	IVideoStreamInfoCollection &in_stream_infos,
-	shared_ptr<OutputFormat> output_format,
+	shared_ptr<OutputFormatBase> output_format,
 	int64_t out_bit_rate_in_bps
 )
 {
@@ -41,7 +41,7 @@ EncoderPipe::EncoderPipe(
 EncoderPipe::EncoderPipe(
 	char const *codec_name,
 	IAudioStreamInfoCollection &in_stream_infos,
-	shared_ptr<OutputFormat> output_format
+	shared_ptr<OutputFormatBase> output_format
 )
 {
 	_output_format = output_format;

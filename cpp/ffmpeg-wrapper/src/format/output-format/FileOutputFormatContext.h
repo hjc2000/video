@@ -1,5 +1,5 @@
 #pragma once
-#include<OutputFormat.h>
+#include<OutputFormatBase.h>
 #include<functional>
 #include<include_ffmpeg.h>
 #include<iostream>
@@ -15,7 +15,7 @@ namespace video
 	/**
 	 * @brief 将封装写入文件。
 	*/
-	class FileOutputFormatContext :public OutputFormat
+	class FileOutputFormatContext :public OutputFormatBase
 	{
 	public:
 		FileOutputFormatContext(const char *url);

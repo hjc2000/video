@@ -5,16 +5,13 @@ using namespace video;
 video::CustomOutputFormatContext::CustomOutputFormatContext(
 	char const *url,
 	shared_ptr<AVIOContextWrapper> io_context
-) :
-	_io_context(io_context)
+)
 {
+	_io_context = io_context;
 	int ret = avformat_alloc_output_context2(&_wrapped_obj, nullptr, nullptr, url);
 	if (ret < 0)
 	{
-		std::cerr << "FileOutputFormatContext 构造函数发生错误，错误代码："
-			<< ToString((ErrorCode)ret)
-			<< std::endl;
-
+		std::cerr << CODE_POS_STR << ToString((ErrorCode)ret) << std::endl;
 		throw jc::Exception();
 	}
 

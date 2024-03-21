@@ -12,16 +12,16 @@
 
 namespace video
 {
-	/**
-	 * @brief 输出格式。
-	 * 本类的 _wrapped_obj 没有初始化，需要派生类继承后进行初始化。
-	*/
-	class OutputFormat :
+	/// <summary>
+	///		输出格式的基类。
+	///		本类的 _wrapped_obj 没有初始化，需要派生类继承后进行初始化。
+	/// </summary>
+	class OutputFormatBase :
 		public Wrapper<AVFormatContext>,
 		public IPacketConsumer
 	{
 	public:
-		virtual ~OutputFormat() {}
+		virtual ~OutputFormatBase() {}
 
 	private:
 		std::mutex _not_private_methods_lock;
@@ -40,30 +40,13 @@ namespace video
 		/// </summary>
 		std::function<void()> _on_all_stream_flushed_async;
 
-		/**
-		 * @brief 以官方格式打印流信息
-		*/
-		void DumpFormat(char const *url = "")
-		{
-			std::lock_guard l(_not_private_methods_lock);
-			cout << endl;
-			cout << "------------------------------------------------------------" << endl;
-			cout << "▼ 格式信息" << endl;
-			cout << "------------------------------------------------------------" << endl;
-			av_dump_format(_wrapped_obj, 0, url, true);
-			cout << "------------------------------------------------------------" << endl;
-			cout << endl;
-		}
+		void DumpFormat(char const *url = "");
 
-		/**
-		 * @brief 此输出格式需要设置全局头部
-		 * @return
-		*/
-		bool NeedGlobalHeader()
-		{
-			std::lock_guard l(_not_private_methods_lock);
-			return _wrapped_obj->oformat->flags & AVFMT_GLOBALHEADER;
-		}
+		/// <summary>
+		///		检查此输出格式是否需要设置全局头部。
+		/// </summary>
+		/// <returns></returns>
+		bool NeedGlobalHeader();
 
 		/**
 		 * @brief 对 av_interleaved_write_frame 的封装。以交织的方式向格式写入一个包。

@@ -8,7 +8,7 @@ namespace video
 	{
 	public:
 		MpegtsAudioStreamEncodeMuxPipe(
-			shared_ptr<OutputFormat> out_fmt_ctx,
+			shared_ptr<OutputFormatBase> out_fmt_ctx,
 			AVProgramWrapper program,
 			IAudioStreamInfoCollection &out_stream_infos,
 			std::string codec_name,
@@ -42,7 +42,7 @@ namespace video
 		}
 
 	private:
-		shared_ptr<OutputFormat> _out_fmt_ctx;
+		shared_ptr<OutputFormatBase> _out_fmt_ctx;
 		AVProgramWrapper _program{};
 		AudioStreamInfoCollection _stream_infos;
 		std::string _codec_name;
