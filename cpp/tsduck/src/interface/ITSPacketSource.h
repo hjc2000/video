@@ -14,7 +14,12 @@ namespace video
 			/// <summary>
 			///		没有更多包可以读了。
 			/// </summary>
-			NoMorePacket
+			NoMorePacket,
+
+			/// <summary>
+			///		需要更多的输入数据才能继续读出包。
+			/// </summary>
+			NeedMoreInput,
 		};
 
 	public:
@@ -24,7 +29,8 @@ namespace video
 		virtual ITSPacketSource::ReadPacketResult ReadPacket(ts::TSPacket &packet) = 0;
 
 		/// <summary>
-		///		将本对象的包泵送给 consumer
+		///		在循环中从本对象的 ReadPacket 方法读出包送给 consumer。
+		///		遇到非 ReadPacketResult::Success 的情况会返回该 ReadPacketResult 类型的值。
 		/// </summary>
 		/// <param name="consumer"></param>
 		/// <returns></returns>

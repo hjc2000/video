@@ -3,6 +3,34 @@
 using namespace video;
 using namespace std;
 
+#pragma region 内部类
+class JoinedTsStream::TableVersionChanger :
+	public ITSPacketConsumer,
+	public ITSPacketSource,
+	public TableHandler
+{
+private:
+	Queue<ts::TSPacket> _packet_queue;
+
+public:
+	// 通过 ITSPacketConsumer 继承
+	void SendPacket(ts::TSPacket *packet) override
+	{
+
+	}
+
+	// 通过 ITSPacketSource 继承
+	ITSPacketSource::ReadPacketResult ReadPacket(ts::TSPacket &packet) override
+	{
+		if (_packet_queue.Count() == 0)
+		{
+
+		}
+	}
+};
+#pragma endregion
+
+
 ITSPacketSource::ReadPacketResult video::JoinedTsStream::ReadPacket(ts::TSPacket &packet)
 {
 	/*

@@ -2,6 +2,7 @@
 #include<ITSPacketConsumer.h>
 #include<ITSPacketSource.h>
 #include<Queue.h>
+#include<TableHandler.h>
 #include<define.h>
 #include<functional>
 
@@ -9,9 +10,6 @@ namespace video
 {
 	class JoinedTsStream :public ITSPacketSource
 	{
-	public:
-		JoinedTsStream() {}
-
 	private:
 		Queue<shared_ptr<ITSPacketSource>> _ts_packet_source_queue;
 
@@ -19,6 +17,9 @@ namespace video
 		///		当前正在被读取的 ITSPacketSource。
 		/// </summary>
 		shared_ptr<ITSPacketSource> _current_ts_packet_source;
+
+		class TableVersionChanger;
+		shared_ptr<TableVersionChanger> _table_version_changer;
 
 	public:
 		/// <summary>
