@@ -15,12 +15,12 @@ namespace video
 	///		输出格式的基类。
 	///		本类的 _wrapped_obj 没有初始化，需要派生类继承后进行初始化。
 	/// </summary>
-	class OutputFormatBase :
+	class OutputFormat :
 		public Wrapper<AVFormatContext>,
 		public IPacketConsumer
 	{
 	public:
-		virtual ~OutputFormatBase() {}
+		virtual ~OutputFormat() {}
 
 	private:
 		std::mutex _not_private_methods_lock;

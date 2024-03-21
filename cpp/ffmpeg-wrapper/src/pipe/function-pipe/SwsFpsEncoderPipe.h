@@ -1,7 +1,7 @@
 #pragma once
 #include<EncoderPipe.h>
 #include<FpsAdjustPipe.h>
-#include<OutputFormatBase.h>
+#include<OutputFormat.h>
 #include<SwsPipe.h>
 #include<VideoStreamInfoCollection.h>
 
@@ -14,7 +14,7 @@ namespace video
 		SwsFpsEncoderPipe(
 			char const *codec_name,
 			IVideoStreamInfoCollection &desire_out_video_stream_infos,
-			shared_ptr<OutputFormatBase> out_fmt_ctx,
+			shared_ptr<OutputFormat> out_fmt_ctx,
 			int64_t video_bitrate
 		)
 		{

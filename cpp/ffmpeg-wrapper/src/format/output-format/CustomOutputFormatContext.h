@@ -1,10 +1,10 @@
 #pragma once
-#include<OutputFormatBase.h>
+#include<OutputFormat.h>
 #include<AVIOContextWrapper.h>
 
 namespace video
 {
-	class CustomOutputFormatContext :public OutputFormatBase
+	class CustomOutputFormatContext :public OutputFormat
 	{
 	public:
 		/// <summary>

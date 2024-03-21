@@ -24,7 +24,9 @@ namespace video
 		bool _loop = false;
 		int _format_index = 0;
 		shared_ptr<InfiniteBestStreamDemuxDecoder> _best_stream_demux_decoder;
-		shared_ptr<jc::BlockingCircleBufferMemoryStream> _buffer_memory_stream{ new jc::BlockingCircleBufferMemoryStream{1024 * 64} };
+		shared_ptr<jc::BlockingCircleBufferMemoryStream> _buffer_memory_stream{
+			new jc::BlockingCircleBufferMemoryStream{1024 * 64}
+		};
 
 		void Init();
 		shared_ptr<InputFormatContext> OnGetFormatCallback();

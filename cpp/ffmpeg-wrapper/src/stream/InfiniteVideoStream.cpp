@@ -38,8 +38,19 @@ void video::InfiniteVideoStream::Init()
 	};
 
 	// 节目编码、封装管道
-	shared_ptr<AVIOContextWrapper> out_io_ctx{ new AVIOContextWrapper{true, _buffer_memory_stream} };
-	shared_ptr<CustomOutputFormatContext> out_fmt_ctx{ new CustomOutputFormatContext{"mux_out.ts", out_io_ctx} };
+	shared_ptr<AVIOContextWrapper> out_io_ctx{
+		new AVIOContextWrapper{
+			true,
+			_buffer_memory_stream
+		}
+	};
+
+	shared_ptr<CustomOutputFormatContext> out_fmt_ctx{
+		new CustomOutputFormatContext{
+			"mux_out.ts",
+			out_io_ctx
+		}
+	};
 	out_fmt_ctx->_on_all_stream_flushed_async = [&]()
 	{
 		Close();

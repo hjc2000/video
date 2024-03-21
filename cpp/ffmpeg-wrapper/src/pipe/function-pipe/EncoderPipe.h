@@ -6,15 +6,15 @@
 #include<IFrameConsumer.h>
 #include<IPacketSource.h>
 #include<IVideoStreamInfoCollection.h>
-#include<OutputFormatBase.h>
+#include<OutputFormat.h>
 #include<VideoStreamInfoCollection.h>
 #include<atomic>
 
 namespace video
 {
 	/// <summary>
-	///		* 连接向 OutputFormatBase 的编码管道。构造本类对象，在构造函数中传入 OutputFormatBase 对象，
-	///		  会在那个 OutputFormatBase 中创建新的流并与本 EncoderPipe 对象绑定。
+	///		* 连接向 OutputFormat 的编码管道。构造本类对象，在构造函数中传入 OutputFormat 对象，
+	///		  会在那个 OutputFormat 中创建新的流并与本 EncoderPipe 对象绑定。
 	/// 
 	///		* 向本对象送入帧后会编码，然后写入 OutputFormat。
 	/// </summary>
@@ -31,7 +31,7 @@ namespace video
 		EncoderPipe(
 			char const *codec_name,
 			IVideoStreamInfoCollection &in_stream_infos,
-			shared_ptr<OutputFormatBase> output_format,
+			shared_ptr<OutputFormat> output_format,
 			int64_t out_bit_rate_in_bps = -1
 		);
 
@@ -44,13 +44,13 @@ namespace video
 		EncoderPipe(
 			char const *codec_name,
 			IAudioStreamInfoCollection &in_stream_infos,
-			shared_ptr<OutputFormatBase> output_format
+			shared_ptr<OutputFormat> output_format
 		);
 
 	private:
 		shared_ptr<AVCodecContextWrapper> _encoder_ctx;
 		AVStreamWrapper _new_stream;
-		shared_ptr<OutputFormatBase> _output_format;
+		shared_ptr<OutputFormat> _output_format;
 
 		/// <summary>
 		///		读取包并写入封装

@@ -23,7 +23,7 @@ namespace video
 	///		节目的编码，封装器。
 	/// 
 	///		* 这里的节目指的是 mpegts 的节目。每一个本类对象都要绑定一个节目。
-	///		* 构造本类需要绑定一个 OutputFormatBase 和一个 AVProgramWrapper。其中，OutputFormat 肯定是
+	///		* 构造本类需要绑定一个 OutputFormat 和一个 AVProgramWrapper。其中，OutputFormat 肯定是
 	///		  用户在构造函数中传进来的，至于 AVProgramWrapper，可以是用户创建好后传进来，让本类对象与之绑定，
 	///		  也可以不在构造函数中传进来，这是本类对象就会自己创建一个节目来绑定。
 	/// </summary>
@@ -34,7 +34,7 @@ namespace video
 		///		会在 out_fmt_ctx 中创建节目，然后对 out_fmt_ctx 和这个节目进行操作。
 		/// </summary>
 		/// <param name="out_fmt_ctx"></param>
-		ProgramEncoderMuxer(shared_ptr<OutputFormatBase> out_fmt_ctx)
+		ProgramEncoderMuxer(shared_ptr<OutputFormat> out_fmt_ctx)
 		{
 			_out_fmt_ctx = out_fmt_ctx;
 			_program = _out_fmt_ctx->CreateNewProgram();
@@ -47,14 +47,14 @@ namespace video
 		/// </summary>
 		/// <param name="out_fmt_ctx"></param>
 		/// <param name="program"></param>
-		ProgramEncoderMuxer(shared_ptr<OutputFormatBase> out_fmt_ctx, AVProgramWrapper &program)
+		ProgramEncoderMuxer(shared_ptr<OutputFormat> out_fmt_ctx, AVProgramWrapper &program)
 		{
 			_out_fmt_ctx = out_fmt_ctx;
 			_program = program;
 		}
 
 	private:
-		shared_ptr<OutputFormatBase> _out_fmt_ctx;
+		shared_ptr<OutputFormat> _out_fmt_ctx;
 		AVProgramWrapper _program{};
 
 	public:

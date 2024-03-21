@@ -1,9 +1,9 @@
-#include "OutputFormatBase.h"
+#include "OutputFormat.h"
 #include<ErrorCode.h>
 
 using namespace video;
 
-void video::OutputFormatBase::SendPacket(AVPacketWrapper *packet)
+void video::OutputFormat::SendPacket(AVPacketWrapper *packet)
 {
 	std::lock_guard l(_not_private_methods_lock);
 	if (!packet)
@@ -32,7 +32,7 @@ void video::OutputFormatBase::SendPacket(AVPacketWrapper *packet)
 	}
 }
 
-void video::OutputFormatBase::WriteHeader(AVDictionary **dic)
+void video::OutputFormat::WriteHeader(AVDictionary **dic)
 {
 	std::lock_guard l(_not_private_methods_lock);
 	int ret = ::avformat_write_header(_wrapped_obj, dic);
@@ -43,7 +43,7 @@ void video::OutputFormatBase::WriteHeader(AVDictionary **dic)
 	}
 }
 
-void video::OutputFormatBase::WriteTrailer()
+void video::OutputFormat::WriteTrailer()
 {
 	int ret = ::av_write_trailer(_wrapped_obj);
 	if (ret < 0)
@@ -53,13 +53,13 @@ void video::OutputFormatBase::WriteTrailer()
 	}
 }
 
-bool video::OutputFormatBase::NeedGlobalHeader()
+bool video::OutputFormat::NeedGlobalHeader()
 {
 	std::lock_guard l(_not_private_methods_lock);
 	return _wrapped_obj->oformat->flags & AVFMT_GLOBALHEADER;
 }
 
-void video::OutputFormatBase::DumpFormat(char const *url)
+void video::OutputFormat::DumpFormat(char const *url)
 {
 	std::lock_guard l(_not_private_methods_lock);
 	cout << endl;
@@ -71,7 +71,7 @@ void video::OutputFormatBase::DumpFormat(char const *url)
 	cout << endl;
 }
 
-AVStreamWrapper video::OutputFormatBase::CreateNewStream()
+AVStreamWrapper video::OutputFormat::CreateNewStream()
 {
 	std::lock_guard l(_not_private_methods_lock);
 	::AVStream *ps = avformat_new_stream(_wrapped_obj, nullptr);
@@ -84,7 +84,7 @@ AVStreamWrapper video::OutputFormatBase::CreateNewStream()
 	return AVStreamWrapper(ps);
 }
 
-AVStreamWrapper video::OutputFormatBase::CreateNewStream(shared_ptr<AVCodecContextWrapper> codec_ctx)
+AVStreamWrapper video::OutputFormat::CreateNewStream(shared_ptr<AVCodecContextWrapper> codec_ctx)
 {
 	std::lock_guard l(_not_private_methods_lock);
 	AVStream *ps = avformat_new_stream(_wrapped_obj, nullptr);
@@ -107,7 +107,7 @@ AVStreamWrapper video::OutputFormatBase::CreateNewStream(shared_ptr<AVCodecConte
 	return stream;
 }
 
-AVProgramWrapper video::OutputFormatBase::CreateNewProgram()
+AVProgramWrapper video::OutputFormat::CreateNewProgram()
 {
 	std::lock_guard l(_not_private_methods_lock);
 	/* 节目 ID，用来标识一个节目。
@@ -118,7 +118,7 @@ AVProgramWrapper video::OutputFormatBase::CreateNewProgram()
 	return AVProgramWrapper{ av_new_program(_wrapped_obj, program_id) };
 }
 
-void video::OutputFormatBase::AddStreamToProgram(int program_id, int stream_index)
+void video::OutputFormat::AddStreamToProgram(int program_id, int stream_index)
 {
 	std::lock_guard l(_not_private_methods_lock);
 	av_program_add_stream_index(_wrapped_obj, program_id, stream_index);

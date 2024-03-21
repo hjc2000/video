@@ -8,7 +8,7 @@ void video::SwrEncoderPipe::SendFrame(AVFrameWrapper *frame)
 video::SwrEncoderPipe::SwrEncoderPipe(
 	char const *codec_name,
 	IAudioStreamInfoCollection &desire_encode_out_stream_infos,
-	shared_ptr<OutputFormatBase> output_format
+	shared_ptr<OutputFormat> output_format
 )
 {
 	AudioFrameInfoCollection swr_out_frame_infos{

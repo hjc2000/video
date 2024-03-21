@@ -1,7 +1,7 @@
 #pragma once
 #include<FpsAdjustPipe.h>
 #include<IFrameConsumer.h>
-#include<OutputFormatBase.h>
+#include<OutputFormat.h>
 #include<SwsFpsEncoderPipe.h>
 #include<VideoStreamInfoCollection.h>
 
@@ -24,7 +24,7 @@ namespace video
 		/// <param name="out_bittare">传入小于等于 0 的数表示使用默认值。</param>
 		/// <param name="pid">传入小于等于 0 的数表示使用默认值。</param>
 		MpegtsVideoStreamEncodeMuxPipe(
-			shared_ptr<OutputFormatBase> out_fmt_ctx,
+			shared_ptr<OutputFormat> out_fmt_ctx,
 			AVProgramWrapper program,
 			IVideoStreamInfoCollection &out_stream_infos,
 			std::string codec_name,
@@ -45,7 +45,7 @@ namespace video
 		}
 
 	private:
-		shared_ptr<OutputFormatBase> _out_fmt_ctx;
+		shared_ptr<OutputFormat> _out_fmt_ctx;
 		AVProgramWrapper _program{};
 		shared_ptr<SwsFpsEncoderPipe> _encode_pipe;
 		VideoStreamInfoCollection _out_stream_infos{};
