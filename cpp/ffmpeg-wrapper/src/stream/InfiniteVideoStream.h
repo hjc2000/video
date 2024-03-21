@@ -23,7 +23,7 @@ namespace video
 		List<std::string> _format_list;
 		bool _loop = false;
 		int _format_index = 0;
-		shared_ptr<InfiniteBestStreamDemuxDecoder> _best_stream_demux_decoder;
+		shared_ptr<InfiniteBestStreamDemuxDecoder_old> _best_stream_demux_decoder;
 		shared_ptr<jc::BlockingCircleBufferMemoryStream> _buffer_memory_stream{
 			new jc::BlockingCircleBufferMemoryStream{1024 * 64}
 		};

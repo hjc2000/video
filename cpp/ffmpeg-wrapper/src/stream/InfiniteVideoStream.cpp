@@ -31,8 +31,8 @@ void video::InfiniteVideoStream::Init()
 		return OnGetFormatCallback();
 	};
 
-	_best_stream_demux_decoder = shared_ptr<InfiniteBestStreamDemuxDecoder>{
-		new InfiniteBestStreamDemuxDecoder{
+	_best_stream_demux_decoder = shared_ptr<InfiniteBestStreamDemuxDecoder_old>{
+		new InfiniteBestStreamDemuxDecoder_old{
 			get_format_callback
 		}
 	};

@@ -2,7 +2,7 @@
 
 using namespace video;
 
-video::InfiniteBestStreamDemuxDecoder::InfiniteBestStreamDemuxDecoder(
+video::InfiniteBestStreamDemuxDecoder_old::InfiniteBestStreamDemuxDecoder_old(
 	std::function<shared_ptr<InputFormatContext>()> get_format_callback
 )
 {
@@ -14,7 +14,7 @@ video::InfiniteBestStreamDemuxDecoder::InfiniteBestStreamDemuxDecoder(
 	}
 }
 
-bool video::InfiniteBestStreamDemuxDecoder::OpenInput()
+bool video::InfiniteBestStreamDemuxDecoder_old::OpenInput()
 {
 	try
 	{
@@ -74,7 +74,7 @@ bool video::InfiniteBestStreamDemuxDecoder::OpenInput()
 	return true;
 }
 
-void video::InfiniteBestStreamDemuxDecoder::StartPump()
+void video::InfiniteBestStreamDemuxDecoder_old::StartPump()
 {
 	if (_pump_started) return;
 	_pump_started = true;
@@ -136,12 +136,12 @@ void video::InfiniteBestStreamDemuxDecoder::StartPump()
 	}).detach();
 }
 
-List<AVStreamInfoCollection> &video::InfiniteBestStreamDemuxDecoder::StreamList()
+List<AVStreamInfoCollection> &video::InfiniteBestStreamDemuxDecoder_old::StreamList()
 {
 	return _program_decoder->StreamList();
 }
 
-shared_ptr<IPipeFrameSource> video::InfiniteBestStreamDemuxDecoder::GetPipeFrameSourceByStreamIndex(int stream_index)
+shared_ptr<IPipeFrameSource> video::InfiniteBestStreamDemuxDecoder_old::GetPipeFrameSourceByStreamIndex(int stream_index)
 {
 	return _program_decoder->GetPipeFrameSourceByStreamIndex(stream_index);
 }

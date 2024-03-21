@@ -152,14 +152,13 @@ void video::test_ProgramEncoderMuxer()
 		return in_fmt_ctx;
 	};
 
-	shared_ptr<InfiniteBestStreamDemuxDecoder> best_stream_demux_decoder{
-		new InfiniteBestStreamDemuxDecoder{get_format_callback}
+	shared_ptr<InfiniteBestStreamDemuxDecoder_old> best_stream_demux_decoder{
+		new InfiniteBestStreamDemuxDecoder_old{get_format_callback}
 	};
 
 	// 节目编码、封装管道
 	shared_ptr<Stream> out_fs = FileStream::CreateNewAnyway("mux_out.ts");
 	shared_ptr<AVIOContextWrapper> out_io_ctx{ new AVIOContextWrapper{true, out_fs} };
-
 	shared_ptr<CustomOutputFormatContext> out_fmt_ctx{
 		new CustomOutputFormatContext{"mux_out.ts", out_io_ctx}
 	};

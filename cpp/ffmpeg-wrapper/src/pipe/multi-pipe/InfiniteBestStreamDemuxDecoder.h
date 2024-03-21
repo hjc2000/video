@@ -11,11 +11,27 @@
 
 namespace video
 {
+	class InfiniteBestStreamDemuxDecoder :
+		public IDisposable
+	{
+	public:
+		void Dispose() override
+		{
+
+		}
+
+	private:
+		
+
+	public:
+		std::function<shared_ptr<InputFormatContext>()> _get_format_callback;
+	};
+
 	/// <summary>
 	///		无限长的解封装、解码器。会在一个输入封装读取完后重新获取下一个封装。
 	///		* 第二个及以后的封装的流参数必须与第一个封装一样。
 	/// </summary>
-	class InfiniteBestStreamDemuxDecoder :
+	class InfiniteBestStreamDemuxDecoder_old :
 		public IDisposable,
 		public IMultiStreamPipeFrameSource
 	{
@@ -24,11 +40,11 @@ namespace video
 		///		构造函数中就会调用 get_format_callback 来获取第一个输入格式。
 		/// </summary>
 		/// <param name="get_format_callback">此回调函数返回空指针会结束流。</param>
-		InfiniteBestStreamDemuxDecoder(
+		InfiniteBestStreamDemuxDecoder_old(
 			std::function<shared_ptr<InputFormatContext>()> get_format_callback
 		);
 
-		~InfiniteBestStreamDemuxDecoder()
+		~InfiniteBestStreamDemuxDecoder_old()
 		{
 			Dispose();
 		}
