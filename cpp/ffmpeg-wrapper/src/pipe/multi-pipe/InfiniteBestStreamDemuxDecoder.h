@@ -24,7 +24,9 @@ namespace video
 		///		构造函数中就会调用 get_format_callback 来获取第一个输入格式。
 		/// </summary>
 		/// <param name="get_format_callback">此回调函数返回空指针会结束流。</param>
-		InfiniteBestStreamDemuxDecoder(std::function<shared_ptr<InputFormatContext>()> get_format_callback);
+		InfiniteBestStreamDemuxDecoder(
+			std::function<shared_ptr<InputFormatContext>()> get_format_callback
+		);
 
 		~InfiniteBestStreamDemuxDecoder()
 		{
