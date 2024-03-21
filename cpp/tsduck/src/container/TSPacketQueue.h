@@ -12,6 +12,7 @@ namespace video
 		bool _flushed = false;
 
 	public:
+		using ITSPacketConsumer::SendPacket;
 		/// <summary>
 		///		送入包。
 		///		送入空指针冲洗内部队列。冲洗后继续送入包会抛出 InvalidOperationException。

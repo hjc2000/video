@@ -1,4 +1,5 @@
 #include"JoinedTsStream.h"
+#include<TableOperator.h>
 
 using namespace video;
 using namespace std;
@@ -10,22 +11,67 @@ class JoinedTsStream::TableVersionChanger :
 	public TableHandler
 {
 private:
-	Queue<ts::TSPacket> _packet_queue;
+	TSPacketQueue _ts_packet_queue;
+
+	uint8_t _pat_version = 0;
+	uint8_t _sdt_version = 0;
 
 public:
-	// 通过 ITSPacketConsumer 继承
-	void SendPacket(ts::TSPacket *packet) override
+	void HandlePAT(ts::BinaryTable const &table) override
 	{
-
+		ts::PAT pat;
+		pat.deserialize(*_duck, table);
+		pat.version = _pat_version;
+		_ts_packet_queue.SendPacket(TableOperator::ToTsPacket(*_duck, pat));
+		_demux->reset();
 	}
 
-	// 通过 ITSPacketSource 继承
+	void HandleSDT(ts::BinaryTable const &table) override
+	{
+		ts::SDT sdt;
+		sdt.deserialize(*_duck, table);
+		sdt.version = _sdt_version;
+		_ts_packet_queue.SendPacket(TableOperator::ToTsPacket(*_duck, sdt));
+		_demux->reset();
+	}
+
+	void SendPacket(ts::TSPacket *packet) override
+	{
+		if (packet == nullptr)
+		{
+			// 冲洗内部队列
+			_ts_packet_queue.SendPacket(packet);
+			return;
+		}
+
+		_demux->feedPacket(*packet);
+		switch (packet->getPID())
+		{
+		case 0:
+			{
+				break;
+			}
+		case 0x11:
+			{
+				break;
+			}
+		default:
+			{
+				_ts_packet_queue.SendPacket(packet);
+				break;
+			}
+		}
+	}
+
 	ITSPacketSource::ReadPacketResult ReadPacket(ts::TSPacket &packet) override
 	{
-		if (_packet_queue.Count() == 0)
-		{
+		return _ts_packet_queue.ReadPacket(packet);
+	}
 
-		}
+	void IncreaseVersion()
+	{
+		_pat_version++;
+		_sdt_version++;
 	}
 };
 #pragma endregion
