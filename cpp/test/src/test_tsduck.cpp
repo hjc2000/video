@@ -13,6 +13,7 @@ void test_tsduck()
 {
 	// 输入文件
 	Queue<string> file_queue;
+	file_queue.Enqueue("不老梦.ts");
 	file_queue.Enqueue("水龙吟.ts");
 	file_queue.Enqueue("idol.ts");
 
@@ -30,11 +31,8 @@ void test_tsduck()
 		joined_ts_stream.AddSource(ts_packet_reader);
 	};
 
-	shared_ptr<TSOutputCorrector> output_corrector{ new TSOutputCorrector{} };
-	shared_ptr<TSPacketStreamWriter> ts_packet_to_stream{ new TSPacketStreamWriter{FileStream::CreateNewAnyway("out.ts")} };
-	output_corrector->AddTsPacketConsumer(ts_packet_to_stream);
-
-	ITSPacketSource::ReadPacketResult pump_result = joined_ts_stream.PumpTo(output_corrector);
+	shared_ptr<PatParser> pat_parset{ new PatParser{} };
+	ITSPacketSource::ReadPacketResult pump_result = joined_ts_stream.PumpTo(pat_parset);
 	switch (pump_result)
 	{
 	case ITSPacketSource::ReadPacketResult::NoMorePacket:
