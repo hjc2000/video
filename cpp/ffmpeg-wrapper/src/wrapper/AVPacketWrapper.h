@@ -1,6 +1,6 @@
 #pragma once
 #include<AVCalculate.h>
-#include<AVError.h>
+#include<Exception.h>
 #include<Wrapper.h>
 #include<include_ffmpeg.h>
 

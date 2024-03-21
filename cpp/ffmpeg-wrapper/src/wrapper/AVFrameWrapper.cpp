@@ -138,7 +138,7 @@ void video::AVFrameWrapper::CopyAudioFrameToStream(Stream &stream)
 	int buf_size = audio_data_size();
 	if (buf_size < 0)
 	{
-		throw FFmpegException("Could not get sample buffer size", buf_size);
+		throw jc::Exception();
 	}
 
 	stream.Write(_wrapped_obj->extended_data[0], 0, buf_size);

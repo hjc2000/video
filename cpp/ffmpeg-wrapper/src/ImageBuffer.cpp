@@ -1,7 +1,6 @@
 #include "ImageBuffer.h"
-#include<include_ffmpeg.h>
 #include<AVFrameWrapper.h>
-#include<AVError.h>
+#include<include_ffmpeg.h>
 
 using namespace video;
 
@@ -13,7 +12,9 @@ video::ImageBuffer::ImageBuffer(int width, int height, AVPixelFormat format, int
 		format, align);
 
 	if (_size < 0)
-		throw video::FFmpegException("ImageBuffer", _size);
+	{
+		throw jc::Exception("ImageBuffer");
+	}
 }
 
 video::ImageBuffer::~ImageBuffer()

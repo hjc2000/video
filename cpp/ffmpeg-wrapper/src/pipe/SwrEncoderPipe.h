@@ -1,5 +1,4 @@
 #pragma once
-#include<AVError.h>
 #include<EncoderPipe.h>
 #include<SwrPipe.h>
 #include<include_ffmpeg.h>

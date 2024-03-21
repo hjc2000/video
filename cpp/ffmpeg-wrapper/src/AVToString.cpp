@@ -1,5 +1,5 @@
-#include<AVError.h>
 #include<AVToString.h>
+#include<Exception.h>
 #include<include_ffmpeg.h>
 
 std::string ToString(AVRational value)

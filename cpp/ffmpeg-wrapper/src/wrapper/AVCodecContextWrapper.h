@@ -1,6 +1,5 @@
 #pragma once
 #include<AVCodecExtention.h>
-#include<AVError.h>
 #include<AVStreamInfoCollection.h>
 #include<AVStreamWrapper.h>
 #include<IAudioFrameInfoCollection.h>
@@ -117,7 +116,8 @@ namespace video
 			int ret = ::avcodec_open2(_wrapped_obj, _codec, dic);
 			if (ret)
 			{
-				throw FFmpegException("AVCodecContextWrapper::open", ret);
+				std::cerr << CODE_POS_STR << "打开编解码器失败" << endl;
+				throw jc::Exception();
 			}
 		}
 

@@ -1,6 +1,6 @@
 #include<AVCodecContextWrapper.h>
 #include<AVCodecExtention.h>
-#include<AVError.h>
+#include<ErrorCode.h>
 #include<AVStreamWrapper.h>
 #include<include_ffmpeg.h>
 

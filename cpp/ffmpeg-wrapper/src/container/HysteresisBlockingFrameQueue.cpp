@@ -1,4 +1,5 @@
 #include "HysteresisBlockingFrameQueue.h"
+#include<ErrorCode.h>
 
 int video::HysteresisBlockingFrameQueue::ReadFrame(AVFrameWrapper &frame)
 {

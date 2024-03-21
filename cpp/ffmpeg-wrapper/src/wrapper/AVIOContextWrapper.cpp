@@ -1,4 +1,5 @@
 #include"AVIOContextWrapper.h"
+#include<ErrorCode.h>
 
 using namespace video;
 

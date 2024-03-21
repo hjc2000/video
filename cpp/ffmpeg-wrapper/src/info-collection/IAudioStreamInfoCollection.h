@@ -1,7 +1,6 @@
 #pragma once
 #include<AVChannelLayoutExtension.h>
 #include<AVCompare.h>
-#include<AVError.h>
 #include<AVSampleFormatExtention.h>
 #include<AVSampleFormatExtention.h>
 #include<include_ffmpeg.h>

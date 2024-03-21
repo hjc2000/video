@@ -1,6 +1,6 @@
 #include "InputFormatContext.h"
 #include<AVDictionaryWrapper.h>
-#include<AVError.h>
+#include<ErrorCode.h>
 #include<AVPacketWrapper.h>
 #include<AVStreamWrapper.h>
 #include<AVToString.h>

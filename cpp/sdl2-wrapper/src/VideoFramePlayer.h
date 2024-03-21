@@ -1,6 +1,6 @@
 #pragma once
 #include<AVCodecContextWrapper.h>
-#include<AVError.h>
+#include<ErrorCode.h>
 #include<AVStreamWrapper.h>
 #include<HysteresisBlockingQueue.h>
 #include<IDisposable.h>

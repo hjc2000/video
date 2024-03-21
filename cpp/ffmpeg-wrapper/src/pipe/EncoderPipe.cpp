@@ -1,4 +1,5 @@
 #include"EncoderPipe.h"
+#include<ErrorCode.h>
 
 using namespace video;
 

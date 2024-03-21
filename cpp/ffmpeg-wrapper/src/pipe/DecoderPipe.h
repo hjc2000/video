@@ -2,6 +2,7 @@
 #include<AVCodecContextWrapper.h>
 #include<AVStreamInfoCollection.h>
 #include<AVStreamWrapper.h>
+#include<ErrorCode.h>
 #include<IDisposable.h>
 #include<IFrameConsumer.h>
 #include<IPacketConsumer.h>

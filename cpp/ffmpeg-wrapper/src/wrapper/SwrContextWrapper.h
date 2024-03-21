@@ -1,8 +1,8 @@
 #pragma once
-#include<AVError.h>
 #include<AVFrameWrapper.h>
 #include<AudioFrameInfoCollection.h>
 #include<AudioStreamInfoCollection.h>
+#include<ErrorCode.h>
 #include<IAudioStreamInfoCollection.h>
 #include<IFrameConsumer.h>
 #include<IFrameSource.h>
@@ -193,7 +193,7 @@ namespace video
 				int count = convert(nullptr, &output_frame);
 				if (count != output_frame.nb_samples())
 				{
-					throw FFmpegException("read_frame 没有填充完整的 output_frame，本来认为这里一定会填充完整的帧的。");
+					throw jc::Exception("read_frame 没有填充完整的 output_frame，本来认为这里一定会填充完整的帧的。");
 				}
 
 				return 0;
@@ -260,7 +260,7 @@ namespace video
 			int samples = swr_get_out_samples(_wrapped_obj, in_nb_samples);
 			if (samples < 0)
 			{
-				throw FFmpegException("swr_get_out_samples 函数出错", samples);
+				throw jc::Exception("swr_get_out_samples 函数出错");
 			}
 
 			return samples;

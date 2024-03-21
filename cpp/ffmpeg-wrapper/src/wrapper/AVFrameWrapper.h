@@ -214,7 +214,7 @@ namespace video
 		{
 			if (IsPlanar())
 			{
-				throw FFmpegException("本帧是平面类型，写入缓冲区的音频数据不允许是平面类型");
+				throw jc::Exception("本帧是平面类型，写入缓冲区的音频数据不允许是平面类型");
 			}
 
 			memcpy(buffer, _wrapped_obj->extended_data[0], len);

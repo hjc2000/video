@@ -1,6 +1,5 @@
 #pragma once
 #include<include_ffmpeg.h>
-#include<AVError.h>
 
 namespace video
 {

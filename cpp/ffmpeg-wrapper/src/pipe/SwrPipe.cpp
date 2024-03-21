@@ -1,4 +1,5 @@
 #include "SwrPipe.h"
+#include<ErrorCode.h>
 
 void video::SwrPipe::read_and_send_frame()
 {

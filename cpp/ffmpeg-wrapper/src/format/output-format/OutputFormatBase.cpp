@@ -1,4 +1,5 @@
 #include "OutputFormatBase.h"
+#include<ErrorCode.h>
 
 using namespace video;
 
@@ -10,7 +11,7 @@ void video::OutputFormatBase::SendPacket(AVPacketWrapper *packet)
 		_flush_times++;
 		if (_flush_times == _wrapped_obj->nb_streams)
 		{
-			cout << CODE_POS_STR << "OutputFormatBase 所有流都被冲洗了。" << endl;
+			cout << CODE_POS_STR << "所有流都被冲洗了。" << endl;
 			WriteTrailer();
 			if (_on_all_stream_flushed_async)
 			{
@@ -28,7 +29,6 @@ void video::OutputFormatBase::SendPacket(AVPacketWrapper *packet)
 	if (ret < 0)
 	{
 		cout << CODE_POS_STR << "错误代码：" << ret << " -- " << ToString((ErrorCode)ret);
-		//throw SendPacketException();
 	}
 }
 
@@ -39,7 +39,7 @@ void video::OutputFormatBase::WriteHeader(AVDictionary **dic)
 	if (ret < 0)
 	{
 		cout << "write_header 方法异常：" << ToString((ErrorCode)ret) << endl;
-		throw FFmpegException("AVFormatContextWrapper::write_header", ret);
+		throw jc::Exception();
 	}
 }
 
@@ -49,7 +49,7 @@ void video::OutputFormatBase::WriteTrailer()
 	if (ret < 0)
 	{
 		cout << CODE_POS_STR << ToString((ErrorCode)ret) << endl;
-		throw FFmpegException("AVFormatContextWrapper::read_frame", ret);
+		throw jc::Exception();
 	}
 }
 

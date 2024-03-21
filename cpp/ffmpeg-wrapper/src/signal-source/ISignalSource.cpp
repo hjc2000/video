@@ -5,12 +5,12 @@ int video::ISignalSource::ReadFrame(shared_ptr<AVFrameWrapper> frame)
 {
 	if (frame->IsPlanar())
 	{
-		throw FFmpegException("传进来的帧的声道布局必须是交织类型的");
+		throw jc::Exception("传进来的帧的声道布局必须是交织类型的");
 	}
 
 	if (frame->sample_format() != AVSampleFormat::AV_SAMPLE_FMT_DBL)
 	{
-		throw FFmpegException("传进来的帧的采样格式与信号源的期望格式不匹配");
+		throw jc::Exception("传进来的帧的采样格式与信号源的期望格式不匹配");
 	}
 
 	double *channel_buffer = (double *)(*frame)->extended_data[0];

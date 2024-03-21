@@ -1,4 +1,5 @@
 #include "CustomOutputFormatContext.h"
+#include<ErrorCode.h>
 
 using namespace video;
 

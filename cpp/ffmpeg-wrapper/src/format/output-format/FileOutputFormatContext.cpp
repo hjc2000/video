@@ -1,6 +1,7 @@
 #include "FileOutputFormatContext.h"
 #include<AVPacketWrapper.h>
 #include<AVStreamWrapper.h>
+#include<ErrorCode.h>
 
 using namespace video;
 

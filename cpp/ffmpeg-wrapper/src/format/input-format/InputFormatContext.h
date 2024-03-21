@@ -1,5 +1,4 @@
 #pragma once
-#include<AVError.h>
 #include<AVIOContextWrapper.h>
 #include<AVProgramWrapper.h>
 #include<IPacketSource.h>

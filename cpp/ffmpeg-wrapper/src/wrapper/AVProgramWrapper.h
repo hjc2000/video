@@ -1,6 +1,5 @@
 #pragma once
 #include<AVDictionaryWrapper.h>
-#include<AVError.h>
 #include<AVStreamWrapper.h>
 #include<List.h>
 #include<ToString.h>

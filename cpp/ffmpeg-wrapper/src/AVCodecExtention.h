@@ -1,5 +1,4 @@
 #pragma once
-#include<AVError.h>
 #include<Wrapper.h>
 #include<include_ffmpeg.h>
 #include<include_ffmpeg.h>

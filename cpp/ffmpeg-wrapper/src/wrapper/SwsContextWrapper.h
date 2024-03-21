@@ -1,5 +1,5 @@
 #pragma once
-#include<AVError.h>
+#include<ErrorCode.h>
 #include<IFrameConsumer.h>
 #include<IFrameSource.h>
 #include<VideoFrameInfoCollection.h>

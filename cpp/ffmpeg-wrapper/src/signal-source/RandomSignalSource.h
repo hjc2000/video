@@ -1,6 +1,6 @@
 #pragma once
 #include<include_ffmpeg.h>
-#include<AVError.h>
+#include<ErrorCode.h>
 #include<PeriodicSignalSource.h>
 #include<ISignalSource.h>
 

@@ -1,5 +1,5 @@
 #pragma once
-#include<AVError.h>
+#include<ErrorCode.h>
 #include<DecoderPipe.h>
 #include<HysteresisBlockingPacketQueue.h>
 #include<IPacketConsumer.h>

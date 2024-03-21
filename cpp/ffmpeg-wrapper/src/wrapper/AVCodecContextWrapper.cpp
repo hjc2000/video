@@ -2,7 +2,7 @@
 #include<AVCalculate.h>
 #include<AVCodecExtention.h>
 #include<AVDictionaryWrapper.h>
-#include<AVError.h>
+#include<ErrorCode.h>
 #include<AVFrameWrapper.h>
 #include<AVPacketWrapper.h>
 #include<AVStreamWrapper.h>
@@ -139,7 +139,7 @@ void AVCodecContextWrapper::SetCodecParam(AVCodecParameters *param)
 	int ret = ::avcodec_parameters_to_context(_wrapped_obj, param);
 	if (ret < 0)
 	{
-		throw FFmpegException("AVCodecContextWrapper::set_encoder_param", ret);
+		throw jc::Exception("AVCodecContextWrapper::set_encoder_param");
 	}
 }
 
