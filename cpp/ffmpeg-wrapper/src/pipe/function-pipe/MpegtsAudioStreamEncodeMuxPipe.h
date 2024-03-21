@@ -18,6 +18,7 @@ namespace video
 			_codec_name = codec_name;
 
 			_desired_out_stream_infos._time_base = AVRational{ 1,90000 };
+
 			_encode_pipe = shared_ptr<SwrEncoderPipe>{
 				new SwrEncoderPipe{
 					_codec_name.c_str(),

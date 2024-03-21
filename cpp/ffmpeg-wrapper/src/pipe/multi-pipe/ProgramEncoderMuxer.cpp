@@ -58,7 +58,9 @@ void video::ProgramEncoderMuxer::AddMultiStream(
 					-1
 				);
 
-				shared_ptr<IPipeFrameSource> pipe_frame_source = multi_source->GetPipeFrameSourceByStreamIndex(stream._stream_index);
+				shared_ptr<IPipeFrameSource> pipe_frame_source =
+					multi_source->GetPipeFrameSourceByStreamIndex(stream._stream_index);
+
 				if (pipe_frame_source)
 				{
 					pipe_frame_source->AddFrameConsumer(encode_pipe);
@@ -136,8 +138,8 @@ void video::test_ProgramEncoderMuxer()
 	int format_index = 0;
 	auto get_format_callback = [&]()->shared_ptr<InputFormatContext>
 	{
-		shared_ptr<InputFormatContext> in_fmt_ctx{ 
-			new InputFormatContext{ format_list[format_index] } 
+		shared_ptr<InputFormatContext> in_fmt_ctx{
+			new InputFormatContext{ format_list[format_index] }
 		};
 
 		in_fmt_ctx->DumpFormat();
@@ -150,16 +152,16 @@ void video::test_ProgramEncoderMuxer()
 		return in_fmt_ctx;
 	};
 
-	shared_ptr<InfiniteBestStreamDemuxDecoder> best_stream_demux_decoder{ 
-		new InfiniteBestStreamDemuxDecoder{get_format_callback} 
+	shared_ptr<InfiniteBestStreamDemuxDecoder> best_stream_demux_decoder{
+		new InfiniteBestStreamDemuxDecoder{get_format_callback}
 	};
 
 	// 节目编码、封装管道
 	shared_ptr<Stream> out_fs = FileStream::CreateNewAnyway("mux_out.ts");
 	shared_ptr<AVIOContextWrapper> out_io_ctx{ new AVIOContextWrapper{true, out_fs} };
 
-	shared_ptr<CustomOutputFormatContext> out_fmt_ctx{ 
-		new CustomOutputFormatContext{"mux_out.ts", out_io_ctx} 
+	shared_ptr<CustomOutputFormatContext> out_fmt_ctx{
+		new CustomOutputFormatContext{"mux_out.ts", out_io_ctx}
 	};
 
 	shared_ptr<ProgramEncoderMuxer> program_encode_muxer{ new ProgramEncoderMuxer{out_fmt_ctx} };

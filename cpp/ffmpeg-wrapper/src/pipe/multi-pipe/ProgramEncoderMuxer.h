@@ -75,7 +75,8 @@ namespace video
 		/// <param name="video_codec_name">视频编码器的名称。</param>
 		/// <param name="audio_codec_name">音频编码器的名称。</param>
 		/// <param name="out_audio_sample_rate">
-		///		不采用 multi_source 中各个音频流的原始采样率，而是使用自定义值。可以将输出音频流转换到目标采样率上。
+		///		不采用 multi_source 中各个音频流的原始采样率，而是使用自定义值。
+		///		可以将输出音频流转换到目标采样率上。
 		///		* 输入 -1 表示使用原始的采样率。
 		/// </param>
 		void AddMultiStream(

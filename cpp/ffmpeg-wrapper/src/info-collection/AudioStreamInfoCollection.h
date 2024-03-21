@@ -20,6 +20,11 @@ namespace video
 			*this = value;
 		}
 
+		AudioStreamInfoCollection &operator=(IAudioStreamInfoCollection &value)
+		{
+			IAudioStreamInfoCollection::operator=(value);
+			return *this;
+		}
 		AudioStreamInfoCollection &operator=(IAudioStreamInfoCollection const &value)
 		{
 			IAudioStreamInfoCollection::operator=(value);

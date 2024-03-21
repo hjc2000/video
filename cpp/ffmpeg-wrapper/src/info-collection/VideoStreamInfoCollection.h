@@ -25,6 +25,11 @@ namespace video
 			return *this;
 		}
 
+		VideoStreamInfoCollection &operator=(IVideoStreamInfoCollection &value)
+		{
+			IVideoStreamInfoCollection::operator=(value);
+			return *this;
+		}
 		VideoStreamInfoCollection &operator=(IVideoStreamInfoCollection const &value)
 		{
 			IVideoStreamInfoCollection::operator=(value);
