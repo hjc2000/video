@@ -1,3 +1,4 @@
+#pragma once
 #include<ITSPacketConsumer.h>
 #include<ITSPacketSource.h>
 #include<Queue.h>

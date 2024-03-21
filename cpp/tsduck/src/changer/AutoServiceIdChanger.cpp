@@ -3,10 +3,8 @@
 using namespace video;
 using namespace std;
 
-/**************************************************************************************/
-/* 类型区 */
-/**************************************************************************************/
 
+#pragma region 内部类型
 class video::AutoServiceIdChanger::ServiceIdChanger :
 	public ITSPacketConsumer,
 	public PipeTsPacketSource,
@@ -104,6 +102,11 @@ public:
 		}
 	}
 };
+#pragma endregion
+
+
+
+
 
 video::AutoServiceIdChanger::AutoServiceIdChanger(
 	shared_ptr<ServiceIdProvider> service_id_provider,
@@ -118,11 +121,6 @@ video::AutoServiceIdChanger::AutoServiceIdChanger(
 		it.second = _service_id_provider->GetServiceId(it.second);
 	}
 }
-
-
-/**************************************************************************************/
-/* 函数区 */
-/**************************************************************************************/
 
 void video::AutoServiceIdChanger::HandlePatVersionChange(ts::PAT &pat)
 {
