@@ -10,6 +10,8 @@ namespace video
 {
 	class JoinedTsStream :public ITSPacketSource
 	{
+		JoinedTsStream();
+
 	private:
 		Queue<shared_ptr<ITSPacketSource>> _ts_packet_source_queue;
 
@@ -17,6 +19,7 @@ namespace video
 		///		当前正在被读取的 ITSPacketSource。
 		/// </summary>
 		shared_ptr<ITSPacketSource> _current_ts_packet_source;
+		bool _get_source_for_the_first_time = true;
 
 		class TableVersionChanger;
 		shared_ptr<TableVersionChanger> _table_version_changer;
@@ -45,5 +48,8 @@ namespace video
 		/// </summary>
 		/// <param name="source"></param>
 		void AddSource(shared_ptr<ITSPacketSource> source);
+
+	private:
+		void TryGetNextSourceIfNullAndIncreaseVersion();
 	};
 }
