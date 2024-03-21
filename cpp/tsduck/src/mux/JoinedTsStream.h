@@ -10,6 +10,7 @@ namespace video
 {
 	class JoinedTsStream :public ITSPacketSource
 	{
+	public:
 		JoinedTsStream();
 
 	private:
@@ -45,6 +46,9 @@ namespace video
 		/// <summary>
 		///		向队列添加一个 ITSPacketSource 对象。不要在 _on_ts_packet_source_list_exhausted
 		///		回调以外的地方调用本方法，内部队列不是线程安全的，不能边退队边入队。
+		/// 
+		///		送进来的 ITSPacketSource 对象的 ReadPacket 方法返回任何非 ITSPacketSource::ReadPacketResult::Success
+		///		的值都会丢弃这个 ITSPacketSource，去从队列中取出下一个 ITSPacketSource。
 		/// </summary>
 		/// <param name="source"></param>
 		void AddSource(shared_ptr<ITSPacketSource> source);

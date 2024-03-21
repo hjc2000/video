@@ -8,7 +8,7 @@ namespace video
 	/// <summary>
 	///		用于从流中读取 ts 包。
 	/// </summary>
-	class TSPacketStreamReader :ITSPacketSource
+	class TSPacketStreamReader :public ITSPacketSource
 	{
 	public:
 		/// <summary>

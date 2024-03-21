@@ -1,5 +1,6 @@
 #include "test_tsduck.h"
 #include<FileStream.h>
+#include<JoinedTsStream.h>
 #include<PatParser.h>
 #include<TSPacketStreamReader.h>
 #include<filesystem>
@@ -11,11 +12,30 @@ using namespace video;
 void test_tsduck()
 {
 	// 输入文件
-	shared_ptr<FileStream> input_file_stream = FileStream::Open("fallen-down.ts");
-	TSPacketStreamReader ts_packet_reader{ input_file_stream };
-	shared_ptr<PatParser> pat_handler{ new PatParser{} };
+	Queue<string> file_queue;
+	file_queue.Enqueue("fallen-down.ts");
+	file_queue.Enqueue("fallen-down.ts");
+	//file_queue.Enqueue("idol.ts");
 
-	ITSPacketSource::ReadPacketResult pump_result = ts_packet_reader.PumpTo(pat_handler);
+	JoinedTsStream joined_ts_stream;
+	joined_ts_stream._on_ts_packet_source_list_exhausted = [&]()
+	{
+		string file_name;
+		if (!file_queue.TryDequeue(file_name))
+		{
+			return;
+		}
+
+		shared_ptr<FileStream> input_file_stream = FileStream::Open(file_name.c_str());
+		shared_ptr<TSPacketStreamReader> ts_packet_reader{ new TSPacketStreamReader{input_file_stream} };
+		joined_ts_stream.AddSource(ts_packet_reader);
+	};
+
+	shared_ptr<TSOutputCorrector> output_corrector{ new TSOutputCorrector{} };
+	shared_ptr<TSPacketStreamWriter> ts_packet_to_stream{ new TSPacketStreamWriter{FileStream::CreateNewAnyway("out.ts")} };
+	output_corrector->AddTsPacketConsumer(ts_packet_to_stream);
+
+	ITSPacketSource::ReadPacketResult pump_result = joined_ts_stream.PumpTo(output_corrector);
 	switch (pump_result)
 	{
 	case ITSPacketSource::ReadPacketResult::NoMorePacket:
