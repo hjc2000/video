@@ -2,7 +2,10 @@
 
 using namespace video;
 
-video::CustomOutputFormatContext::CustomOutputFormatContext(char const *url, shared_ptr<AVIOContextWrapper> io_context) :
+video::CustomOutputFormatContext::CustomOutputFormatContext(
+	char const *url,
+	shared_ptr<AVIOContextWrapper> io_context
+) :
 	_io_context(io_context)
 {
 	int ret = avformat_alloc_output_context2(&_wrapped_obj, nullptr, nullptr, url);
