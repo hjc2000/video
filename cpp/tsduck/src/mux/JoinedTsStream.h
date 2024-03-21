@@ -1,7 +1,7 @@
 #pragma once
 #include<ITSPacketConsumer.h>
 #include<ITSPacketSource.h>
-#include<Queue.h>
+#include<TSPacketQueue.h>
 #include<TableHandler.h>
 #include<define.h>
 #include<functional>
