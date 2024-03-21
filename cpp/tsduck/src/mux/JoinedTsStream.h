@@ -20,7 +20,6 @@ namespace video
 		///		当前正在被读取的 ITSPacketSource。
 		/// </summary>
 		shared_ptr<ITSPacketSource> _current_ts_packet_source;
-		bool _get_source_for_the_first_time = true;
 
 		class TableVersionChanger;
 		shared_ptr<TableVersionChanger> _table_version_changer;

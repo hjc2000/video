@@ -12,17 +12,29 @@ class JoinedTsStream::TableVersionChanger :
 {
 private:
 	TSPacketQueue _ts_packet_queue;
-
-	uint8_t _pat_version = 0;
-	uint8_t _sdt_version = 0;
+	uint8_t _table_version_offset = 0;
+	ts::PIDSet _streams_pid_set;
 
 public:
 	void HandlePAT(ts::BinaryTable const &table) override
 	{
 		ts::PAT pat;
 		pat.deserialize(*_duck, table);
-		pat.version = _pat_version;
+		_streams_pid_set.reset();
+		ResetListenedPids();
+		ListenOnPmtPids(pat);
+		pat.version += _table_version_offset;
 		_ts_packet_queue.SendPacket(TableOperator::ToTsPacket(*_duck, pat));
+		_demux->reset();
+	}
+
+	void HandlePMT(ts::BinaryTable const &table) override
+	{
+		ts::PMT pmt;
+		pmt.deserialize(*_duck, table);
+		_streams_pid_set << pmt;
+		pmt.version += _table_version_offset;
+		_ts_packet_queue.SendPacket(TableOperator::ToTsPacket(*_duck, pmt, table.sourcePID()));
 		_demux->reset();
 	}
 
@@ -30,7 +42,7 @@ public:
 	{
 		ts::SDT sdt;
 		sdt.deserialize(*_duck, table);
-		sdt.version = _sdt_version;
+		sdt.version += _table_version_offset;
 		_ts_packet_queue.SendPacket(TableOperator::ToTsPacket(*_duck, sdt));
 		_demux->reset();
 	}
@@ -57,7 +69,11 @@ public:
 			}
 		default:
 			{
-				_ts_packet_queue.SendPacket(packet);
+				if (_streams_pid_set[packet->getPID()])
+				{
+					_ts_packet_queue.SendPacket(packet);
+				}
+
 				break;
 			}
 		}
@@ -70,8 +86,11 @@ public:
 
 	void IncreaseVersion()
 	{
-		_pat_version++;
-		_sdt_version++;
+		cout << "递增版本号" << endl;
+		_table_version_offset++;
+		_streams_pid_set.reset();
+		ResetListenedPids();
+		_demux->reset();
 	}
 };
 #pragma endregion
@@ -141,14 +160,7 @@ void video::JoinedTsStream::TryGetNextSourceIfNullAndIncreaseVersion()
 		}
 
 		_current_ts_packet_source = _ts_packet_source_queue.Dequeue();
-		if (_get_source_for_the_first_time)
-		{
-			_get_source_for_the_first_time = false;
-		}
-		else
-		{
-			_table_version_changer->IncreaseVersion();
-		}
+		_table_version_changer->IncreaseVersion();
 	}
 	catch (...)
 	{

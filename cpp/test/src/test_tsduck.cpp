@@ -13,9 +13,8 @@ void test_tsduck()
 {
 	// 输入文件
 	Queue<string> file_queue;
-	file_queue.Enqueue("fallen-down.ts");
-	file_queue.Enqueue("fallen-down.ts");
-	//file_queue.Enqueue("idol.ts");
+	file_queue.Enqueue("水龙吟.ts");
+	file_queue.Enqueue("idol.ts");
 
 	JoinedTsStream joined_ts_stream;
 	joined_ts_stream._on_ts_packet_source_list_exhausted = [&]()
