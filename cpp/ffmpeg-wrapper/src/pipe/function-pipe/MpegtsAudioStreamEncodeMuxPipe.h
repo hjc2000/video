@@ -9,14 +9,12 @@ namespace video
 	public:
 		MpegtsAudioStreamEncodeMuxPipe(
 			shared_ptr<OutputFormat> out_fmt_ctx,
-			AVProgramWrapper program,
 			IAudioStreamInfoCollection &out_stream_infos,
 			std::string codec_name,
 			int pid
 		)
 		{
 			_out_fmt_ctx = out_fmt_ctx;
-			_program = program;
 			_stream_infos = out_stream_infos;
 			_codec_name = codec_name;
 			_pid = pid;
@@ -34,16 +32,10 @@ namespace video
 			{
 				_encode_pipe->NewAudioStream()->id = _pid;
 			}
-
-			_out_fmt_ctx->AddStreamToProgram(
-				_program->id,
-				_encode_pipe->NewAudioStream().Index()
-			);
 		}
 
 	private:
 		shared_ptr<OutputFormat> _out_fmt_ctx;
-		AVProgramWrapper _program{};
 		AudioStreamInfoCollection _stream_infos;
 		std::string _codec_name;
 		int _pid;

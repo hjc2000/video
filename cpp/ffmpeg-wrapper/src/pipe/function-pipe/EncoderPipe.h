@@ -27,7 +27,9 @@ namespace video
 		/// <param name="codec_name">编码器名称</param>
 		/// <param name="in_stream_infos">编码器输入流的信息。</param>
 		/// <param name="output_format">编码后的包要写入的格式。</param>
-		/// <param name="out_bit_rate_in_bps">想要输出的比特率。设置越大质量越高。设置为 <= 0 表示使用默认值。</param>
+		/// <param name="out_bit_rate_in_bps">
+		///		想要输出的比特率。设置越大质量越高。设置为小于等于 0 表示使用默认值。
+		/// </param>
 		EncoderPipe(
 			char const *codec_name,
 			IVideoStreamInfoCollection &in_stream_infos,

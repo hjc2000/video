@@ -79,10 +79,7 @@ namespace video
 		/// </summary>
 		void StartPump();
 
-		#pragma region 通过 IMultiStreamPipeFrameSource 继承
 		List<AVStreamInfoCollection> &StreamList() override;
 		shared_ptr<IPipeFrameSource> GetPipeFrameSourceByStreamIndex(int stream_index) override;
-		#pragma endregion
-
 	};
 }

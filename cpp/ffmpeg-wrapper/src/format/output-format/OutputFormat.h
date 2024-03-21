@@ -47,15 +47,6 @@ namespace video
 		/// <returns></returns>
 		bool NeedGlobalHeader();
 
-		/**
-		 * @brief 对 av_interleaved_write_frame 的封装。以交织的方式向格式写入一个包。
-		 * 只有输出格式才能调用本方法。
-		 *
-		 * @param packet 要被写入的包。
-		 *
-		 * @excepton SendPacketException
-		*/
-
 		/// <summary>
 		///		送入包。
 		///		* 送入空指针进行冲洗。会对冲洗进行计数，只有当冲洗次数
@@ -90,41 +81,5 @@ namespace video
 		 * @exception Exception 创建流失败或设置流参数失败会抛出异常
 		*/
 		AVStreamWrapper CreateNewStream(shared_ptr<AVCodecContextWrapper> codec_ctx);
-
-		#pragma region mpegts 节目
-		/**
-		 * @brief 在封装中创建一个新的节目
-		 * @return
-		*/
-		AVProgramWrapper CreateNewProgram();
-
-		/**
-		 * @brief 将流添加到节目中
-		 * @param program_id 节目 ID
-		 * @param stream_index 流的索引号。
-		*/
-		void AddStreamToProgram(int program_id, int stream_index);
-
-		/**
-		 * @brief 获取节目的数量
-		 * @return
-		*/
-		int ProgramCount()
-		{
-			std::lock_guard l(_not_private_methods_lock);
-			return _wrapped_obj->nb_programs;
-		}
-
-		/**
-		 * @brief 获取指定索引的节目
-		 * @param index
-		 * @return
-		*/
-		AVProgramWrapper GetProgram(int index)
-		{
-			std::lock_guard l(_not_private_methods_lock);
-			return AVProgramWrapper{ _wrapped_obj->programs[index] };
-		}
-		#pragma endregion
 	};
 }

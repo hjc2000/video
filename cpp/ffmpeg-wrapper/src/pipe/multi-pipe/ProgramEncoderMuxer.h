@@ -37,25 +37,10 @@ namespace video
 		ProgramEncoderMuxer(shared_ptr<OutputFormat> out_fmt_ctx)
 		{
 			_out_fmt_ctx = out_fmt_ctx;
-			_program = _out_fmt_ctx->CreateNewProgram();
-			_program.set_service_name("ProgramEncoderMuxer");
-			_program.set_service_provider("ProgramEncoderMuxer");
-		}
-
-		/// <summary>
-		///		在 out_fmt_ctx 和它已有的节目 program 上进行操作。
-		/// </summary>
-		/// <param name="out_fmt_ctx"></param>
-		/// <param name="program"></param>
-		ProgramEncoderMuxer(shared_ptr<OutputFormat> out_fmt_ctx, AVProgramWrapper &program)
-		{
-			_out_fmt_ctx = out_fmt_ctx;
-			_program = program;
 		}
 
 	private:
 		shared_ptr<OutputFormat> _out_fmt_ctx;
-		AVProgramWrapper _program{};
 
 	public:
 		/// <summary>

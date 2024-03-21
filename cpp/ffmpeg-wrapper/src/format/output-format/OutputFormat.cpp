@@ -106,20 +106,3 @@ AVStreamWrapper video::OutputFormat::CreateNewStream(shared_ptr<AVCodecContextWr
 
 	return stream;
 }
-
-AVProgramWrapper video::OutputFormat::CreateNewProgram()
-{
-	std::lock_guard l(_not_private_methods_lock);
-	/* 节目 ID，用来标识一个节目。
-	* - 不是 PID。PID 是 Packet ID 的缩写，不是 Program ID 的缩写。
-	* - 从 1 开始，不是从 0 开始。
-	*/
-	int program_id = _wrapped_obj->nb_programs + 1;
-	return AVProgramWrapper{ av_new_program(_wrapped_obj, program_id) };
-}
-
-void video::OutputFormat::AddStreamToProgram(int program_id, int stream_index)
-{
-	std::lock_guard l(_not_private_methods_lock);
-	av_program_add_stream_index(_wrapped_obj, program_id, stream_index);
-}
