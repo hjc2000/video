@@ -9,7 +9,7 @@ void video::test_AVPacketPlayer()
 	auto fs = FileStream::Open("渡尘.mp4");
 	shared_ptr<AVIOContextWrapper> io_context{ new AVIOContextWrapper{ false, fs } };
 	shared_ptr<InputFormatContext> in_fmt_ctx{ new InputFormatContext{ io_context } };
-	in_fmt_ctx->dump_format();
+	in_fmt_ctx->DumpFormat();
 
 	AVStreamWrapper best_audio_stream = in_fmt_ctx->FindBestStream(AVMediaType::AVMEDIA_TYPE_AUDIO);
 	AVStreamWrapper best_video_stream = in_fmt_ctx->FindBestStream(AVMediaType::AVMEDIA_TYPE_VIDEO);

@@ -17,7 +17,6 @@ namespace video
 		public Wrapper<AVFormatContext>,
 		public IPacketSource
 	{
-		#pragma region 生命周期
 	public:
 		InputFormatContext(std::string url);
 
@@ -26,7 +25,6 @@ namespace video
 		InputFormatContext(std::string url, const AVInputFormat *fmt, AVDictionary **options);
 
 		~InputFormatContext();
-		#pragma endregion
 
 	private:
 		string _url;
@@ -42,7 +40,7 @@ namespace video
 		/// <summary>
 		///		以官方格式打印流信息。
 		/// </summary>
-		void dump_format();
+		void DumpFormat();
 
 		/// <summary>
 		///		找出最好的流
@@ -54,15 +52,14 @@ namespace video
 		/// </returns>
 		AVStreamWrapper FindBestStream(AVMediaType type);
 
-		/**
-		 * @brief 从封装中读取包。
-		 * - 在实际读取前，会先调用 packet 的 unref 方法。
-		 * - ffmpeg 原生的读取包不会将流的时间基赋值给 AVPacket 的 time_base 字段。
-		 * 本函数进行扩展，读取的包的 time_base 字段会被赋值。
-		 *
-		 * @param packet 读取到的包会写入这里。
-		 * @return 成功返回 0，失败返回错误代码
-		*/
+		/// <summary>
+		///		从封装中读取包。
+		///		* 在实际读取前，会先调用 packet 的 unref 方法。
+		///		* ffmpeg 原生的读取包不会将流的时间基赋值给 AVPacket 的 time_base 字段。
+		///		  本函数进行扩展，读取的包的 time_base 字段会被赋值。
+		/// </summary>
+		/// <param name="packet">读取到的包会写入这里。</param>
+		/// <returns>成功返回 0，失败返回错误代码</returns>
 		int ReadPacket(AVPacketWrapper &packet) override;
 
 	public:
@@ -78,7 +75,7 @@ namespace video
 		 * @brief 流的数量
 		 * @return
 		*/
-		int nb_streams()
+		int StreamCount()
 		{
 			return _wrapped_obj->nb_streams;
 		}
@@ -88,31 +85,6 @@ namespace video
 		 * @param stream_index
 		 * @return
 		*/
-		AVStreamWrapper get_stream(int stream_index);
-
-		/**
-		 * @brief 获取节目的数量
-		 * @return
-		*/
-		int ProgramCount()
-		{
-			return (int)_wrapped_obj->nb_programs;
-		}
-
-		/**
-		 * @brief 获取指定索引的节目
-		 * @param index
-		 * @return
-		*/
-		AVProgramWrapper GetProgram(int index)
-		{
-			if (ProgramCount() <= index)
-			{
-				cout << CODE_POS_STR << "节目索引超出范围" << endl;
-				throw jc::Exception();
-			}
-
-			return AVProgramWrapper{ _wrapped_obj->programs[index] };
-		}
+		AVStreamWrapper GetStream(int stream_index);
 	};
 }

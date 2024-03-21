@@ -59,7 +59,7 @@ InputFormatContext::~InputFormatContext()
 	_wrapped_obj = nullptr;
 }
 
-void InputFormatContext::dump_format()
+void InputFormatContext::DumpFormat()
 {
 	cout << endl;
 	cout << "------------------------------------------------------------" << endl;
@@ -136,7 +136,7 @@ std::string InputFormatContext::get_duration_as_formatted_time_string()
 	return re_value;
 }
 
-AVStreamWrapper InputFormatContext::get_stream(int stream_index)
+AVStreamWrapper InputFormatContext::GetStream(int stream_index)
 {
 	// 强制转换为无符号类型就不用判断 stream_index >= 0 了
 	if ((uint32_t)stream_index >= _wrapped_obj->nb_streams)

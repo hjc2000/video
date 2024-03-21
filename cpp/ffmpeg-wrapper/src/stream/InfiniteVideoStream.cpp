@@ -72,7 +72,7 @@ shared_ptr<InputFormatContext> video::InfiniteVideoStream::OnGetFormatCallback()
 		}
 	};
 
-	in_fmt_ctx->dump_format();
+	in_fmt_ctx->DumpFormat();
 	_format_index++;
 	if (_format_index >= _format_list.Count() && _loop)
 	{

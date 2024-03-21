@@ -145,7 +145,7 @@ void video::test_ProgramEncoderMuxer()
 	auto get_format_callback = [&]()->shared_ptr<InputFormatContext>
 	{
 		shared_ptr<InputFormatContext> in_fmt_ctx{ new InputFormatContext{ format_list[format_index] } };
-		in_fmt_ctx->dump_format();
+		in_fmt_ctx->DumpFormat();
 		format_index++;
 		if (format_index >= format_list.Count())
 		{
