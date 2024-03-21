@@ -12,31 +12,6 @@
 namespace video
 {
 	/// <summary>
-	///		将输入格式拼接起来，进行解封装、解码。一个输入格式结束后会继续获取
-	///		下一个输入格式。最终输出来自不同输入格式解封装、解码后的视频帧、音频帧。
-	/// </summary>
-	class JoinedInputFormatDemuxDecoder :
-		public IDisposable
-	{
-	public:
-		void Dispose() override
-		{
-
-		}
-
-	private:
-
-
-	public:
-		/// <summary>
-		///		当需要输入封装时就会触发此回调。
-		///		回调函数返回 InputFormatContext 对象则视频流继续。
-		///		回调函数返回空指针则结束视频流。
-		/// </summary>
-		std::function<shared_ptr<InputFormatContext>()> _get_format_callback;
-	};
-
-	/// <summary>
 	///		无限长的解封装、解码器。会在一个输入封装读取完后重新获取下一个封装。
 	///		* 第二个及以后的封装的流参数必须与第一个封装一样。
 	/// </summary>

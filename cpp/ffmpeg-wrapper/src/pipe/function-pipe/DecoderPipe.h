@@ -187,6 +187,5 @@ namespace video
 		AVRational frame_rate() override;
 		void set_frame_rate(AVRational value) override;
 		#pragma endregion
-
 	};
 }
