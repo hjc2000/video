@@ -49,13 +49,11 @@ namespace video
 		/// <param name="out_stream_infos"></param>
 		/// <param name="codec_name"></param>
 		/// <param name="out_bittare">期望的输出比特率。输入 -1 表示自动。</param>
-		/// <param name="out_pid">期望的输出 PID。输入 -1 表示自动。</param>
 		/// <returns></returns>
 		shared_ptr<MpegtsVideoStreamEncodeMuxPipe> AddVideoStream(
 			IVideoStreamInfoCollection &out_stream_infos,
 			std::string codec_name,
-			int64_t out_bittare,
-			int out_pid
+			int64_t out_bittare
 		);
 
 		/// <summary>
@@ -63,12 +61,10 @@ namespace video
 		/// </summary>
 		/// <param name="out_stream_infos"></param>
 		/// <param name="codec_name"></param>
-		/// <param name="out_pid">期望的输出 PID。输入 -1 表示自动。</param>
 		/// <returns></returns>
 		shared_ptr<MpegtsAudioStreamEncodeMuxPipe> AddAudioStream(
 			IAudioStreamInfoCollection &out_stream_infos,
-			std::string codec_name,
-			int out_pid
+			std::string codec_name
 		);
 
 		/// <summary>

@@ -26,9 +26,4 @@ void MpegtsVideoStreamEncodeMuxPipe::InitEncodePipe()
 			}
 		};
 	}
-
-	if (_pid > 0)
-	{
-		_encode_pipe->NewVideoStream()->id = _pid;
-	}
 }

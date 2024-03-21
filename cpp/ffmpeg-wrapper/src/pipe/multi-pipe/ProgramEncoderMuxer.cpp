@@ -8,8 +8,7 @@ using namespace video;
 shared_ptr<MpegtsVideoStreamEncodeMuxPipe> video::ProgramEncoderMuxer::AddVideoStream(
 	IVideoStreamInfoCollection &out_stream_infos,
 	std::string codec_name,
-	int64_t out_bittare,
-	int out_pid
+	int64_t out_bittare
 )
 {
 	shared_ptr<MpegtsVideoStreamEncodeMuxPipe> pipe{
@@ -18,7 +17,6 @@ shared_ptr<MpegtsVideoStreamEncodeMuxPipe> video::ProgramEncoderMuxer::AddVideoS
 			out_stream_infos,
 			codec_name,
 			out_bittare,
-			out_pid,
 		}
 	};
 
@@ -27,16 +25,14 @@ shared_ptr<MpegtsVideoStreamEncodeMuxPipe> video::ProgramEncoderMuxer::AddVideoS
 
 shared_ptr<MpegtsAudioStreamEncodeMuxPipe> video::ProgramEncoderMuxer::AddAudioStream(
 	IAudioStreamInfoCollection &out_stream_infos,
-	std::string codec_name,
-	int out_pid
+	std::string codec_name
 )
 {
 	shared_ptr<MpegtsAudioStreamEncodeMuxPipe> pipe{
 		new MpegtsAudioStreamEncodeMuxPipe{
 			_out_fmt_ctx,
 			out_stream_infos,
-			codec_name,
-			out_pid,
+			codec_name
 		}
 	};
 
@@ -59,7 +55,6 @@ void video::ProgramEncoderMuxer::AddMultiStream(
 				shared_ptr<MpegtsVideoStreamEncodeMuxPipe> encode_pipe = AddVideoStream(
 					stream,
 					video_codec_name,
-					-1,
 					-1
 				);
 
@@ -85,13 +80,12 @@ void video::ProgramEncoderMuxer::AddMultiStream(
 
 					encode_pipe = AddAudioStream(
 						replace_stream,
-						audio_codec_name,
-						-1
+						audio_codec_name
 					);
 				}
 				else
 				{
-					encode_pipe = AddAudioStream(stream, audio_codec_name, -1);
+					encode_pipe = AddAudioStream(stream, audio_codec_name);
 				}
 
 				shared_ptr<IPipeFrameSource> pipe_frame_source =
