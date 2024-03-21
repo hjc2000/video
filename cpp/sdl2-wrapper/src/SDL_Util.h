@@ -2,8 +2,6 @@
 #include<define.h>
 extern "C"
 {
-	// 如果不定义这个宏，且 main 函数中没有接收命令行，会报错
-	#define SDL_MAIN_HANDLED
 	#include<SDL.h>
 }
 #include<Exception.h>

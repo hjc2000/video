@@ -9,8 +9,8 @@ int main(void)
 	try
 	{
 		std::filesystem::current_path(Predefine_ResourceDir);
-		//test_ProgramEncoderMuxer();
-		test_AVPacketPlayer();
+		test_ProgramEncoderMuxer();
+		//test_AVPacketPlayer();
 		//test_tsduck();
 		return 0;
 	}
