@@ -28,3 +28,18 @@ std::string ToString(AVMediaType media_type)
 {
 	return std::string{ ::av_get_media_type_string(media_type) };
 }
+
+std::ostream &operator<<(std::ostream &ostream, AVMediaType const media_type)
+{
+	return ostream << ToString(media_type);
+}
+
+std::ostream &operator<<(std::ostream &ostream, AVRational const rational)
+{
+	return ostream << ToString(rational);
+}
+
+std::ostream &operator<<(std::ostream &ostream, AVPixelFormat pixel_format)
+{
+	return ostream << ToString(pixel_format);
+}
