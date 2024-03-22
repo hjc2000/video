@@ -2,6 +2,73 @@
 
 using namespace video;
 
+AVStreamInfoCollection::AVStreamInfoCollection(AVStreamInfoCollection const &stream)
+{
+	*this = stream;
+}
+
+AVStreamInfoCollection::AVStreamInfoCollection(AVStreamWrapper const &stream)
+{
+	*this = stream;
+}
+
+AVStreamInfoCollection::~AVStreamInfoCollection()
+{
+	avcodec_parameters_free(&_codec_params);
+}
+
+AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamInfoCollection const &stream)
+{
+	*this = (AVStreamInfoCollection &)stream;
+	return *this;
+}
+
+AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamInfoCollection &stream)
+{
+	_index = stream._index;
+	_media_type = stream._media_type;
+	_bitrate = stream._bitrate;
+	CopyCodecParamFrom(stream._codec_params);
+	_codec = stream._codec;
+
+	_timebase = stream._timebase;
+	_sample_format = stream._sample_format;
+	_sample_rate = stream._sample_rate;
+	_ch_layout = stream._ch_layout;
+	_width = stream._width;
+	_height = stream._height;
+	_pixel_format = stream._pixel_format;
+	_frame_rate = stream._frame_rate;
+
+	return *this;
+}
+
+AVStreamInfoCollection &AVStreamInfoCollection::operator = (AVStreamWrapper const &stream)
+{
+	*this = (AVStreamWrapper &)stream;
+	return *this;
+}
+
+AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamWrapper &stream)
+{
+	_index = stream.Index();
+	_media_type = stream.MediaType();
+	_bitrate = stream.Bitrate();
+	CopyCodecParamFrom(stream->codecpar);
+	_codec = stream.Codec();
+
+	_timebase = stream.time_base();
+	_sample_format = stream.sample_format();
+	_sample_rate = stream.sample_rate();
+	_ch_layout = stream.ch_layout();
+	_width = stream.width();
+	_height = stream.height();
+	_pixel_format = stream.pixel_format();
+	_frame_rate = stream.frame_rate();
+
+	return *this;
+}
+
 AVRational video::AVStreamInfoCollection::time_base()
 {
 	return _timebase;

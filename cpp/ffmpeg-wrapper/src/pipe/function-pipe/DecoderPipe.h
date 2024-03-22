@@ -114,7 +114,7 @@ namespace video
 			}
 
 			// packet 不是空指针
-			if (packet->stream_index() != _stream_infos._stream_index)
+			if (packet->stream_index() != _stream_infos._index)
 			{
 				// 索引不匹配，直接返回。
 				return;

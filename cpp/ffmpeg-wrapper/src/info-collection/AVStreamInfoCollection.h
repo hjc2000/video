@@ -17,76 +17,18 @@ namespace video
 		#pragma region 生命周期
 	public:
 		AVStreamInfoCollection() {}
-
-		AVStreamInfoCollection(AVStreamInfoCollection const &stream)
-		{
-			*this = stream;
-		}
-
-		AVStreamInfoCollection(AVStreamWrapper const &stream)
-		{
-			*this = stream;
-		}
-
-		~AVStreamInfoCollection()
-		{
-			avcodec_parameters_free(&_codec_params);
-		}
+		AVStreamInfoCollection(AVStreamInfoCollection const &stream);
+		AVStreamInfoCollection(AVStreamWrapper const &stream);
+		~AVStreamInfoCollection();
 		#pragma endregion
 
 		#pragma region 赋值运算符
 	public:
-		AVStreamInfoCollection &operator=(AVStreamInfoCollection const &stream)
-		{
-			*this = (AVStreamInfoCollection &)stream;
-			return *this;
-		}
+		AVStreamInfoCollection &operator=(AVStreamInfoCollection const &stream);
+		AVStreamInfoCollection &operator=(AVStreamInfoCollection &stream);
 
-		AVStreamInfoCollection &operator=(AVStreamInfoCollection &stream)
-		{
-			_stream_index = stream._stream_index;
-			_media_type = stream._media_type;
-			_bitrate = stream._bitrate;
-			CopyCodecParamFrom(stream._codec_params);
-			_codec = stream._codec;
-
-			_timebase = stream._timebase;
-			_sample_format = stream._sample_format;
-			_sample_rate = stream._sample_rate;
-			_ch_layout = stream._ch_layout;
-			_width = stream._width;
-			_height = stream._height;
-			_pixel_format = stream._pixel_format;
-			_frame_rate = stream._frame_rate;
-
-			return *this;
-		}
-
-		AVStreamInfoCollection &operator=(AVStreamWrapper const &stream)
-		{
-			*this = (AVStreamWrapper &)stream;
-			return *this;
-		}
-
-		AVStreamInfoCollection &operator=(AVStreamWrapper &stream)
-		{
-			_stream_index = stream.Index();
-			_media_type = stream.MediaType();
-			_bitrate = stream.Bitrate();
-			CopyCodecParamFrom(stream->codecpar);
-			_codec = stream.Codec();
-
-			_timebase = stream.time_base();
-			_sample_format = stream.sample_format();
-			_sample_rate = stream.sample_rate();
-			_ch_layout = stream.ch_layout();
-			_width = stream.width();
-			_height = stream.height();
-			_pixel_format = stream.pixel_format();
-			_frame_rate = stream.frame_rate();
-
-			return *this;
-		}
+		AVStreamInfoCollection &operator=(AVStreamWrapper const &stream);
+		AVStreamInfoCollection &operator=(AVStreamWrapper &stream);
 		#pragma endregion
 
 	public:
@@ -108,7 +50,7 @@ namespace video
 		}
 
 	public:
-		int _stream_index = -1;
+		int _index = -1;
 		AVMediaType _media_type{};
 		int64_t _bitrate = 0;
 		AVCodecParameters *_codec_params = avcodec_parameters_alloc();
@@ -122,6 +64,19 @@ namespace video
 		int _height = 0;
 		AVPixelFormat _pixel_format{};
 		AVRational _frame_rate{};
+
+		/// <summary>
+		///		此流在格式中的索引
+		/// </summary>
+		/// <returns></returns>
+		int Index()
+		{
+			return _index;
+		}
+		void SetIndex(int value)
+		{
+			_index = value;
+		}
 
 		#pragma region 通过 IAudioStreamInfoCollection 继承
 		AVRational time_base() override;
@@ -144,6 +99,5 @@ namespace video
 		AVRational frame_rate() override;
 		void set_frame_rate(AVRational value) override;
 		#pragma endregion
-
 	};
 }

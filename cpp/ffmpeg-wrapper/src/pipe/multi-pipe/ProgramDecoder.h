@@ -32,7 +32,7 @@ namespace video
 			for (AVStreamInfoCollection &stream : _stream_list)
 			{
 				shared_ptr<DecoderPipe> decode_pipe{ new DecoderPipe{stream} };
-				_decode_pipe_map[stream._stream_index] = decode_pipe;
+				_decode_pipe_map[stream._index] = decode_pipe;
 			}
 		}
 

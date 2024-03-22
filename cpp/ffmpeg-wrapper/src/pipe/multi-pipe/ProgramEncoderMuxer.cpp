@@ -59,7 +59,7 @@ void video::ProgramEncoderMuxer::AddMultiStream(
 				);
 
 				shared_ptr<IPipeFrameSource> pipe_frame_source =
-					multi_source->GetPipeFrameSourceByStreamIndex(stream._stream_index);
+					multi_source->GetPipeFrameSourceByStreamIndex(stream.Index());
 
 				if (pipe_frame_source)
 				{
@@ -91,7 +91,7 @@ void video::ProgramEncoderMuxer::AddMultiStream(
 				}
 
 				shared_ptr<IPipeFrameSource> pipe_frame_source =
-					multi_source->GetPipeFrameSourceByStreamIndex(stream._stream_index);
+					multi_source->GetPipeFrameSourceByStreamIndex(stream.Index());
 
 				if (pipe_frame_source)
 				{

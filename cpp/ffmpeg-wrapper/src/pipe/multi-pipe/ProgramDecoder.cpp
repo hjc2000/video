@@ -44,7 +44,7 @@ void video::ProgramDecoder::ReplaceDecodePipe(List<AVStreamInfoCollection> strea
 	for (AVStreamInfoCollection &stream : _stream_list)
 	{
 		// 根据流索引，在 _decode_pipe_map 中查找属于该流的解码管道。
-		auto it = _decode_pipe_map.find(stream._stream_index);
+		auto it = _decode_pipe_map.find(stream._index);
 		if (it == _decode_pipe_map.end())
 		{
 			// 没找到，继续对 _stream_list 的下一个流进行操作。

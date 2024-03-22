@@ -13,7 +13,6 @@ namespace video
 {
 	/// <summary>
 	///		无限长的解封装、解码器。会在一个输入封装读取完后重新获取下一个封装。
-	///		* 第二个及以后的封装的流参数必须与第一个封装一样。
 	/// </summary>
 	class InfiniteBestStreamDemuxDecoder_old :
 		public IDisposable,

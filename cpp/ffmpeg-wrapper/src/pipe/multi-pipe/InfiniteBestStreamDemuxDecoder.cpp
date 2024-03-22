@@ -43,7 +43,7 @@ bool video::InfiniteBestStreamDemuxDecoder_old::OpenInput()
 		AVStreamInfoCollection best_video_stream_infos = stream;
 		best_video_stream_infos._timebase = AVRational{ 1,90000 };
 		// 视频流的索引更改为 0.
-		best_video_stream_infos._stream_index = 0;
+		best_video_stream_infos._index = 0;
 
 		_stream_list.Add(best_video_stream_infos);
 	}
@@ -56,7 +56,7 @@ bool video::InfiniteBestStreamDemuxDecoder_old::OpenInput()
 		AVStreamInfoCollection best_audio_stream_infos = stream;
 		best_audio_stream_infos._timebase = AVRational{ 1,90000 };
 		// 音频流的索引更改为 1.
-		best_audio_stream_infos._stream_index = 1;
+		best_audio_stream_infos._index = 1;
 
 		_stream_list.Add(best_audio_stream_infos);
 	}
