@@ -101,7 +101,7 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 #include<List.h>
 #include<InputFormatContext.h>
 #include<FileStream.h>
-#include<CustomOutputFormatContext.h>
+#include<IOContextOutputFormat.h>
 #include<JoinedInputFormatDemuxDecoder.h>
 
 /// <summary>
@@ -111,8 +111,8 @@ void test_SptsEncodeMux()
 {
 	shared_ptr<Stream> out_fs = FileStream::CreateNewAnyway("mux_out.ts");
 	shared_ptr<AVIOContextWrapper> out_io_ctx{ new AVIOContextWrapper{true, out_fs} };
-	shared_ptr<CustomOutputFormatContext> out_fmt_ctx{
-		new CustomOutputFormatContext{
+	shared_ptr<IOContextOutputFormat> out_fmt_ctx{
+		new IOContextOutputFormat{
 			"mux_out.ts",
 			out_io_ctx
 		}
