@@ -15,11 +15,10 @@ namespace video
 	/**
 	 * @brief 将封装写入文件。
 	*/
-	class FileOutputFormatContext :public OutputFormat
+	class FileOutputFormat :public OutputFormat
 	{
 	public:
-		FileOutputFormatContext(const char *url);
-
-		~FileOutputFormatContext();
+		FileOutputFormat(std::string url);
+		~FileOutputFormat();
 	};
 }

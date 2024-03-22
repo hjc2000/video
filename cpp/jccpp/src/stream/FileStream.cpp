@@ -18,7 +18,7 @@ bool FileStream::CanSeek()
 	return _can_seek;
 }
 
-shared_ptr<FileStream> FileStream::CreateNewAnyway(const char *url)
+shared_ptr<FileStream> FileStream::CreateNewAnyway(std::string url)
 {
 	shared_ptr<FileStream> fs{ new FileStream{url} };
 
@@ -43,7 +43,7 @@ shared_ptr<FileStream> FileStream::CreateNewAnyway(const char *url)
 	return fs;
 }
 
-shared_ptr<FileStream> FileStream::Open(const char *url)
+shared_ptr<FileStream> FileStream::Open(std::string url)
 {
 	if (!filesystem::exists(url))
 	{
