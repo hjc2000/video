@@ -110,7 +110,7 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 void test_SptsEncodeMux()
 {
 	shared_ptr<Stream> out_fs = FileStream::CreateNewAnyway("mux_out.ts");
-	shared_ptr<StreamOutputFormat> out_fmt_ctx{ new StreamOutputFormat{"a.ts",out_fs} };
+	shared_ptr<StreamOutputFormat> out_fmt_ctx{ new StreamOutputFormat{".ts",out_fs} };
 
 	VideoStreamInfoCollection out_video_stream_infos;
 	out_video_stream_infos._frame_rate = AVRational{ 30,1 };
