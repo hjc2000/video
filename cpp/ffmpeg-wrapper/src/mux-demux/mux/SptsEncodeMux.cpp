@@ -99,7 +99,7 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 
 
 #include<List.h>
-#include<InputFormatContext.h>
+#include<InputFormat.h>
 #include<FileStream.h>
 #include<IOContextOutputFormat.h>
 #include<JoinedInputFormatDemuxDecoder.h>
@@ -150,12 +150,12 @@ void test_SptsEncodeMux()
 	shared_ptr<JoinedInputFormatDemuxDecoder> joined_input_format_demux_decoder{ new JoinedInputFormatDemuxDecoder{} };
 	joined_input_format_demux_decoder->AddVideoFrameConsumer(spts_encode_mux->VideoEncodePipe());
 	joined_input_format_demux_decoder->AddAudioFrameConsumer(spts_encode_mux->AudioEncodePipe());
-	joined_input_format_demux_decoder->_get_format_callback = [&]()->shared_ptr<InputFormatContext>
+	joined_input_format_demux_decoder->_get_format_callback = [&]()->shared_ptr<InputFormat>
 	{
 		try
 		{
 			std::string file = file_queue.Dequeue();
-			shared_ptr<InputFormatContext> in_fmt_ctx{ new InputFormatContext{ file } };
+			shared_ptr<InputFormat> in_fmt_ctx{ new InputFormat{ file } };
 			in_fmt_ctx->DumpFormat();
 			return in_fmt_ctx;
 		}

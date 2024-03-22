@@ -8,7 +8,7 @@
 
 namespace video
 {
-	class InputFormatContext;
+	class InputFormat;
 
 	/**
 	 * @brief AVProgramWrapper 不拥有 AVProgram 对象，只是接收一个 AVProgram * 然后包装起来方便操作而已。

@@ -3,7 +3,7 @@
 #include<CancellationTokenSource.h>
 #include<DecoderPipe.h>
 #include<InfinitePacketPipe.h>
-#include<InputFormatContext.h>
+#include<InputFormat.h>
 #include<functional>
 #include<memory>
 
@@ -19,7 +19,7 @@ namespace video
 	class JoinedInputFormatDemuxDecoder
 	{
 	private:
-		shared_ptr<InputFormatContext> _current_intput_format;
+		shared_ptr<InputFormat> _current_intput_format;
 
 		AVStreamInfoCollection _video_stream_infos;
 		shared_ptr<DecoderPipe> _video_decode_pipe;
@@ -36,10 +36,10 @@ namespace video
 	public:
 		/// <summary>
 		///		当需要输入封装时就会触发此回调。
-		///		* 回调函数返回 InputFormatContext 对象则视频流继续。
+		///		* 回调函数返回 InputFormat 对象则视频流继续。
 		///		* 回调函数返回空指针则结束视频流。
 		/// </summary>
-		std::function<shared_ptr<InputFormatContext>()> _get_format_callback;
+		std::function<shared_ptr<InputFormat>()> _get_format_callback;
 
 		void Pump(shared_ptr<CancellationToken> cancel_pump);
 

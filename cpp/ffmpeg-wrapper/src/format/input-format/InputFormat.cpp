@@ -1,14 +1,14 @@
-#include "InputFormatContext.h"
+#include"InputFormat.h"
 #include<AVDictionaryWrapper.h>
-#include<ErrorCode.h>
 #include<AVPacketWrapper.h>
 #include<AVStreamWrapper.h>
 #include<AVToString.h>
+#include<ErrorCode.h>
 #include<include_ffmpeg.h>
 
 using namespace video;
 
-video::InputFormatContext::InputFormatContext(std::string url)
+video::InputFormat::InputFormat(std::string url)
 {
 	_url = url;
 	_wrapped_obj = avformat_alloc_context();
@@ -22,7 +22,21 @@ video::InputFormatContext::InputFormatContext(std::string url)
 	FindStreamInfo();
 }
 
-video::InputFormatContext::InputFormatContext(shared_ptr<AVIOContextWrapper> io_context)
+video::InputFormat::InputFormat(std::string url, AVInputFormat const *fmt, AVDictionary **options)
+{
+	_url = url;
+	_wrapped_obj = avformat_alloc_context();
+	int ret = ::avformat_open_input(&_wrapped_obj, url.c_str(), fmt, options);
+	if (ret < 0)
+	{
+		cout << CODE_POS_STR << "打开输入格式失败" << endl;
+		throw jc::Exception();
+	}
+
+	FindStreamInfo();
+}
+
+video::InputFormat::InputFormat(shared_ptr<AVIOContextWrapper> io_context)
 {
 	_io_context = io_context;
 	_wrapped_obj = avformat_alloc_context();
@@ -38,28 +52,20 @@ video::InputFormatContext::InputFormatContext(shared_ptr<AVIOContextWrapper> io_
 	FindStreamInfo();
 }
 
-video::InputFormatContext::InputFormatContext(std::string url, AVInputFormat const *fmt, AVDictionary **options)
+video::InputFormat::InputFormat(shared_ptr<Stream> input_stream) :
+	InputFormat(shared_ptr<AVIOContextWrapper>{ new AVIOContextWrapper{ false,input_stream } })
 {
-	_url = url;
-	_wrapped_obj = avformat_alloc_context();
-	int ret = ::avformat_open_input(&_wrapped_obj, url.c_str(), fmt, options);
-	if (ret < 0)
-	{
-		cout << CODE_POS_STR << "打开输入格式失败" << endl;
-		throw jc::Exception();
-	}
 
-	FindStreamInfo();
 }
 
-InputFormatContext::~InputFormatContext()
+InputFormat::~InputFormat()
 {
 	::avformat_close_input(&_wrapped_obj);
 	::avformat_free_context(_wrapped_obj);
 	_wrapped_obj = nullptr;
 }
 
-void InputFormatContext::DumpFormat()
+void InputFormat::DumpFormat()
 {
 	cout << endl;
 	cout << "------------------------------------------------------------" << endl;
@@ -70,7 +76,7 @@ void InputFormatContext::DumpFormat()
 	cout << endl;
 }
 
-void InputFormatContext::FindStreamInfo(::AVDictionary **options)
+void InputFormat::FindStreamInfo(::AVDictionary **options)
 {
 	int ret = ::avformat_find_stream_info(_wrapped_obj, options);
 	if (ret < 0)
@@ -80,7 +86,7 @@ void InputFormatContext::FindStreamInfo(::AVDictionary **options)
 	}
 }
 
-AVStreamWrapper InputFormatContext::FindBestStream(AVMediaType type)
+AVStreamWrapper InputFormat::FindBestStream(AVMediaType type)
 {
 	int ret = ::av_find_best_stream(
 		_wrapped_obj,
@@ -100,7 +106,7 @@ AVStreamWrapper InputFormatContext::FindBestStream(AVMediaType type)
 	return _wrapped_obj->streams[ret];
 }
 
-int InputFormatContext::ReadPacket(AVPacketWrapper &packet)
+int InputFormat::ReadPacket(AVPacketWrapper &packet)
 {
 	packet.unref();
 	int ret = ::av_read_frame(_wrapped_obj, packet);
@@ -112,7 +118,7 @@ int InputFormatContext::ReadPacket(AVPacketWrapper &packet)
 	return ret;
 }
 
-std::string InputFormatContext::get_duration_as_formatted_time_string()
+std::string InputFormat::get_duration_as_formatted_time_string()
 {
 	std::stringstream sstream;
 
@@ -136,12 +142,12 @@ std::string InputFormatContext::get_duration_as_formatted_time_string()
 	return re_value;
 }
 
-int InputFormatContext::StreamCount()
+int InputFormat::StreamCount()
 {
 	return _wrapped_obj->nb_streams;
 }
 
-AVStreamWrapper InputFormatContext::GetStream(int stream_index)
+AVStreamWrapper InputFormat::GetStream(int stream_index)
 {
 	// 强制转换为无符号类型就不用判断 stream_index >= 0 了
 	if ((uint32_t)stream_index >= _wrapped_obj->nb_streams)

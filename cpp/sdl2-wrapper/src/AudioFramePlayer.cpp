@@ -1,7 +1,7 @@
 #include "AudioFramePlayer.h"
 #include<AVCodecContextWrapper.h>
 #include<AVStreamWrapper.h>
-#include<InputFormatContext.h>
+#include<InputFormat.h>
 
 using namespace video;
 using namespace video;

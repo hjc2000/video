@@ -13,15 +13,16 @@ namespace video
 	class AVStreamWrapper;
 	class AVCodecContextWrapper;
 
-	class InputFormatContext :
+	class InputFormat :
 		public Wrapper<AVFormatContext>,
 		public IPacketSource
 	{
 	public:
-		InputFormatContext(std::string url);
-		InputFormatContext(shared_ptr<AVIOContextWrapper> io_context);
-		InputFormatContext(std::string url, AVInputFormat const *fmt, AVDictionary **options);
-		~InputFormatContext();
+		InputFormat(std::string url);
+		InputFormat(std::string url, AVInputFormat const *fmt, AVDictionary **options);
+		InputFormat(shared_ptr<AVIOContextWrapper> io_context);
+		InputFormat(shared_ptr<Stream> input_stream);
+		~InputFormat();
 
 	private:
 		string _url;

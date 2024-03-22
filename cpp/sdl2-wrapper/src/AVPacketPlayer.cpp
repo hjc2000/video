@@ -1,14 +1,14 @@
 #include<AVIOContextWrapper.h>
 #include<AVPacketPlayer.h>
 #include<FileStream.h>
-#include<InputFormatContext.h>
+#include<InputFormat.h>
 #include<PacketPump.h>
 
 void video::test_AVPacketPlayer()
 {
 	auto fs = FileStream::Open("渡尘.mp4");
 	shared_ptr<AVIOContextWrapper> io_context{ new AVIOContextWrapper{ false, fs } };
-	shared_ptr<InputFormatContext> in_fmt_ctx{ new InputFormatContext{ io_context } };
+	shared_ptr<InputFormat> in_fmt_ctx{ new InputFormat{ io_context } };
 	in_fmt_ctx->DumpFormat();
 
 	AVStreamWrapper best_audio_stream = in_fmt_ctx->FindBestStream(AVMediaType::AVMEDIA_TYPE_AUDIO);
