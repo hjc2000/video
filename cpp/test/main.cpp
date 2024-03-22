@@ -1,5 +1,4 @@
 ﻿#include<AVPacketPlayer.h>
-#include<InfiniteVideoStream.h>
 #include<SptsEncodeMux.h>
 #include<test_tsduck.h>
 
@@ -10,7 +9,6 @@ int main(void)
 	try
 	{
 		std::filesystem::current_path(Predefine_ResourceDir);
-		//test_ProgramEncoderMuxer();
 		test_SptsEncodeMux();
 		//test_AVPacketPlayer();
 		//test_tsduck();

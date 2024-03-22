@@ -100,7 +100,7 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 
 #include<List.h>
 #include<InputFormatContext.h>
-#include<InfiniteBestStreamDemuxDecoder.h>
+#include<FileStream.h>
 #include<CustomOutputFormatContext.h>
 #include<JoinedInputFormatDemuxDecoder.h>
 

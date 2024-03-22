@@ -1,16 +1,13 @@
 #include "stream_helper.h"
 #include<FileStream.h>
-#include<InfiniteVideoStream.h>
 #include<iostream>
 
 using namespace std;
-using namespace video;
 
 StreamHandle *GetFileStream(std::string *url)
 {
-	shared_ptr<InfiniteVideoStream> vs{ new InfiniteVideoStream{} };
-	//shared_ptr<FileStream> fs = FileStream::Open(url->c_str());
-	return new StreamHandle{ vs };
+	shared_ptr<FileStream> fs = FileStream::Open(url->c_str());
+	return new StreamHandle{ fs };
 }
 
 void FreeStream(StreamHandle *handle)
