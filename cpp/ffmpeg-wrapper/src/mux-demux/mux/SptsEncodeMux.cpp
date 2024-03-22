@@ -138,8 +138,11 @@ void test_SptsEncodeMux()
 
 	Queue<std::string> file_queue;
 	file_queue.Enqueue("fallen-down.ts");
-	file_queue.Enqueue("永远的奥特曼.mkv");
+	file_queue.Enqueue("越权访问.mkv");
+	file_queue.Enqueue("水龙吟.ts");
+	file_queue.Enqueue("idol.mp4");
 	file_queue.Enqueue("moon.mp4");
+	file_queue.Enqueue("zf.ts");
 
 	shared_ptr<JoinedInputFormatDemuxDecoder> joined_input_format_demux_decoder{ new JoinedInputFormatDemuxDecoder{} };
 	joined_input_format_demux_decoder->AddVideoFrameConsumer(spts_encode_mux->VideoEncodePipe());
