@@ -31,6 +31,7 @@ void video::JoinedInputFormatDemuxDecoder::OpenInputIfNull()
 		*/
 		_video_stream_infos.SetIndex(0);
 		_video_decode_pipe = shared_ptr<DecoderPipe>{ new DecoderPipe{_video_stream_infos} };
+		_video_decode_pipe->AddFrameConsumer(_video_frame_consumer_list);
 		_infinite_packet_pipe->AddPacketConsumer(_video_decode_pipe);
 	}
 	else
@@ -51,6 +52,7 @@ void video::JoinedInputFormatDemuxDecoder::OpenInputIfNull()
 		*/
 		_audio_stream_infos.SetIndex(1);
 		_audio_decode_pipe = shared_ptr<DecoderPipe>{ new DecoderPipe{_audio_stream_infos} };
+		_audio_decode_pipe->AddFrameConsumer(_audio_frame_consumer_list);
 		_infinite_packet_pipe->AddPacketConsumer(_audio_decode_pipe);
 	}
 	else

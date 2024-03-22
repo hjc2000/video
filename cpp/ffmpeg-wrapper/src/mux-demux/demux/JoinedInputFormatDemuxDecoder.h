@@ -4,7 +4,6 @@
 #include<DecoderPipe.h>
 #include<InfinitePacketPipe.h>
 #include<InputFormatContext.h>
-#include<atomic>
 #include<functional>
 #include<memory>
 
@@ -17,7 +16,6 @@ namespace video
 	class JoinedInputFormatDemuxDecoder
 	{
 	private:
-		std::atomic_bool _disposed = false;
 		shared_ptr<InputFormatContext> _current_intput_format;
 
 		AVStreamInfoCollection _video_stream_infos;
@@ -42,13 +40,16 @@ namespace video
 
 		void Pump(shared_ptr<CancellationToken> cancel_pump);
 
-		shared_ptr<PipeFrameSource> VideoDecodePipe()
+	private: List<shared_ptr<IFrameConsumer>> _video_frame_consumer_list;
+	private: List<shared_ptr<IFrameConsumer>> _audio_frame_consumer_list;
+	public:
+		void AddVideoFrameConsumer(shared_ptr<IFrameConsumer> consumer)
 		{
-			return _video_decode_pipe;
+			_video_frame_consumer_list.Add(consumer);
 		}
-		shared_ptr<PipeFrameSource> AudioDecodePipe()
+		void AddAudioFrameConsumer(shared_ptr<IFrameConsumer> consumer)
 		{
-			return _audio_decode_pipe;
+			_audio_frame_consumer_list.Add(consumer);
 		}
 	};
 }

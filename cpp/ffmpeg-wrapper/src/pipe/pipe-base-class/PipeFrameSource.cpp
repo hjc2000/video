@@ -2,6 +2,14 @@
 
 using namespace video;
 
+void IPipeFrameSource::AddFrameConsumer(List<shared_ptr<IFrameConsumer>> frame_consumers)
+{
+	for (auto consumer : frame_consumers)
+	{
+		AddFrameConsumer(consumer);
+	}
+}
+
 void PipeFrameSource::SendFrameToEachConsumer(AVFrameWrapper *frame)
 {
 	for (shared_ptr<IFrameConsumer> &consumer : _consumer_list)
@@ -29,6 +37,11 @@ bool PipeFrameSource::RemoveFrameConsumer(shared_ptr<IFrameConsumer> frame_consu
 	}
 
 	return _consumer_list.Remove(frame_consumer);
+}
+
+void PipeFrameSource::ClearFrameConsumer()
+{
+	_consumer_list.Clear();
 }
 
 void PipeFrameSource::AddConsumerFromAnotherPipe(PipeFrameSource &another)
