@@ -159,10 +159,16 @@ void test_SptsEncodeMux()
 			in_fmt_ctx->DumpFormat();
 			return in_fmt_ctx;
 		}
+		catch (std::exception &e)
+		{
+			cerr << e.what() << endl;
+		}
 		catch (...)
 		{
-			return nullptr;
+			cerr << "发生未知异常" << endl;
 		}
+
+		return nullptr;
 	};
 
 	CancellationTokenSource cancel_pump_source;
@@ -173,11 +179,16 @@ void test_SptsEncodeMux()
 		{
 			joined_input_format_demux_decoder->Pump(cancel_pump_source.Token());
 		}
+		catch (std::exception &e)
+		{
+			cerr << e.what() << endl;
+		}
 		catch (...)
 		{
-
+			cerr << "发生未知异常" << endl;
 		}
 
+		cout << "线程退出" << endl;
 		pump_thread_exit.SetResult();
 	}).detach();
 
