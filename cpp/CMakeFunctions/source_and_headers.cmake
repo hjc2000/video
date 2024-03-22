@@ -27,7 +27,9 @@ function(add_and_install_headers_recurse target src_dir)
     target_include_directories(${target} PUBLIC ${DIRS})
 
     # 安装所有收集到的头文件到安装前缀的include目录下
-    install(FILES ${HEADERS} DESTINATION include)
+    if(${option_install_headers})
+        install(FILES ${HEADERS} DESTINATION include)
+    endif()
 endfunction()
 
 
