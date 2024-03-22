@@ -12,7 +12,7 @@ endif()
 add_library(${ProjectName} SHARED)
 target_add_source_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
-add_and_install_include_dir_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
+add_and_install_headers_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 add_and_install_include_dir(${ProjectName} ${libs_path}/nlohmann-json/include/)
 
 # 安装规则
