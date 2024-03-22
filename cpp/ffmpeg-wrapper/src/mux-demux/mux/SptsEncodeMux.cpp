@@ -27,8 +27,8 @@ video::SptsEncodeMux::SptsEncodeMux(
 	_audio_codec_name = audio_codec_name;
 
 	// ts 必须使用 1/90000 时间基
-	_video_stream_infos.set_time_base(AVRational(1, 90000));
-	_audio_stream_infos.set_time_base(AVRational(1, 90000));
+	_video_stream_infos.set_time_base(AVRational{ 1, 90000 });
+	_audio_stream_infos.set_time_base(AVRational{ 1, 90000 });
 
 	InitVideoEncodePipe();
 	InitAudioEncodePipe();
@@ -143,9 +143,9 @@ void test_SptsEncodeMux()
 	};
 
 	Queue<std::string> file_queue;
+	file_queue.Enqueue("fallen-down.ts");
 	file_queue.Enqueue("永远的奥特曼.mkv");
 	file_queue.Enqueue("moon.mp4");
-	file_queue.Enqueue("崩坏世界的歌姬.ts");
 
 	shared_ptr<JoinedInputFormatDemuxDecoder> joined_input_format_demux_decoder{ new JoinedInputFormatDemuxDecoder{} };
 	joined_input_format_demux_decoder->AddVideoFrameConsumer(spts_encode_mux->VideoEncodePipe());
@@ -166,5 +166,22 @@ void test_SptsEncodeMux()
 	};
 
 	CancellationTokenSource cancel_pump_source;
-	joined_input_format_demux_decoder->Pump(cancel_pump_source.Token());
+	TaskCompletionSignal pump_thread_exit{ false };
+	std::thread([&]()
+	{
+		try
+		{
+			joined_input_format_demux_decoder->Pump(cancel_pump_source.Token());
+		}
+		catch (...)
+		{
+
+		}
+
+		pump_thread_exit.SetResult();
+	}).detach();
+
+	cin.get();
+	cancel_pump_source.Cancel();
+	pump_thread_exit.Wait();
 }

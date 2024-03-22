@@ -1,5 +1,6 @@
 #pragma once
 #include<Stream.h>
+#include<memory>
 #include<stdint.h>
 
 class StreamHandle
