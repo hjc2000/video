@@ -101,8 +101,8 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 #include<List.h>
 #include<InputFormat.h>
 #include<FileStream.h>
-#include<IOContextOutputFormat.h>
 #include<JoinedInputFormatDemuxDecoder.h>
+#include<StreamOutputFormat.h>
 
 /// <summary>
 ///		测试函数
@@ -110,13 +110,7 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 void test_SptsEncodeMux()
 {
 	shared_ptr<Stream> out_fs = FileStream::CreateNewAnyway("mux_out.ts");
-	shared_ptr<AVIOContextWrapper> out_io_ctx{ new AVIOContextWrapper{true, out_fs} };
-	shared_ptr<IOContextOutputFormat> out_fmt_ctx{
-		new IOContextOutputFormat{
-			"mux_out.ts",
-			out_io_ctx
-		}
-	};
+	shared_ptr<StreamOutputFormat> out_fmt_ctx{ new StreamOutputFormat{"a.ts",out_fs} };
 
 	VideoStreamInfoCollection out_video_stream_infos;
 	out_video_stream_infos._frame_rate = AVRational{ 30,1 };
