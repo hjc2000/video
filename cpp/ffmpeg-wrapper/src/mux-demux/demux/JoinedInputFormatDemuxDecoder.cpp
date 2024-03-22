@@ -16,6 +16,9 @@ void video::JoinedInputFormatDemuxDecoder::OpenInputIfNull()
 		return;
 	}
 
+	// 成功打开新的输入格式。
+	_infinite_packet_pipe->ClearPacketConsumer();
+
 	// 如果有视频流，初始化视频解码管道
 	AVStreamWrapper stream = _current_intput_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_VIDEO);
 	if (stream)
@@ -69,6 +72,7 @@ void video::JoinedInputFormatDemuxDecoder::Pump(shared_ptr<CancellationToken> ca
 		}
 
 		shared_ptr<PacketPump> packet_pump{ new PacketPump{_current_intput_format} };
+		packet_pump->AddPacketConsumer(_infinite_packet_pipe);
 		packet_pump->_on_before_send_packet_to_consumer = [&](AVPacketWrapper *packet)
 		{
 			if (!packet)
@@ -88,7 +92,7 @@ void video::JoinedInputFormatDemuxDecoder::Pump(shared_ptr<CancellationToken> ca
 				packet->set_stream_index(1);
 			}
 		};
-
-
+		packet_pump->Pump(cancel_pump);
+		_current_intput_format = nullptr;
 	}
 }
