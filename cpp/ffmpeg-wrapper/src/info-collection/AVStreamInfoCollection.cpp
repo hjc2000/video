@@ -69,6 +69,22 @@ AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamWrapper &strea
 	return *this;
 }
 
+void video::AVStreamInfoCollection::CopyCodecParamFrom(AVCodecParameters *src)
+{
+	// avcodec_parameters_copy 会先释放 dst，然后再将 src 的数据复制到 dst。
+	avcodec_parameters_copy(_codec_params, src);
+}
+
+int video::AVStreamInfoCollection::Index()
+{
+	return _index;
+}
+
+void video::AVStreamInfoCollection::SetIndex(int value)
+{
+	_index = value;
+}
+
 AVRational video::AVStreamInfoCollection::time_base()
 {
 	return _timebase;

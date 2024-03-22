@@ -14,13 +14,11 @@ namespace video
 		public IAudioStreamInfoCollection,
 		public IVideoStreamInfoCollection
 	{
-		#pragma region 生命周期
 	public:
 		AVStreamInfoCollection() {}
 		AVStreamInfoCollection(AVStreamInfoCollection const &stream);
 		AVStreamInfoCollection(AVStreamWrapper const &stream);
 		~AVStreamInfoCollection();
-		#pragma endregion
 
 		#pragma region 赋值运算符
 	public:
@@ -31,7 +29,6 @@ namespace video
 		AVStreamInfoCollection &operator=(AVStreamWrapper &stream);
 		#pragma endregion
 
-	public:
 		/// <summary>
 		///		当且仅当两个对象的指针相等时才相等。
 		/// </summary>
@@ -43,14 +40,13 @@ namespace video
 		}
 
 	private:
-		void CopyCodecParamFrom(AVCodecParameters *src)
-		{
-			// avcodec_parameters_copy 会先释放 dst，然后再将 src 的数据复制到 dst。
-			avcodec_parameters_copy(_codec_params, src);
-		}
+		void CopyCodecParamFrom(AVCodecParameters *src);
 
 	public:
 		int _index = -1;
+		int Index();
+		void SetIndex(int value);
+
 		AVMediaType _media_type{};
 		int64_t _bitrate = 0;
 		AVCodecParameters *_codec_params = avcodec_parameters_alloc();
@@ -65,20 +61,8 @@ namespace video
 		AVPixelFormat _pixel_format{};
 		AVRational _frame_rate{};
 
-		/// <summary>
-		///		此流在格式中的索引
-		/// </summary>
-		/// <returns></returns>
-		int Index()
-		{
-			return _index;
-		}
-		void SetIndex(int value)
-		{
-			_index = value;
-		}
-
 		#pragma region 通过 IAudioStreamInfoCollection 继承
+	public:
 		AVRational time_base() override;
 		void set_time_base(AVRational value) override;
 		AVSampleFormat sample_format() override;
@@ -90,6 +74,7 @@ namespace video
 		#pragma endregion
 
 		#pragma region 通过 IVideoStreamInfoCollection 继承
+	public:
 		int width() override;
 		void set_width(int value) override;
 		int height() override;
