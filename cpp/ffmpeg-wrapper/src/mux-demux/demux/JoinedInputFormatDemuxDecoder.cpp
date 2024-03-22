@@ -30,6 +30,7 @@ void video::JoinedInputFormatDemuxDecoder::OpenInputIfNull()
 		* DecoderPipe 的 SendPacket 方法会对送入的包进行过滤。如果索引号不匹配，不会解码。
 		*/
 		_video_stream_infos.SetIndex(0);
+		// 经过 InfinitePacketPipe 处理后时间基会变成 1/90000，所以这里需要改。
 		_video_stream_infos.set_time_base(AVRational{ 1,90000 });
 		_video_decode_pipe = shared_ptr<DecoderPipe>{ new DecoderPipe{_video_stream_infos} };
 		_video_decode_pipe->AddFrameConsumer(_video_frame_consumer_list);
@@ -52,6 +53,7 @@ void video::JoinedInputFormatDemuxDecoder::OpenInputIfNull()
 		* DecoderPipe 的 SendPacket 方法会对送入的包进行过滤。如果索引号不匹配，不会解码。
 		*/
 		_audio_stream_infos.SetIndex(1);
+		// 经过 InfinitePacketPipe 处理后时间基会变成 1/90000，所以这里需要改。
 		_audio_stream_infos.set_time_base(AVRational{ 1,90000 });
 		_audio_decode_pipe = shared_ptr<DecoderPipe>{ new DecoderPipe{_audio_stream_infos} };
 		_audio_decode_pipe->AddFrameConsumer(_audio_frame_consumer_list);
