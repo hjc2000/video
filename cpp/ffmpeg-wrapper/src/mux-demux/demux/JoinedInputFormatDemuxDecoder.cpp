@@ -30,6 +30,7 @@ void video::JoinedInputFormatDemuxDecoder::OpenInputIfNull()
 		* DecoderPipe 的 SendPacket 方法会对送入的包进行过滤。如果索引号不匹配，不会解码。
 		*/
 		_video_stream_infos.SetIndex(0);
+		_video_stream_infos.set_time_base(AVRational{ 1,90000 });
 		_video_decode_pipe = shared_ptr<DecoderPipe>{ new DecoderPipe{_video_stream_infos} };
 		_video_decode_pipe->AddFrameConsumer(_video_frame_consumer_list);
 		_infinite_packet_pipe->AddPacketConsumer(_video_decode_pipe);
@@ -51,6 +52,7 @@ void video::JoinedInputFormatDemuxDecoder::OpenInputIfNull()
 		* DecoderPipe 的 SendPacket 方法会对送入的包进行过滤。如果索引号不匹配，不会解码。
 		*/
 		_audio_stream_infos.SetIndex(1);
+		_audio_stream_infos.set_time_base(AVRational{ 1,90000 });
 		_audio_decode_pipe = shared_ptr<DecoderPipe>{ new DecoderPipe{_audio_stream_infos} };
 		_audio_decode_pipe->AddFrameConsumer(_audio_frame_consumer_list);
 		_infinite_packet_pipe->AddPacketConsumer(_audio_decode_pipe);
@@ -70,6 +72,7 @@ void video::JoinedInputFormatDemuxDecoder::Pump(shared_ptr<CancellationToken> ca
 		if (_current_intput_format == nullptr)
 		{
 			// 尝试打开输入后 _current_intput_format 仍然为空
+			_infinite_packet_pipe->FlushConsumer();
 			return;
 		}
 
@@ -97,4 +100,14 @@ void video::JoinedInputFormatDemuxDecoder::Pump(shared_ptr<CancellationToken> ca
 		packet_pump->Pump(cancel_pump);
 		_current_intput_format = nullptr;
 	}
+}
+
+void video::JoinedInputFormatDemuxDecoder::AddVideoFrameConsumer(shared_ptr<IFrameConsumer> consumer)
+{
+	_video_frame_consumer_list.Add(consumer);
+}
+
+void video::JoinedInputFormatDemuxDecoder::AddAudioFrameConsumer(shared_ptr<IFrameConsumer> consumer)
+{
+	_audio_frame_consumer_list.Add(consumer);
 }

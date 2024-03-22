@@ -32,6 +32,7 @@ video::SptsEncodeMux::SptsEncodeMux(
 
 	InitVideoEncodePipe();
 	InitAudioEncodePipe();
+	WriteHeader();
 }
 
 void video::SptsEncodeMux::InitVideoEncodePipe()
@@ -86,12 +87,12 @@ void video::SptsEncodeMux::WriteHeader()
 	_out_format->DumpFormat();
 }
 
-shared_ptr<IFrameConsumer> video::SptsEncodeMux::GetVideoEncodePipe()
+shared_ptr<IFrameConsumer> video::SptsEncodeMux::VideoEncodePipe()
 {
 	return _video_encode_pipe;
 }
 
-shared_ptr<IFrameConsumer> video::SptsEncodeMux::GetAudioEncodePipe()
+shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 {
 	return _audio_encode_pipe;
 }
@@ -101,40 +102,13 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::GetAudioEncodePipe()
 #include<InputFormatContext.h>
 #include<InfiniteBestStreamDemuxDecoder.h>
 #include<CustomOutputFormatContext.h>
+#include<JoinedInputFormatDemuxDecoder.h>
 
 /// <summary>
 ///		测试函数
 /// </summary>
 void test_SptsEncodeMux()
 {
-	List<std::string> format_list;
-	format_list.Add("moon.mp4");
-	format_list.Add("崩坏世界的歌姬.ts");
-	format_list.Add("越权访问.mkv");
-
-	// 节目解封装、解码管道
-	int format_index = 0;
-	auto get_format_callback = [&]()->shared_ptr<InputFormatContext>
-	{
-		shared_ptr<InputFormatContext> in_fmt_ctx{
-			new InputFormatContext{ format_list[format_index] }
-		};
-
-		in_fmt_ctx->DumpFormat();
-		format_index++;
-		if (format_index >= format_list.Count())
-		{
-			format_index = 0;
-		}
-
-		return in_fmt_ctx;
-	};
-
-	shared_ptr<InfiniteBestStreamDemuxDecoder_old> best_stream_demux_decoder{
-		new InfiniteBestStreamDemuxDecoder_old{get_format_callback}
-	};
-
-	// 准备输出格式
 	shared_ptr<Stream> out_fs = FileStream::CreateNewAnyway("mux_out.ts");
 	shared_ptr<AVIOContextWrapper> out_io_ctx{ new AVIOContextWrapper{true, out_fs} };
 	shared_ptr<CustomOutputFormatContext> out_fmt_ctx{
@@ -143,4 +117,54 @@ void test_SptsEncodeMux()
 			out_io_ctx
 		}
 	};
+
+	VideoStreamInfoCollection out_video_stream_infos;
+	out_video_stream_infos._frame_rate = AVRational{ 30,1 };
+	out_video_stream_infos._width = 1920;
+	out_video_stream_infos._height = 1080;
+	out_video_stream_infos._pixel_format = AVPixelFormat::AV_PIX_FMT_YUV420P;
+	out_video_stream_infos._time_base = AVRational{ 1,90000 };
+
+	AudioStreamInfoCollection out_audio_stream_infos;
+	out_audio_stream_infos._ch_layout = AVChannelLayoutExtension::get_2_0_layout_channel();
+	out_audio_stream_infos._sample_format = AVSampleFormat::AV_SAMPLE_FMT_FLTP;
+	out_audio_stream_infos._sample_rate = 48000;
+	out_audio_stream_infos._time_base = AVRational{ 1,90000 };
+
+	shared_ptr<SptsEncodeMux> spts_encode_mux{
+		new SptsEncodeMux{
+			out_fmt_ctx,
+			out_video_stream_infos,
+			"hevc_amf",
+			-1,
+			out_audio_stream_infos,
+			"aac"
+		}
+	};
+
+	Queue<std::string> file_queue;
+	file_queue.Enqueue("moon.mp4");
+	file_queue.Enqueue("崩坏世界的歌姬.ts");
+	//file_queue.Enqueue("越权访问.mkv");
+
+	shared_ptr<JoinedInputFormatDemuxDecoder> joined_input_format_demux_decoder{ new JoinedInputFormatDemuxDecoder{} };
+	joined_input_format_demux_decoder->AddVideoFrameConsumer(spts_encode_mux->VideoEncodePipe());
+	joined_input_format_demux_decoder->AddAudioFrameConsumer(spts_encode_mux->AudioEncodePipe());
+	joined_input_format_demux_decoder->_get_format_callback = [&]()->shared_ptr<InputFormatContext>
+	{
+		try
+		{
+			std::string file = file_queue.Dequeue();
+			shared_ptr<InputFormatContext> in_fmt_ctx{ new InputFormatContext{ file } };
+			in_fmt_ctx->DumpFormat();
+			return in_fmt_ctx;
+		}
+		catch (...)
+		{
+			return nullptr;
+		}
+	};
+
+	CancellationTokenSource cancel_pump_source;
+	joined_input_format_demux_decoder->Pump(cancel_pump_source.Token());
 }

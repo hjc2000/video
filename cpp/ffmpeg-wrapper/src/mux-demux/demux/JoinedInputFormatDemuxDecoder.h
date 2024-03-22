@@ -12,6 +12,9 @@ namespace video
 	/// <summary>
 	///		将输入格式拼接起来，进行解封装、解码。一个输入格式结束后会继续获取
 	///		下一个输入格式。最终输出来自不同输入格式解封装、解码后的视频帧、音频帧。
+	/// 
+	///		这些视频帧、音频帧的时间戳是连续的，但是因为来自不同文件，分辨率、像素格式、采样率、
+	///		采样格式等信息可能会变。编码侧要能够自适应，必要时进行重采样。
 	/// </summary>
 	class JoinedInputFormatDemuxDecoder
 	{
@@ -40,16 +43,12 @@ namespace video
 
 		void Pump(shared_ptr<CancellationToken> cancel_pump);
 
-	private: List<shared_ptr<IFrameConsumer>> _video_frame_consumer_list;
-	private: List<shared_ptr<IFrameConsumer>> _audio_frame_consumer_list;
+	private:
+		List<shared_ptr<IFrameConsumer>> _video_frame_consumer_list;
+		List<shared_ptr<IFrameConsumer>> _audio_frame_consumer_list;
+
 	public:
-		void AddVideoFrameConsumer(shared_ptr<IFrameConsumer> consumer)
-		{
-			_video_frame_consumer_list.Add(consumer);
-		}
-		void AddAudioFrameConsumer(shared_ptr<IFrameConsumer> consumer)
-		{
-			_audio_frame_consumer_list.Add(consumer);
-		}
+		void AddVideoFrameConsumer(shared_ptr<IFrameConsumer> consumer);
+		void AddAudioFrameConsumer(shared_ptr<IFrameConsumer> consumer);
 	};
 }

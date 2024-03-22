@@ -38,8 +38,8 @@ namespace video
 		void WriteHeader();
 
 	public:
-		shared_ptr<IFrameConsumer> GetVideoEncodePipe();
-		shared_ptr<IFrameConsumer> GetAudioEncodePipe();
+		shared_ptr<IFrameConsumer> VideoEncodePipe();
+		shared_ptr<IFrameConsumer> AudioEncodePipe();
 	};
 }
 
