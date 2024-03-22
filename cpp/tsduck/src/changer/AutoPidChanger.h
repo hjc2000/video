@@ -35,7 +35,7 @@ namespace video
 		#pragma region PipeTsPacketSource
 	public:
 		virtual void AddTsPacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
-		virtual bool RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
+		virtual bool RemovePacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
 		virtual void ClearConsumers() override;
 		#pragma endregion
 

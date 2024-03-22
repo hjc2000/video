@@ -21,7 +21,7 @@ void PipePacketSource::AddPacketConsumer(shared_ptr<IPacketConsumer> packet_coms
 	_consumer_list.Add(packet_comsumer);
 }
 
-bool PipePacketSource::RemovePacketComsumer(shared_ptr<IPacketConsumer> packet_comsumer)
+bool PipePacketSource::RemovePacketConsumer(shared_ptr<IPacketConsumer> packet_comsumer)
 {
 	if (!packet_comsumer)
 	{
@@ -29,6 +29,11 @@ bool PipePacketSource::RemovePacketComsumer(shared_ptr<IPacketConsumer> packet_c
 	}
 
 	return _consumer_list.Remove(packet_comsumer);
+}
+
+void PipePacketSource::ClearPacketConsumer()
+{
+	_consumer_list.Clear();
 }
 
 void PipePacketSource::AddConsumerFromAnotherPipe(PipePacketSource &another)

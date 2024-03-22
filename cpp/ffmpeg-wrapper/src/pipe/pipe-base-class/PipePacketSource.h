@@ -11,7 +11,8 @@ namespace video
 
 	public:
 		virtual void AddPacketConsumer(shared_ptr<IPacketConsumer> packet_comsumer) = 0;
-		virtual bool RemovePacketComsumer(shared_ptr<IPacketConsumer> packet_comsumer) = 0;
+		virtual bool RemovePacketConsumer(shared_ptr<IPacketConsumer> packet_comsumer) = 0;
+		virtual void ClearPacketConsumer() = 0;
 	};
 
 	class PipePacketSource :public IPipePacketSource
@@ -30,8 +31,8 @@ namespace video
 
 	public:
 		void AddPacketConsumer(shared_ptr<IPacketConsumer> packet_comsumer) override;
-
-		bool RemovePacketComsumer(shared_ptr<IPacketConsumer> packet_comsumer) override;
+		bool RemovePacketConsumer(shared_ptr<IPacketConsumer> packet_comsumer) override;
+		void ClearPacketConsumer() override;
 
 		/// <summary>
 		///		将另一个 PipePacketSource 的消费者复制过来。

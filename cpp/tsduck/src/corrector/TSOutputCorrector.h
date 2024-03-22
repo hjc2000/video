@@ -22,7 +22,7 @@ namespace video
 	public:
 		#pragma region 通过 IPipeTsPacketSource 继承
 		void AddTsPacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
-		bool RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
+		bool RemovePacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
 		void ClearConsumers() override;
 		#pragma endregion
 

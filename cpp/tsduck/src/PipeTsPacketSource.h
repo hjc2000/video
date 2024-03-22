@@ -26,7 +26,7 @@ namespace video
 		/// </summary>
 		/// <param name="packet_comsumer"></param>
 		/// <returns>容器中存在该消费者且移除成功则返回 true，否则返回 false。</returns>
-		virtual bool RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) = 0;
+		virtual bool RemovePacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) = 0;
 
 		/// <summary>
 		///		清空所有消费者。
@@ -45,7 +45,7 @@ namespace video
 
 	public:
 		virtual void AddTsPacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
-		virtual bool RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
+		virtual bool RemovePacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer) override;
 		virtual void ClearConsumers() override;
 
 	public:

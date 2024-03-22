@@ -130,9 +130,9 @@ void video::AutoChangeIdProgramMux::AddTsPacketConsumer(shared_ptr<ITSPacketCons
 	_program_mux->AddTsPacketConsumer(packet_comsumer);
 }
 
-bool video::AutoChangeIdProgramMux::RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
+bool video::AutoChangeIdProgramMux::RemovePacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
 {
-	return _program_mux->RemovePacketComsumer(packet_comsumer);
+	return _program_mux->RemovePacketConsumer(packet_comsumer);
 }
 
 void video::AutoChangeIdProgramMux::ClearConsumers()

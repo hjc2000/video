@@ -220,13 +220,13 @@ void video::AutoPidChanger::AddTsPacketConsumer(shared_ptr<ITSPacketConsumer> pa
 	}
 }
 
-bool video::AutoPidChanger::RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
+bool video::AutoPidChanger::RemovePacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
 {
 	bool ret = false;
-	ret |= PipeTsPacketSource::RemovePacketComsumer(packet_comsumer);
+	ret |= PipeTsPacketSource::RemovePacketConsumer(packet_comsumer);
 	if (_pid_changer)
 	{
-		ret |= _pid_changer->RemovePacketComsumer(packet_comsumer);
+		ret |= _pid_changer->RemovePacketConsumer(packet_comsumer);
 	}
 
 	return ret;

@@ -1,5 +1,123 @@
 #include "DecoderPipe.h"
 
+using namespace video;
+
+DecoderPipe::DecoderPipe(AVStreamInfoCollection stream)
+{
+	_stream_infos = stream;
+	_decoder = AVCodecContextWrapper::CreateDecoder(stream);
+}
+
+DecoderPipe::~DecoderPipe()
+{
+	Dispose();
+}
+
+void DecoderPipe::Dispose()
+{
+	if (_disposed) return;
+	_disposed = true;
+}
+
+shared_ptr<AVCodecContextWrapper> DecoderPipe::DecoderContext()
+{
+	return _decoder;
+}
+
+void DecoderPipe::SendPacket(AVPacketWrapper *packet)
+{
+	if (_consumer_list.Count() == 0)
+	{
+		// 管道出口没有接收者。直接返回，节省性能。
+		return;
+	}
+
+	// 防止解码器中有数据残留，会导致送入包失败
+	read_and_send_frame();
+
+	if (!packet)
+	{
+		// 冲洗解码器
+		_decoder->SendPacket(nullptr);
+		read_and_send_frame();
+		return;
+	}
+
+	// packet 不是空指针
+	if (packet->stream_index() != _stream_infos._index)
+	{
+		// 索引不匹配，直接返回。
+		return;
+	}
+
+	_decoder->SendPacket(packet);
+	read_and_send_frame();
+}
+
+void DecoderPipe::read_and_send_frame()
+{
+	while (!_disposed)
+	{
+		int ret = _decoder->ReadFrame(_decoder_out_frame);
+		switch (ret)
+		{
+		case 0:
+			{
+				SendFrameToEachConsumer(&_decoder_out_frame);
+				break;
+			}
+		case (int)ErrorCode::output_is_temporarily_unavailable:
+			{
+				// 解码器需要继续输入包才能输出帧
+				return;
+			}
+		case (int)ErrorCode::eof:
+			{
+				// 解码器已被冲洗
+				SendFrameToEachConsumer(nullptr);
+				return;
+			}
+		default:
+			{
+				// 未知错误
+				throw jc::Exception();
+			}
+		}
+	}
+}
+
+void DecoderPipe::FlushDecoderButNotFlushConsumers()
+{
+	_decoder->SendPacket(nullptr);
+	while (!_disposed)
+	{
+		int ret = _decoder->ReadFrame(_decoder_out_frame);
+		switch (ret)
+		{
+		case 0:
+			{
+				SendFrameToEachConsumer(&_decoder_out_frame);
+				break;
+			}
+		case (int)ErrorCode::output_is_temporarily_unavailable:
+			{
+				// 解码器需要继续输入包才能输出帧
+				return;
+			}
+		case (int)ErrorCode::eof:
+			{
+				// 解码器已被冲洗，但这里不冲洗消费者。
+				return;
+			}
+		default:
+			{
+				// 未知错误
+				throw jc::Exception();
+			}
+		}
+	}
+}
+
 #pragma region IAudioStreamInfoCollection, IVideoStreamInfoCollection
 AVRational video::DecoderPipe::time_base()
 {

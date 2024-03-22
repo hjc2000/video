@@ -13,9 +13,9 @@ void video::TSOutputCorrector::AddTsPacketConsumer(shared_ptr<ITSPacketConsumer>
 	_cccorrect->AddTsPacketConsumer(packet_comsumer);
 }
 
-bool video::TSOutputCorrector::RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
+bool video::TSOutputCorrector::RemovePacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
 {
-	return _cccorrect->RemovePacketComsumer(packet_comsumer);
+	return _cccorrect->RemovePacketConsumer(packet_comsumer);
 }
 
 void video::TSOutputCorrector::ClearConsumers()

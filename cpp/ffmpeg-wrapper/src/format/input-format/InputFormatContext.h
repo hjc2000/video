@@ -19,11 +19,8 @@ namespace video
 	{
 	public:
 		InputFormatContext(std::string url);
-
 		InputFormatContext(shared_ptr<AVIOContextWrapper> io_context);
-
-		InputFormatContext(std::string url, const AVInputFormat *fmt, AVDictionary **options);
-
+		InputFormatContext(std::string url, AVInputFormat const *fmt, AVDictionary **options);
 		~InputFormatContext();
 
 	private:
@@ -63,28 +60,24 @@ namespace video
 		int ReadPacket(AVPacketWrapper &packet) override;
 
 	public:
-		/**
-		 * @brief 获取视频时长。要先调用 FindStreamInfo 方法分析流信息后才能调用此方法，否则得到
-		 * 的结果是错误的
-		 *
-		 * @return 返回结果是一个字符串，里面储存着格式化过的时间
-		*/
+		/// <summary>
+		///		获取视频时长。要先调用 FindStreamInfo 方法分析流信息后才能调用此方法，
+		///		否则得到的结果是错误的
+		/// </summary>
+		/// <returns>返回结果是一个字符串，里面储存着格式化过的时间</returns>
 		std::string get_duration_as_formatted_time_string();
 
-		/**
-		 * @brief 流的数量
-		 * @return
-		*/
-		int StreamCount()
-		{
-			return _wrapped_obj->nb_streams;
-		}
+		/// <summary>
+		///		流的数量
+		/// </summary>
+		/// <returns></returns>
+		int StreamCount();
 
-		/**
-		 * @brief 获取指定索引的流。流的索引号超出范围会抛出异常
-		 * @param stream_index
-		 * @return
-		*/
+		/// <summary>
+		///		获取指定索引的流。流的索引号超出范围会抛出异常
+		/// </summary>
+		/// <param name="stream_index"></param>
+		/// <returns></returns>
 		AVStreamWrapper GetStream(int stream_index);
 	};
 }

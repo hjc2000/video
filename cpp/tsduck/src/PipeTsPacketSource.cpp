@@ -38,7 +38,7 @@ void video::PipeTsPacketSource::AddTsPacketConsumer(shared_ptr<ITSPacketConsumer
 	_consumer_list.Add(packet_comsumer);
 }
 
-bool video::PipeTsPacketSource::RemovePacketComsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
+bool video::PipeTsPacketSource::RemovePacketConsumer(shared_ptr<ITSPacketConsumer> packet_comsumer)
 {
 	if (!packet_comsumer)
 	{

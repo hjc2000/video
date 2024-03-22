@@ -38,7 +38,7 @@ video::InputFormatContext::InputFormatContext(shared_ptr<AVIOContextWrapper> io_
 	FindStreamInfo();
 }
 
-video::InputFormatContext::InputFormatContext(std::string url, const AVInputFormat *fmt, AVDictionary **options)
+video::InputFormatContext::InputFormatContext(std::string url, AVInputFormat const *fmt, AVDictionary **options)
 {
 	_url = url;
 	_wrapped_obj = avformat_alloc_context();
@@ -134,6 +134,11 @@ std::string InputFormatContext::get_duration_as_formatted_time_string()
 	std::string re_value;
 	sstream >> re_value;
 	return re_value;
+}
+
+int InputFormatContext::StreamCount()
+{
+	return _wrapped_obj->nb_streams;
 }
 
 AVStreamWrapper InputFormatContext::GetStream(int stream_index)
