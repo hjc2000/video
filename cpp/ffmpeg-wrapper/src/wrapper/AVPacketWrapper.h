@@ -37,40 +37,16 @@ namespace video
 		/// </summary>
 		void unref();
 
-		int64_t Duration() const
-		{
-			return _wrapped_obj->duration;
-		}
-		void SetDuration(int64_t value)
-		{
-			_wrapped_obj->duration = value;
-		}
+		int64_t Duration() const;
+		void SetDuration(int64_t value);
 
-		int64_t pts() const
-		{
-			return _wrapped_obj->pts;
-		}
-		void set_pts(int64_t value)
-		{
-			_wrapped_obj->pts = value;
-		}
+		int64_t pts() const;
+		void set_pts(int64_t value);
 
-		int64_t dts() const
-		{
-			return _wrapped_obj->dts;
-		}
-		void set_dts(int64_t value)
-		{
-			_wrapped_obj->dts = value;
-		}
+		int64_t dts() const;
+		void set_dts(int64_t value);
 
-		AVRational time_base() const
-		{
-			return _wrapped_obj->time_base;
-		}
-		void set_time_base(AVRational value)
-		{
-			_wrapped_obj->time_base = value;
-		}
+		AVRational time_base() const;
+		void set_time_base(AVRational value);
 	};
 }

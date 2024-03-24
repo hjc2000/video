@@ -63,3 +63,43 @@ void AVPacketWrapper::SetStreamIndex(int value)
 {
 	_wrapped_obj->stream_index = value;
 }
+
+int64_t AVPacketWrapper::Duration() const
+{
+	return _wrapped_obj->duration;
+}
+
+void AVPacketWrapper::SetDuration(int64_t value)
+{
+	_wrapped_obj->duration = value;
+}
+
+int64_t AVPacketWrapper::pts() const
+{
+	return _wrapped_obj->pts;
+}
+
+void AVPacketWrapper::set_pts(int64_t value)
+{
+	_wrapped_obj->pts = value;
+}
+
+int64_t AVPacketWrapper::dts() const
+{
+	return _wrapped_obj->dts;
+}
+
+void AVPacketWrapper::set_dts(int64_t value)
+{
+	_wrapped_obj->dts = value;
+}
+
+AVRational AVPacketWrapper::time_base() const
+{
+	return _wrapped_obj->time_base;
+}
+
+void AVPacketWrapper::set_time_base(AVRational value)
+{
+	_wrapped_obj->time_base = value;
+}
