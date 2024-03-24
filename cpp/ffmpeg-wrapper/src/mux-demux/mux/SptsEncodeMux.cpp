@@ -138,7 +138,7 @@ void test_SptsEncodeMux()
 
 	Queue<std::string> file_queue;
 	file_queue.Enqueue("fallen-down.ts");
-	file_queue.Enqueue("越权访问.mkv");
+	file_queue.Enqueue("Nightglow.mp4");
 	file_queue.Enqueue("水龙吟.ts");
 	file_queue.Enqueue("idol.mp4");
 	file_queue.Enqueue("moon.mp4");
