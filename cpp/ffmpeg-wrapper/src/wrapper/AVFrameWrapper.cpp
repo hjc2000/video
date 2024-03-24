@@ -4,6 +4,60 @@
 
 using namespace video;
 
+AVFrameWrapper::AVFrameWrapper()
+{
+	_wrapped_obj = av_frame_alloc();
+}
+
+AVFrameWrapper::AVFrameWrapper(IAudioStreamInfoCollection &infos, int nb_samples) :AVFrameWrapper()
+{
+	IAudioStreamInfoCollection::operator=(infos);
+	set_nb_samples(nb_samples);
+	get_buffer(0);
+}
+
+AVFrameWrapper::AVFrameWrapper(IAudioFrameInfoCollection &infos) :AVFrameWrapper()
+{
+	IAudioFrameInfoCollection::operator=(infos);
+	get_buffer(0);
+}
+
+AVFrameWrapper::AVFrameWrapper(IVideoFrameInfoCollection &infos) :AVFrameWrapper()
+{
+	IVideoFrameInfoCollection::operator=(infos);
+	get_buffer(0);
+}
+
+AVFrameWrapper::AVFrameWrapper(AVFrameWrapper const &another) :AVFrameWrapper()
+{
+	ref(another);
+}
+
+AVFrameWrapper::~AVFrameWrapper()
+{
+	av_frame_free(&_wrapped_obj);
+}
+
+AVFrameWrapper &AVFrameWrapper::operator=(AVFrameWrapper const &another)
+{
+	ref(another);
+	return *this;
+}
+
+AVFrameWrapper &AVFrameWrapper::operator=(AVFrameWrapper &&another)
+{
+	ref(another);
+	return *this;
+}
+
+void AVFrameWrapper::ChangeTimeBase(AVRational new_time_base)
+{
+	AVRational old_time_base = _wrapped_obj->time_base;
+	_wrapped_obj->time_base = new_time_base;
+	_wrapped_obj->pts = ConvertTimeStamp(_wrapped_obj->pts, old_time_base, new_time_base);
+	_wrapped_obj->duration = ConvertTimeStamp(_wrapped_obj->duration, old_time_base, new_time_base);
+}
+
 int video::AVFrameWrapper::audio_data_size()
 {
 	/*  平面类型的声道布局，每一个声道的缓冲区后面都会有间隙。包类型的声道布局，多个声道的采样值
@@ -50,6 +104,21 @@ void AVFrameWrapper::get_buffer(int align)
 	}
 }
 
+void AVFrameWrapper::ref(AVFrameWrapper const &other)
+{
+	unref();
+	int ret = av_frame_ref(_wrapped_obj, (AVFrameWrapper &)other);
+	if (ret < 0)
+	{
+		throw jc::Exception();
+	}
+}
+
+void AVFrameWrapper::unref()
+{
+	::av_frame_unref(_wrapped_obj);
+}
+
 void AVFrameWrapper::make_writable()
 {
 	int ret = ::av_frame_make_writable(_wrapped_obj);
@@ -58,6 +127,14 @@ void AVFrameWrapper::make_writable()
 		cout << CODE_POS_STR << "av_frame_make_writable 失败。" << endl;
 		throw jc::Exception();
 	}
+}
+
+std::chrono::milliseconds AVFrameWrapper::PtsToMilliseconds()
+{
+	int64_t num = pts() * 1000 * time_base().num;
+	int64_t den = time_base().den;
+	std::chrono::milliseconds m{ num / den };
+	return m;
 }
 
 void AVFrameWrapper::copy_image_to_buffer(shared_ptr<ImageBuffer> buffer)
@@ -70,6 +147,26 @@ void AVFrameWrapper::copy_image_to_buffer(shared_ptr<ImageBuffer> buffer)
 		(AVPixelFormat)_wrapped_obj->format,
 		_wrapped_obj->width,
 		_wrapped_obj->height
+	);
+}
+
+void AVFrameWrapper::CopyAudioDataToBuffer(uint8_t *buffer, int len)
+{
+	if (IsPlanar())
+	{
+		throw jc::Exception("本帧是平面类型，写入缓冲区的音频数据不允许是平面类型");
+	}
+
+	memcpy(buffer, _wrapped_obj->extended_data[0], len);
+}
+
+std::string AVFrameWrapper::ToString()
+{
+	return std::format(
+		"pts={}, time_base={}, sample_format={}",
+		_wrapped_obj->pts,
+		::ToString(_wrapped_obj->time_base),
+		!_wrapped_obj->width ? ::ToString(sample_format()) : ""
 	);
 }
 

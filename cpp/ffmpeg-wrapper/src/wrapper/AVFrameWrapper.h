@@ -18,83 +18,43 @@ namespace video
 		public IAudioFrameInfoCollection,
 		public IVideoFrameInfoCollection
 	{
-		#pragma region 构造函数
+		#pragma region 构造函数，析构函数
 	public:
-		AVFrameWrapper()
-		{
-			_wrapped_obj = av_frame_alloc();
-		}
+		AVFrameWrapper();
 
-		/**
-		 * @brief 构造音频帧。会分配缓冲区。
-		 * @param infos
-		 * @param nb_samples
-		*/
-		AVFrameWrapper(IAudioStreamInfoCollection &infos, int nb_samples) :AVFrameWrapper()
-		{
-			IAudioStreamInfoCollection::operator=(infos);
-			set_nb_samples(nb_samples);
-			get_buffer(0);
-		}
+		/// <summary>
+		///		构造音频帧。会分配缓冲区。
+		/// </summary>
+		/// <param name="infos"></param>
+		/// <param name="nb_samples"></param>
+		AVFrameWrapper(IAudioStreamInfoCollection &infos, int nb_samples);
 
-		/**
-		 * @brief 构造音频帧。会分配缓冲区。
-		 * @param infos
-		*/
-		AVFrameWrapper(IAudioFrameInfoCollection &infos) :AVFrameWrapper()
-		{
-			IAudioFrameInfoCollection::operator=(infos);
-			get_buffer(0);
-		}
+		/// <summary>
+		///		构造音频帧。会分配缓冲区。
+		/// </summary>
+		/// <param name="infos"></param>
+		AVFrameWrapper(IAudioFrameInfoCollection &infos);
 
-		/**
-		 * @brief 根据 infos 中的信息构造视频帧。会分配缓冲区。
-		 * @param infos
-		*/
-		AVFrameWrapper(IVideoFrameInfoCollection &infos) :AVFrameWrapper()
-		{
-			IVideoFrameInfoCollection::operator=(infos);
-			get_buffer(0);
-		}
+		/// <summary>
+		///		根据 infos 中的信息构造视频帧。会分配缓冲区。
+		/// </summary>
+		/// <param name="infos"></param>
+		AVFrameWrapper(IVideoFrameInfoCollection &infos);
 
-		AVFrameWrapper(AVFrameWrapper const &another) :AVFrameWrapper()
-		{
-			ref(another);
-		}
-		#pragma endregion
+		AVFrameWrapper(AVFrameWrapper const &another);
 
-		#pragma region 赋值运算符
-	public:
-		AVFrameWrapper &operator=(AVFrameWrapper const &another)
-		{
-			ref(another);
-			return *this;
-		}
-
-		AVFrameWrapper &operator=(AVFrameWrapper &&another)
-		{
-			ref(another);
-			return *this;
-		}
+		~AVFrameWrapper();
 		#pragma endregion
 
 	public:
-		~AVFrameWrapper()
-		{
-			av_frame_free(&_wrapped_obj);
-		}
+		AVFrameWrapper &operator=(AVFrameWrapper const &another);
+		AVFrameWrapper &operator=(AVFrameWrapper &&another);
 
 	private:
 		shared_ptr<ImageBuffer> _image_buf;
 
 	public:
-		void ChangeTimeBase(AVRational new_time_base)
-		{
-			AVRational old_time_base = _wrapped_obj->time_base;
-			_wrapped_obj->time_base = new_time_base;
-			_wrapped_obj->pts = ConvertTimeStamp(_wrapped_obj->pts, old_time_base, new_time_base);
-			_wrapped_obj->duration = ConvertTimeStamp(_wrapped_obj->duration, old_time_base, new_time_base);
-		}
+		void ChangeTimeBase(AVRational new_time_base);
 
 		/// <summary>
 		///		获取音频数据的大小。
@@ -131,29 +91,17 @@ namespace video
 			return av_frame_is_writable(_wrapped_obj);
 		}
 
-		/**
-		 * @brief 让本帧引用另一个帧的缓冲区并复制其它参数。
-		 * - 在引用另一个帧之前会先调用 unref 方法。
-		 *
-		 * @param another
-		*/
-		void ref(AVFrameWrapper const &other)
-		{
-			unref();
-			int ret = av_frame_ref(_wrapped_obj, (AVFrameWrapper &)other);
-			if (ret < 0)
-			{
-				throw jc::Exception();
-			}
-		}
+		/// <summary>
+		///		让本帧引用另一个帧的缓冲区并复制其它参数。
+		///		在引用另一个帧之前会先调用 unref 方法。
+		/// </summary>
+		/// <param name="other"></param>
+		void ref(AVFrameWrapper const &other);
 
-		/**
-		 * @brief 解除此帧对缓冲区的引用。重复调用不会出错
-		*/
-		void unref()
-		{
-			::av_frame_unref(_wrapped_obj);
-		}
+		/// <summary>
+		///		解除此帧对缓冲区的引用。重复调用不会出错
+		/// </summary>
+		void unref();
 
 	public:// 时间
 		int64_t pts()
@@ -179,13 +127,7 @@ namespace video
 		///		* 需要保证本帧的时间基被正确设置。
 		/// </summary>
 		/// <returns></returns>
-		std::chrono::milliseconds PtsToMilliseconds()
-		{
-			int64_t num = pts() * 1000 * time_base().num;
-			int64_t den = time_base().den;
-			std::chrono::milliseconds m{ num / den };
-			return m;
-		}
+		std::chrono::milliseconds PtsToMilliseconds();
 
 	public:// 复制数据到流，缓冲区
 		void copy_image_to_buffer(shared_ptr<ImageBuffer> buffer);
@@ -210,25 +152,9 @@ namespace video
 		/// </summary>
 		/// <param name="buffer"></param>
 		/// <param name="len"></param>
-		void CopyAudioDataToBuffer(uint8_t *buffer, int len)
-		{
-			if (IsPlanar())
-			{
-				throw jc::Exception("本帧是平面类型，写入缓冲区的音频数据不允许是平面类型");
-			}
+		void CopyAudioDataToBuffer(uint8_t *buffer, int len);
 
-			memcpy(buffer, _wrapped_obj->extended_data[0], len);
-		}
-
-		std::string ToString()
-		{
-			return std::format(
-				"pts={}, time_base={}, sample_format={}",
-				_wrapped_obj->pts,
-				::ToString(_wrapped_obj->time_base),
-				!_wrapped_obj->width ? ::ToString(sample_format()) : ""
-			);
-		}
+		std::string ToString();
 
 		#pragma region IAudioFrameInfoCollection
 		AVSampleFormat sample_format() override;

@@ -80,11 +80,11 @@ namespace video
 				return;
 			}
 
-			if (packet->stream_index() == _video_stream_index)
+			if (packet->StreamIndex() == _video_stream_index)
 			{
 				_video_packet_player->SendPacket(packet);
 			}
-			else if (packet->stream_index() == _audio_stream_index)
+			else if (packet->StreamIndex() == _audio_stream_index)
 			{
 				_audio_packet_player->SendPacket(packet);
 			}

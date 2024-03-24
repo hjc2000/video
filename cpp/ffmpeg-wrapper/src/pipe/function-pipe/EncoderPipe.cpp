@@ -65,7 +65,7 @@ void EncoderPipe::ReadAndSendPacketToOutputFormat()
 		{
 		case 0:
 			{
-				packet.set_stream_index(_new_stream.Index());
+				packet.SetStreamIndex(_new_stream.Index());
 				_output_format->SendPacket(&packet);
 
 				// 下一轮循环继续读取包

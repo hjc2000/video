@@ -88,15 +88,15 @@ void video::JoinedInputFormatDemuxDecoder::Pump(shared_ptr<CancellationToken> ca
 			}
 
 			packet->ChangeTimeBase(AVRational{ 1,90000 });
-			if (packet->stream_index() == _source_video_stream_index)
+			if (packet->StreamIndex() == _source_video_stream_index)
 			{
 				// 视频流的索引更改为 0.
-				packet->set_stream_index(0);
+				packet->SetStreamIndex(0);
 			}
-			else if (packet->stream_index() == _source_audio_stream_index)
+			else if (packet->StreamIndex() == _source_audio_stream_index)
 			{
 				// 音频流的索引更改为 1.
-				packet->set_stream_index(1);
+				packet->SetStreamIndex(1);
 			}
 		};
 		packet_pump->Pump(cancel_pump);
