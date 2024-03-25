@@ -13,10 +13,10 @@ namespace video
 	using std::cout;
 	using std::endl;
 
-	class PatParser :public ITSPacketConsumer
+	class TestProgramMux :public ITSPacketConsumer
 	{
 	public:
-		PatParser()
+		TestProgramMux()
 		{
 			_duck = shared_ptr<ts::DuckContext>{ new ts::DuckContext{&ts::CerrReport::Instance()} };
 

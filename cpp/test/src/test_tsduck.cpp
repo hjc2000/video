@@ -1,8 +1,8 @@
 #include "test_tsduck.h"
 #include<FileStream.h>
 #include<JoinedTsStream.h>
-#include<PatParser.h>
 #include<TSPacketStreamReader.h>
+#include<TestProgramMux.h>
 #include<filesystem>
 #include<tsCerrReport.h>
 
@@ -31,8 +31,8 @@ void test_tsduck()
 		joined_ts_stream.AddSource(ts_packet_reader);
 	};
 
-	shared_ptr<PatParser> pat_parset{ new PatParser{} };
-	ITSPacketSource::ReadPacketResult pump_result = joined_ts_stream.PumpTo(pat_parset);
+	shared_ptr<TestProgramMux> test_program_mux{ new TestProgramMux{} };
+	ITSPacketSource::ReadPacketResult pump_result = joined_ts_stream.PumpTo(test_program_mux);
 	switch (pump_result)
 	{
 	case ITSPacketSource::ReadPacketResult::NoMorePacket:

@@ -9,9 +9,9 @@ int main(void)
 	try
 	{
 		std::filesystem::current_path(Predefine_ResourceDir);
-		test_SptsEncodeMux();
+		//test_SptsEncodeMux();
 		//test_AVPacketPlayer();
-		//test_tsduck();
+		test_tsduck();
 		return 0;
 	}
 	catch (jc::Exception &e)
