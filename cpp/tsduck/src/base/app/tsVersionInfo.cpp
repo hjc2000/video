@@ -13,8 +13,6 @@
 #include "tsSysInfo.h"
 #include "tsSysUtils.h"
 #include "tsFileUtils.h"
-#include "tsSRTSocket.h"
-#include "tsRIST.h"
 
 // Exported version of the TSDuck library.
 // The names of these symbols are constant, their values are not.
@@ -245,14 +243,6 @@ ts::UString ts::VersionInfo::GetVersion(Format format, const UString& applicatio
             // The name tsduckVersionInfi contains a Window normalized version number X.X.X.X.
             return UString::Format(u"!define tsduckVersion \"%s\"\n!define tsduckVersionInfo \"%d.%d.%d.0\"",
                                    {GetVersion(Format::SHORT), TS_VERSION_MAJOR, TS_VERSION_MINOR, TS_COMMIT});
-        }
-        case Format::SRT: {
-            // The version of the SRT library.
-            return SRTSocket::GetLibraryVersion();
-        }
-        case Format::RIST: {
-            // The version of the RIST library.
-            return GetRISTLibraryVersion();
         }
         case Format::ACCELERATION: {
             // Support for accelerated instructions.
