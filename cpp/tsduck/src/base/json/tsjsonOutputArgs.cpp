@@ -116,28 +116,12 @@ bool ts::json::OutputArgs::loadArgs(DuckContext& duck, Args& args)
 
 bool ts::json::OutputArgs::udpOpen(Report& rep)
 {
-    if (_udp_sock.isOpen()) {
-        return true;
-    }
-    else if (!_udp_sock.open(rep)) {
-        return false;
-    }
-    else if (_udp_sock.setDefaultDestination(_udp_destination, rep) &&
-             (_sock_buffer_size == 0 || _udp_sock.setSendBufferSize(_sock_buffer_size, rep)) &&
-             (!_udp_local.hasAddress() || _udp_sock.setOutgoingMulticast(_udp_local, rep)) &&
-             (_udp_ttl <= 0 || _udp_sock.setTTL(_udp_ttl, rep)))
-    {
-        return true;
-    }
-    else {
-        _udp_sock.close(rep);
-        return false;
-    }
+    return true;
 }
 
 bool ts::json::OutputArgs::udpClose(Report& rep)
 {
-    return !_udp_sock.isOpen() || _udp_sock.close(rep);
+    return true;
 }
 
 
@@ -199,11 +183,6 @@ bool ts::json::OutputArgs::reportOthers(const json::Value& root, Report& rep)
         // Report in logger.
         if (_json_line) {
             rep.info(_line_prefix + line);
-        }
-
-        // Report through UDP. Open socket the first time.
-        if (_json_udp) {
-            udp_ok = udpOpen(rep) && _udp_sock.send(line8.data(), line8.size(), rep);
         }
 
         // Report through TCP. Connect to TCP server the first time (--json-tcp-keep) or every time.

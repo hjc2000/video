@@ -13,7 +13,6 @@
 
 #pragma once
 #include "tsUString.h"
-#include "tsUDPSocket.h"
 #include "tsTelnetConnection.h"
 
 namespace ts {
@@ -105,7 +104,6 @@ namespace ts {
             IPv4Address       _udp_local {};          // Name of outgoing local address.
             int               _udp_ttl = 0;           // Time-to-live socket option.
             size_t            _sock_buffer_size = 0;  // Socket buffer size (TCP and UDP).
-            UDPSocket         _udp_sock {};           // Output UDP socket.
             TelnetConnection  _tcp_sock {};           // Output TCP socket.
 
             // Issue a JSON report, except --json file.
