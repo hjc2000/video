@@ -36,9 +36,7 @@ function(install_from_dir src_dir dst_dir pattern)
 endfunction()
 
 
-# * 配置时会将 dll 复制到构建目录。
-# * 定义了安装规则，安装时会将 dll 安装到安装目录中的 bin 目录。
+# 定义了安装规则，安装时会将 dll 安装到安装目录中的 bin 目录。
 function(install_dll_from_dir dll_dir)
-    copy_from_dir(${dll_dir}/ ${CMAKE_CURRENT_BINARY_DIR} "*.dll")
     install_from_dir(${dll_dir}/ bin "*.dll")
 endfunction()
