@@ -10,10 +10,17 @@ endif()
 
 # 编译目标
 add_library(${ProjectName} SHARED)
-target_add_source_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
+target_add_source_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 add_and_install_headers_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
+
 add_and_install_include_dir(${ProjectName} ${libs_path}/nlohmann-json/include/)
+
+# 平台特定的代码，独立于 src 之外
+if(WIN32)
+    target_add_source_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/win/)
+    add_and_install_headers_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/win/)
+endif()
 
 # 安装规则
 if(1)
