@@ -69,4 +69,22 @@ void video::TSDumper::SendPacket(ts::TSPacket *packet)
 	}
 
 	_demux->feedPacket(*packet);
+	_total_packet_count++;
+	_pid__packet_count_map[packet->getPID()]++;
+}
+
+void video::TSDumper::DisplayStatisticalResults()
+{
+	cout << std::format("一共有 {} 个包", _total_packet_count) << endl;
+	for (auto &it : _pid__packet_count_map)
+	{
+		uint16_t pid = it.first;
+		uint64_t packet_count = it.second;
+		cout << std::format(
+			"pid = {}, packet_count = {}, rate = {}%",
+			pid,
+			packet_count,
+			(double)packet_count * 100 / _total_packet_count
+		) << endl;
+	}
 }

@@ -19,6 +19,9 @@ namespace video
 		std::string _output_file_path;
 		shared_ptr<std::fstream> _output_fs;
 
+		uint64_t _total_packet_count = 0;
+		std::map<uint16_t, uint64_t> _pid__packet_count_map;
+
 		void HandlePAT(ts::BinaryTable const &table) override;
 		void HandlePMT(ts::BinaryTable const &table) override;
 		void HandleSDT(ts::BinaryTable const &table) override;
@@ -28,6 +31,8 @@ namespace video
 	public:
 		using ITSPacketConsumer::SendPacket;
 		void SendPacket(ts::TSPacket *packet) override;
+
+		void DisplayStatisticalResults();
 
 		bool _dump_packet = true;
 		bool _dump_pat = true;
