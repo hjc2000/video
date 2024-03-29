@@ -15,7 +15,7 @@ namespace video
 			char const *codec_name,
 			IVideoStreamInfoCollection &desire_out_video_stream_infos,
 			shared_ptr<OutputFormat> out_fmt_ctx,
-			int64_t video_bitrate
+			int64_t video_out_bitrate_in_bps
 		);
 
 	private:

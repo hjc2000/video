@@ -6,7 +6,7 @@ SwsFpsEncoderPipe::SwsFpsEncoderPipe(
 	char const *codec_name,
 	IVideoStreamInfoCollection &desire_out_video_stream_infos,
 	shared_ptr<OutputFormat> out_fmt_ctx,
-	int64_t video_bitrate
+	int64_t video_out_bitrate_in_bps
 )
 {
 	_video_encoder_pipe = shared_ptr<EncoderPipe>{
@@ -14,15 +14,15 @@ SwsFpsEncoderPipe::SwsFpsEncoderPipe(
 			codec_name,
 			desire_out_video_stream_infos,
 			out_fmt_ctx,
-			video_bitrate
-	}
+			video_out_bitrate_in_bps
+		}
 	};
 
 	_fps_adjust_pipe = shared_ptr<FpsAdjustPipe>{
 		new FpsAdjustPipe {
 			desire_out_video_stream_infos,
 			desire_out_video_stream_infos.frame_rate()
-	}
+		}
 	};
 	_fps_adjust_pipe->AddFrameConsumer(_video_encoder_pipe);
 

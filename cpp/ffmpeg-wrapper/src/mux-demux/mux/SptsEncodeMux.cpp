@@ -9,7 +9,7 @@ video::SptsEncodeMux::SptsEncodeMux(
 	// 视频相关参数
 	IVideoStreamInfoCollection &video_stream_infos,
 	std::string video_codec_name,
-	int64_t video_out_bitrate,
+	int64_t video_out_bitrate_in_bps,
 	// 音频相关参数
 	IAudioStreamInfoCollection &audio_stream_infos,
 	std::string audio_codec_name
@@ -20,7 +20,7 @@ video::SptsEncodeMux::SptsEncodeMux(
 	// 视频参数
 	_video_stream_infos = video_stream_infos;
 	_video_codec_name = video_codec_name;
-	_video_out_bitrate = video_out_bitrate;
+	_video_out_bitrate_in_bps = video_out_bitrate_in_bps;
 
 	// 音频参数
 	_audio_stream_infos = audio_stream_infos;
@@ -44,7 +44,7 @@ void video::SptsEncodeMux::InitVideoEncodePipe()
 				_video_codec_name.c_str(),
 				_video_stream_infos,
 				_out_format,
-				_video_out_bitrate,
+				_video_out_bitrate_in_bps,
 			}
 		};
 	}
@@ -59,7 +59,7 @@ void video::SptsEncodeMux::InitVideoEncodePipe()
 				"libx265",
 				_video_stream_infos,
 				_out_format,
-				_video_out_bitrate,
+				_video_out_bitrate_in_bps,
 			}
 		};
 	}
@@ -114,8 +114,8 @@ void test_SptsEncodeMux()
 
 	VideoStreamInfoCollection out_video_stream_infos;
 	out_video_stream_infos._frame_rate = AVRational{ 30,1 };
-	out_video_stream_infos._width = 1920;
-	out_video_stream_infos._height = 1080;
+	out_video_stream_infos._width = 3840;
+	out_video_stream_infos._height = 2160;
 	out_video_stream_infos._pixel_format = AVPixelFormat::AV_PIX_FMT_YUV420P;
 	out_video_stream_infos._time_base = AVRational{ 1,90000 };
 
@@ -130,7 +130,7 @@ void test_SptsEncodeMux()
 			out_fmt_ctx,
 			out_video_stream_infos,
 			"hevc_amf",
-			-1,
+			40 * 1000 * 1000,
 			out_audio_stream_infos,
 			"aac"
 		}

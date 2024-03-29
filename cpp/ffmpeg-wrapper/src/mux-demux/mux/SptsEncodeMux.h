@@ -21,7 +21,7 @@ namespace video
 			// 视频相关参数
 			IVideoStreamInfoCollection &video_stream_infos,
 			std::string video_codec_name,
-			int64_t video_out_bitrate,
+			int64_t video_out_bitrate_in_bps,
 			// 音频相关参数
 			IAudioStreamInfoCollection &audio_stream_infos,
 			std::string audio_codec_name
@@ -33,7 +33,7 @@ namespace video
 		VideoStreamInfoCollection _video_stream_infos;
 		shared_ptr<SwsFpsEncoderPipe> _video_encode_pipe;
 		std::string _video_codec_name;
-		int64_t _video_out_bitrate = -1;
+		int64_t _video_out_bitrate_in_bps = -1;
 
 		AudioStreamInfoCollection _audio_stream_infos;
 		shared_ptr<SwrEncoderPipe> _audio_encode_pipe;
