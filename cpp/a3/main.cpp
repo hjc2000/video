@@ -53,7 +53,7 @@ int main()
 	const char *args[] = {
 		"./app_stream",
 		"file",
-		"idol.ts",
+		"mux_out.ts",
 	};
 	#else
 	// ./app_stream dvbt udp udp://127.0.0.1:40000
@@ -90,12 +90,12 @@ int main()
 
 	// 设置调制器
 	ModulatorParamCollection modulator_param;
-	modulator_param.modulator_param_reset(modulator_type::modulator_dvb_t);
+	modulator_param.modulator_param_reset(modulator_type::modulator_dvb_t2);
 	modulator_param.freqkhz = 474000;
 	modulator_param._ifmode = dac_ifmode::ifmode_iqoffset;
 	modulator_param.iffreq_offset = 0;
-	modulator_param._bandwidth_symbolrate = 6;
-	modulator_param._type = modulator_type::modulator_dvb_t;
+	modulator_param._bandwidth_symbolrate = 8;
+	modulator_param._type = modulator_type::modulator_dvb_t2;
 	//modulator_param._dvb_t_param.constellation = constellation_mode::dvb_t_qam64;
 	//modulator_param._dvb_t_param.fft = fft_mode::fft_8k;
 	//modulator_param._dvb_t_param.guardinterval = guard_interval::guard_interval_1_16;
