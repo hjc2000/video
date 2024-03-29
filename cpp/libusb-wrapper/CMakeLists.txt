@@ -10,7 +10,7 @@ endif()
 
 function(setup_target target_name)
     target_import_src(${target_name})
-    add_and_install_include_dir(${target_name} ${libs_path}/libusb/include/)
+    add_and_install_third_party_include_dir(${target_name} ${libs_path}/libusb/include/)
 
     target_link_libraries(${target_name} PUBLIC jccpp)
     target_auto_link_lib(${target_name} libusb-1.0 ${libs_path}/libusb/lib/)

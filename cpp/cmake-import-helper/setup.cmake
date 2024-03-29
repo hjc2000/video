@@ -1,5 +1,7 @@
-# 安装时是否安装头文件
+# 安装时是否安装头文件。默认会安装。
 option(option_install_headers true)
+# 不要第三方的头文件。默认不会安装。
+option(option_do_not_install_third_party_headers true)
 
 
 

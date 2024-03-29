@@ -3,7 +3,7 @@
 # include(${CMAKE_SOURCE_DIR}/cmake-import-libs-helper/import-ffmpeg.cmake)
 # 包含本文件，获得本函数的定义，然后调用，让目标导入 ffmpeg 库。
 function(target_import_ffmpeg target_name)
-    add_and_install_include_dir(${target_name} ${libs_path}/ffmpeg/include/)
+    add_and_install_third_party_include_dir(${target_name} ${libs_path}/ffmpeg/include/)
 
     target_auto_link_lib(${target_name} libavcodec ${libs_path}/ffmpeg/lib/)
     target_auto_link_lib(${target_name} libavdevice ${libs_path}/ffmpeg/lib/)

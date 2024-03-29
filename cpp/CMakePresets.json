@@ -5,7 +5,8 @@
 			"name": "options",
 			"hidden": true,
 			"cacheVariables": {
-				"option_install_headers": false
+				"option_install_headers": false,
+				"option_do_not_install_third_party_headers": true
 			}
 		},
 
