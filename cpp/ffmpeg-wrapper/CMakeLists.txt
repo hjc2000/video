@@ -8,7 +8,6 @@ if(1)
     set(CMAKE_C_STANDARD 17)
 endif()
 
-include(${CMAKE_SOURCE_DIR}/cmake-import-helper/import-src.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake-import-helper/import-ffmpeg.cmake)
 
 function(setup_target target_name)
@@ -22,11 +21,4 @@ endfunction()
 if(1)
     add_library("${ProjectName}" SHARED)
     setup_target("${ProjectName}")
-endif()
-
-
-# 定义安装规则
-if(1)
-    # 安装本项目编译出的目标
-    install_target_to_standard_paths(${ProjectName})
 endif()
