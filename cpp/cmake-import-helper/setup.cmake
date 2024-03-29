@@ -7,12 +7,12 @@ option(option_do_not_install_third_party_headers true)
 
 # 导入我的 cmake 函数
 if(1)
-	include(${CMAKE_SOURCE_DIR}/cmake-import-helper/CMakeFunctions/install.cmake)
-	include(${CMAKE_SOURCE_DIR}/cmake-import-helper/CMakeFunctions/collect.cmake)
-	include(${CMAKE_SOURCE_DIR}/cmake-import-helper/CMakeFunctions/link.cmake)
-	include(${CMAKE_SOURCE_DIR}/cmake-import-helper/CMakeFunctions/source_and_headers.cmake)
-	include(${CMAKE_SOURCE_DIR}/cmake-import-helper/CMakeFunctions/get-source-and-build.cmake)
-	include(${CMAKE_SOURCE_DIR}/cmake-import-helper/CMakeFunctions/process.cmake)
+	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/install.cmake)
+	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/collect.cmake)
+	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/link.cmake)
+	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/source_and_headers.cmake)
+	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/get-source-and-build.cmake)
+	include(${CMAKE_SOURCE_DIR}/CMakeFunctions/process.cmake)
 
 	include(${CMAKE_SOURCE_DIR}/cmake-import-helper/import-src.cmake)
 endif()
