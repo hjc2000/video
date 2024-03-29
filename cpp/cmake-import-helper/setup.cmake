@@ -12,6 +12,7 @@ if(1)
 	include(${CMAKE_SOURCE_DIR}/cmake-import-helper/CMakeFunctions/link.cmake)
 	include(${CMAKE_SOURCE_DIR}/cmake-import-helper/CMakeFunctions/source_and_headers.cmake)
 	include(${CMAKE_SOURCE_DIR}/cmake-import-helper/CMakeFunctions/get-source-and-build.cmake)
+	include(${CMAKE_SOURCE_DIR}/cmake-import-helper/CMakeFunctions/process.cmake)
 
 	include(${CMAKE_SOURCE_DIR}/cmake-import-helper/import-src.cmake)
 endif()
