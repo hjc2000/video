@@ -8,8 +8,9 @@ if(1)
     set(CMAKE_C_STANDARD 17)
 endif()
 
-include(${CMAKE_SOURCE_DIR}/cmake-import-helper/import-ffmpeg.cmake)
 
+
+include(${CMAKE_SOURCE_DIR}/cmake-import-helper/import-ffmpeg.cmake)
 function(setup_target target_name)
     target_import_src(${target_name})
     target_link_libraries(${target_name} PUBLIC jccpp)

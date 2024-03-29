@@ -8,22 +8,16 @@ if(1)
     set(CMAKE_C_STANDARD 17)
 endif()
 
+include(${CMAKE_SOURCE_DIR}/cmake-import-helper/import-nlohmann-json.cmake)
+
 # 编译目标
 add_library(${ProjectName} SHARED)
+target_import_src(${ProjectName})
+target_import_nlohmann_json(${ProjectName})
 
-target_add_source_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
-add_and_install_headers_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
-
-add_and_install_include_dir(${ProjectName} ${libs_path}/nlohmann-json/include/)
 
 # 平台特定的代码，独立于 src 之外
 if(WIN32)
     target_add_source_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/win/)
     add_and_install_headers_recurse(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/win/)
-endif()
-
-# 安装规则
-if(1)
-    # 安装编译出的静态库
-    install_target_to_standard_paths(${ProjectName})
 endif()
