@@ -222,7 +222,7 @@ int main()
 		before quit demo stop and free both device and source
 	*/
 
-	std::getchar();
+	cin.get();
 	ts_pusher.Close();
 	cancel_copying_stream.Cancel();
 	cancel_getting_state.Cancel();
