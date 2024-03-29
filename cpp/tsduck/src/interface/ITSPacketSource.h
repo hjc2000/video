@@ -1,4 +1,5 @@
 #pragma once
+#include<CancellationTokenSource.h>
 #include<ITSPacketConsumer.h>
 #include<tsTSPacket.h>
 
@@ -31,9 +32,19 @@ namespace video
 		/// <summary>
 		///		在循环中从本对象的 ReadPacket 方法读出包送给 consumer。
 		///		遇到非 ReadPacketResult::Success 的情况会返回该 ReadPacketResult 类型的值。
+		/// 
+		///		取消后会返回 ITSPacketSource::ReadPacketResult::Success
 		/// </summary>
 		/// <param name="consumer"></param>
 		/// <returns></returns>
-		virtual ITSPacketSource::ReadPacketResult PumpTo(shared_ptr<ITSPacketConsumer> consumer);
+		virtual ITSPacketSource::ReadPacketResult PumpTo(
+			shared_ptr<ITSPacketConsumer> consumer,
+			shared_ptr<CancellationToken> cancel_pump
+		);
+
+		virtual ITSPacketSource::ReadPacketResult PumpTo(
+			std::vector<shared_ptr<ITSPacketConsumer>> const consumers,
+			shared_ptr<CancellationToken> cancel_pump
+		);
 	};
 }

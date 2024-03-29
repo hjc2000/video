@@ -1,6 +1,17 @@
 #include"TSDumper.h"
 
+using namespace video;
 using namespace std;
+
+TSDumper::TSDumper(std::string output_file_path)
+{
+	_output_fs = shared_ptr<std::fstream>{
+		new std::fstream{
+			output_file_path,
+			std::ios_base::out | std::ios_base::trunc
+		}
+	};
+}
 
 void video::TSDumper::HandlePAT(ts::BinaryTable const &table)
 {
@@ -42,6 +53,12 @@ void video::TSDumper::HandleSDT(ts::BinaryTable const &table)
 		Dump("\n");
 		_demux->resetPID(0x11);
 	}
+}
+
+void TSDumper::Dump(std::string str)
+{
+	//std::cout << str << std::endl;
+	(*_output_fs) << str << std::endl;
 }
 
 void video::TSDumper::SendPacket(ts::TSPacket *packet)

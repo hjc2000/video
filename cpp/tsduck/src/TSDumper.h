@@ -3,6 +3,7 @@
 #include<TableHandler.h>
 #include<TsDuckToString.h>
 #include<fstream>
+#include<string>
 #include<tsTSPacket.h>
 
 namespace video
@@ -12,20 +13,17 @@ namespace video
 		public TableHandler
 	{
 	public:
-		TSDumper() {}
+		TSDumper(std::string output_file_path);
 
 	private:
-		std::fstream _fs{ "ts-dump.txt", std::ios_base::out | std::ios_base::trunc };
+		std::string _output_file_path;
+		shared_ptr<std::fstream> _output_fs;
 
 		void HandlePAT(ts::BinaryTable const &table) override;
 		void HandlePMT(ts::BinaryTable const &table) override;
 		void HandleSDT(ts::BinaryTable const &table) override;
 
-		void Dump(std::string str)
-		{
-			//std::cout << str << std::endl;
-			_fs << str << std::endl;
-		}
+		void Dump(std::string str);
 
 	public:
 		using ITSPacketConsumer::SendPacket;

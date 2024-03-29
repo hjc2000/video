@@ -32,7 +32,8 @@ void test_tsduck()
 	};
 
 	shared_ptr<TestProgramMux> test_program_mux{ new TestProgramMux{} };
-	ITSPacketSource::ReadPacketResult pump_result = joined_ts_stream.PumpTo(test_program_mux);
+	CancellationTokenSource cancel_pump_source;
+	ITSPacketSource::ReadPacketResult pump_result = joined_ts_stream.PumpTo(test_program_mux, cancel_pump_source.Token());
 	switch (pump_result)
 	{
 	case ITSPacketSource::ReadPacketResult::NoMorePacket:

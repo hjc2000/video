@@ -34,7 +34,7 @@ namespace video
 		shared_ptr<TSOutputCorrector> _output_corrector{ new TSOutputCorrector{} };
 		shared_ptr<TSPacketStreamWriter> _ts_packet_to_stream{ new TSPacketStreamWriter{FileStream::CreateNewAnyway("out.ts")} };
 
-		shared_ptr<TSDumper> _packet_dumper{ new TSDumper{} };
+		shared_ptr<TSDumper> _packet_dumper{ new TSDumper{"ts-dump.txt"} };
 		shared_ptr<AutoChangeIdProgramMux> _auto_change_id_program_mux{ new AutoChangeIdProgramMux{} };
 		shared_ptr<ITSPacketConsumer> _input_port;
 		shared_ptr<ITSPacketConsumer> _input_port1;
