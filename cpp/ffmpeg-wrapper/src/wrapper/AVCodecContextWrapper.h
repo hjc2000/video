@@ -27,13 +27,17 @@ namespace video
 		public IFrameSource,
 		public IPacketConsumer
 	{
+		#pragma region 构造，析构
 	private:
 		AVCodecContextWrapper(AVCodec const *codec);
 		AVCodecContextWrapper(AVCodec const *codec, AVCodecParameters *param);
 
 	public:
 		~AVCodecContextWrapper();
+		#pragma endregion
 
+		#pragma region 工厂函数
+	public:
 		/// <summary>
 		///		创建解码器。此函数创建的解码器是通用的，音频流和视频流的解码器都是用这个函数创建。
 		///		* 会将流的 AVCodecParameters 复制到解码器上下文中
@@ -83,19 +87,18 @@ namespace video
 			bool set_global_header,
 			bool auto_open = true
 		);
+		#pragma endregion
 
 	private:
 		#pragma region 码器
 		/// <summary>
-		/// 与本类绑定的 AVCodecWrapper
+		///		与本类绑定的 AVCodec
 		/// </summary>
 		AVCodec *_codec = nullptr;
-
 		AVCodec const *Codec() const
 		{
 			return _codec;
 		}
-
 		void SetCodec(AVCodec const *codec)
 		{
 			_codec = (AVCodec *)codec;
@@ -111,15 +114,7 @@ namespace video
 		 *
 		 * @param dic
 		*/
-		void Open(AVDictionary **dic = nullptr)
-		{
-			int ret = ::avcodec_open2(_wrapped_obj, _codec, dic);
-			if (ret)
-			{
-				std::cerr << CODE_POS_STR << "打开编解码器失败" << endl;
-				throw jc::Exception();
-			}
-		}
+		void Open(AVDictionary **dic = nullptr);
 
 		/**
 		 * @brief 设置此码器上下文的参数。调用此方法不会设置时间基，需要另外手动设置。
@@ -177,92 +172,29 @@ namespace video
 		*/
 		int ReadFrame(AVFrameWrapper &frame) override;
 
-		#pragma region IAudioStreamInfoCollection
-		AVChannelLayout ch_layout() override
-		{
-			return _wrapped_obj->ch_layout;
-		}
+		#pragma region IAudioStreamInfoCollection, IVideoStreamInfoCollection
+		AVChannelLayout ch_layout() override;
+		void set_ch_layout(AVChannelLayout value) override;
+		AVSampleFormat sample_format() override;
+		void set_sample_format(AVSampleFormat value) override;
+		int sample_rate() override;
+		void set_sample_rate(int value) override;
 
-		void set_ch_layout(AVChannelLayout value) override
-		{
-			_wrapped_obj->ch_layout = value;
-		}
-
-		AVSampleFormat sample_format() override
-		{
-			return _wrapped_obj->sample_fmt;
-		}
-
-		void set_sample_format(AVSampleFormat value) override
-		{
-			_wrapped_obj->sample_fmt = value;
-		}
-
-		int sample_rate() override
-		{
-			return _wrapped_obj->sample_rate;
-		}
-
-		void set_sample_rate(int value) override
-		{
-			_wrapped_obj->sample_rate = value;
-		}
+		int width() override;
+		void set_width(int value) override;
+		int height() override;
+		void set_height(int value) override;
+		AVPixelFormat pixel_format() override;
+		void set_pixel_format(AVPixelFormat value) override;
+		/// <summary>
+		///		获取此码器的时间基。作为编码器，时间基必须由用户手动设置，作为解码器，时间基是
+		///		无用的，无效的，不要试图从解码器中获取此参数。
+		/// </summary>
+		/// <returns></returns>
+		AVRational time_base() override;
+		void set_time_base(AVRational value) override;
+		AVRational frame_rate() override;
+		void set_frame_rate(AVRational value) override;
 		#pragma endregion
-
-		#pragma region IVideoStreamInfoCollection
-		int width() override
-		{
-			return _wrapped_obj->width;
-		}
-		void set_width(int value) override
-		{
-			_wrapped_obj->width = value;
-		}
-
-		int height() override
-		{
-			return _wrapped_obj->height;
-		}
-		void set_height(int value) override
-		{
-			_wrapped_obj->height = value;
-		}
-
-		AVPixelFormat pixel_format() override
-		{
-			return _wrapped_obj->pix_fmt;
-		}
-
-		void set_pixel_format(AVPixelFormat value) override
-		{
-			_wrapped_obj->pix_fmt = value;
-		}
-
-		/**
-		 * @brief 获取此码器的时间基。作为编码器，时间基必须由用户手动设置，作为解码器，时间基是
-		 * 无用的，无效的，不要试图从解码器中获取此参数。
-		 * @return
-		*/
-		AVRational time_base() override
-		{
-			return _wrapped_obj->time_base;
-		}
-
-		void set_time_base(AVRational value) override
-		{
-			_wrapped_obj->time_base = value;
-		}
-
-		AVRational frame_rate() override
-		{
-			return _wrapped_obj->framerate;
-		}
-
-		void set_frame_rate(AVRational value) override
-		{
-			_wrapped_obj->framerate = value;
-		}
-		#pragma endregion
-
 	};
 }

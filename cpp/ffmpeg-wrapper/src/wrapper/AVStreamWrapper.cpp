@@ -1,14 +1,39 @@
 #include<AVCodecContextWrapper.h>
 #include<AVCodecExtention.h>
-#include<ErrorCode.h>
 #include<AVStreamWrapper.h>
+#include<ErrorCode.h>
 #include<include_ffmpeg.h>
 
 using namespace video;
 
+AVStreamWrapper::AVStreamWrapper()
+{
+}
+
+AVStreamWrapper::AVStreamWrapper(AVStream *p)
+{
+	_wrapped_obj = p;
+}
+
+AVStreamWrapper::AVStreamWrapper(AVStreamWrapper const &other)
+{
+	_wrapped_obj = other._wrapped_obj;
+}
+
+AVStreamWrapper &AVStreamWrapper::operator=(AVStreamWrapper const &other)
+{
+	_wrapped_obj = other._wrapped_obj;
+	return *this;
+}
+
 AVCodec const *video::AVStreamWrapper::Codec()
 {
 	return AVCodecExtention::find_decoder_by_id(_wrapped_obj->codecpar->codec_id);
+}
+
+AVCodecParameters &AVStreamWrapper::CodecParams()
+{
+	return *_wrapped_obj->codecpar;
 }
 
 int video::AVStreamWrapper::SetCodecParam(shared_ptr<AVCodecContextWrapper> codec_ctx)
@@ -19,6 +44,21 @@ int video::AVStreamWrapper::SetCodecParam(shared_ptr<AVCodecContextWrapper> code
 
 	// 将码器的参数设置到本流
 	return avcodec_parameters_from_context(_wrapped_obj->codecpar, *codec_ctx);
+}
+
+int64_t AVStreamWrapper::Bitrate()
+{
+	return _wrapped_obj->codecpar->bit_rate;
+}
+
+AVMediaType AVStreamWrapper::MediaType()
+{
+	return _wrapped_obj->codecpar->codec_type;
+}
+
+int AVStreamWrapper::Index()
+{
+	return _wrapped_obj->index;
 }
 
 #pragma region IAudioFrameInfoCollection

@@ -2,16 +2,17 @@
 #include<AVCalculate.h>
 #include<AVCodecExtention.h>
 #include<AVDictionaryWrapper.h>
-#include<ErrorCode.h>
 #include<AVFrameWrapper.h>
 #include<AVPacketWrapper.h>
 #include<AVStreamWrapper.h>
+#include<ErrorCode.h>
 #include<Exception.h>
 #include<format>
 #include<include_ffmpeg.h>
 
 using namespace video;
 
+#pragma region 构造，析构
 AVCodecContextWrapper::AVCodecContextWrapper(AVCodec const *codec)
 {
 	SetCodec(codec);
@@ -33,7 +34,9 @@ AVCodecContextWrapper::~AVCodecContextWrapper()
 	cout << __func__ << endl;
 	avcodec_free_context(&_wrapped_obj);
 }
+#pragma endregion
 
+#pragma region 工厂函数
 shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateDecoder(AVStreamInfoCollection stream)
 {
 	shared_ptr<AVCodecContextWrapper> ctx{
@@ -133,6 +136,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 
 	return ctx;
 }
+#pragma endregion
 
 void AVCodecContextWrapper::SetCodecParam(AVCodecParameters *param)
 {
@@ -140,6 +144,16 @@ void AVCodecContextWrapper::SetCodecParam(AVCodecParameters *param)
 	if (ret < 0)
 	{
 		throw jc::Exception("AVCodecContextWrapper::set_encoder_param");
+	}
+}
+
+void AVCodecContextWrapper::Open(AVDictionary **dic)
+{
+	int ret = ::avcodec_open2(_wrapped_obj, _codec, dic);
+	if (ret)
+	{
+		std::cerr << CODE_POS_STR << "打开编解码器失败" << endl;
+		throw jc::Exception();
 	}
 }
 
@@ -233,5 +247,85 @@ int AVCodecContextWrapper::ReadFrame(AVFrameWrapper &frame)
 	}
 
 	return ret;
+}
+#pragma endregion
+
+#pragma region IAudioStreamInfoCollection, IVideoStreamInfoCollection
+AVChannelLayout AVCodecContextWrapper::ch_layout()
+{
+	return _wrapped_obj->ch_layout;
+}
+
+void AVCodecContextWrapper::set_ch_layout(AVChannelLayout value)
+{
+	_wrapped_obj->ch_layout = value;
+}
+
+AVSampleFormat AVCodecContextWrapper::sample_format()
+{
+	return _wrapped_obj->sample_fmt;
+}
+
+void AVCodecContextWrapper::set_sample_format(AVSampleFormat value)
+{
+	_wrapped_obj->sample_fmt = value;
+}
+
+int AVCodecContextWrapper::sample_rate()
+{
+	return _wrapped_obj->sample_rate;
+}
+
+void AVCodecContextWrapper::set_sample_rate(int value)
+{
+	_wrapped_obj->sample_rate = value;
+}
+
+int AVCodecContextWrapper::width()
+{
+	return _wrapped_obj->width;
+}
+void AVCodecContextWrapper::set_width(int value)
+{
+	_wrapped_obj->width = value;
+}
+
+int AVCodecContextWrapper::height()
+{
+	return _wrapped_obj->height;
+}
+void AVCodecContextWrapper::set_height(int value)
+{
+	_wrapped_obj->height = value;
+}
+
+AVPixelFormat AVCodecContextWrapper::pixel_format()
+{
+	return _wrapped_obj->pix_fmt;
+}
+
+void AVCodecContextWrapper::set_pixel_format(AVPixelFormat value)
+{
+	_wrapped_obj->pix_fmt = value;
+}
+
+AVRational AVCodecContextWrapper::time_base()
+{
+	return _wrapped_obj->time_base;
+}
+
+void AVCodecContextWrapper::set_time_base(AVRational value)
+{
+	_wrapped_obj->time_base = value;
+}
+
+AVRational AVCodecContextWrapper::frame_rate()
+{
+	return _wrapped_obj->framerate;
+}
+
+void AVCodecContextWrapper::set_frame_rate(AVRational value)
+{
+	_wrapped_obj->framerate = value;
 }
 #pragma endregion
