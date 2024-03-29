@@ -35,6 +35,5 @@ endif()
 
 # 定义安装规则
 if(1)
-    install_dll_from_dir(${libs_path}/ffmpeg/bin/)
     install_target_to_standard_paths(${ProjectName})
 endif()
