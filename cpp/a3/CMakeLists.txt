@@ -9,10 +9,7 @@ if(1)
 endif()
 
 function(setup_target target_name)
-    target_add_source_recurse(${target_name} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
-
-    add_and_install_headers_recurse(${target_name} ${CMAKE_CURRENT_SOURCE_DIR}/src/)
-
+    target_import_src(${target_name})
     target_link_libraries(${target_name} PUBLIC jccpp libusb-wrapper)
 endfunction()
 
@@ -25,14 +22,4 @@ if(1)
 
     add_library("lib${ProjectName}" SHARED)
     setup_target("lib${ProjectName}")
-endif()
-
-
-# 定义安装规则
-if(1)
-    install_dll_from_dir(${libs_path}/libusb/bin/)
-
-    # 安装本项目编译出的目标
-    install_target_to_standard_paths("lib${ProjectName}")
-    install_target_to_standard_paths(${ProjectName})
 endif()
