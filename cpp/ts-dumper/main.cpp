@@ -2,6 +2,7 @@
 #include<Exception.h>
 #include<FileStream.h>
 #include<TSDumper.h>
+#include<TSPacketStreamReader.h>
 #include<iostream>
 
 using namespace video;
@@ -37,7 +38,11 @@ int main(int argc, char **argv)
 		// 执行到这里就是解析命令行成功，并且命令行参数不是 -h,--help
 		cout << "解析命令行成功" << endl;
 
-
+		shared_ptr<FileStream> input_file_stream = FileStream::Open(input_file_path);
+		TSPacketStreamReader reader{ input_file_stream };
+		shared_ptr<TSDumper> ts_dumper{ new TSDumper{output_file_path} };
+		CancellationTokenSource cancel_pump_source;
+		reader.PumpTo(ts_dumper, cancel_pump_source.Token());
 	}
 	catch (std::exception &e)
 	{
