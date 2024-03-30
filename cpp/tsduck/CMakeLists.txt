@@ -8,6 +8,8 @@ if(1)
     set(CMAKE_C_STANDARD 17)
 endif()
 
+include($ENV{cpp_lib_build_scripts_path}/cmake-module/setup.cmake)
+
 function(setup_target target_name)
     # 将资源目录用预定义传给 C++ 程序
     target_compile_definitions(${target_name} PRIVATE TS_NO_SRT=1)

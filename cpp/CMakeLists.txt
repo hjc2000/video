@@ -8,9 +8,6 @@ if(1)
 endif()
 
 
-include($ENV{cpp_lib_build_scripts_path}/cmake-module/setup.cmake)
-
-
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 if(MSVC)

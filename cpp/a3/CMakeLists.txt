@@ -8,6 +8,8 @@ if(1)
     set(CMAKE_C_STANDARD 17)
 endif()
 
+include($ENV{cpp_lib_build_scripts_path}/cmake-module/setup.cmake)
+
 function(setup_target target_name)
     target_import_src(${target_name})
     target_link_libraries(${target_name} PUBLIC jccpp libusb-wrapper)

@@ -9,7 +9,7 @@ if(1)
 endif()
 
 
-
+include($ENV{cpp_lib_build_scripts_path}/cmake-module/setup.cmake)
 include(target_import_ffmpeg)
 
 # 编译为动态库
