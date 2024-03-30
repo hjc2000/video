@@ -8,7 +8,7 @@ if(1)
 endif()
 
 
-include(${CMAKE_SOURCE_DIR}/cmake-import-helper/setup.cmake)
+include($ENV{cpp_lib_build_scripts_path}/cmake-module/setup.cmake)
 
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)

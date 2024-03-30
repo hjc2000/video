@@ -8,7 +8,7 @@ if(1)
     set(CMAKE_C_STANDARD 17)
 endif()
 
-include(${CMAKE_SOURCE_DIR}/cmake-import-helper/import-nlohmann-json.cmake)
+include(target_import_nlohmann_json)
 
 # 编译目标
 add_library(${ProjectName} SHARED)
