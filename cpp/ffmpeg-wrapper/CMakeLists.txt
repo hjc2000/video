@@ -12,15 +12,8 @@ endif()
 
 include(target_import_ffmpeg)
 
-function(setup_target target_name)
-    target_import_src(${target_name})
-    target_link_libraries(${target_name} PUBLIC jccpp)
-    target_import_ffmpeg(${target_name})
-endfunction()
-
-
-# 定义生成规则
-if(1)
-    add_library("${ProjectName}" SHARED)
-    setup_target("${ProjectName}")
-endif()
+# 编译为动态库
+add_library(${ProjectName} SHARED)
+target_import_src(${ProjectName})
+target_link_libraries(${ProjectName} PUBLIC jccpp)
+target_import_ffmpeg(${ProjectName})

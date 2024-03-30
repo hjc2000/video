@@ -10,19 +10,14 @@ endif()
 
 include(target_import_sdl2)
 
-function(setup_target target_name)
-    # 将资源目录用预定义传给 C++ 程序
-    target_compile_definitions(${target_name} PRIVATE Predefine_ResourceDir="${CMAKE_CURRENT_SOURCE_DIR}/资源")
-    target_compile_definitions(${target_name} PRIVATE SDL_MAIN_HANDLED)
 
-    target_import_src(${target_name})
-    target_import_sdl2(${target_name})
-    target_link_libraries(${target_name} PUBLIC jccpp ffmpeg-wrapper)
-endfunction()
+# 编译为动态库
+add_library(${ProjectName} SHARED)
 
+# 将资源目录用预定义传给 C++ 程序
+target_compile_definitions(${ProjectName} PRIVATE Predefine_ResourceDir="${CMAKE_CURRENT_SOURCE_DIR}/资源")
+target_compile_definitions(${ProjectName} PRIVATE SDL_MAIN_HANDLED)
 
-# 定义生成规则
-if(1)
-    add_library("${ProjectName}" SHARED)
-    setup_target("${ProjectName}")
-endif()
+target_import_src(${ProjectName})
+target_import_sdl2(${ProjectName})
+target_link_libraries(${ProjectName} PUBLIC jccpp ffmpeg-wrapper)

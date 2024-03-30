@@ -8,21 +8,10 @@ if(1)
     set(CMAKE_C_STANDARD 17)
 endif()
 
-function(setup_target target_name)
-    target_import_src(${target_name})
-    add_and_install_third_party_include_dir(${target_name} ${libs_path}/libusb/include/)
-
-    target_link_libraries(${target_name} PUBLIC jccpp)
-    target_auto_link_lib(${target_name} libusb-1.0 ${libs_path}/libusb/lib/)
-endfunction()
-
+include(target_import_libusb)
 
 # 定义生成规则
-if(1)
-    add_library("${ProjectName}" SHARED)
-    setup_target("${ProjectName}")
-endif()
-
-
-# 定义安装规则
-install_dll_from_dir(${libs_path}/libusb/bin/)
+add_library("${ProjectName}" SHARED)
+target_import_src(${ProjectName})
+target_import_libusb(${ProjectName})
+target_link_libraries(${ProjectName} PUBLIC jccpp)
