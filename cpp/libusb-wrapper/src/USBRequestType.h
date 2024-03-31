@@ -3,6 +3,7 @@
 
 class USBRequestType
 {
+	#pragma region pos, mask
 private:
 	/// <summary>
 	///		从第 0 位开始
@@ -30,11 +31,12 @@ private:
 	///		占据 1 位
 	/// </summary>
 	static uint8_t const _data_direction_mask = 0x1 << _data_direction_pos;
+	#pragma endregion
 
-public:
 	#pragma region 请求属性枚举类型定义
+public:
 	/// <summary>
-	///		接收者的类型。占据最低的 5 位。
+	///		接收者的类型
 	/// </summary>
 	enum class RecipientType :uint8_t
 	{
@@ -53,11 +55,14 @@ public:
 		/// </summary>
 		Endpoint = 0x02 << _recipient_type_pos,
 
+		/// <summary>
+		///		其它类型的接收者
+		/// </summary>
 		Other = 0x03 << _recipient_type_pos
 	};
 
 	/// <summary>
-	///		请求类型。占据 2 位。
+	///		请求类型
 	/// </summary>
 	enum class RequestType :uint8_t
 	{
@@ -78,7 +83,7 @@ public:
 	};
 
 	/// <summary>
-	///		数据传输方向的枚举。占最高的 1 位。
+	///		数据传输方向
 	/// </summary>
 	enum class DataDirection :uint8_t
 	{
@@ -88,6 +93,12 @@ public:
 	#pragma endregion
 
 public:
+	/// <summary>
+	///		默认构造函数。
+	///		默认构造出的请求属性不会符合你的期望。记得调用 Set 系列方法设置请求属性。
+	/// </summary>
+	USBRequestType() {}
+
 	/// <summary>
 	///		
 	/// </summary>
