@@ -19,50 +19,15 @@ public:
 	///		默认构造函数。此时并没有实际指向任何一个 USB 设备，所以调用任何方法都将引发异常。
 	/// </summary>
 	UsbDeviceWrapper() {}
+	UsbDeviceWrapper(libusb_device *device);
+	UsbDeviceWrapper(UsbDeviceWrapper const &other);
+	~UsbDeviceWrapper();
 
-	UsbDeviceWrapper(libusb_device *device)
-	{
-		Ref(device);
-	}
-
-	UsbDeviceWrapper(UsbDeviceWrapper const &other)
-	{
-		*this = other;
-	}
-
-	UsbDeviceWrapper &operator=(UsbDeviceWrapper const &other)
-	{
-		Ref(other._wrapped_obj);
-		_device_handle = other._device_handle;
-		return *this;
-	}
-
-	~UsbDeviceWrapper()
-	{
-		Unref();
-	}
+	UsbDeviceWrapper &operator=(UsbDeviceWrapper const &other);
 
 private:
-	/// <summary>
-	///		让 _wrapped_obj 指向一个设备并增加引用计数。
-	///		在引用任何设备前，会先自动调用 Unref 方法，这样如果 _wrapped_obj 原先有引用一个设备，会解除引用。
-	/// </summary>
-	/// <param name="device"></param>
-	void Ref(libusb_device *device)
-	{
-		Unref();
-		_wrapped_obj = device;
-		libusb_ref_device(device);
-	}
-
-	/// <summary>
-	///		减少 _wrapped_obj 指向的设备的引用计数，然后将 _wrapped_obj 置为空。
-	/// </summary>
-	void Unref()
-	{
-		libusb_unref_device(_wrapped_obj);
-		_wrapped_obj = nullptr;
-	}
+	void Ref(libusb_device *device);
+	void Unref();
 
 	shared_ptr<libusb_device_handle> _device_handle = nullptr;
 
@@ -89,9 +54,20 @@ public:
 	/// <param name="data">数据包缓冲区。根据传输方向，可以为发送缓冲区和接收缓冲区。类似于 http 报文的主体。</param>
 	/// <param name="length">数据包的长度。</param>
 	/// <param name="timeout">超时时间。单位：毫秒。传入 0 无限超时。</param>
-	/// <returns>返回实际传输的缓冲区字节数。当与 length 不匹配时就是发生了错误，此时返回的是负数的错误代码。</returns>
-	int ControlTransfer(USBRequestType request_type, uint8_t request_cmd,
-		uint16_t value, uint16_t index, uint8_t *data, uint16_t length, uint32_t timeout);
+	/// <returns>
+	///		成功则返回实际传输的缓冲区字节数。失败返回负数的错误代码。
+	///		如果发送时就没有缓冲区，则成功时返回值等于 0.
+	///		如果你只关心是否失败，判断返回值是否小于 0 就行了。小于 0 表示失败，否则就是成功。
+	/// </returns>
+	int ControlTransfer(
+		USBRequestType request_type,
+		uint8_t request_cmd,
+		uint16_t value,
+		uint16_t index,
+		uint8_t *data,
+		uint16_t length,
+		uint32_t timeout
+	);
 
 	/// <summary>
 	///		获取状态代码。需要打开设备。
@@ -119,41 +95,8 @@ public:
 	/// <returns></returns>
 	std::vector<shared_ptr<UsbConfigDescriptorWrapper>> GetConfigDescriptorList();
 
-	void ClaimInterface()
-	{
-		std::vector<shared_ptr<UsbConfigDescriptorWrapper>> config_list = GetConfigDescriptorList();
-		for (shared_ptr<UsbConfigDescriptorWrapper> &config : config_list)
-		{
-			ClaimInterface(*config);
-		}
-	}
-
-	void ClaimInterface(UsbConfigDescriptorWrapper &config)
-	{
-		for (uint8_t i = 0; i < config.InterfaceCount(); i++)
-		{
-			ClaimInterface(config.GetInterface(i));
-		}
-	}
-
-	void ClaimInterface(libusb_interface const &interface)
-	{
-		// 遍历接口中的所有设置（altsetting）
-		for (int i = 0; i < interface.num_altsetting; i++)
-		{
-			libusb_interface_descriptor const *iface_desc = &interface.altsetting[i];
-			int interface_number = iface_desc->bInterfaceNumber;
-			ClaimInterface(interface_number);
-		}
-	}
-
-	void ClaimInterface(int interface_number)
-	{
-		int ret = libusb_claim_interface(_device_handle.get(), interface_number);
-		if (ret)
-		{
-			cout << CODE_POS_STR << UsbErrorCodeToString(ret) << endl;
-			throw jc::Exception(UsbErrorCodeToString(ret));
-		}
-	}
+	void ClaimInterface();
+	void ClaimInterface(UsbConfigDescriptorWrapper &config);
+	void ClaimInterface(libusb_interface const &interface);
+	void ClaimInterface(int interface_number);
 };

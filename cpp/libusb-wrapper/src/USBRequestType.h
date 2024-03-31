@@ -10,19 +10,19 @@ public:
 	/// </summary>
 	enum class RequestType :uint8_t
 	{
-		/**
-		* @brief 标准请求
-		*/
+		/// <summary>
+		///		标准请求
+		/// </summary>
 		Standard = 0x00,
 
-		/**
-		* @brief 类请求
-		*/
+		/// <summary>
+		///		类请求
+		/// </summary>
 		Class = 0x01,
 
-		/**
-		* @brief 厂商请求
-		*/
+		/// <summary>
+		///		厂商请求
+		/// </summary>
 		Vendor = 0x02
 	};
 
@@ -40,31 +40,32 @@ public:
 	/// </summary>
 	enum class RecipientType :uint8_t
 	{
-		/**
-		* @brief 接收者是一个设备
-		*/
+		/// <summary>
+		///		接收者是一个设备
+		/// </summary>
 		Device = 0x00,
 
-		/**
-		* @brief 接收者是一个接口
-		*/
+		/// <summary>
+		///		接收者是一个接口
+		/// </summary>
 		Interface = 0x01,
 
-		/**
-		* @brief 接收者是一个端点
-		*/
+		/// <summary>
+		///		接收者是一个端点
+		/// </summary>
 		Endpoint = 0x02,
+
 		Other = 0x03
 	};
 	#pragma endregion
 
 public:
-	/**
-	 * @brief
-	 * @param dir 数据传输方向
-	 * @param type 请求类型
-	 * @param recipient 接收者的类型
-	*/
+	/// <summary>
+	///		
+	/// </summary>
+	/// <param name="dir">数据传输方向</param>
+	/// <param name="type">请求类型</param>
+	/// <param name="recipient">接收者的类型</param>
 	USBRequestType(DataDirection dir, RequestType type, RecipientType recipient)
 	{
 		_request_type._direction = dir;

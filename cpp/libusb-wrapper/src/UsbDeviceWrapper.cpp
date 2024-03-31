@@ -1,5 +1,48 @@
 #include<UsbDeviceWrapper.h>
 
+UsbDeviceWrapper::UsbDeviceWrapper(libusb_device *device)
+{
+	Ref(device);
+}
+
+UsbDeviceWrapper::UsbDeviceWrapper(UsbDeviceWrapper const &other)
+{
+	*this = other;
+}
+
+UsbDeviceWrapper::~UsbDeviceWrapper()
+{
+	Unref();
+}
+
+UsbDeviceWrapper &UsbDeviceWrapper::operator=(UsbDeviceWrapper const &other)
+{
+	Ref(other._wrapped_obj);
+	_device_handle = other._device_handle;
+	return *this;
+}
+
+/// <summary>
+///		让 _wrapped_obj 指向一个设备并增加引用计数。
+///		在引用任何设备前，会先自动调用 Unref 方法，这样如果 _wrapped_obj 原先有引用一个设备，会解除引用。
+/// </summary>
+/// <param name="device"></param>
+void UsbDeviceWrapper::Ref(libusb_device *device)
+{
+	Unref();
+	_wrapped_obj = device;
+	libusb_ref_device(device);
+}
+
+/// <summary>
+///		减少 _wrapped_obj 指向的设备的引用计数，然后将 _wrapped_obj 置为空。
+/// </summary>
+void UsbDeviceWrapper::Unref()
+{
+	libusb_unref_device(_wrapped_obj);
+	_wrapped_obj = nullptr;
+}
+
 libusb_device_descriptor UsbDeviceWrapper::GetDescriptor()
 {
 	// 控制台输出时，输出 4 位，高位补 0 的方法：
@@ -38,8 +81,15 @@ void UsbDeviceWrapper::Open()
 	};
 }
 
-int UsbDeviceWrapper::ControlTransfer(USBRequestType request_type, uint8_t request_cmd,
-	uint16_t value, uint16_t index, uint8_t *data, uint16_t length, uint32_t timeout)
+int UsbDeviceWrapper::ControlTransfer(
+	USBRequestType request_type,
+	uint8_t request_cmd,
+	uint16_t value,
+	uint16_t index,
+	uint8_t *data,
+	uint16_t length,
+	uint32_t timeout
+)
 {
 	return libusb_control_transfer(
 		_device_handle.get(),
@@ -120,4 +170,42 @@ std::vector<shared_ptr<UsbConfigDescriptorWrapper>> UsbDeviceWrapper::GetConfigD
 	}
 
 	return config_list;
+}
+
+void UsbDeviceWrapper::ClaimInterface()
+{
+	std::vector<shared_ptr<UsbConfigDescriptorWrapper>> config_list = GetConfigDescriptorList();
+	for (shared_ptr<UsbConfigDescriptorWrapper> &config : config_list)
+	{
+		ClaimInterface(*config);
+	}
+}
+
+void UsbDeviceWrapper::ClaimInterface(UsbConfigDescriptorWrapper &config)
+{
+	for (uint8_t i = 0; i < config.InterfaceCount(); i++)
+	{
+		ClaimInterface(config.GetInterface(i));
+	}
+}
+
+void UsbDeviceWrapper::ClaimInterface(libusb_interface const &interface)
+{
+	// 遍历接口中的所有设置（altsetting）
+	for (int i = 0; i < interface.num_altsetting; i++)
+	{
+		libusb_interface_descriptor const *iface_desc = &interface.altsetting[i];
+		int interface_number = iface_desc->bInterfaceNumber;
+		ClaimInterface(interface_number);
+	}
+}
+
+void UsbDeviceWrapper::ClaimInterface(int interface_number)
+{
+	int ret = libusb_claim_interface(_device_handle.get(), interface_number);
+	if (ret)
+	{
+		cout << CODE_POS_STR << UsbErrorCodeToString(ret) << endl;
+		throw jc::Exception(UsbErrorCodeToString(ret));
+	}
 }
