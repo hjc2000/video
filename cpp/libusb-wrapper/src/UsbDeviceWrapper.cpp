@@ -82,7 +82,7 @@ void UsbDeviceWrapper::Open()
 }
 
 int UsbDeviceWrapper::ControlTransfer(
-	USBRequestType request_type,
+	USBRequestOptions request_type,
 	uint8_t request_cmd,
 	uint16_t value,
 	uint16_t index,
@@ -107,10 +107,10 @@ uint16_t UsbDeviceWrapper::GetStatus()
 {
 	uint8_t status_buf[2];
 	int have_read = ControlTransfer(
-		USBRequestType{
-			USBRequestType::DataDirection::DeviceToHost,
-			USBRequestType::RequestType::Standard,
-			USBRequestType::RecipientType::Device
+		USBRequestOptions{
+			USBRequestOptions::DataDirection::DeviceToHost,
+			USBRequestOptions::RequestType::Standard,
+			USBRequestOptions::RecipientType::Device
 		},
 		libusb_standard_request::LIBUSB_REQUEST_GET_STATUS,
 		0,

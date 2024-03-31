@@ -1,7 +1,10 @@
 #pragma once
 #include<cstdint>
 
-class USBRequestType
+/// <summary>
+///		USB 请求选项
+/// </summary>
+class USBRequestOptions
 {
 	#pragma region pos, mask
 private:
@@ -97,28 +100,28 @@ public:
 	///		默认构造函数。
 	///		默认构造出的请求属性不会符合你的期望。记得调用 Set 系列方法设置请求属性。
 	/// </summary>
-	USBRequestType() {}
+	USBRequestOptions() {}
 
 	/// <summary>
 	///		
 	/// </summary>
-	/// <param name="dir">数据传输方向</param>
-	/// <param name="type">请求类型</param>
-	/// <param name="recipient">接收者的类型</param>
-	USBRequestType(DataDirection dir, RequestType type, RecipientType recipient);
+	/// <param name="direction">数据传输方向</param>
+	/// <param name="request_type">请求类型</param>
+	/// <param name="recipient_type">接收者的类型</param>
+	USBRequestOptions(DataDirection direction, RequestType request_type, RecipientType recipient_type);
 
 private:
-	uint8_t _b = 0;
+	uint8_t _options_byte = 0;
 
 public:
 	operator uint8_t() const;
 
-	USBRequestType::DataDirection GetDataDirection();
-	void SetDataDirection(USBRequestType::DataDirection value);
+	USBRequestOptions::DataDirection GetDataDirection();
+	void SetDataDirection(USBRequestOptions::DataDirection value);
 
-	USBRequestType::RequestType GetRequestType();
-	void SetRequestType(USBRequestType::RequestType value);
+	USBRequestOptions::RequestType GetRequestType();
+	void SetRequestType(USBRequestOptions::RequestType value);
 
-	USBRequestType::RecipientType GetRecipientType();
-	void SetRecipientType(USBRequestType::RecipientType value);
+	USBRequestOptions::RecipientType GetRecipientType();
+	void SetRecipientType(USBRequestOptions::RecipientType value);
 };

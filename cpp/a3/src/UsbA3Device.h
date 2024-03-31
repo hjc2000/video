@@ -222,10 +222,10 @@ public:// 方法
 		}
 
 		uint32_t length_read = _usb_device.ControlTransfer(
-			USBRequestType{
-				USBRequestType::DataDirection::DeviceToHost,
-				USBRequestType::RequestType::Vendor,
-				USBRequestType::RecipientType::Device,
+			USBRequestOptions{
+				USBRequestOptions::DataDirection::DeviceToHost,
+				USBRequestOptions::RequestType::Vendor,
+				USBRequestOptions::RecipientType::Device,
 			},
 			cmd,
 			wval,
@@ -259,16 +259,16 @@ public:// 方法
 			widx = (pbuf[3] << 8) | pbuf[2];
 		}
 
-		/* 台湾方面使用了厂商请求，即自定义请求 USBRequestType::RequestType::Vendor。然后请求命令使用了自定义的。
+		/* 台湾方面使用了厂商请求，即自定义请求 USBRequestOptions::RequestType::Vendor。然后请求命令使用了自定义的。
 		 * 请求命令就是形参 cmd。cmd 将会被传入 0x4c, 0x41 之类的。这些是非标准的命令代码，是厂商自定义的。
 		 *
-		 * 使用自定义命令必须将请求类型设置为 USBRequestType::RequestType::Vendor。
+		 * 使用自定义命令必须将请求类型设置为 USBRequestOptions::RequestType::Vendor。
 		 */
 		uint32_t length_read = _usb_device.ControlTransfer(
-			USBRequestType{
-				USBRequestType::DataDirection::HostToDevice,
-				USBRequestType::RequestType::Vendor,
-				USBRequestType::RecipientType::Device,
+			USBRequestOptions{
+				USBRequestOptions::DataDirection::HostToDevice,
+				USBRequestOptions::RequestType::Vendor,
+				USBRequestOptions::RecipientType::Device,
 			},
 			cmd,
 			wval,

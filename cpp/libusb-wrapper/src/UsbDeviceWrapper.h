@@ -1,7 +1,7 @@
 #pragma once
 #include<Exception.h>
 #include<List.h>
-#include<USBRequestType.h>
+#include<USBRequestOptions.h>
 #include<UsbConfigDescriptorWrapper.h>
 #include<Wrapper.h>
 #include<define.h>
@@ -60,7 +60,7 @@ public:
 	///		如果你只关心是否失败，判断返回值是否小于 0 就行了。小于 0 表示失败，否则就是成功。
 	/// </returns>
 	int ControlTransfer(
-		USBRequestType request_type,
+		USBRequestOptions request_type,
 		uint8_t request_cmd,
 		uint16_t value,
 		uint16_t index,
