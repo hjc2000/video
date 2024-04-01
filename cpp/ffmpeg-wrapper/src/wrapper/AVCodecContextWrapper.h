@@ -143,7 +143,6 @@ namespace video
 		 * @exception SendFrameException
 		*/
 		void SendFrame(AVFrameWrapper *frame);
-		bool _have_printed_send_frame_rescale_pts_warning = false;
 
 		/**
 		 * @brief 接收包

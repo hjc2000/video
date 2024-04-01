@@ -20,16 +20,11 @@ AVRational operator/(AVRational r1, AVRational r2);
 */
 AVRational reciprocal(AVRational rational);
 
-/**
- * @brief 将一个时间基的 pts 转换到另一个时间基。
- * @param in_pts
- * @param in_time_base
- * @param out_time_base
- * @return 转换到 out_time_base 后的 pts。
-*/
-inline int64_t ConvertTimeStamp(int64_t in_pts, AVRational in_time_base, AVRational out_time_base)
-{
-	// 时间戳转换 https://www.yuque.com/qiaodangyi/yrin4p/vn2y64n75vfgi3o3
-	int64_t out_pts = av_rescale_q(in_pts, in_time_base, out_time_base);
-	return out_pts;
-}
+/// <summary>
+///		将一个时间基的时间戳转换到另一个时间基。
+/// </summary>
+/// <param name="in_time_stamp"></param>
+/// <param name="in_time_base"></param>
+/// <param name="out_time_base"></param>
+/// <returns>转换到 out_time_base 后的时间戳。</returns>
+int64_t ConvertTimeStamp(int64_t in_time_stamp, AVRational in_time_base, AVRational out_time_base);

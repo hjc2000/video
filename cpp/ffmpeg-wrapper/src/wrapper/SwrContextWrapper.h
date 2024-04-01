@@ -57,8 +57,6 @@ namespace video
 		AudioFrameInfoCollection _out_frame_infos;
 		shared_ptr<AVFrameWrapper> _silence_frame;
 
-		bool _have_printed_send_frame_rescale_pts_warning = false;
-
 		/// <summary>
 		///		对 swr_convert 的简单封装。
 		/// </summary>

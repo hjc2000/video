@@ -166,16 +166,7 @@ void AVCodecContextWrapper::SendFrame(AVFrameWrapper *frame)
 		// 正常送入帧
 		if (frame->time_base() != time_base())
 		{
-			if (!_have_printed_send_frame_rescale_pts_warning)
-			{
-				cout << CODE_POS_STR << "输入帧的时间基和构造本对象时设置的不同，进行 pts 缩放。" << endl;
-				_have_printed_send_frame_rescale_pts_warning = true;
-			}
-
-			int64_t out_pts = ConvertTimeStamp(frame->pts(), frame->time_base(), time_base());
-			frame->set_pts(out_pts);
-			frame->set_time_base(time_base());
-			frame->set_duration(0);
+			frame->ChangeTimeBase(time_base());
 		}
 
 		frame->make_writable();

@@ -71,19 +71,7 @@ void video::SwrContextWrapper::SendFrame(AVFrameWrapper *input_frame)
 	// 非冲洗模式
 	if (input_frame->time_base() != _in_stream_infos.time_base())
 	{
-		if (!_have_printed_send_frame_rescale_pts_warning)
-		{
-			cout << CODE_POS_STR << "输入帧的时间基和构造本对象时设置的输入流时间基不同，进行 pts 缩放。" << endl;
-			_have_printed_send_frame_rescale_pts_warning = true;
-		}
-
-		int64_t rescaled_input_frame_pts = ConvertTimeStamp(
-			input_frame->pts(),
-			input_frame->time_base(),
-			_in_stream_infos.time_base()
-		);
-
-		input_frame->set_pts(rescaled_input_frame_pts);
+		input_frame->ChangeTimeBase(_in_stream_infos.time_base());
 	}
 
 	_in_pts_when_send_frame = input_frame->pts();
