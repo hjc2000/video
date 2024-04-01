@@ -1,7 +1,7 @@
 #pragma once
 #include<AVCodecContextWrapper.h>
-#include<ErrorCode.h>
 #include<AVStreamWrapper.h>
+#include<ErrorCode.h>
 #include<HysteresisBlockingQueue.h>
 #include<IDisposable.h>
 #include<IFrameConsumer.h>
@@ -23,89 +23,13 @@ namespace video
 	class VideoFramePlayer :public IPlayer, public IFrameConsumer
 	{
 	public:
-		#pragma region 选项
-		/**
-		 * @brief VideoFrameDisplayer 选项类
-		*/
-		class Options :public IVideoStreamInfoCollection
-		{
-		public:
-			Options() {}
-
-			Options(IVideoStreamInfoCollection &infos)
-			{
-				IVideoStreamInfoCollection::operator=(infos);
-			}
-
-			Options &operator=(IVideoStreamInfoCollection &infos)
-			{
-				IVideoStreamInfoCollection::operator=(infos);
-				return *this;
-			}
-
-		public:
-			int _x = 0;
-			int _y = 0;
-			int _width = 1280;
-			int _height = 720;
-			AVRational _time_base{ 1,90000 };
-			AVRational _frame_rate{ 30,1 };
-			AVPixelFormat _pix_format = AVPixelFormat::AV_PIX_FMT_YUV420P;
-			std::string _window_title = "VideoFrameDisplayer";
-			SDL_WindowFlags _flags = SDL_WindowFlags::SDL_WINDOW_SHOWN;
-
-		public:
-			#pragma region IVideoStreamInfoCollection 属性
-			virtual int width() override
-			{
-				return _width;
-			}
-			virtual void set_width(int value) override
-			{
-				_width = value;
-			}
-
-			virtual int height() override
-			{
-				return _height;
-			}
-			virtual void set_height(int value) override
-			{
-				_height = value;
-			}
-
-			virtual AVPixelFormat pixel_format() override
-			{
-				return _pix_format;
-			}
-			virtual void set_pixel_format(AVPixelFormat value) override
-			{
-				_pix_format = value;
-			}
-
-			virtual AVRational time_base() override
-			{
-				return _time_base;
-			}
-			virtual void set_time_base(AVRational value) override
-			{
-				_time_base = value;
-			}
-
-			virtual AVRational frame_rate() override
-			{
-				return _frame_rate;
-			}
-			virtual void set_frame_rate(AVRational value) override
-			{
-				_frame_rate = value;
-			}
-			#pragma endregion
-		};
-		#pragma endregion
-
-	public:
-		VideoFramePlayer(Options options);
+		VideoFramePlayer(
+			int x,
+			int y,
+			IVideoStreamInfoCollection &infos,
+			std::string window_title,
+			SDL_WindowFlags flags
+		);
 
 		~VideoFramePlayer()
 		{
@@ -113,9 +37,6 @@ namespace video
 			cout << "~VideoFramePlayer()" << endl;
 		}
 
-	private:
-		atomic_bool _disposed = false;
-	public:
 		/// <summary>
 		///		关闭播放器。
 		///		* 本方法线程安全。
@@ -169,12 +90,11 @@ namespace video
 		shared_ptr<IRefTimer> _ref_timer;
 		#pragma endregion
 
-	private:
+		atomic_bool _disposed = false;
 		SDL_Timer _timer;
 		shared_ptr<VideoFrameDisplayer> _displayer;
 		VideoStreamInfoCollection _video_stream_infos{};
 		jc::HysteresisBlockingQueue<AVFrameWrapper> _frame_queue{ 10 };
-		AVRational _time_base;
 
 	private:
 		/// <summary>

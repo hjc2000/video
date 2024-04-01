@@ -3,17 +3,26 @@
 using namespace video;
 using namespace std;
 
-video::VideoFramePlayer::VideoFramePlayer(Options options)
+video::VideoFramePlayer::VideoFramePlayer(
+	int x,
+	int y,
+	IVideoStreamInfoCollection &infos,
+	std::string window_title,
+	SDL_WindowFlags flags
+)
 {
-	_time_base = options.time_base();
-	_video_stream_infos = options;
-
-	VideoFrameDisplayer::Options displayer_options{ options };
-	displayer_options._x = options._x;
-	displayer_options._y = options._y;
-	displayer_options._window_title = options._window_title.c_str();
-	displayer_options._flags = options._flags;
-	_displayer = shared_ptr<VideoFrameDisplayer>{ new VideoFrameDisplayer{displayer_options} };
+	_video_stream_infos = infos;
+	_displayer = shared_ptr<VideoFrameDisplayer>{
+		new VideoFrameDisplayer{
+			x,
+			y,
+			_video_stream_infos.width(),
+			_video_stream_infos.height(),
+			_video_stream_infos.pixel_format(),
+			window_title,
+			flags,
+		}
+	};
 
 	_timer._callback = [&](uint32_t interval_in_milliseconds)->uint32_t
 	{
@@ -36,7 +45,7 @@ uint32_t video::VideoFramePlayer::SDL_TimerCallbackHandler(uint32_t interval_in_
 
 	_displayer->SendFrame(&frame);
 
-	frame.set_time_base(_time_base);
+	frame.set_time_base(_video_stream_infos.time_base());
 	int64_t video_time = frame.PtsToMilliseconds().count();
 	if (!_ref_timer)
 	{

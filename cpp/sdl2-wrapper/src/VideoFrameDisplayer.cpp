@@ -2,25 +2,50 @@
 
 using namespace video;
 
-VideoFrameDisplayer::VideoFrameDisplayer(Options options)
+VideoFrameDisplayer::VideoFrameDisplayer() :
+	VideoFrameDisplayer(0, 0, 1280, 720)
+{
+
+}
+
+VideoFrameDisplayer::VideoFrameDisplayer(int x, int y, int width, int height) :
+	VideoFrameDisplayer(
+		x, y, width, height,
+		AVPixelFormat::AV_PIX_FMT_YUV420P,
+		"VideoFrameDisplayer",
+		SDL_WindowFlags::SDL_WINDOW_SHOWN
+	)
+{
+
+}
+
+VideoFrameDisplayer::VideoFrameDisplayer(
+	int x,
+	int y,
+	int width,
+	int height,
+	AVPixelFormat pix_format,
+	std::string window_title,
+	SDL_WindowFlags flags
+)
 {
 	_window = shared_ptr<SDL_WindowWrapper>{
 		new SDL_WindowWrapper{
-			options._window_title.c_str(),
-			options._x,
-			options._y,
-			options._width,
-			options._height,
-			options._flags
+			window_title.c_str(),
+			x,
+			y,
+			width,
+			height,
+			flags
 		},
 	};
 
 	_renderer = _window->CreateRenderer(-1);
 	_texture = _renderer->CreateTexture(
-		AVPixelFormatExtension::AVPixelFormat_to_SDL_PixelFormatEnum(options._pix_format),
+		AVPixelFormatExtension::AVPixelFormat_to_SDL_PixelFormatEnum(pix_format),
 		SDL_TextureAccess::SDL_TEXTUREACCESS_STREAMING,
-		options._width,
-		options._height
+		width,
+		height
 	);
 }
 

@@ -1,6 +1,6 @@
 #pragma once
-#include<ErrorCode.h>
 #include<DecoderPipe.h>
+#include<ErrorCode.h>
 #include<HysteresisBlockingPacketQueue.h>
 #include<IPacketConsumer.h>
 #include<IPlayer.h>
@@ -30,10 +30,15 @@ namespace video
 			*/
 
 			// 播放器，管道最下游
-			VideoFramePlayer::Options options{ stream };
-			options._x = x;
-			options._y = y;
-			_player = shared_ptr<VideoFramePlayer>{ new VideoFramePlayer{options} };
+			_player = shared_ptr<VideoFramePlayer>{
+				new VideoFramePlayer{
+					x,
+					y,
+					stream,
+					"VideoPacketPlayer",
+					SDL_WindowFlags::SDL_WINDOW_SHOWN,
+				}
+			};
 
 			_decoder_pipe = shared_ptr<DecoderPipe>{ new DecoderPipe{stream} };
 			_decoder_pipe->AddFrameConsumer(_player);
@@ -69,7 +74,7 @@ namespace video
 			_disposed = true;
 
 			_decoding_thread_can_start.Dispose();
-			_pump_cancellation_token_source.Cancel();
+			_cancel_pump_source.Cancel();
 			_decoder_pipe->Dispose();
 			_packet_queue->Dispose();
 			_player->Dispose();
@@ -133,7 +138,7 @@ namespace video
 		/**
 		 * @brief 用于取消 _packet_pump 的泵送。
 		*/
-		CancellationTokenSource _pump_cancellation_token_source;
+		CancellationTokenSource _cancel_pump_source;
 
 		/**
 		 * @brief 将包从 _packet_queue 泵送到 _decoder_pipe 中。
@@ -161,7 +166,7 @@ namespace video
 		void DecodingThreadFunc()
 		{
 			_decoding_thread_can_start.Wait();
-			auto token = _pump_cancellation_token_source.Token();
+			auto token = _cancel_pump_source.Token();
 			_packet_pump->Pump(token);
 			_thread_has_exited.SetResult();
 		}
