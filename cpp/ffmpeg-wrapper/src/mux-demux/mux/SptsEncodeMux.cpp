@@ -114,8 +114,8 @@ void test_SptsEncodeMux()
 
 	VideoStreamInfoCollection out_video_stream_infos;
 	out_video_stream_infos._frame_rate = AVRational{ 30,1 };
-	out_video_stream_infos._width = 3840;
-	out_video_stream_infos._height = 2160;
+	out_video_stream_infos._width = 1920;
+	out_video_stream_infos._height = 1080;
 	out_video_stream_infos._pixel_format = AVPixelFormat::AV_PIX_FMT_YUV420P;
 	out_video_stream_infos._time_base = AVRational{ 1,90000 };
 
@@ -130,7 +130,7 @@ void test_SptsEncodeMux()
 			out_fmt_ctx,
 			out_video_stream_infos,
 			"hevc_amf",
-			40 * 1000 * 1000,
+			-1,
 			out_audio_stream_infos,
 			"aac"
 		}
