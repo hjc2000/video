@@ -19,9 +19,9 @@ using std::function;
 
 namespace video
 {
-	/**
-	 * @brief 选择初始化哪些模块
-	 */
+	/// <summary>
+	///		选择初始化哪些模块
+	/// </summary>
 	enum class SDL_InitOption
 	{
 		Timer = SDL_INIT_TIMER,
@@ -48,29 +48,6 @@ namespace video
 		/// </summary>
 		/// <param name="option"></param>
 		/// <exception cref="Exception 失败会抛出异常"></exception>
-		static void Initialize(SDL_InitOption option = SDL_InitOption::Everything)
-		{
-			using namespace std;
-			static mutex lock;
-			static bool initialzed = false;
-
-			lock_guard l(lock);
-			if (initialzed)
-			{
-				// 已经被初始化过了，直接返回
-				return;
-			}
-
-			int result = SDL_Init((uint32_t)option);
-			if (result)
-			{
-				// 发生了错误
-				auto error = SDL_GetError();
-				cout << error << endl;
-				throw jc::Exception(error);
-			}
-
-			initialzed = true;
-		}
+		static void Initialize(SDL_InitOption option = SDL_InitOption::Everything);
 	};
 }

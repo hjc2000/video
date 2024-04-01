@@ -4,6 +4,61 @@
 #include<InputFormat.h>
 #include<PacketPump.h>
 
+AVPacketPlayer::AVPacketPlayer(int x, int y, AVStreamWrapper &video_stream, AVStreamWrapper &audio_stream)
+{
+	_audio_packet_player = shared_ptr<AudioPacketPlayer>{
+		new AudioPacketPlayer{audio_stream}
+	};
+
+	_video_packet_player = shared_ptr<VideoPacketPlayer>{
+		new VideoPacketPlayer{x,y,video_stream}
+	};
+	_video_packet_player->SetRefTimer(_audio_packet_player);
+
+	_video_stream_index = video_stream.Index();
+	_audio_stream_index = audio_stream.Index();
+}
+
+AVPacketPlayer::~AVPacketPlayer()
+{
+	Dispose();
+	cout << __func__ << endl;
+}
+
+void AVPacketPlayer::Dispose()
+{
+	if (_disposed) return;
+	_disposed = true;
+
+	_audio_packet_player->Dispose();
+	_video_packet_player->Dispose();
+}
+
+void AVPacketPlayer::Pause(bool pause)
+{
+	_audio_packet_player->Pause(pause);
+	_video_packet_player->Pause(pause);
+}
+
+void AVPacketPlayer::SendPacket(AVPacketWrapper *packet)
+{
+	if (!packet)
+	{
+		_video_packet_player->SendPacket(nullptr);
+		_audio_packet_player->SendPacket(nullptr);
+		return;
+	}
+
+	if (packet->StreamIndex() == _video_stream_index)
+	{
+		_video_packet_player->SendPacket(packet);
+	}
+	else if (packet->StreamIndex() == _audio_stream_index)
+	{
+		_audio_packet_player->SendPacket(packet);
+	}
+}
+
 void video::test_AVPacketPlayer()
 {
 	auto fs = FileStream::Open("渡尘.mp4");
