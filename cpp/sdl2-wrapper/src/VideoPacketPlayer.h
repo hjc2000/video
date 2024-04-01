@@ -27,6 +27,19 @@ namespace video
 
 	private:
 		std::atomic_bool _disposed = false;
+		shared_ptr<HysteresisBlockingPacketQueue> _packet_queue;
+
+		/**
+		* @brief 用于取消 _packet_pump 的泵送。
+		*/
+		CancellationTokenSource _cancel_pump_source;
+
+		/**
+		* @brief 将包从 _packet_queue 泵送到 _decoder_pipe 中。
+		*/
+		shared_ptr<PacketPump> _packet_pump;
+		shared_ptr<DecoderPipe> _decoder_pipe;
+		shared_ptr<VideoFramePlayer> _player;
 
 		/// <summary>
 		///		解码线程创建后会立刻等待此信号，当时机成熟，解码线程可以开始执行了，
@@ -78,23 +91,6 @@ namespace video
 		{
 			_player->SetRefTimer(value);
 		}
-		#pragma endregion
-
-		#pragma region 管道
-	private:
-		shared_ptr<HysteresisBlockingPacketQueue> _packet_queue;
-
-		/**
-		 * @brief 用于取消 _packet_pump 的泵送。
-		*/
-		CancellationTokenSource _cancel_pump_source;
-
-		/**
-		 * @brief 将包从 _packet_queue 泵送到 _decoder_pipe 中。
-		*/
-		shared_ptr<PacketPump> _packet_pump;
-		shared_ptr<DecoderPipe> _decoder_pipe;
-		shared_ptr<VideoFramePlayer> _player;
 		#pragma endregion
 	};
 }
