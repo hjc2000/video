@@ -5,7 +5,6 @@
 #include<HysteresisBlockingQueue.h>
 #include<IDisposable.h>
 #include<IFrameConsumer.h>
-#include<IPlayer.h>
 #include<IRefTimer.h>
 #include<SDL_Timer.h>
 #include<SafeQueue.h>
@@ -20,7 +19,9 @@ namespace video
 {
 	using namespace video;
 
-	class VideoFramePlayer :public IPlayer, public IFrameConsumer
+	class VideoFramePlayer :
+		public IFrameConsumer,
+		public IDisposable
 	{
 	public:
 		VideoFramePlayer(
@@ -54,7 +55,7 @@ namespace video
 		///		本方法不会阻塞，可以在回调函数中使用。
 		/// </summary>
 		/// <param name="pause"></param>
-		void Pause(bool pause) override;
+		void Pause(bool pause);
 
 		/// <summary>
 		///		将帧送入队列。送入空指针冲洗队列。

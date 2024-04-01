@@ -3,7 +3,6 @@
 #include<AVFrameWrapper.h>
 #include<HysteresisBlockingFrameQueue.h>
 #include<IFrameConsumer.h>
-#include<IPlayer.h>
 #include<IRefTimer.h>
 #include<SDL_DefaultAudioDevice.h>
 #include<SDL_EventGetter.h>
@@ -22,7 +21,7 @@ namespace video
 	 * @brief 本类线程安全。
 	*/
 	class AudioFramePlayer :
-		public IPlayer,
+		public IDisposable,
 		public IRefTimer,
 		public IFrameConsumer
 	{
@@ -54,7 +53,7 @@ namespace video
 		///		控制暂停与播放。
 		/// </summary>
 		/// <param name="pause">传入 true 表示暂停，传入 false 开始播放</param>
-		void Pause(bool pause) override;
+		void Pause(bool pause);
 
 		/// <summary>
 		///		向播放器送入帧，也可以冲洗播放器。

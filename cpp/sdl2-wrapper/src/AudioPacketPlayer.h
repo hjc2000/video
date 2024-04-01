@@ -17,7 +17,7 @@ namespace video
 	 * @brief 在回调中向播放器送入音频包，播放器会解码，然后播放。
 	*/
 	class AudioPacketPlayer :
-		public IPlayer,
+		public IDisposable,
 		public IRefTimer,
 		public IPacketConsumer
 	{
@@ -62,7 +62,7 @@ namespace video
 		///		暂停或开始播放。此方法会启动解码线程。
 		/// </summary>
 		/// <param name="pause">传入 false 开始播放，传入 true 暂停。</param>
-		void Pause(bool pause) override;
+		void Pause(bool pause);
 
 		/// <summary>
 		///		向播放器送入包。
