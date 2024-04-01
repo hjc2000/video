@@ -2,23 +2,6 @@
 
 using namespace video;
 
-VideoFrameDisplayer::VideoFrameDisplayer() :
-	VideoFrameDisplayer(0, 0, 1280, 720)
-{
-
-}
-
-VideoFrameDisplayer::VideoFrameDisplayer(int x, int y, int width, int height) :
-	VideoFrameDisplayer(
-		x, y, width, height,
-		AVPixelFormat::AV_PIX_FMT_YUV420P,
-		"VideoFrameDisplayer",
-		SDL_WindowFlags::SDL_WINDOW_SHOWN
-	)
-{
-
-}
-
 VideoFrameDisplayer::VideoFrameDisplayer(
 	int x,
 	int y,

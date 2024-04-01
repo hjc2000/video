@@ -30,6 +30,26 @@ video::VideoFramePlayer::VideoFramePlayer(
 	};
 }
 
+VideoFramePlayer::~VideoFramePlayer()
+{
+	Dispose();
+	cout << "~VideoFramePlayer()" << endl;
+}
+
+void VideoFramePlayer::Dispose()
+{
+	if (_disposed) return;
+	_disposed = true;
+
+	_frame_queue.Dispose();
+	_timer.Stop();
+}
+
+shared_ptr<IRefTimer> VideoFramePlayer::RefTimer()
+{
+	return _ref_timer;
+}
+
 uint32_t video::VideoFramePlayer::SDL_TimerCallbackHandler(uint32_t interval_in_milliseconds)
 {
 	AVFrameWrapper frame;
@@ -70,4 +90,34 @@ uint32_t video::VideoFramePlayer::SDL_TimerCallbackHandler(uint32_t interval_in_
 	}
 
 	return (uint32_t)next_interval;
+}
+
+void video::VideoFramePlayer::Pause(bool pause)
+{
+	/* 这里使用的是原子量，且 _timer 的方法是线程安全的，_video_frame_infos 又不会在另一个线程中
+	* 被修改 frame_interval_in_milliseconds 属性，所以不用竞争 _not_private_methods_lock。
+	*/
+	if (pause)
+	{
+		// 暂停播放
+		_timer.StopNoWait();
+		return;
+	}
+
+	// 开始播放
+	uint32_t interval = _video_stream_infos.frame_interval_in_milliseconds<uint32_t>();
+	cout << "开始播放，帧间隔为：" << interval << endl;
+	_timer.Start(interval);
+}
+
+void video::VideoFramePlayer::SendFrame(AVFrameWrapper *frame)
+{
+	if (!frame)
+	{
+		_frame_queue.Flush();
+		return;
+	}
+
+	_frame_queue.Enqueue(*frame);
+	return;
 }

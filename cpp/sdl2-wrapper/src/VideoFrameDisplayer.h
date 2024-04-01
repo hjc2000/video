@@ -16,8 +16,6 @@ namespace video
 	class VideoFrameDisplayer :public IFrameConsumer
 	{
 	public:
-		VideoFrameDisplayer();
-		VideoFrameDisplayer(int x, int y, int width, int height);
 		VideoFrameDisplayer(
 			int x,
 			int y,
