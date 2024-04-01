@@ -1,15 +1,15 @@
 #pragma once
-#include<SDL_Util.h>
-#include<SDL_RendererWrapper.h>
 #include<Exception.h>
+#include<SDL_RendererWrapper.h>
+#include<SDL_Util.h>
 #include<Wrapper.h>
 
 namespace video
 {
 	/// <summary>
-	/// 创建渲染器时用来选择渲染器的类型
+	///		创建渲染器时用来选择渲染器的类型
 	/// </summary>
-	enum SDL_RendererFlags
+	enum class RendererFlags
 	{
 		/**
 		 * @brief 不进行设置。
@@ -18,75 +18,67 @@ namespace video
 		 * 传入 0 或者 SDL_RendererFlags 中的一个或多个值按位相或。所以我在这里添加一个
 		 * 扩展的 unset
 		*/
-		unset = 0,
+		Unset = 0,
 
 		/**
 		 * @brief The renderer is a software fallback
 		*/
-		software = ::SDL_RendererFlags::SDL_RENDERER_SOFTWARE,
+		Software = ::SDL_RendererFlags::SDL_RENDERER_SOFTWARE,
 
 		/**
 		 * @brief The renderer uses hardware acceleration
 		*/
-		accelerated = ::SDL_RendererFlags::SDL_RENDERER_ACCELERATED,
+		Accelerated = ::SDL_RendererFlags::SDL_RENDERER_ACCELERATED,
 
 		/**
 		 * @brief Present is synchronized with the refresh rate
 		*/
-		presentvsync = ::SDL_RendererFlags::SDL_RENDERER_PRESENTVSYNC,
+		Presentvsync = ::SDL_RendererFlags::SDL_RENDERER_PRESENTVSYNC,
 
 		/**
 		 * @brief The renderer supports rendering to texture
 		*/
-		SDL_RENDERER_TARGETTEXTURE = ::SDL_RendererFlags::SDL_RENDERER_TARGETTEXTURE,
+		RendererTargetTexture = ::SDL_RendererFlags::SDL_RENDERER_TARGETTEXTURE,
 	};
 
 	class SDL_WindowWrapper : public Wrapper<::SDL_Window>
 	{
 	public:
-		SDL_WindowWrapper(const char *title, int x, int y, int w, int h, SDL_WindowFlags flags);
+		SDL_WindowWrapper(
+			char const *title,
+			int x, int y,
+			int w, int h,
+			SDL_WindowFlags flags
+		);
+
 		~SDL_WindowWrapper();
 
 	public:
-		int UpdateWindowSurface()
-		{
-			return ::SDL_UpdateWindowSurface(_wrapped_obj);
-		}
+		int UpdateWindowSurface();
+		SDL_Surface *GetWindowSurface();
 
-		::SDL_Surface *GetWindowSurface()
-		{
-			return ::SDL_GetWindowSurface(_wrapped_obj);
-		}
+		/// <summary>
+		///		创建一个渲染器
+		/// </summary>
+		/// <param name="index"></param>
+		/// <param name="flags"></param>
+		/// <returns></returns>
+		shared_ptr<video::SDL_RendererWrapper> CreateRenderer(
+			int index,
+			RendererFlags flags = RendererFlags::Unset
+		);
 
-		/**
-		 * @brief Create a Renderer object创建一个渲染器
-		 *
-		 * @param index
-		 * @param flags
-		 * @return shared_ptr<video::SDL_RendererWrapper>
-		 */
-		shared_ptr<video::SDL_RendererWrapper> CreateRenderer(int index, SDL_RendererFlags flags = SDL_RendererFlags::unset);
-
-		/**
-		 * @brief 设置窗口的位置
-		 *
-		 * @param x
-		 * @param y
-		 */
+		/// <summary>
+		///		设置窗口的位置
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		void SetWindowPosition(int x, int y);
 
-		/**
-		 * @brief 获取屏幕尺寸
-		 *
-		 * @return SDL_Rect
-		 */
-		static SDL_Rect GetScreenSize()
-		{
-			SDL_Rect screenRect;
-			int ret = ::SDL_GetDisplayBounds(0, &screenRect);
-			if (ret < 0)
-				throw jc::Exception(SDL_GetError());
-			return screenRect;
-		}
+		/// <summary>
+		///		获取屏幕尺寸
+		/// </summary>
+		/// <returns></returns>
+		static SDL_Rect GetScreenSize();
 	};
 }
