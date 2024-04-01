@@ -1,6 +1,6 @@
 #pragma once
-#include<SDL_Util.h>
 #include<AVFrameWrapper.h>
+#include<SDL_Util.h>
 
 namespace video
 {
@@ -8,7 +8,7 @@ namespace video
 
 	class SDL_TextureWrapper :public Wrapper<SDL_Texture>
 	{
-	public:// 生命周期
+	public:
 		SDL_TextureWrapper(SDL_Texture *texture);
 		~SDL_TextureWrapper();
 
@@ -16,6 +16,7 @@ namespace video
 		/// <summary>
 		///		使用 YUV 数组更新纹理
 		/// </summary>
+		/// 
 		/// <param name="rect">一个矩形，表示要更新纹理的哪一部分。传入空指针表示更新整个纹理</param>
 		/// 
 		/// <param name="Yplane">Y 数组的头指针</param>
@@ -23,6 +24,7 @@ namespace video
 		/// 
 		/// <param name="Uplane">U 数组的头指针</param>
 		/// <param name="Usize">U 数组的长度</param>
+		/// 
 		/// <param name="Vplane">V 数组的头指针</param>
 		/// <param name="Vsize">V 数组的长度</param>
 		/// 
@@ -31,7 +33,8 @@ namespace video
 			const SDL_Rect *rect,
 			const Uint8 *Yplane, int Ysize,
 			const Uint8 *Uplane, int Usize,
-			const Uint8 *Vplane, int Vsize);
+			const Uint8 *Vplane, int Vsize
+		);
 
 		/// <summary>
 		///		使用 AVFrameWrapper 更新纹理。
