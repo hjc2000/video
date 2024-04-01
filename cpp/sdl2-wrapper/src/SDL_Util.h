@@ -41,19 +41,6 @@ namespace video
 	private:
 		SDL_Initializer() = delete;
 
-		/**
-		 * @brief SDL 反初始化器。在析构的时候会取消所有 SDL 的初始化。
-		*/
-		class SDL_Uninitializer
-		{
-		public:
-			~SDL_Uninitializer()
-			{
-				cout << "SDL_Quit" << endl;
-				SDL_Quit();
-			}
-		};
-
 	public:
 		/// <summary>
 		///		初始化 SDL。此函数幂等且线程安全。
@@ -65,10 +52,10 @@ namespace video
 		{
 			using namespace std;
 			static mutex lock;
-			static shared_ptr<SDL_Uninitializer> uninitializer;
+			static bool initialzed = false;
 
 			lock_guard l(lock);
-			if (uninitializer)
+			if (initialzed)
 			{
 				// 已经被初始化过了，直接返回
 				return;
@@ -83,9 +70,7 @@ namespace video
 				throw jc::Exception(error);
 			}
 
-			// 初始化成功
-			// 构造初始化器，在进程退出时会自动析构，从而反初始化。
-			uninitializer = shared_ptr<SDL_Uninitializer>{ new SDL_Uninitializer{} };
+			initialzed = true;
 		}
 	};
 }
