@@ -3,7 +3,7 @@
 using namespace video;
 
 SwsFpsEncoderPipe::SwsFpsEncoderPipe(
-	char const *codec_name,
+	std::string codec_name,
 	IVideoStreamInfoCollection &desire_out_video_stream_infos,
 	shared_ptr<OutputFormat> out_fmt_ctx,
 	int64_t video_out_bitrate_in_bps
@@ -11,7 +11,7 @@ SwsFpsEncoderPipe::SwsFpsEncoderPipe(
 {
 	_video_encoder_pipe = shared_ptr<EncoderPipe>{
 		new EncoderPipe{
-			codec_name,
+			codec_name.c_str(),
 			desire_out_video_stream_infos,
 			out_fmt_ctx,
 			video_out_bitrate_in_bps

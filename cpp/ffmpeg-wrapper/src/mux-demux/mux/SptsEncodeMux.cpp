@@ -41,7 +41,7 @@ void video::SptsEncodeMux::InitVideoEncodePipe()
 	{
 		_video_encode_pipe = shared_ptr<SwsFpsEncoderPipe>{
 			new SwsFpsEncoderPipe{
-				_video_codec_name.c_str(),
+				_video_codec_name,
 				_video_stream_infos,
 				_out_format,
 				_video_out_bitrate_in_bps,
