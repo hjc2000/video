@@ -28,15 +28,7 @@ namespace video
 	private:
 		std::atomic_bool _disposed = false;
 		shared_ptr<HysteresisBlockingPacketQueue> _packet_queue;
-
-		/**
-		* @brief 用于取消 _packet_pump 的泵送。
-		*/
 		CancellationTokenSource _cancel_pump_source;
-
-		/**
-		* @brief 将包从 _packet_queue 泵送到 _decoder_pipe 中。
-		*/
 		shared_ptr<PacketPump> _packet_pump;
 		shared_ptr<DecoderPipe> _decoder_pipe;
 		shared_ptr<VideoFramePlayer> _player;
@@ -60,37 +52,24 @@ namespace video
 	public:
 		/// <summary>
 		///		向播放器送入包。可以送入空指针，用来冲洗播放器。
-		///		* 当内部的包队列满时，此函数会被阻塞。
+		///		当内部的包队列满时，此函数会被阻塞。
 		/// </summary>
 		/// <param name="packet">要送入播放器的包。送入空指针表示冲洗播放器。</param>
 		/// <exception cref="ObjectDisposedException"></exception>
 		/// <exception cref="InvalidOperationException">冲洗后如果再调用本方法会抛出异常。</exception>
-		void SendPacket(AVPacketWrapper *packet) override
-		{
-			_packet_queue->SendPacket(packet);
-		}
+		void SendPacket(AVPacketWrapper *packet) override;
 
 		void Pause(bool pause);
 
-		#pragma region 参考时钟
-	public:
-		shared_ptr<IRefTimer> RefTimer()
-		{
-			return _player->RefTimer();
-		}
+		shared_ptr<IRefTimer> RefTimer();
 
-		/**
-		 * @brief 设置参考时钟。
-		 * - 传入非空指针则开启同步。本视频帧播放器会同步到此参考时钟。
-		 * - 传入空指针可以关闭同步。
-		 * - 可以随时传入空指针来关闭音视频同步。
-		 *
-		 * @param value
-		*/
-		void SetRefTimer(shared_ptr<IRefTimer> value)
-		{
-			_player->SetRefTimer(value);
-		}
-		#pragma endregion
+		/// <summary>
+		///		设置参考时钟。
+		///		- 传入非空指针则开启同步。本视频帧播放器会同步到此参考时钟。
+		///		- 传入空指针可以关闭同步。
+		///		- 可以随时传入空指针来关闭音视频同步。
+		/// </summary>
+		/// <param name="value"></param>
+		void SetRefTimer(shared_ptr<IRefTimer> value);
 	};
 }

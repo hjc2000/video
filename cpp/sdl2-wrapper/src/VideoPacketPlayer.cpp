@@ -66,6 +66,11 @@ void VideoPacketPlayer::DecodingThreadFunc()
 	_thread_has_exited.SetResult();
 }
 
+void VideoPacketPlayer::SendPacket(AVPacketWrapper *packet)
+{
+	_packet_queue->SendPacket(packet);
+}
+
 void VideoPacketPlayer::Pause(bool pause)
 {
 	if (pause)
@@ -79,4 +84,14 @@ void VideoPacketPlayer::Pause(bool pause)
 	_decoding_thread_can_start.SetResult();
 	_thread_has_exited.Reset();
 	_player->Pause(false);
+}
+
+shared_ptr<IRefTimer> VideoPacketPlayer::RefTimer()
+{
+	return _player->RefTimer();
+}
+
+void VideoPacketPlayer::SetRefTimer(shared_ptr<IRefTimer> value)
+{
+	_player->SetRefTimer(value);
 }
