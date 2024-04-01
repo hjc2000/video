@@ -1,46 +1,90 @@
 #include "SDL_DefaultAudioDevice.h"
 
+using namespace video;
+using namespace std;
+
+SDL_DefaultAudioDevice::SDL_DefaultAudioDevice()
+{
+	_desired_spec->callback = static_audio_callback;
+	_desired_spec->userdata = this;
+
+	int device_id = SDL_OpenAudio(_desired_spec, _abtained_spec);
+	if (device_id < 0)
+	{
+		string error_str = "Could not open audio: " + string(SDL_GetError());
+		throw jc::Exception(error_str);
+	}
+}
+
+SDL_DefaultAudioDevice::~SDL_DefaultAudioDevice()
+{
+	Dispose();
+	cout << __func__ << endl;
+}
+
+void SDL_DefaultAudioDevice::Dispose()
+{
+	std::lock_guard l(_not_private_methods_lock);
+	if (_disposed) return;
+	_disposed = true;
+
+	SDL_CloseAudio();
+}
+
 AVRational video::SDL_DefaultAudioDevice::time_base()
 {
-    return _abtained_spec.time_base();
+	return _abtained_spec.time_base();
 }
 
 void video::SDL_DefaultAudioDevice::set_time_base(AVRational value)
 {
+	throw jc::NotSupportedException();
 }
 
 AVSampleFormat video::SDL_DefaultAudioDevice::sample_format()
 {
-    return _abtained_spec.sample_format();
+	return _abtained_spec.sample_format();
 }
 
 void video::SDL_DefaultAudioDevice::set_sample_format(AVSampleFormat value)
 {
+	throw jc::NotSupportedException();
 }
 
 int video::SDL_DefaultAudioDevice::sample_rate()
 {
-    return _abtained_spec.sample_rate();
+	return _abtained_spec.sample_rate();
 }
 
 void video::SDL_DefaultAudioDevice::set_sample_rate(int value)
 {
+	throw jc::NotSupportedException();
 }
 
 AVChannelLayout video::SDL_DefaultAudioDevice::ch_layout()
 {
-    return _abtained_spec.ch_layout();
+	return _abtained_spec.ch_layout();
 }
 
 void video::SDL_DefaultAudioDevice::set_ch_layout(AVChannelLayout value)
 {
+	throw jc::NotSupportedException();
 }
 
 int video::SDL_DefaultAudioDevice::nb_samples()
 {
-    return _abtained_spec.nb_samples();
+	return _abtained_spec.nb_samples();
 }
 
 void video::SDL_DefaultAudioDevice::set_nb_samples(int value)
 {
+	throw jc::NotSupportedException();
+}
+
+Json video::SDL_DefaultAudioDevice::ToJson()
+{
+	return Json{
+		{"_desired_spec", _desired_spec.ToJson()},
+		{"_abtained_spec", _abtained_spec.ToJson()},
+	};
 }

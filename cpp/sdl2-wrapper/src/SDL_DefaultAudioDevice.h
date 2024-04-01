@@ -12,14 +12,12 @@
 
 namespace video
 {
-	using namespace std;
-
-	/**
-	 * @brief SDL 默认的音频设备。
-	 * - 本类线程安全。
-	 * - 本类作为 IAudioFrameInfoCollection 派生类，提供的是音频驱动器的信息，而不是构造函数传进来的
-	 *   输入音频流的信息。
-	*/
+	/// <summary>
+	///		SDL 默认的音频设备。
+	///		- 本类线程安全。
+	///		- 本类作为 IAudioFrameInfoCollection 派生类，提供的是音频驱动器的信息，
+	///		  而不是构造函数传进来的输入音频流的信息。
+	/// </summary>
 	class SDL_DefaultAudioDevice :
 		public IAudioFrameInfoCollection,
 		public IJsonSerializable,
@@ -29,40 +27,17 @@ namespace video
 		/// <summary>
 		///		构造函数。会调用 SDL 打开音频设备。打开失败会抛出异常。
 		/// </summary>
-		SDL_DefaultAudioDevice()
-		{
-			_desired_spec->callback = static_audio_callback;
-			_desired_spec->userdata = this;
-
-			int device_id = SDL_OpenAudio(_desired_spec, _abtained_spec);
-			if (device_id < 0)
-			{
-				string error_str = "Could not open audio: " + string(SDL_GetError());
-				throw jc::Exception(error_str);
-			}
-		}
-
-		~SDL_DefaultAudioDevice()
-		{
-			Dispose();
-			cout << "~SDL_DefaultAudioDevice()" << endl;
-		}
+		SDL_DefaultAudioDevice();
+		~SDL_DefaultAudioDevice();
 
 		/// <summary>
-		///		* 本方法会阻塞，直到 _audio_callback 返回。
+		///		本方法会阻塞，直到 _audio_callback 返回，所以不要在 _audio_callback
+		///		里面调用本方法。
 		/// </summary>
-		void Dispose()
-		{
-			std::lock_guard l(_not_private_methods_lock);
-			if (_disposed) return;
-			_disposed = true;
-
-			SDL_CloseAudio();
-			cout << "SDL_DefaultAudioDevice 释放" << endl;
-		}
+		void Dispose() override;
 
 	private:
-		atomic_bool _disposed = false;
+		std::atomic_bool _disposed = false;
 		SDL_AudioSpecWrapper _desired_spec;
 		SDL_AudioSpecWrapper _abtained_spec;
 
@@ -96,8 +71,6 @@ namespace video
 		}
 
 		#pragma region IAudioStreamInfoCollection
-		/* 这里只有 get 访问器有效，set 访问器什么都不做。所以这里的方法都不用加锁。*/
-
 		AVRational time_base() override;
 		void set_time_base(AVRational value) override;
 		AVSampleFormat sample_format() override;
@@ -110,12 +83,6 @@ namespace video
 		void set_nb_samples(int value) override;
 		#pragma endregion
 
-		Json ToJson() override
-		{
-			return Json{
-				{"_desired_spec",_desired_spec.ToJson()},
-				{"_abtained_spec",_abtained_spec.ToJson()},
-			};
-		}
+		Json ToJson() override;
 	};
 }
