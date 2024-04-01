@@ -89,3 +89,16 @@ void EncoderPipe::ReadAndSendPacketToOutputFormat()
 		}
 	}
 }
+
+void EncoderPipe::SendFrame(AVFrameWrapper *frame)
+{
+	// 防止编码器中有数据残留
+	ReadAndSendPacketToOutputFormat();
+	_encoder_ctx->SendFrame(frame);
+	ReadAndSendPacketToOutputFormat();
+}
+
+AVStreamWrapper EncoderPipe::Stream()
+{
+	return _new_stream;
+}
