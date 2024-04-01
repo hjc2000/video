@@ -245,3 +245,27 @@ int SwrContextWrapper::send_silence_samples(uint32_t nb_samples)
 	// 成功返回 0.
 	return 0;
 }
+
+int SwrContextWrapper::get_out_nb_samples(int in_nb_samples)
+{
+	lock_guard l(_not_private_methods_lock);
+	int samples = swr_get_out_samples(_wrapped_obj, in_nb_samples);
+	if (samples < 0)
+	{
+		throw jc::Exception("swr_get_out_samples 函数出错");
+	}
+
+	return samples;
+}
+
+int64_t SwrContextWrapper::get_delay(int64_t base)
+{
+	lock_guard l(_not_private_methods_lock);
+	return swr_get_delay(_wrapped_obj, base);
+}
+
+int SwrContextWrapper::get_delay_as_out_nb_samples()
+{
+	// get_delay 已经加锁了，这里不用加锁。
+	return (int)get_delay(_out_frame_infos._sample_rate);
+}

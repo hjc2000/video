@@ -24,27 +24,20 @@ namespace video
 		public IFrameConsumer,
 		public IFrameSource
 	{
-		#pragma region 生命周期
 	public:
 		/// <summary>
 		///		使用 IAudioStreamInfoCollection 接口初始化重采样器。
 		///		* 因为重采样器要为输入输出的帧打上时间戳，所以要求 in_stream_infos 和 out_frame_infos
-		///		的时间基有效。
+		///		  的时间基有效。
 		/// </summary>
-		/// 
-		/// <param name="in_stream_infos">
-		///		设置重采样器输入流。
-		/// </param>
-		/// <param name="out_frame_infos">
-		///		设置重采样器输出流。
-		/// </param>
+		/// <param name="in_stream_infos">设置重采样器输入流。</param>
+		/// <param name="out_frame_infos">设置重采样器输出流。</param>
 		SwrContextWrapper(
 			IAudioStreamInfoCollection &in_stream_infos,
 			IAudioFrameInfoCollection &out_frame_infos
 		);
 
 		~SwrContextWrapper();
-		#pragma endregion
 
 	private:
 		/// <summary>
@@ -62,8 +55,10 @@ namespace video
 
 		AudioStreamInfoCollection _in_stream_infos;
 		AudioFrameInfoCollection _out_frame_infos;
+		shared_ptr<AVFrameWrapper> _silence_frame;
 
-	private:
+		bool _have_printed_send_frame_rescale_pts_warning = false;
+
 		/// <summary>
 		///		对 swr_convert 的简单封装。
 		/// </summary>
@@ -88,28 +83,26 @@ namespace video
 		int64_t _in_pts_when_send_frame = 0;
 
 		#pragma region ReadFrame 方法专用
-		/**
-		 * @brief 对 input_frame 缓冲区的音频帧进行重采样，输出到 output_frame 的缓冲区中。
-		 *
-		 * @param input_frame 要被重采样的帧。可以传入空指针，此时表示不输入数据。
-		 *
-		 * @param output_frame 重采样输出帧。
-		 * - 注意，此帧可能不完整，因为有可能发生实际写入 output_frame 缓冲区的采样点个数小于 output_frame
-		 *   的 nb_samples 属性的情况。实际写入的采样点个数见本函数的返回值。
-		 * - 可以传入空指针，此时表示不输出数据。如果 output_frame 为空指针，input_frame 不为空指针，
-		 *   则表示只输入数据不输出数据。此时重采样的结果会储存在重采样器内部的缓冲区中。可以之后在
-		 *	 input_frame 传入空指针，output_frame 传入非空指针来冲洗缓冲区。
-		 *
-		 * @return 实际写入 output_frame 缓冲区的可用的采样点个数。失败返回负数的错误代码。
-		*/
+	private:
+		/// <summary>
+		///		对 input_frame 缓冲区的音频帧进行重采样，输出到 output_frame 的缓冲区中。
+		/// </summary>
+		/// <param name="input_frame">要被重采样的帧。可以传入空指针，此时表示不输入数据。</param>
+		/// <param name="output_frame">
+		///		重采样输出帧。
+		///		- 注意，此帧可能不完整，因为有可能发生实际写入 output_frame 缓冲区的采样点个数小于 output_frame
+		///		  的 nb_samples 属性的情况。实际写入的采样点个数见本函数的返回值。
+		///		- 可以传入空指针，此时表示不输出数据。如果 output_frame 为空指针，input_frame 不为空指针，
+		///		  则表示只输入数据不输出数据。此时重采样的结果会储存在重采样器内部的缓冲区中。可以之后在
+		///		  input_frame 传入空指针，output_frame 传入非空指针来冲洗缓冲区。
+		/// </param>
+		/// <returns>实际写入 output_frame 缓冲区的可用的采样点个数。失败返回负数的错误代码。</returns>
 		int convert(AVFrameWrapper *input_frame, AVFrameWrapper *output_frame);
 
 		int read_frame_in_flushing_mode(AVFrameWrapper &output_frame);
 
 		int read_frame_in_non_flushing_mode(AVFrameWrapper &output_frame);
 		#pragma endregion
-
-		shared_ptr<AVFrameWrapper> _silence_frame;
 
 	public:
 		/// <summary>
@@ -124,28 +117,20 @@ namespace video
 		/// <param name="base">
 		///		延迟的基。（不是时间基，base 是时间基的倒数。详见 https://www.yuque.com/qiaodangyi/yrin4p/ica2heo5g3kyre9t）
 		///		
-		///		* 使用时间基的倒数是因为 ffmpeg 默认你会取一个 (0, 1] 内的，并且很接近 0 的数作为时间基，因为
-		///		这样精度才高。整型无法表示这种数，所以取了倒数。不用 double 是因为 double 在表示很小的数，例如
-		///		1/ 90000 时精度不能满足要求。这种时候用整型可以没有误差。time_base = 1 / 90000，则 base = 90000。
+		///		- 使用时间基的倒数是因为 ffmpeg 默认你会取一个 (0, 1] 内的，并且很接近 0 的数作为时间基，因为
+		///		  这样精度才高。整型无法表示这种数，所以取了倒数。不用 double 是因为 double 在表示很小的数，例如
+		///		  1 / 90000 时精度不能满足要求。这种时候用整型可以没有误差。time_base = 1 / 90000，则 base = 90000。
 		/// </param>
 		/// <returns>
 		///		返回值 = 延迟时间 * base
 		/// </returns>
-		int64_t get_delay(int64_t base)
-		{
-			lock_guard l(_not_private_methods_lock);
-			return swr_get_delay(_wrapped_obj, base);
-		}
+		int64_t get_delay(int64_t base);
 
 		/// <summary>
 		///		根据构造时传入的输出采样率来计算延迟为多少个输出采样点
 		/// </summary>
 		/// <returns>延迟为多少个输出采样点</returns>
-		int get_delay_as_out_nb_samples()
-		{
-			// get_delay 已经加锁了，这里不用加锁。
-			return (int)get_delay(_out_frame_infos._sample_rate);
-		}
+		int get_delay_as_out_nb_samples();
 
 		/// <summary>
 		///		估算当向此重采样器输入 in_nb_samples 数量的采样点时，输出将会是多少采样点。
@@ -158,17 +143,7 @@ namespace video
 		///		本来我是根据这个原理手动写一个函数的，但是现在根据 swr_get_out_samples 了。
 		///		因为 swr_get_out_samples 计算出来的值比我手写的那个还大。不知道还有什么机制没了解的。
 		/// </note>
-		int get_out_nb_samples(int in_nb_samples)
-		{
-			lock_guard l(_not_private_methods_lock);
-			int samples = swr_get_out_samples(_wrapped_obj, in_nb_samples);
-			if (samples < 0)
-			{
-				throw jc::Exception("swr_get_out_samples 函数出错");
-			}
-
-			return samples;
-		}
+		int get_out_nb_samples(int in_nb_samples);
 
 		/// <summary>
 		///		检查重采样器输出缓冲区中的数据是否足够填满 output_frame
@@ -201,7 +176,6 @@ namespace video
 		 * @exception SendFrameException
 		*/
 		void SendFrame(AVFrameWrapper *input_frame) override;
-		bool _have_printed_send_frame_rescale_pts_warning = false;
 
 		/**
 		 * @brief 将重采样器中的数据取出来

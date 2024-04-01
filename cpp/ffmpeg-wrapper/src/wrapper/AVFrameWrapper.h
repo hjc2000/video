@@ -3,6 +3,7 @@
 #include<AVToString.h>
 #include<AudioFrameInfoCollection.h>
 #include<AudioStreamInfoCollection.h>
+#include<ErrorCode.h>
 #include<Stream.h>
 #include<VideoFrameInfoCollection.h>
 #include<Wrapper.h>
@@ -48,7 +49,6 @@ namespace video
 
 	public:
 		AVFrameWrapper &operator=(AVFrameWrapper const &another);
-		AVFrameWrapper &operator=(AVFrameWrapper &&another);
 
 	private:
 		shared_ptr<ImageBuffer> _image_buf;

@@ -1,8 +1,10 @@
 #include "AVFrameWrapper.h"
+#include<AVToString.h>
 #include<ImageBuffer.h>
 #include<include_ffmpeg.h>
 
 using namespace video;
+using namespace std;
 
 AVFrameWrapper::AVFrameWrapper()
 {
@@ -39,12 +41,6 @@ AVFrameWrapper::~AVFrameWrapper()
 }
 
 AVFrameWrapper &AVFrameWrapper::operator=(AVFrameWrapper const &another)
-{
-	ref(another);
-	return *this;
-}
-
-AVFrameWrapper &AVFrameWrapper::operator=(AVFrameWrapper &&another)
 {
 	ref(another);
 	return *this;
@@ -110,7 +106,7 @@ void AVFrameWrapper::ref(AVFrameWrapper const &other)
 	int ret = av_frame_ref(_wrapped_obj, (AVFrameWrapper &)other);
 	if (ret < 0)
 	{
-		throw jc::Exception();
+		cerr << CODE_POS_STR << video::ToString((ErrorCode)ret) << endl;
 	}
 }
 
