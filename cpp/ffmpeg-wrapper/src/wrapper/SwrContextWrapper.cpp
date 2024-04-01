@@ -127,14 +127,9 @@ int video::SwrContextWrapper::ReadFrame(AVFrameWrapper &output_frame)
 	}
 
 	int64_t in_pts = _in_pts_when_send_frame - delay;
-	int64_t out_pts = ConvertTimeStamp(
-		in_pts,
-		_in_stream_infos.time_base(),
-		_out_frame_infos.time_base()
-	);
-	output_frame.set_time_base(_out_frame_infos.time_base());
-	output_frame.set_pts(out_pts);
-	output_frame.set_duration(0);
+	output_frame.set_pts(in_pts);
+	output_frame.set_time_base(_in_stream_infos.time_base());
+	output_frame.ChangeTimeBase(_out_frame_infos.time_base());
 	return ret;
 }
 
