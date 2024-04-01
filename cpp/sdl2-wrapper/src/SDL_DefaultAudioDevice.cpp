@@ -31,6 +31,18 @@ void SDL_DefaultAudioDevice::Dispose()
 	SDL_CloseAudio();
 }
 
+void SDL_DefaultAudioDevice::static_audio_callback(void *userdata, uint8_t *stream, int len)
+{
+	SDL_DefaultAudioDevice *me = (SDL_DefaultAudioDevice *)userdata;
+	me->_audio_callback(stream, len);
+}
+
+void SDL_DefaultAudioDevice::Pause(bool pause)
+{
+	std::lock_guard l(_not_private_methods_lock);
+	SDL_PauseAudio(pause);
+}
+
 AVRational video::SDL_DefaultAudioDevice::time_base()
 {
 	return _abtained_spec.time_base();

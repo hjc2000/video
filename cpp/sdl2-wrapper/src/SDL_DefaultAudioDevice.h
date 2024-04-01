@@ -40,14 +40,9 @@ namespace video
 		std::atomic_bool _disposed = false;
 		SDL_AudioSpecWrapper _desired_spec;
 		SDL_AudioSpecWrapper _abtained_spec;
-
-		static void static_audio_callback(void *userdata, uint8_t *stream, int len)
-		{
-			SDL_DefaultAudioDevice *me = (SDL_DefaultAudioDevice *)userdata;
-			me->_audio_callback(stream, len);
-		}
-
 		std::mutex _not_private_methods_lock;
+
+		static void static_audio_callback(void *userdata, uint8_t *stream, int len);
 
 	public:
 		/// <summary>
@@ -64,11 +59,7 @@ namespace video
 		///		* 本方法不会阻塞，可以在回调函数中使用。
 		/// </summary>
 		/// <param name="pause">传入 true 暂停，传入 false 播放</param>
-		void Pause(bool pause)
-		{
-			std::lock_guard l(_not_private_methods_lock);
-			SDL_PauseAudio(pause);
-		}
+		void Pause(bool pause);
 
 		#pragma region IAudioStreamInfoCollection
 		AVRational time_base() override;
