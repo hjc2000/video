@@ -1,25 +1,25 @@
 export class DialogWrapper
 {
 	/**
-	 * 
-	 * @param {any} dialogElement
+	 * 静态的工厂函数
+	 * @param {HTMLDialogElement} dialog_element
 	 * @param {object} dotnetHelper
 	 * @returns
 	 */
-	static create(dialogElement, close_callback_helper)
+	static create(dialog_element, close_callback_helper)
 	{
-		return new DialogWrapper(dialogElement, close_callback_helper);
+		return new DialogWrapper(dialog_element, close_callback_helper);
 	}
 
 	/**
 	 * 
-	 * @param {HTMLDialogElement} dialogElement
+	 * @param {HTMLDialogElement} dialog_element
 	 */
-	constructor(dialogElement, close_callback_helper)
+	constructor(dialog_element, close_callback_helper)
 	{
-		this.dialogElement = dialogElement;
+		this.dialog_element = dialog_element;
 		this.close_callback_helper = close_callback_helper;
-		this.dialogElement.onclose = () =>
+		this.dialog_element.onclose = () =>
 		{
 			this.__onclose();
 		}
@@ -27,22 +27,22 @@ export class DialogWrapper
 
 	show()
 	{
-		this.dialogElement.show();
+		this.dialog_element.show();
 	}
 
 	showModal()
 	{
-		this.dialogElement.showModal();
+		this.dialog_element.showModal();
 	}
 
 	close()
 	{
-		this.dialogElement.close();
+		this.dialog_element.close();
 	}
 
 	isOpened()
 	{
-		return this.dialogElement.open;
+		return this.dialog_element.open;
 	}
 
 	__onclose()

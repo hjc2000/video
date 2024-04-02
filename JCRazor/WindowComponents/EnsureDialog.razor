@@ -1,5 +1,5 @@
-<JCRazor.WindowComponents.Dialog @ref="_ensure_dialog"
-								 DialogClosedEvent="OnNoAsync">
+<JCRazor.WindowComponents.Dialog @ref="_dialog"
+								 DialogClosedEvent="OnNoButtonClickAsync">
 	<div class="root">
 		<div class="text-box">
 			@if (ChildContent is not null)
@@ -12,8 +12,8 @@
 			}
 		</div>
 		<div class="button-box">
-			<button @onclick="OnYesAsync">Yes</button>
-			<button @onclick="OnNoAsync">No</button>
+			<button @onclick="OnYesButtonClickAsync">Yes</button>
+			<button @onclick="OnNoButtonClickAsync">No</button>
 		</div>
 	</div>
 </JCRazor.WindowComponents.Dialog>
