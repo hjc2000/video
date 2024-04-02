@@ -1,4 +1,6 @@
 ﻿#include<AVPacketPlayer.h>
+//#include<QtCore/QCoreApplication>
+//#include<QtCore/QDebug>
 #include<SptsEncodeMux.h>
 #include<test_tsduck.h>
 
