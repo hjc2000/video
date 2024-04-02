@@ -30,7 +30,16 @@ public partial class LeftRightLayoutBox
 	public RenderFragment? Foot { get; set; }
 	#endregion
 
-	#region 样式
+	#region root 样式
+	[Parameter]
+	public string Width { get; set; } = "100%";
+	[Parameter]
+	public string Height { get; set; } = "100%";
+	[Parameter]
+	public string Overflow { get; set; } = "hidden";
+	#endregion
+
+	#region 内容样式
 	[Parameter]
 	public string LeftContentPadding { get; set; } = "0";
 	[Parameter]
@@ -38,5 +47,4 @@ public partial class LeftRightLayoutBox
 	[Parameter]
 	public string RightContentPadding { get; set; } = "0";
 	#endregion
-
 }

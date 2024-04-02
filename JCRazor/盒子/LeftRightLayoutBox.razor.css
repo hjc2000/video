@@ -2,14 +2,11 @@
 	display: grid;
 	grid-template-columns: 1fr max-content 1fr;
 	grid-template-rows: auto auto 1fr auto auto;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
 }
 
 .head {
 	grid-row: 1;
-	grid-column: 1/4;
+	grid-column: 1/-1;
 	overflow: hidden;
 }
 
@@ -69,6 +66,6 @@
 
 .foot {
 	grid-row: 5;
-	grid-column: 1/4;
+	grid-column: 1/-1;
 	overflow: hidden;
 }
