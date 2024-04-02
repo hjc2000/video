@@ -23,6 +23,17 @@ int main(void)
 	}
 }
 
+//int main()
+//{
+//	int argc = 1;
+//	char *argv[] = {(char*)"appname", nullptr};
+//	QCoreApplication app(argc, argv);
+//
+//	qDebug() << "Hello, Qt console application!";
+//
+//	return app.exec();
+//}
+
 //#include<iostream>
 //#include<test_boost_asio.h>
 //#include<thread>
