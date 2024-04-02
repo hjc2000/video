@@ -2,6 +2,31 @@
 #include<Exception.h>
 
 using namespace video;
+using namespace std;
+
+video::SDL_Timer::SDL_Timer()
+{
+	SDL_Initializer::Initialize();
+}
+
+SDL_Timer::~SDL_Timer()
+{
+	Stop();
+	cout << __func__ << endl;
+}
+
+void SDL_Timer::StopNoWait()
+{
+	lock_guard l(_not_private_methods_lock);
+	_callback_should_stop = true;
+}
+
+void SDL_Timer::Stop()
+{
+	/* 这里使用的是原子量，_callback_has_stopped 的方法是线程安全的，所以不用加锁。*/
+	_callback_should_stop = true;
+	_callback_has_stopped.Wait();
+}
 
 uint32_t video::SDL_Timer::static_callback(uint32_t interval, void *param)
 {

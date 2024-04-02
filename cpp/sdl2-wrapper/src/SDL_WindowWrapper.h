@@ -1,7 +1,7 @@
 #pragma once
 #include<Exception.h>
 #include<SDL_RendererWrapper.h>
-#include<SDL_Util.h>
+#include<SDL_Initializer.h>
 #include<Wrapper.h>
 
 namespace video

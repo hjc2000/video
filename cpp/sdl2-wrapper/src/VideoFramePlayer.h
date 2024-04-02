@@ -17,8 +17,6 @@
 
 namespace video
 {
-	using namespace video;
-
 	class VideoFramePlayer :
 		public IFrameConsumer,
 		public IDisposable
@@ -36,7 +34,7 @@ namespace video
 		void Dispose() override;
 
 	private:
-		atomic_bool _disposed = false;
+		std::atomic_bool _disposed = false;
 		SDL_Timer _timer;
 		shared_ptr<VideoFrameDisplayer> _displayer;
 		VideoStreamInfoCollection _video_stream_infos{};
@@ -75,28 +73,16 @@ namespace video
 		///		- 可以随时传入空指针来关闭音视频同步。
 		/// </summary>
 		/// <param name="value"></param>
-		void SetRefTimer(shared_ptr<IRefTimer> value)
-		{
-			lock_guard l(_ref_timer_lock);
-			_ref_timer = value;
-		}
+		void SetRefTimer(shared_ptr<IRefTimer> value);
 
 		/// <summary>
 		///		获取当前的参考时间。单位：毫秒。
 		/// </summary>
 		/// <returns></returns>
-		int64_t RefTime()
-		{
-			lock_guard l(_ref_timer_lock);
-			return _ref_timer->RefTime();
-		}
+		int64_t RefTime();
 
 	private:
-		/**
-		* @brief 因为可以随时用 SetRefTimer 方法将 _ref_timer 设置为空指针以
-		* 取消音频同步，所以需要互斥锁，避免 _ref_timer 在使用过程中被设为空指针。
-		*/
-		mutex _ref_timer_lock;
+		std::mutex _ref_timer_lock;
 		shared_ptr<IRefTimer> _ref_timer;
 		#pragma endregion
 	};

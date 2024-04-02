@@ -36,6 +36,10 @@ namespace video
 		Everything = SDL_INIT_EVERYTHING,
 	};
 
+	/// <summary>
+	///		SDL 初始化器。
+	///		调用任何 SDL 的函数之前，应该至少调用过一次本类的 Initialize 方法。
+	/// </summary>
 	class SDL_Initializer
 	{
 	private:

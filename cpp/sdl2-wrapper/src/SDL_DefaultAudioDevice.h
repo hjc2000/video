@@ -3,7 +3,7 @@
 #include<IDisposable.h>
 #include<Json.h>
 #include<SDL_AudioSpecWrapper.h>
-#include<SDL_Util.h>
+#include<SDL_Initializer.h>
 #include<TaskCompletionSignal.h>
 #include<atomic>
 #include<mutex>

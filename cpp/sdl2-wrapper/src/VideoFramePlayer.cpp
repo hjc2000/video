@@ -121,3 +121,15 @@ void video::VideoFramePlayer::SendFrame(AVFrameWrapper *frame)
 	_frame_queue.Enqueue(*frame);
 	return;
 }
+
+void VideoFramePlayer::SetRefTimer(shared_ptr<IRefTimer> value)
+{
+	lock_guard l(_ref_timer_lock);
+	_ref_timer = value;
+}
+
+int64_t VideoFramePlayer::RefTime()
+{
+	lock_guard l(_ref_timer_lock);
+	return _ref_timer->RefTime();
+}

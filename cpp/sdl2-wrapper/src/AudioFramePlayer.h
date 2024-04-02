@@ -6,7 +6,7 @@
 #include<IRefTimer.h>
 #include<SDL_DefaultAudioDevice.h>
 #include<SDL_EventGetter.h>
-#include<SDL_Util.h>
+#include<SDL_Initializer.h>
 #include<SinSignalSource.h>
 #include<SwrContextWrapper.h>
 #include<SwrPipe.h>

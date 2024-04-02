@@ -1,6 +1,6 @@
 #pragma once
 #include<ErrorCode.h>
-#include<SDL_Util.h>
+#include<SDL_Initializer.h>
 #include<include_ffmpeg.h>
 
 namespace video

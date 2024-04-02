@@ -1,4 +1,4 @@
-#include"SDL_Util.h"
+#include"SDL_Initializer.h"
 
 using namespace video;
 using namespace std;

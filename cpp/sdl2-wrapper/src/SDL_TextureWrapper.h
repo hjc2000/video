@@ -1,6 +1,6 @@
 #pragma once
 #include<AVFrameWrapper.h>
-#include<SDL_Util.h>
+#include<SDL_Initializer.h>
 
 namespace video
 {
