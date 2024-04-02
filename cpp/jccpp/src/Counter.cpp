@@ -18,11 +18,13 @@ Counter::Counter(uint64_t max_value)
 /// </summary>
 void Counter::IncCount()
 {
-	_count++;
-	if (_count > _max_value)
+	if (_count == _max_value)
 	{
 		_count = 0;
+		return;
 	}
+
+	_count++;
 }
 
 /// <summary>
@@ -30,12 +32,13 @@ void Counter::IncCount()
 /// </summary>
 void Counter::DecCount()
 {
-	_count--;
-	if (_count > _max_value)
+	if (_count == 0)
 	{
-		// 递减后反而大于最大值了，说明刚才是 0，递减后溢出了。所以绕回到最大值。
 		_count = _max_value;
+		return;
 	}
+
+	_count--;
 }
 
 /// <summary>
@@ -80,4 +83,44 @@ uint64_t Counter::operator--(int)
 	uint64_t record = _count;
 	DecCount();
 	return record;
+}
+
+/// <summary>
+///		将计数器的值增加指定的值
+/// </summary>
+/// <param name="value"></param>
+/// <returns>返回运算后的值。</returns>
+uint64_t Counter::operator+=(uint64_t value)
+{
+	_count += value;
+	_count %= _max_value + 1;
+	return _count;
+}
+
+/// <summary>
+///		将计数器的值减去指定的值。
+/// </summary>
+/// <param name="value"></param>
+/// <returns>返回运算后的值。</returns>
+uint64_t Counter::operator-=(uint64_t value)
+{
+	value %= _max_value + 1;
+	_count += _max_value + 1 - value;
+	_count %= _max_value + 1;
+	return _count;
+}
+
+void Counter::Reset()
+{
+	_count = 0;
+}
+
+uint64_t Counter::CurrentValue()
+{
+	return _count;
+}
+
+void Counter::SetCurrentValue(uint64_t value)
+{
+	_count = value % (_max_value + 1);
 }

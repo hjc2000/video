@@ -1,5 +1,32 @@
 #include "JoinedStream.h"
 
+/// <summary>
+///		尝试从队列中获取流，如果队列为空，会触发回调然后再尝试退队。如果实在获取不到新的流，
+///		本方法会返回 nullptr。
+/// </summary>
+/// <returns></returns>
+shared_ptr<Stream> JoinedStream::TrtGetStream()
+{
+	if (_stream_queue.Count() == 0 && _stream_end_callback)
+	{
+		_stream_end_callback();
+	}
+
+	try
+	{
+		return _stream_queue.Dequeue();
+	}
+	catch (...)
+	{
+		return nullptr;
+	}
+}
+
+void JoinedStream::AppendStream(shared_ptr<Stream> stream)
+{
+	_stream_queue.Enqueue(stream);
+}
+
 bool JoinedStream::CanRead()
 {
 	return true;

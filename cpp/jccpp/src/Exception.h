@@ -34,9 +34,9 @@ namespace jc
 		std::string _msg;
 	};
 
-	/**
-	 * @brief 此异常表示：开发中，此功能没有完善。
-	*/
+	/// <summary>
+	///		此异常表示：开发中，此功能没有完善。
+	/// </summary>
 	class NotImplementedException :public Exception
 	{
 	public:
@@ -53,9 +53,9 @@ namespace jc
 		NotSupportedException(std::string msg) :Exception(std::string(__func__) + " " + msg) {}
 	};
 
-	/**
-	 * @brief 不允许为空指针的地方出现了空指针。
-	*/
+	/// <summary>
+	///		不允许为空指针的地方出现了空指针。
+	/// </summary>
 	class ArgumentNullException :public Exception
 	{
 	public:
@@ -64,9 +64,9 @@ namespace jc
 		ArgumentNullException(std::string msg) :Exception(std::string(__func__) + " " + msg) {}
 	};
 
-	/**
-	 * @brief 非法操作
-	*/
+	/// <summary>
+	///		非法操作
+	/// </summary>
 	class InvalidOperationException :public Exception
 	{
 	public:
@@ -75,9 +75,9 @@ namespace jc
 		InvalidOperationException(std::string msg) :Exception(std::string(__func__) + " " + msg) {}
 	};
 
-	/**
-	 * @brief 参数非法。
-	*/
+	/// <summary>
+	///		参数非法。
+	/// </summary>
 	class ArgumentException :public Exception
 	{
 	public:
@@ -86,9 +86,9 @@ namespace jc
 		ArgumentException(std::string msg) :Exception(std::string(__func__) + " " + msg) {}
 	};
 
-	/**
-	 * @brief 使用已经 Dispose 的对象会引发此异常。
-	*/
+	/// <summary>
+	///		使用已经 Dispose 的对象会引发此异常。
+	/// </summary>
 	class ObjectDisposedException :public Exception
 	{
 	public:

@@ -24,58 +24,27 @@ namespace jc
 		uint64_t operator++(int);
 		uint64_t operator--();
 		uint64_t operator--(int);
-
-		/// <summary>
-		///		将计数器的值增加指定的值
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns>返回运算后的值。</returns>
-		uint64_t operator+=(uint64_t value)
-		{
-			_count += value;
-			_count %= _max_value + 1;
-			return _count;
-		}
-
-		/// <summary>
-		///		将计数器的值减去指定的值。
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns>返回运算后的值。</returns>
-		uint64_t operator-=(uint64_t value)
-		{
-			_count -= value;
-			_count %= _max_value + 1;
-			return _count;
-		}
+		uint64_t operator+=(uint64_t value);
+		uint64_t operator-=(uint64_t value);
 
 		/// <summary>
 		///		重置计数值。计数值归 0.
 		/// </summary>
-		void Reset()
-		{
-			_count = 0;
-		}
+		void Reset();
 
 		/// <summary>
 		///		获取计数器的当前值。
 		/// </summary>
 		/// <returns></returns>
-		uint64_t CurrentValue()
-		{
-			return _count;
-		}
+		uint64_t CurrentValue();
 
 		/// <summary>
 		///		设置计数器的当前值。
 		/// 
-		///		* 会将 value 对 (_max_value + 1) 取模，也就是说如果 value 超过最大值，
-		///		  会发生回绕。
+		///		会将 value 对 (_max_value + 1) 取模，也就是说如果 value 超过最大值，
+		///		会发生回绕。
 		/// </summary>
 		/// <param name="value"></param>
-		void SetCurrentValue(uint64_t value)
-		{
-			_count = value % (_max_value + 1);
-		}
+		void SetCurrentValue(uint64_t value);
 	};
 }
