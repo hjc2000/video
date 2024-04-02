@@ -18,6 +18,24 @@ CircleBufferMemoryStream::~CircleBufferMemoryStream()
 }
 
 /// <summary>
+///		递增头指针
+/// </summary>
+/// <param name="value"></param>
+void CircleBufferMemoryStream::AddHead(int64_t value)
+{
+	_head = (_head + value) % _buffer_size;
+}
+
+/// <summary>
+///		递增尾指针
+/// </summary>
+/// <param name="value"></param>
+void CircleBufferMemoryStream::AddTail(int64_t value)
+{
+	_tail = (_tail + value) % _buffer_size;
+}
+
+/// <summary>
 ///		以非环绕方式读取。从 _head 处开始读取 count 个字节，不管会不会超出边界。
 ///		所以调用本方法前需要检查。
 /// </summary>
@@ -63,6 +81,29 @@ int64_t CircleBufferMemoryStream::BufferAvailableSpace() const
 		// 如果尾指针在头指针前面，可用空间是头指针到尾指针之间的空间
 		return _head - _tail;
 	}
+}
+
+void CircleBufferMemoryStream::Clear()
+{
+	_head = 0;
+	_tail = 0;
+	_is_full = false;
+}
+
+bool CircleBufferMemoryStream::CanRead()
+{
+	return true;
+}
+
+bool CircleBufferMemoryStream::CanWrite()
+{
+	return true;
+}
+
+bool CircleBufferMemoryStream::CanSeek()
+{
+	// 循环队列通常不支持随机访问
+	return false;
 }
 
 int64_t CircleBufferMemoryStream::Length()

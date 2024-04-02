@@ -7,6 +7,9 @@
 
 namespace jc
 {
+	/// <summary>
+	///		具有循环缓冲区的流
+	/// </summary>
 	class CircleBufferMemoryStream :public Stream
 	{
 	public:
@@ -29,48 +32,32 @@ namespace jc
 		int64_t _tail;
 
 		/// <summary>
-		///		队列是否已满。当头指针和尾指针重叠时，有 2 种情况。
-		///		1. 缓冲区为空
-		///		2. 缓冲区满
+		///		队列是否已满。当头指针和尾指针重叠时，有 2 种情况：
+		///			1. 缓冲区为空
+		///			2. 缓冲区满
 		///		此字段用来区分这两种情况。
 		/// </summary>
 		bool _is_full;
 
-		/// <summary>
-		///		递增头指针
-		/// </summary>
-		/// <param name="value"></param>
-		void AddHead(int64_t value)
-		{
-			_head = (_head + value) % _buffer_size;
-		}
-
-		/// <summary>
-		///		递增尾指针
-		/// </summary>
-		/// <param name="value"></param>
-		void AddTail(int64_t value)
-		{
-			_tail = (_tail + value) % _buffer_size;
-		}
-
+		void AddHead(int64_t value);
+		void AddTail(int64_t value);
 		int64_t ReadNonCircular(uint8_t *dst_buf, int64_t offset, int64_t count);
 		void WriteNonCircular(uint8_t *src_buf, int64_t offset, int64_t count);
 
 	public:
-		/**
-		 * @brief 返回内部缓冲区的大小，也是此流所能达到的最大长度。
-		 * @return
-		*/
+		/// <summary>
+		///		返回内部缓冲区的大小，也是此流所能达到的最大长度。
+		/// </summary>
+		/// <returns></returns>
 		int64_t MaxSize() const
 		{
 			return _buffer_size;
 		}
 
-		/**
-		 * @brief 本流内部的缓冲区为空。
-		 * @return
-		*/
+		/// <summary>
+		///		本流内部的缓冲区为空。
+		/// </summary>
+		/// <returns></returns>
 		bool BufferEmpty() const
 		{
 			return _head == _tail && !_is_full;
@@ -85,28 +72,12 @@ namespace jc
 		/// <summary>
 		///		清空流
 		/// </summary>
-		void Clear()
-		{
-			_head = 0;
-			_tail = 0;
-			_is_full = false;
-		}
+		void Clear();
 
 		#pragma region Stream
-		bool CanRead() override
-		{
-			return true;
-		}
-
-		bool CanWrite() override
-		{
-			return true;
-		}
-
-		bool CanSeek() override
-		{
-			return false;  // 循环队列通常不支持随机访问
-		}
+		bool CanRead() override;
+		bool CanWrite() override;
+		bool CanSeek() override;
 
 		/// <summary>
 		///		流中当前剩余的有效的，可读的字节数。
@@ -128,6 +99,7 @@ namespace jc
 		/// </summary>
 		void Flush() override
 		{
+
 		}
 
 		/// <summary>
