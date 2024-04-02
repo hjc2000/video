@@ -3,7 +3,7 @@
 namespace JCRazor.盒子;
 
 /// <summary>
-///		横向的均分每一列宽度的网格。
+///		横向的均分每一列宽度的堆栈。每一列的网格中的元素居中对齐。
 /// </summary>
 public partial class Horizontal1FrStackView
 {
