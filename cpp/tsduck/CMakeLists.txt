@@ -16,7 +16,7 @@ function(setup_target target_name)
     target_compile_definitions(${target_name} PRIVATE TS_NO_RIST=1)
 
     target_import_src(${target_name})
-    target_link_libraries(${target_name} PUBLIC jccpp)
+    target_link_libraries(${target_name} PUBLIC jccpp winmm Userenv Ws2_32)
 endfunction()
 
 

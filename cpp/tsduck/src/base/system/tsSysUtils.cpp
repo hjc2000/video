@@ -6,10 +6,10 @@
 //
 //----------------------------------------------------------------------------
 
-#include "tsSysUtils.h"
-#include "tsFileUtils.h"
-#include "tsTime.h"
 #include "tsArgs.h"
+#include "tsFileUtils.h"
+#include "tsSysUtils.h"
+#include "tsTime.h"
 
 #if defined(TS_WINDOWS)
 #include "tsBeforeStandardHeaders.h"
@@ -176,26 +176,6 @@ fs::path ts::CallerLibraryFile()
 		::DWORD length = ::GetModuleFileNameW(handle, name.data(), ::DWORD(name.size()));
 		return UString(name, length);
 	}
-
-	#elif defined(TS_GCC) || defined(TS_LLVM)
-
-	// GCC and LLVM/clang implementation.
-	// Get return address of current function (in caller code).
-	void *const ret = __builtin_return_address(0);
-	// Get the shared library into which this address can be found.
-	::Dl_info info;
-	TS_ZERO(info);
-	if (ret != nullptr && ::dladdr(ret, &info) != 0 && info.dli_fname != nullptr)
-	{
-		return fs::path(info.dli_fname);
-	}
-	else
-	{
-		return fs::path();
-	}
-
-	#else
-	#error "ts::CallerLibraryFile not implemented on this system"
 	#endif
 }
 
