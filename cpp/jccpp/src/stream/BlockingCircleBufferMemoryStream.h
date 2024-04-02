@@ -6,9 +6,9 @@
 
 namespace jc
 {
-	/**
-	 * @brief 带阻塞功能的环形缓冲区的内存流。
-	*/
+	/// <summary>
+	///		带阻塞功能的环形缓冲区的内存流。
+	/// </summary>
 	class BlockingCircleBufferMemoryStream :public Stream
 	{
 	public:
