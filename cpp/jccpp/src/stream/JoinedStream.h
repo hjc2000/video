@@ -9,8 +9,6 @@ using std::shared_ptr;
 
 class JoinedStream :public Stream
 {
-public:
-
 private:
 	/// <summary>
 	///		用来统计总共从 Read 函数中读取过多少字节。
@@ -22,10 +20,10 @@ private:
 	shared_ptr<Stream> TrtGetStream();
 
 public:
-	/**
-	 * @brief 当前流读到尽头时就会触发此回调。需要调用 AppendStream 方法添加流到本对象，
-	 * 否则 JoinedStream 将结束。
-	*/
+	/// <summary>
+	///		当前流读到尽头时就会触发此回调。需要调用 AppendStream 方法添加流到本对象，
+	///		否则 JoinedStream 将结束。
+	/// </summary>
 	std::function<void()> _stream_end_callback;
 	
 	/// <summary>
