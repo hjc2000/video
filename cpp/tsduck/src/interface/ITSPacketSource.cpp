@@ -43,4 +43,6 @@ ITSPacketSource::ReadPacketResult ITSPacketSource::PumpTo(
 			}
 		}
 	}
+
+	return ITSPacketSource::ReadPacketResult::Success;
 }

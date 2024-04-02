@@ -10,96 +10,27 @@ namespace jc
 	class Counter
 	{
 	public:
-		Counter(uint64_t max_value)
-		{
-			if (max_value == 0)
-			{
-				throw jc::ArgumentException("计数的最大值不允许 == 0");
-			}
-
-			_max_value = max_value;
-		}
+		Counter(uint64_t max_value);
 
 	private:
 		uint64_t _max_value;
 		uint64_t _count = 0;
 
-		/// <summary>
-		///		递增计数
-		/// </summary>
-		void IncCount()
-		{
-			_count++;
-			if (_count > _max_value)
-			{
-				_count = 0;
-			}
-		}
-
-		/// <summary>
-		///		递减计数
-		/// </summary>
-		void DecCount()
-		{
-			_count--;
-			if (_count > _max_value)
-			{
-				// 递减后反而大于最大值了，说明刚才是 0，递减后溢出了。所以绕回到最大值。
-				_count = _max_value;
-			}
-		}
+		void IncCount();
+		void DecCount();
 
 	public:
-		/// <summary>
-		///		前缀递增
-		/// </summary>
-		/// <returns>返回递增后的值。</returns>
-		uint64_t operator++()
-		{
-			IncCount();
-			return _count;
-		}
-
-		/// <summary>
-		///		后缀递增
-		/// </summary>
-		/// <param name=""></param>
-		/// <returns>返回递增前的值。</returns>
-		uint64_t operator++(int)
-		{
-			uint64_t record = _count;
-			IncCount();
-			return record;
-		}
-
-		/// <summary>
-		///		前缀递减
-		/// </summary>
-		/// <returns></returns>
-		uint64_t operator--()
-		{
-			DecCount();
-			return _count;
-		}
-
-		/// <summary>
-		///		后缀递减。
-		/// </summary>
-		/// <param name=""></param>
-		/// <returns></returns>
-		uint64_t operator--(int)
-		{
-			uint64_t record = _count;
-			DecCount();
-			return record;
-		}
+		uint64_t operator++();
+		uint64_t operator++(int);
+		uint64_t operator--();
+		uint64_t operator--(int);
 
 		/// <summary>
 		///		将计数器的值增加指定的值
 		/// </summary>
 		/// <param name="value"></param>
 		/// <returns>返回运算后的值。</returns>
-		uint64_t operator+(uint64_t value)
+		uint64_t operator+=(uint64_t value)
 		{
 			_count += value;
 			_count %= _max_value + 1;
@@ -111,7 +42,7 @@ namespace jc
 		/// </summary>
 		/// <param name="value"></param>
 		/// <returns>返回运算后的值。</returns>
-		uint64_t operator-(uint64_t value)
+		uint64_t operator-=(uint64_t value)
 		{
 			_count -= value;
 			_count %= _max_value + 1;
@@ -134,6 +65,7 @@ namespace jc
 		{
 			return _count;
 		}
+
 		/// <summary>
 		///		设置计数器的当前值。
 		/// 
