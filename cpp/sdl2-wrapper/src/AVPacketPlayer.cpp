@@ -61,7 +61,7 @@ void AVPacketPlayer::SendPacket(AVPacketWrapper *packet)
 
 void video::test_AVPacketPlayer()
 {
-	auto fs = FileStream::Open("渡尘.mp4");
+	auto fs = FileStream::Open("fallen-down.ts");
 	shared_ptr<AVIOContextWrapper> io_context{ new AVIOContextWrapper{ false, fs } };
 	shared_ptr<InputFormat> in_fmt_ctx{ new InputFormat{ io_context } };
 	in_fmt_ctx->DumpFormat();
