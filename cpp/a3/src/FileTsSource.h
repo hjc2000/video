@@ -1,5 +1,5 @@
 #pragma once
-#include<MemoryStream.h>
+#include<jccpp/stream/MemoryStream.h>
 #include<TsSource.h>
 
 class FileTsSource :public TsSource

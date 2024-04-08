@@ -1,8 +1,6 @@
 #pragma once
 #include<A3Device.h>
 #include<A3Excepion.h>
-#include<jccpp/Json.h>
-#include<MemoryStream.h>
 #include<R2TuneTable.h>
 #include<TsSource.h>
 #include<chip_define.h>
@@ -14,6 +12,8 @@
 #include<halservice_broadcast.h>
 #include<halservice_transform.h>
 #include<iostream>
+#include<jccpp/Json.h>
+#include<jccpp/stream/MemoryStream.h>
 #include<memory>
 #include<mutex>
 #include<output_modulator.h>

@@ -1,5 +1,5 @@
 #pragma once
-#include<Stream.h>
+#include<jccpp/stream/Stream.h>
 
 namespace jc
 {

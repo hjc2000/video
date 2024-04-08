@@ -1,6 +1,6 @@
 ﻿#include<CLI/CLI.hpp>
 #include<jccpp/Exception.h>
-#include<FileStream.h>
+#include<jccpp/stream/FileStream.h>
 #include<TSDumper.h>
 #include<TSPacketStreamReader.h>
 #include<iostream>

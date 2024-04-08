@@ -1,6 +1,6 @@
 #pragma once
 #include<ITSPacketSource.h>
-#include<Stream.h>
+#include<jccpp/stream/Stream.h>
 #include<tsTSPacketStream.h>
 
 namespace video

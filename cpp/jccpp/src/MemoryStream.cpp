@@ -1,4 +1,4 @@
-#include "MemoryStream.h"
+#include "jccpp/stream/MemoryStream.h"
 #include<jccpp/Exception.h>
 
 jc::MemoryStream::MemoryStream(int64_t max_size)

@@ -1,6 +1,6 @@
 #pragma once
 #include<AutoChangeIdProgramMux.h>
-#include<FileStream.h>
+#include<jccpp/stream/FileStream.h>
 #include<TSDumper.h>
 #include<TSOutputCorrector.h>
 #include<TSPacketStreamWriter.h>

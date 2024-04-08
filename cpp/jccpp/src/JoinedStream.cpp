@@ -1,4 +1,4 @@
-#include "JoinedStream.h"
+#include "jccpp/stream/JoinedStream.h"
 
 /// <summary>
 ///		尝试从队列中获取流，如果队列为空，会触发回调然后再尝试退队。如果实在获取不到新的流，

@@ -1,5 +1,5 @@
 #include "test_tsduck.h"
-#include<FileStream.h>
+#include<jccpp/stream/FileStream.h>
 #include<JoinedTsStream.h>
 #include<TSPacketStreamReader.h>
 #include<TestProgramMux.h>

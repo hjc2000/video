@@ -1,8 +1,8 @@
 #pragma once
-#include<include_ffmpeg.h>
 #include<fstream>
+#include<include_ffmpeg.h>
+#include<jccpp/stream/Stream.h>
 #include<memory>
-#include<Stream.h>
 using std::shared_ptr;
 
 namespace video

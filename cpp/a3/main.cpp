@@ -1,9 +1,9 @@
 ﻿#include "tool_printf.h"
 #include<A3Device.h>
 #include<jccpp/Exception.h>
-#include<FileStream.h>
+#include<jccpp/stream/FileStream.h>
 #include<FileTsSource.h>
-#include<JoinedStream.h>
+#include<jccpp/stream/JoinedStream.h>
 #include<jccpp/TaskCompletionSignal.h>
 #include<TsPusher.h>
 #include<UsbA3Device.h>

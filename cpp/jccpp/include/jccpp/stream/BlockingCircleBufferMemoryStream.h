@@ -1,7 +1,7 @@
 #pragma once
-#include<CircleBufferMemoryStream.h>
-#include<jccpp/IDisposable.h>
 #include<condition_variable>
+#include<jccpp/IDisposable.h>
+#include<jccpp/stream/CircleBufferMemoryStream.h>
 #include<mutex>
 
 namespace jc

@@ -1,4 +1,4 @@
-#include "BlockingCircleBufferMemoryStream.h"
+#include "jccpp/stream/BlockingCircleBufferMemoryStream.h"
 
 bool jc::BlockingCircleBufferMemoryStream::CanRead()
 {

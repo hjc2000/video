@@ -1,8 +1,8 @@
 #pragma once
-#include<Stream.h>
 #include<functional>
 #include<jccpp/Exception.h>
 #include<jccpp/container/SafeQueue.h>
+#include<jccpp/stream/Stream.h>
 #include<memory>
 
 using std::shared_ptr;

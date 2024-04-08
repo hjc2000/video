@@ -1,5 +1,5 @@
 #include "stream_helper.h"
-#include<FileStream.h>
+#include<jccpp/stream/FileStream.h>
 #include<iostream>
 
 using namespace std;

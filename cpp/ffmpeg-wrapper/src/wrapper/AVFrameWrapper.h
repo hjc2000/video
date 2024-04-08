@@ -4,11 +4,11 @@
 #include<AudioFrameInfoCollection.h>
 #include<AudioStreamInfoCollection.h>
 #include<ErrorCode.h>
-#include<Stream.h>
 #include<VideoFrameInfoCollection.h>
-#include<jccpp/Wrapper.h>
 #include<chrono>
 #include<include_ffmpeg.h>
+#include<jccpp/Wrapper.h>
+#include<jccpp/stream/Stream.h>
 
 namespace video
 {

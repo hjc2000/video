@@ -1,7 +1,7 @@
 #pragma once
 #include<A3Device.h>
-#include<BlockingCircleBufferMemoryStream.h>
 #include<jccpp/TaskCompletionSignal.h>
+#include<jccpp/stream/BlockingCircleBufferMemoryStream.h>
 
 class TsPusher :public Stream
 {
