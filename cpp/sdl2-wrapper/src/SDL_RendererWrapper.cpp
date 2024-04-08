@@ -1,6 +1,8 @@
-#include "SDL_RendererWrapper.h"
+#include "sdl2-wrapper/SDL_RendererWrapper.h"
+#include<iostream>
 
 using namespace video;
+using namespace std;
 
 SDL_RendererWrapper::SDL_RendererWrapper(SDL_Renderer *pRenderer)
 {

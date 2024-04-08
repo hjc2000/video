@@ -1,6 +1,6 @@
 #pragma once
-#include<SDL_EventGetter.h>
-#include<SDL_Initializer.h>
+#include<sdl2-wrapper/SDL_EventGetter.h>
+#include<sdl2-wrapper/SDL_Initializer.h>
 #include<jccpp/TaskCompletionSignal.h>
 #include<atomic>
 #include<iostream>

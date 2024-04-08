@@ -1,11 +1,9 @@
 #pragma once
 #include<AVFrameWrapper.h>
-#include<SDL_Initializer.h>
+#include<sdl2-wrapper/SDL_Initializer.h>
 
 namespace video
 {
-	using namespace video;
-
 	class SDL_TextureWrapper :public Wrapper<SDL_Texture>
 	{
 	public:

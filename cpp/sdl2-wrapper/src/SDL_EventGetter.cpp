@@ -1,4 +1,5 @@
-#include"SDL_EventGetter.h"
+#include"sdl2-wrapper/SDL_EventGetter.h"
+#include<iostream>
 
 using namespace video;
 using namespace std;

@@ -2,11 +2,11 @@
 #include<DecoderPipe.h>
 #include<ErrorCode.h>
 #include<HysteresisBlockingPacketQueue.h>
-#include<jccpp/IDisposable.h>
 #include<IPacketConsumer.h>
 #include<PacketPump.h>
-#include<VideoFramePlayer.h>
 #include<ffmpeg-wrapper/base_include.h>
+#include<jccpp/IDisposable.h>
+#include<sdl2-wrapper/VideoFramePlayer.h>
 
 namespace video
 {

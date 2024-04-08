@@ -1,17 +1,18 @@
 #pragma once
+#include<cstdint>
+#include<exception>
+#include<functional>
+#include<iostream>
+#include<jccpp/Exception.h>
+#include<jccpp/Wrapper.h>
 #include<jccpp/define.h>
+#include<mutex>
+#include<string>
+
 extern "C"
 {
 	#include<SDL.h>
 }
-#include<jccpp/Exception.h>
-#include<jccpp/Wrapper.h>
-#include<cstdint>
-#include<exception>
-#include<iostream>
-#include<string>
-#include<functional>
-#include<mutex>
 
 using std::cout;
 using std::endl;

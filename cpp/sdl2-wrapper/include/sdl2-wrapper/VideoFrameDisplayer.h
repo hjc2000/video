@@ -3,10 +3,10 @@
 #include<AVPixelFormatExtension.h>
 #include<IFrameConsumer.h>
 #include<IVideoStreamInfoCollection.h>
-#include<SDL_EventGetter.h>
-#include<SDL_RendererWrapper.h>
-#include<SDL_TextureWrapper.h>
-#include<SDL_WindowWrapper.h>
+#include<sdl2-wrapper/SDL_EventGetter.h>
+#include<sdl2-wrapper/SDL_RendererWrapper.h>
+#include<sdl2-wrapper/SDL_TextureWrapper.h>
+#include<sdl2-wrapper/SDL_WindowWrapper.h>
 
 namespace video
 {

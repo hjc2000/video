@@ -1,4 +1,4 @@
-#include "SDL_WindowWrapper.h"
+#include "sdl2-wrapper/SDL_WindowWrapper.h"
 
 video::SDL_WindowWrapper::SDL_WindowWrapper(
 	char const *title,

@@ -1,9 +1,9 @@
 #pragma once
-#include<AudioPacketPlayer.h>
-#include<jccpp/container/HysteresisBlockingQueue.h>
-#include<jccpp/IDisposable.h>
 #include<IPacketConsumer.h>
-#include<VideoPacketPlayer.h>
+#include<jccpp/IDisposable.h>
+#include<jccpp/container/HysteresisBlockingQueue.h>
+#include<sdl2-wrapper/AudioPacketPlayer.h>
+#include<sdl2-wrapper/VideoPacketPlayer.h>
 
 namespace video
 {

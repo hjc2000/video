@@ -1,4 +1,4 @@
-#include "SDL_AudioSpecWrapper.h"
+#include "sdl2-wrapper/SDL_AudioSpecWrapper.h"
 #include<AVChannelLayoutExtension.h>
 #include<jccpp/Exception.h>
 

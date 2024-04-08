@@ -1,4 +1,4 @@
-#include "SDL_DefaultAudioDevice.h"
+#include "sdl2-wrapper/SDL_DefaultAudioDevice.h"
 
 using namespace video;
 using namespace std;

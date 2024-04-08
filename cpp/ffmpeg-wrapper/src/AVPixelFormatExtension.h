@@ -1,7 +1,7 @@
 #pragma once
 #include<ErrorCode.h>
-#include<SDL_Initializer.h>
 #include<ffmpeg-wrapper/base_include.h>
+#include<sdl2-wrapper/SDL_Initializer.h>
 
 namespace video
 {

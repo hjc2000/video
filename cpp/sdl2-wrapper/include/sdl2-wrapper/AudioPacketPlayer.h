@@ -1,7 +1,6 @@
 #pragma once
 #include<AVCodecContextWrapper.h>
 #include<AVStreamWrapper.h>
-#include<AudioFramePlayer.h>
 #include<DecoderPipe.h>
 #include<HysteresisBlockingPacketQueue.h>
 #include<PacketPump.h>
@@ -9,6 +8,7 @@
 #include<jccpp/CancellationTokenSource.h>
 #include<jccpp/TaskCompletionSignal.h>
 #include<jccpp/container/HysteresisBlockingQueue.h>
+#include<sdl2-wrapper/AudioFramePlayer.h>
 #include<semaphore>
 
 namespace video

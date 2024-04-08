@@ -1,6 +1,6 @@
 #pragma once
-#include<SDL_Initializer.h>
-#include<SDL_TextureWrapper.h>
+#include<sdl2-wrapper/SDL_Initializer.h>
+#include<sdl2-wrapper/SDL_TextureWrapper.h>
 
 namespace video
 {

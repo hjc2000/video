@@ -1,5 +1,5 @@
 #include<AVIOContextWrapper.h>
-#include<AVPacketPlayer.h>
+#include<sdl2-wrapper/AVPacketPlayer.h>
 #include<jccpp/stream/FileStream.h>
 #include<InputFormat.h>
 #include<PacketPump.h>

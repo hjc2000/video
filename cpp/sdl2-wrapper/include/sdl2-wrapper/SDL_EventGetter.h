@@ -1,5 +1,5 @@
 #pragma once
-#include<SDL_Initializer.h>
+#include<sdl2-wrapper/SDL_Initializer.h>
 #include<iostream>
 
 namespace video

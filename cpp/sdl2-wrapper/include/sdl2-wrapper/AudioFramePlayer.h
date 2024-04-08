@@ -3,20 +3,18 @@
 #include<AVFrameWrapper.h>
 #include<HysteresisBlockingFrameQueue.h>
 #include<IFrameConsumer.h>
-#include<IRefTimer.h>
-#include<SDL_DefaultAudioDevice.h>
-#include<SDL_EventGetter.h>
-#include<SDL_Initializer.h>
 #include<SinSignalSource.h>
 #include<SwrContextWrapper.h>
 #include<SwrPipe.h>
-#include<TimeInterpolator.h>
 #include<condition_variable>
+#include<sdl2-wrapper/IRefTimer.h>
+#include<sdl2-wrapper/SDL_DefaultAudioDevice.h>
+#include<sdl2-wrapper/SDL_EventGetter.h>
+#include<sdl2-wrapper/SDL_Initializer.h>
+#include<sdl2-wrapper/TimeInterpolator.h>
 
 namespace video
 {
-	using namespace video;
-
 	/**
 	 * @brief 本类线程安全。
 	*/

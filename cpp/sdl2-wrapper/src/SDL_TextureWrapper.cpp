@@ -1,4 +1,4 @@
-#include "SDL_TextureWrapper.h"
+#include "sdl2-wrapper/SDL_TextureWrapper.h"
 
 using namespace video;
 

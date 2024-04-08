@@ -1,7 +1,7 @@
 #pragma once
 #include<jccpp/Exception.h>
-#include<SDL_RendererWrapper.h>
-#include<SDL_Initializer.h>
+#include<sdl2-wrapper/SDL_RendererWrapper.h>
+#include<sdl2-wrapper/SDL_Initializer.h>
 #include<jccpp/Wrapper.h>
 
 namespace video
