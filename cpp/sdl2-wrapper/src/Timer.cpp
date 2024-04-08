@@ -1,40 +1,40 @@
-#include "sdl2-wrapper/SDL_Timer.h"
+#include "sdl2-wrapper/Timer.h"
 #include<iostream>
 #include<jccpp/Exception.h>
 
 using namespace video;
 using namespace std;
 
-video::SDL_Timer::SDL_Timer()
+video::Timer::Timer()
 {
 	SDL_Initializer::Initialize();
 }
 
-SDL_Timer::~SDL_Timer()
+Timer::~Timer()
 {
 	Stop();
 	cout << __func__ << endl;
 }
 
-void SDL_Timer::StopNoWait()
+void Timer::StopNoWait()
 {
 	lock_guard l(_not_private_methods_lock);
 	_callback_should_stop = true;
 }
 
-void SDL_Timer::Stop()
+void Timer::Stop()
 {
 	/* 这里使用的是原子量，_callback_has_stopped 的方法是线程安全的，所以不用加锁。*/
 	_callback_should_stop = true;
 	_callback_has_stopped.Wait();
 }
 
-uint32_t video::SDL_Timer::static_callback(uint32_t interval, void *param)
+uint32_t video::Timer::static_callback(uint32_t interval, void *param)
 {
-	SDL_Timer *me = (SDL_Timer *)param;
+	Timer *me = (Timer *)param;
 	if (me->_callback_should_stop)
 	{
-		cout << "SDL_Timer 停止" << endl;
+		cout << "Timer 停止" << endl;
 		me->_callback_has_stopped.SetResult();
 		return 0;
 	}
@@ -43,7 +43,7 @@ uint32_t video::SDL_Timer::static_callback(uint32_t interval, void *param)
 	if (ret == 0)
 	{
 		// _callback 返回值为 0，说明用户想停止定时器。
-		cout << "SDL_Timer 停止" << endl;
+		cout << "Timer 停止" << endl;
 		me->_callback_has_stopped.SetResult();
 		return 0;
 	}
@@ -51,7 +51,7 @@ uint32_t video::SDL_Timer::static_callback(uint32_t interval, void *param)
 	return ret;
 }
 
-void video::SDL_Timer::Start(uint32_t interval_in_milliseconds)
+void video::Timer::Start(uint32_t interval_in_milliseconds)
 {
 	lock_guard l(_not_private_methods_lock);
 	if (!_callback_has_stopped.IsCompleted())
@@ -65,7 +65,7 @@ void video::SDL_Timer::Start(uint32_t interval_in_milliseconds)
 
 	if (!_callback)
 	{
-		throw jc::Exception("SDL_Timer 的回调函数不能为空");
+		throw jc::Exception("Timer 的回调函数不能为空");
 	}
 
 	// 到这里，条件满足了，可以开启定时器了。

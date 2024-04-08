@@ -1,9 +1,9 @@
 #pragma once
-#include<sdl2-wrapper/SDL_EventGetter.h>
-#include<sdl2-wrapper/SDL_Initializer.h>
-#include<jccpp/TaskCompletionSignal.h>
 #include<atomic>
 #include<iostream>
+#include<jccpp/TaskCompletionSignal.h>
+#include<sdl2-wrapper/SDL_EventGetter.h>
+#include<sdl2-wrapper/SDL_Initializer.h>
 
 namespace video
 {
@@ -11,11 +11,11 @@ namespace video
 	///		本定时器支持反复停止和启动。
 	///		本类线程安全。
 	/// </summary>
-	class SDL_Timer
+	class Timer
 	{
 	public:
-		SDL_Timer();
-		~SDL_Timer();
+		Timer();
+		~Timer();
 
 	private:
 		TaskCompletionSignal _callback_has_stopped{ true };

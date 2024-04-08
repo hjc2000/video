@@ -3,7 +3,6 @@
 #include<AVStreamWrapper.h>
 #include<ErrorCode.h>
 #include<IFrameConsumer.h>
-#include<sdl2-wrapper/SDL_Timer.h>
 #include<VideoStreamInfoCollection.h>
 #include<atomic>
 #include<ffmpeg-wrapper/base_include.h>
@@ -12,6 +11,7 @@
 #include<jccpp/container/SafeQueue.h>
 #include<mutex>
 #include<sdl2-wrapper/IRefTimer.h>
+#include<sdl2-wrapper/Timer.h>
 #include<sdl2-wrapper/VideoFrameDisplayer.h>
 #include<semaphore>
 
@@ -35,13 +35,13 @@ namespace video
 
 	private:
 		std::atomic_bool _disposed = false;
-		SDL_Timer _timer;
+		Timer _timer;
 		shared_ptr<VideoFrameDisplayer> _displayer;
 		VideoStreamInfoCollection _video_stream_infos{};
 		jc::HysteresisBlockingQueue<AVFrameWrapper> _frame_queue{ 10 };
 
 		/// <summary>
-		///		SDL_Timer 回调处理函数。
+		///		Timer 回调处理函数。
 		///		需要在这里向显示器送入帧。 
 		/// </summary>
 		/// <returns></returns>
