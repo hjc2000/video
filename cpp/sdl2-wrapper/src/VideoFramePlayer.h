@@ -2,12 +2,12 @@
 #include<AVCodecContextWrapper.h>
 #include<AVStreamWrapper.h>
 #include<ErrorCode.h>
-#include<HysteresisBlockingQueue.h>
+#include<jccpp/container/HysteresisBlockingQueue.h>
 #include<IDisposable.h>
 #include<IFrameConsumer.h>
 #include<IRefTimer.h>
 #include<SDL_Timer.h>
-#include<SafeQueue.h>
+#include<jccpp/container/SafeQueue.h>
 #include<VideoFrameDisplayer.h>
 #include<VideoStreamInfoCollection.h>
 #include<atomic>

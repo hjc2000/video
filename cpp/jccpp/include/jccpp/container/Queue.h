@@ -1,5 +1,5 @@
 #pragma once
-#include<IQueue.h>
+#include<jccpp/container/IQueue.h>
 
 /// <summary>
 ///		* 本队列装的类必须实现拷贝构造函数和赋值运算符。

@@ -1,5 +1,5 @@
 #pragma once
-#include<IQueue.h>
+#include<jccpp/container/IQueue.h>
 #include<mutex>
 
 /// <summary>

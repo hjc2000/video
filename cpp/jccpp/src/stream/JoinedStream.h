@@ -1,8 +1,8 @@
 #pragma once
-#include<jccpp/Exception.h>
-#include<SafeQueue.h>
 #include<Stream.h>
 #include<functional>
+#include<jccpp/Exception.h>
+#include<jccpp/container/SafeQueue.h>
 #include<memory>
 
 using std::shared_ptr;
@@ -25,7 +25,7 @@ public:
 	///		否则 JoinedStream 将结束。
 	/// </summary>
 	std::function<void()> _stream_end_callback;
-	
+
 	/// <summary>
 	///		向本对象中追加流。如果不追加，在队列中所有流都读完后，JoinedStream 也将结束。
 	/// </summary>

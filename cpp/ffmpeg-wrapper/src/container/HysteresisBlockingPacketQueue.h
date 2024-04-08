@@ -1,6 +1,6 @@
 #pragma once
 #include<AVPacketWrapper.h>
-#include<HysteresisBlockingQueue.h>
+#include<jccpp/container/HysteresisBlockingQueue.h>
 #include<IPacketConsumer.h>
 #include<IPacketSource.h>
 

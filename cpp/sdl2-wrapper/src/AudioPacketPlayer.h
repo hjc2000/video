@@ -5,7 +5,7 @@
 #include<CancellationTokenSource.h>
 #include<DecoderPipe.h>
 #include<HysteresisBlockingPacketQueue.h>
-#include<HysteresisBlockingQueue.h>
+#include<jccpp/container/HysteresisBlockingQueue.h>
 #include<PacketPump.h>
 #include<TaskCompletionSignal.h>
 #include<atomic>

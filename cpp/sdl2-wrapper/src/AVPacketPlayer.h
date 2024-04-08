@@ -1,6 +1,6 @@
 #pragma once
 #include<AudioPacketPlayer.h>
-#include<HysteresisBlockingQueue.h>
+#include<jccpp/container/HysteresisBlockingQueue.h>
 #include<IDisposable.h>
 #include<IPacketConsumer.h>
 #include<VideoPacketPlayer.h>

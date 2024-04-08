@@ -1,6 +1,6 @@
 #pragma once
 #include<jccpp/Exception.h>
-#include<IList.h>
+#include<jccpp/container/IList.h>
 #include<vector>
 
 template<typename T>
