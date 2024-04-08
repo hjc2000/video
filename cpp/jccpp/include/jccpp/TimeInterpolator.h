@@ -1,7 +1,7 @@
 #pragma once
 #include<jccpp/DateTime.h>
 
-namespace video
+namespace jccpp
 {
 	/// <summary>
 	///		时间插值器。

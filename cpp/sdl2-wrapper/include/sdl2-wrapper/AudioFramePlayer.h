@@ -40,7 +40,7 @@ namespace video
 		AVRational _time_base;
 		shared_ptr<HysteresisBlockingFrameQueue> _frame_queue{ new HysteresisBlockingFrameQueue };
 		shared_ptr<SwrPipe> _swr_pipe;
-		TimeInterpolator _time_interpolator;
+		jccpp::TimeInterpolator _time_interpolator;
 
 		void AudioCallbackHandler(uint8_t *stream, int len);
 
