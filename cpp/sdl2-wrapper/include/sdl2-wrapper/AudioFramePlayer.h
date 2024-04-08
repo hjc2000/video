@@ -7,11 +7,11 @@
 #include<SwrContextWrapper.h>
 #include<SwrPipe.h>
 #include<condition_variable>
+#include<jccpp/TimeInterpolator.h>
 #include<sdl2-wrapper/IRefTimer.h>
 #include<sdl2-wrapper/SDL_DefaultAudioDevice.h>
 #include<sdl2-wrapper/SDL_EventGetter.h>
 #include<sdl2-wrapper/SDL_Initializer.h>
-#include<sdl2-wrapper/TimeInterpolator.h>
 
 namespace video
 {
