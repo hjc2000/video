@@ -7,7 +7,7 @@
 #include<IFrameConsumer.h>
 #include<IFrameSource.h>
 #include<atomic>
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 #include<mutex>
 #include<thread>
 

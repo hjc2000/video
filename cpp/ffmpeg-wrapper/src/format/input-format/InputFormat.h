@@ -4,7 +4,7 @@
 #include<IPacketSource.h>
 #include<jccpp/Wrapper.h>
 #include<functional>
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 #include<string>
 
 namespace video

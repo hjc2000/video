@@ -3,7 +3,7 @@
 #include<AVCompare.h>
 #include<AVSampleFormatExtention.h>
 #include<AVSampleFormatExtention.h>
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 
 namespace video
 {

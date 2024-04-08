@@ -11,7 +11,7 @@
 #include<VideoFrameDisplayer.h>
 #include<VideoStreamInfoCollection.h>
 #include<atomic>
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 #include<mutex>
 #include<semaphore>
 

@@ -1,7 +1,7 @@
 #pragma once
 #include<OutputFormat.h>
 #include<functional>
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 #include<iostream>
 #include<string>
 

@@ -1,6 +1,6 @@
 #pragma once
+#include<ffmpeg-wrapper/base_include.h>
 #include<fstream>
-#include<include_ffmpeg.h>
 #include<jccpp/stream/Stream.h>
 #include<memory>
 using std::shared_ptr;

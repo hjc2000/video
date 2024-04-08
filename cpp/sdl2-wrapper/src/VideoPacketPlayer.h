@@ -6,7 +6,7 @@
 #include<IPacketConsumer.h>
 #include<PacketPump.h>
 #include<VideoFramePlayer.h>
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 
 namespace video
 {

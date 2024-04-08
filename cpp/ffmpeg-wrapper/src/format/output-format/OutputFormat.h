@@ -5,7 +5,7 @@
 #include<IPacketConsumer.h>
 #include<jccpp/container/List.h>
 #include<jccpp/Wrapper.h>
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 #include<mutex>
 #include<thread>
 

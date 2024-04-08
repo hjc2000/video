@@ -2,7 +2,7 @@
 #include<AVCodecExtention.h>
 #include<AVStreamWrapper.h>
 #include<ErrorCode.h>
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 
 using namespace video;
 

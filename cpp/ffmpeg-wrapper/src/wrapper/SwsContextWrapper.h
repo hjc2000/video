@@ -5,7 +5,7 @@
 #include<VideoFrameInfoCollection.h>
 #include<jccpp/Wrapper.h>
 #include<atomic>
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 #include<mutex>
 
 namespace video

@@ -1,5 +1,5 @@
 #pragma once
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 
 int64_t operator*(int64_t const int_num, AVRational const rational);
 int64_t operator*(AVRational const rational, int64_t const int_num);

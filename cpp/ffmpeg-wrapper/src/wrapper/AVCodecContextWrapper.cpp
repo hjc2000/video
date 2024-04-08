@@ -8,7 +8,7 @@
 #include<ErrorCode.h>
 #include<jccpp/Exception.h>
 #include<format>
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 
 using namespace video;
 

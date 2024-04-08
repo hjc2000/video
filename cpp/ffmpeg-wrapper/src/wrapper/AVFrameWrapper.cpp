@@ -1,7 +1,7 @@
 #include "AVFrameWrapper.h"
 #include<AVToString.h>
 #include<ImageBuffer.h>
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 
 using namespace video;
 using namespace std;

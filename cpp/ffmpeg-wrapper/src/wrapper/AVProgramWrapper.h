@@ -1,7 +1,7 @@
 #pragma once
 #include<AVDictionaryWrapper.h>
 #include<AVStreamWrapper.h>
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 #include<jccpp/ToString.h>
 #include<jccpp/Wrapper.h>
 #include<jccpp/container/List.h>

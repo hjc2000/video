@@ -1,7 +1,7 @@
 #pragma once
 #include<A3Device.h>
 #include<A3Excepion.h>
-#include<EndianConverter.h>
+#include<jccpp/EndianConverter.h>
 #include<UsbDeviceListWrapper.h>
 #include<UsbDeviceWrapper.h>
 #include<mutex>

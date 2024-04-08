@@ -1,5 +1,5 @@
 #pragma once
-#include<include_ffmpeg.h>
+#include<ffmpeg-wrapper/base_include.h>
 
 std::string ToString(AVRational value);
 std::string ToString(AVSampleFormat sample_format);
