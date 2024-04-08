@@ -2,12 +2,12 @@
 #include<AVCodecContextWrapper.h>
 #include<AVStreamWrapper.h>
 #include<AudioFramePlayer.h>
-#include<CancellationTokenSource.h>
+#include<jccpp/CancellationTokenSource.h>
 #include<DecoderPipe.h>
 #include<HysteresisBlockingPacketQueue.h>
 #include<jccpp/container/HysteresisBlockingQueue.h>
 #include<PacketPump.h>
-#include<TaskCompletionSignal.h>
+#include<jccpp/TaskCompletionSignal.h>
 #include<atomic>
 #include<semaphore>
 

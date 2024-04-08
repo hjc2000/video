@@ -4,7 +4,7 @@
 #include<FileStream.h>
 #include<FileTsSource.h>
 #include<JoinedStream.h>
-#include<TaskCompletionSignal.h>
+#include<jccpp/TaskCompletionSignal.h>
 #include<TsPusher.h>
 #include<UsbA3Device.h>
 #include<UsbA3Device.h>

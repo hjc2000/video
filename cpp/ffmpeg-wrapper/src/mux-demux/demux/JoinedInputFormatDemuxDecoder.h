@@ -1,6 +1,6 @@
 #pragma once
 #include<AVStreamInfoCollection.h>
-#include<CancellationTokenSource.h>
+#include<jccpp/CancellationTokenSource.h>
 #include<DecoderPipe.h>
 #include<InfinitePacketPipe.h>
 #include<InputFormat.h>

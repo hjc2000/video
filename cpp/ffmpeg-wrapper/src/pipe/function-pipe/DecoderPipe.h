@@ -9,7 +9,7 @@
 #include<IPacketConsumer.h>
 #include<jccpp/container/List.h>
 #include<PipeFrameSource.h>
-#include<TaskCompletionSignal.h>
+#include<jccpp/TaskCompletionSignal.h>
 #include<atomic>
 #include<vector>
 

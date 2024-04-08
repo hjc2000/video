@@ -1,5 +1,5 @@
 #pragma once
-#include<CancellationTokenSource.h>
+#include<jccpp/CancellationTokenSource.h>
 #include<ITSPacketConsumer.h>
 #include<tsTSPacket.h>
 
