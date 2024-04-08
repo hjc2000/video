@@ -1,4 +1,4 @@
-#include<UsbDeviceWrapper.h>
+#include<libusb-wrapper/UsbDeviceWrapper.h>
 
 UsbDeviceWrapper::UsbDeviceWrapper(libusb_device *device)
 {

@@ -1,7 +1,7 @@
 #pragma once
-#include<UsbContextWrapper.h>
-#include<UsbDeviceWrapper.h>
 #include<functional>
+#include<libusb-wrapper/UsbContextWrapper.h>
+#include<libusb-wrapper/UsbDeviceWrapper.h>
 #include<stdint.h>
 #include<vector>
 

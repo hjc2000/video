@@ -1,9 +1,9 @@
 #pragma once
 #include<jccpp/Exception.h>
-#include<UsbError.h>
 #include<jccpp/Wrapper.h>
 #include<jccpp/define.h>
 #include<libusb-1.0/libusb.h>
+#include<libusb-wrapper/UsbError.h>
 
 class UsbContextWrapper :public Wrapper<libusb_context>
 {

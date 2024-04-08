@@ -2,8 +2,8 @@
 #include<A3Device.h>
 #include<A3Excepion.h>
 #include<jccpp/EndianConverter.h>
-#include<UsbDeviceListWrapper.h>
-#include<UsbDeviceWrapper.h>
+#include<libusb-wrapper/UsbDeviceListWrapper.h>
+#include<libusb-wrapper/UsbDeviceWrapper.h>
 #include<mutex>
 #include<vatek_base.h>
 
