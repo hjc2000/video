@@ -1,6 +1,6 @@
 #include "SDL_AudioSpecWrapper.h"
 #include<AVChannelLayoutExtension.h>
-#include<Exception.h>
+#include<jccpp/Exception.h>
 
 AVRational video::SDL_AudioSpecWrapper::time_base()
 {

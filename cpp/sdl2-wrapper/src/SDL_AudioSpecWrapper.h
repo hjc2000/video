@@ -2,9 +2,9 @@
 #include<SDL.h>
 #include<string>
 #include<sstream>
-#include<Wrapper.h>
+#include<jccpp/Wrapper.h>
 #include<IAudioFrameInfoCollection.h>
-#include<Json.h>
+#include<jccpp/Json.h>
 
 using std::string;
 using std::stringstream;

@@ -25,8 +25,8 @@ extern "C"
 	#include<libswscale/swscale.h>
 }
 
-#include<Wrapper.h>
-#include<define.h>
+#include<jccpp/Wrapper.h>
+#include<jccpp/define.h>
 #include<fstream>
 #include<functional>
 #include<iostream>

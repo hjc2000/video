@@ -6,7 +6,7 @@
 #include<AVPacketWrapper.h>
 #include<AVStreamWrapper.h>
 #include<ErrorCode.h>
-#include<Exception.h>
+#include<jccpp/Exception.h>
 #include<format>
 #include<include_ffmpeg.h>
 

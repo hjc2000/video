@@ -1,6 +1,6 @@
 #pragma once
 #include<UsbContextWrapper.h>
-#include<Wrapper.h>
+#include<jccpp/Wrapper.h>
 
 class UsbConfigDescriptorWrapper :public Wrapper<libusb_config_descriptor>
 {

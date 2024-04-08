@@ -6,7 +6,7 @@
 #include<ErrorCode.h>
 #include<Stream.h>
 #include<VideoFrameInfoCollection.h>
-#include<Wrapper.h>
+#include<jccpp/Wrapper.h>
 #include<chrono>
 #include<include_ffmpeg.h>
 

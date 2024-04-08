@@ -4,7 +4,7 @@
 #include<AVStreamWrapper.h>
 #include<IPacketConsumer.h>
 #include<List.h>
-#include<Wrapper.h>
+#include<jccpp/Wrapper.h>
 #include<include_ffmpeg.h>
 #include<mutex>
 #include<thread>

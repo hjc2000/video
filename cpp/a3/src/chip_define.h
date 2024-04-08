@@ -3,7 +3,7 @@
 
 #include<vatek_base.h>
 #include<halservice_base.h>
-#include<Exception.h>
+#include<jccpp/Exception.h>
 
 /**
  * @ingroup core_props

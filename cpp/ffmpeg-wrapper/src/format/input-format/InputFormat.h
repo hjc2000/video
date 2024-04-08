@@ -2,7 +2,7 @@
 #include<AVIOContextWrapper.h>
 #include<AVProgramWrapper.h>
 #include<IPacketSource.h>
-#include<Wrapper.h>
+#include<jccpp/Wrapper.h>
 #include<functional>
 #include<include_ffmpeg.h>
 #include<string>

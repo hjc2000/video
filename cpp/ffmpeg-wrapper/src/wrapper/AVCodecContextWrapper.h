@@ -7,7 +7,7 @@
 #include<IFrameSource.h>
 #include<IPacketConsumer.h>
 #include<IVideoStreamInfoCollection.h>
-#include<Wrapper.h>
+#include<jccpp/Wrapper.h>
 #include<include_ffmpeg.h>
 #include<include_ffmpeg.h>
 

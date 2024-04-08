@@ -1,6 +1,6 @@
 #pragma once
 #include<Stream.h>
-#include<define.h>
+#include<jccpp/define.h>
 
 class FileStream :public Stream
 {

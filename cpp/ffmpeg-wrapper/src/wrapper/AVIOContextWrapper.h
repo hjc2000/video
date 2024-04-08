@@ -1,6 +1,6 @@
 #pragma once
 #include<Stream.h>
-#include<Wrapper.h>
+#include<jccpp/Wrapper.h>
 #include<include_ffmpeg.h>
 
 namespace video

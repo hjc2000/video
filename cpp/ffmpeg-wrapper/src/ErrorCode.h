@@ -4,8 +4,8 @@
 #include<iostream>
 #include<sstream>
 #include<exception>
-#include<Exception.h>
-#include<define.h>
+#include<jccpp/Exception.h>
+#include<jccpp/define.h>
 
 using std::exception;
 using std::string;

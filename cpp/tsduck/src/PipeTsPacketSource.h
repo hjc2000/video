@@ -1,7 +1,7 @@
 #pragma once
 #include<ITSPacketConsumer.h>
 #include<List.h>
-#include<define.h>
+#include<jccpp/define.h>
 #include<memory>
 #include<tsTSPacket.h>
 

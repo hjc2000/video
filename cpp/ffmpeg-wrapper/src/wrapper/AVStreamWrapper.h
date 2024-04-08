@@ -1,7 +1,7 @@
 #pragma once
 #include<IAudioStreamInfoCollection.h>
 #include<IVideoStreamInfoCollection.h>
-#include<Wrapper.h>
+#include<jccpp/Wrapper.h>
 #include<include_ffmpeg.h>
 
 namespace video

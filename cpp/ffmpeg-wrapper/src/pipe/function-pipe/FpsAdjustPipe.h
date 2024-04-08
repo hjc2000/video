@@ -6,7 +6,7 @@
 #include<Queue.h>
 #include<Trigger.h>
 #include<VideoFilterGraph.h>
-#include<Wrapper.h>
+#include<jccpp/Wrapper.h>
 #include<include_ffmpeg.h>
 
 namespace video

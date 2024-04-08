@@ -1,9 +1,9 @@
 #pragma once
-#include<Exception.h>
 #include<Stream.h>
 #include<algorithm>
 #include<cstdint>
 #include<cstring>
+#include<jccpp/Exception.h>
 
 namespace jc
 {

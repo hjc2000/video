@@ -1,7 +1,7 @@
 #pragma once
 #include<AVCalculate.h>
-#include<Exception.h>
-#include<Wrapper.h>
+#include<jccpp/Exception.h>
+#include<jccpp/Wrapper.h>
 #include<include_ffmpeg.h>
 
 namespace video

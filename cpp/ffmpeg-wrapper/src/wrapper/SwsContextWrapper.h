@@ -3,7 +3,7 @@
 #include<IFrameConsumer.h>
 #include<IFrameSource.h>
 #include<VideoFrameInfoCollection.h>
-#include<Wrapper.h>
+#include<jccpp/Wrapper.h>
 #include<atomic>
 #include<include_ffmpeg.h>
 #include<mutex>

@@ -1,10 +1,10 @@
 #pragma once
-#include<Exception.h>
+#include<jccpp/Exception.h>
 #include<List.h>
 #include<USBRequestOptions.h>
 #include<UsbConfigDescriptorWrapper.h>
-#include<Wrapper.h>
-#include<define.h>
+#include<jccpp/Wrapper.h>
+#include<jccpp/define.h>
 #include<iostream>
 #include<libusb-1.0/libusb.h>
 #include<memory>

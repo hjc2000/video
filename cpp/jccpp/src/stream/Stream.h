@@ -1,6 +1,6 @@
 #pragma once
 #include<CancellationTokenSource.h>
-#include<Exception.h>
+#include<jccpp/Exception.h>
 #include<IDisposable.h>
 #include<cstdint>
 #include<filesystem>

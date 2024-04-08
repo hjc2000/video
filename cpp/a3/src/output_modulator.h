@@ -1,7 +1,7 @@
 #ifndef _OUTPUT_MODULATOR_
 #define _OUTPUT_MODULATOR_
 
-#include<Exception.h>
+#include<jccpp/Exception.h>
 #include<R2TuneTable.h>
 #include<format>
 #include<halreg_define.h>

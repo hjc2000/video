@@ -1,5 +1,5 @@
 #include "SDL_Timer.h"
-#include<Exception.h>
+#include<jccpp/Exception.h>
 
 using namespace video;
 using namespace std;

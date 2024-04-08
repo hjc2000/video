@@ -1,10 +1,10 @@
 #pragma once
-#include<Exception.h>
+#include<jccpp/Exception.h>
 #include<IDisposable.h>
 #include<IQueue.h>
 #include<SafeQueue.h>
 #include<condition_variable>
-#include<define.h>
+#include<jccpp/define.h>
 #include<iostream>
 #include<mutex>
 

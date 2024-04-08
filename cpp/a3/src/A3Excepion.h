@@ -1,5 +1,5 @@
 #pragma once
-#include<Exception.h>
+#include<jccpp/Exception.h>
 
 namespace A3
 {

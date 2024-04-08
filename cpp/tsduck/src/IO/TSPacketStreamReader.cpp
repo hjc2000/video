@@ -1,5 +1,5 @@
 #include "TSPacketStreamReader.h"
-#include<define.h>
+#include<jccpp/define.h>
 #include<tsAbstractReadStreamInterface.h>
 
 using namespace video;

@@ -3,7 +3,7 @@
 #include<ITSPacketSource.h>
 #include<TSPacketQueue.h>
 #include<TableHandler.h>
-#include<define.h>
+#include<jccpp/define.h>
 #include<functional>
 
 namespace video

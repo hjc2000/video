@@ -1,8 +1,8 @@
 #pragma once
-#include<Exception.h>
+#include<jccpp/Exception.h>
 #include<SDL_RendererWrapper.h>
 #include<SDL_Initializer.h>
-#include<Wrapper.h>
+#include<jccpp/Wrapper.h>
 
 namespace video
 {

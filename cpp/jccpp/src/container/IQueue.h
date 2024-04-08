@@ -1,7 +1,7 @@
 #pragma once
 #include<queue>
 #include<cstdint>
-#include<Exception.h>
+#include<jccpp/Exception.h>
 
 /// <summary>
 ///		队列接口

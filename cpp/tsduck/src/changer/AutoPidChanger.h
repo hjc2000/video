@@ -6,6 +6,8 @@
 
 namespace video
 {
+	class PidChanger;
+
 	class AutoPidChanger :
 		public TableVersionChangeHandler,
 		public ITSPacketConsumer,
@@ -23,7 +25,6 @@ namespace video
 		);
 
 	private:
-		class PidChanger;
 		shared_ptr<PidChanger> _pid_changer;
 		shared_ptr<PidProvider> _pid_provider;
 		std::map<uint16_t, uint16_t> _preset_pid_map;

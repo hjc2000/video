@@ -1,11 +1,11 @@
 #pragma once
-#include<define.h>
+#include<jccpp/define.h>
 extern "C"
 {
 	#include<SDL.h>
 }
-#include<Exception.h>
-#include<Wrapper.h>
+#include<jccpp/Exception.h>
+#include<jccpp/Wrapper.h>
 #include<cstdint>
 #include<exception>
 #include<iostream>

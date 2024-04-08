@@ -1,6 +1,6 @@
 ﻿#include "tool_printf.h"
 #include<A3Device.h>
-#include<Exception.h>
+#include<jccpp/Exception.h>
 #include<FileStream.h>
 #include<FileTsSource.h>
 #include<JoinedStream.h>
