@@ -1,11 +1,11 @@
 #pragma once
-#include<IDisposable.h>
 #include<cstdint>
 #include<filesystem>
 #include<fstream>
 #include<iostream>
 #include<jccpp/CancellationTokenSource.h>
 #include<jccpp/Exception.h>
+#include<jccpp/IDisposable.h>
 #include<memory>
 #include<string>
 

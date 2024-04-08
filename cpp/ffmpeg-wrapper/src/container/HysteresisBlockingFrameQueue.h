@@ -1,5 +1,5 @@
 #pragma once
-#include<IDisposable.h>
+#include<jccpp/IDisposable.h>
 #include<IFrameConsumer.h>
 #include<IFrameSource.h>
 #include<jccpp/container/HysteresisBlockingQueue.h>

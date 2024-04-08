@@ -4,7 +4,7 @@
 #include<AVStreamWrapper.h>
 #include<AVToString.h>
 #include<ErrorCode.h>
-#include<IDisposable.h>
+#include<jccpp/IDisposable.h>
 #include<IFrameConsumer.h>
 #include<IPacketConsumer.h>
 #include<jccpp/container/List.h>

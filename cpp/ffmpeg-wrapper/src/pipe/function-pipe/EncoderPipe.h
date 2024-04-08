@@ -2,7 +2,7 @@
 #include<AVCodecContextWrapper.h>
 #include<AVStreamWrapper.h>
 #include<AudioStreamInfoCollection.h>
-#include<IDisposable.h>
+#include<jccpp/IDisposable.h>
 #include<IFrameConsumer.h>
 #include<IPacketSource.h>
 #include<IVideoStreamInfoCollection.h>

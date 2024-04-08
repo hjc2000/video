@@ -1,6 +1,6 @@
 #pragma once
 #include<jccpp/CancellationTokenSource.h>
-#include<IDisposable.h>
+#include<jccpp/IDisposable.h>
 #include<IPacketSource.h>
 #include<PipePacketSource.h>
 #include<atomic>

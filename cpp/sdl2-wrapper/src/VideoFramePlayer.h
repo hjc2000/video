@@ -3,7 +3,7 @@
 #include<AVStreamWrapper.h>
 #include<ErrorCode.h>
 #include<jccpp/container/HysteresisBlockingQueue.h>
-#include<IDisposable.h>
+#include<jccpp/IDisposable.h>
 #include<IFrameConsumer.h>
 #include<IRefTimer.h>
 #include<SDL_Timer.h>

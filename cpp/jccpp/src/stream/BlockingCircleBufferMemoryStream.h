@@ -1,6 +1,6 @@
 #pragma once
 #include<CircleBufferMemoryStream.h>
-#include<IDisposable.h>
+#include<jccpp/IDisposable.h>
 #include<condition_variable>
 #include<mutex>
 

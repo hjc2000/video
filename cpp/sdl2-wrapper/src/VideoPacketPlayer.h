@@ -2,7 +2,7 @@
 #include<DecoderPipe.h>
 #include<ErrorCode.h>
 #include<HysteresisBlockingPacketQueue.h>
-#include<IDisposable.h>
+#include<jccpp/IDisposable.h>
 #include<IPacketConsumer.h>
 #include<PacketPump.h>
 #include<VideoFramePlayer.h>

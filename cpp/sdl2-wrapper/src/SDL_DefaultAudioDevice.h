@@ -1,6 +1,6 @@
 #pragma once
 #include<IAudioFrameInfoCollection.h>
-#include<IDisposable.h>
+#include<jccpp/IDisposable.h>
 #include<SDL_AudioSpecWrapper.h>
 #include<SDL_Initializer.h>
 #include<jccpp/TaskCompletionSignal.h>
