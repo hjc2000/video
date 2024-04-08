@@ -1,7 +1,4 @@
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
-#define __STDC_CONSTANT_MACROS
-#define __STDC_FORMAT_MACROS
 
 extern "C"
 {
