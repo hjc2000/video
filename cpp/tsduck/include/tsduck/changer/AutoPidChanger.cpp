@@ -1,4 +1,4 @@
-#include"AutoPidChanger.h"
+#include"tsduck/changer/AutoPidChanger.h"
 #include<PidChanger.h>
 
 using namespace std;

@@ -1,4 +1,4 @@
-#include"AutoServiceIdChanger.h"
+#include"tsduck/changer/AutoServiceIdChanger.h"
 
 using namespace video;
 using namespace std;

@@ -1,6 +1,6 @@
 #pragma once
-#include<AutoPidChanger.h>
-#include<AutoServiceIdChanger.h>
+#include<tsduck/changer/AutoPidChanger.h>
+#include<tsduck/changer/AutoServiceIdChanger.h>
 
 namespace video
 {
