@@ -1,8 +1,8 @@
 #pragma once
-#include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
 #include<DecoderPipe.h>
 #include<InfinitePacketPipe.h>
 #include<ffmpeg-wrapper/format/input-format/InputFormat.h>
+#include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
 #include<functional>
 #include<jccpp/CancellationTokenSource.h>
 #include<memory>

@@ -1,4 +1,4 @@
-#include"SptsEncodeMux.h"
+#include"ffmpeg-wrapper/mux/SptsEncodeMux.h"
 #include<iostream>
 
 using namespace video;
@@ -101,7 +101,7 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 #include<jccpp/container/List.h>
 #include<ffmpeg-wrapper/format/input-format/InputFormat.h>
 #include<jccpp/stream/FileStream.h>
-#include<JoinedInputFormatDemuxDecoder.h>
+#include<ffmpeg-wrapper/demux/JoinedInputFormatDemuxDecoder.h>
 #include<ffmpeg-wrapper/format/output-format/StreamOutputFormat.h>
 
 /// <summary>

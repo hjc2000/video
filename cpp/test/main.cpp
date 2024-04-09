@@ -1,6 +1,6 @@
 ﻿#include<QtCore/QCoreApplication>
 #include<QtCore/QDebug>
-#include<SptsEncodeMux.h>
+#include<ffmpeg-wrapper/mux/SptsEncodeMux.h>
 #include<filesystem>
 #include<sdl2-wrapper/AVPacketPlayer.h>
 #include<test_tsduck.h>
