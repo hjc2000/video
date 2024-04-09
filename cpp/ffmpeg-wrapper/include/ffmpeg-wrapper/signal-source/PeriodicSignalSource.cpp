@@ -1,4 +1,4 @@
-#include "PeriodicSignalSource.h"
+#include "ffmpeg-wrapper/signal-source/PeriodicSignalSource.h"
 #include<AVChannelLayoutExtension.h>
 
 using namespace video;

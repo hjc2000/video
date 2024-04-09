@@ -1,7 +1,7 @@
 #pragma once
-#include<ffmpeg-wrapper/base_include.h>
 #include<ErrorCode.h>
-#include<PeriodicSignalSource.h>
+#include<ffmpeg-wrapper/base_include.h>
+#include<ffmpeg-wrapper/signal-source/PeriodicSignalSource.h>
 
 namespace video
 {

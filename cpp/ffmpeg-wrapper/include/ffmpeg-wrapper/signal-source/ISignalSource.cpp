@@ -1,4 +1,4 @@
-#include "ISignalSource.h"
+#include "ffmpeg-wrapper/signal-source/ISignalSource.h"
 #include<AVFrameWrapper.h>
 
 int video::ISignalSource::ReadFrame(shared_ptr<AVFrameWrapper> frame)

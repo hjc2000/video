@@ -2,9 +2,9 @@
 #include<AVFrameWrapper.h>
 #include<AVSampleFormatExtention.h>
 #include<ErrorCode.h>
-#include<ISignalSource.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/base_include.h>
+#include<ffmpeg-wrapper/signal-source/ISignalSource.h>
 
 namespace video
 {
