@@ -1,4 +1,4 @@
-#include "TSPacketStreamReader.h"
+#include "tsduck/io/TSPacketStreamReader.h"
 #include<jccpp/define.h>
 #include<tsAbstractReadStreamInterface.h>
 

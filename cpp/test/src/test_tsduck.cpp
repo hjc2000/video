@@ -1,10 +1,10 @@
 #include "test_tsduck.h"
-#include<jccpp/stream/FileStream.h>
-#include<JoinedTsStream.h>
-#include<TSPacketStreamReader.h>
 #include<TestProgramMux.h>
 #include<filesystem>
+#include<jccpp/stream/FileStream.h>
 #include<tsCerrReport.h>
+#include<tsduck/io/TSPacketStreamReader.h>
+#include<tsduck/mux/JoinedTsStream.h>
 
 using namespace std;
 using namespace video;

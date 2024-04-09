@@ -1,4 +1,4 @@
-#include"TSPacketStreamWriter.h"
+#include"tsduck/io/TSPacketStreamWriter.h"
 
 using namespace video;
 using namespace std;

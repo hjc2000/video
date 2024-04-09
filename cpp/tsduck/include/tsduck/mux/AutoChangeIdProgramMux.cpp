@@ -1,4 +1,4 @@
-#include"AutoChangeIdProgramMux.h"
+#include"tsduck/mux/AutoChangeIdProgramMux.h"
 
 using namespace video;
 using namespace std;

@@ -1,11 +1,11 @@
 #pragma once
-#include<AutoChangeIdProgramMux.h>
-#include<jccpp/stream/FileStream.h>
 #include<TSDumper.h>
 #include<TSOutputCorrector.h>
-#include<TSPacketStreamWriter.h>
 #include<TableOperator.h>
+#include<jccpp/stream/FileStream.h>
 #include<tsDuckContext.h>
+#include<tsduck/io/TSPacketStreamWriter.h>
+#include<tsduck/mux/AutoChangeIdProgramMux.h>
 
 namespace video
 {
