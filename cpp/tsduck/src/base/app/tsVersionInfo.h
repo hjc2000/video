@@ -14,7 +14,7 @@
 #pragma once
 #include "tsEnumeration.h"
 #include "tsReport.h"
-#include "tsVersion.h"
+#include "tsduck/tsVersion.h"
 #include "tsBitRate.h"
 
 //!

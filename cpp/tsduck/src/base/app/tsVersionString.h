@@ -14,7 +14,7 @@
 #pragma once
 
 #include "tsPlatform.h"
-#include "tsVersion.h"
+#include "tsduck/tsVersion.h"
 
 //!
 //! Define the TSDuck version as an 8-bit string literal.
