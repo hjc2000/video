@@ -2,7 +2,7 @@
 #include<AVCodecContextWrapper.h>
 #include<AVStreamWrapper.h>
 #include<ErrorCode.h>
-#include<IFrameConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<ffmpeg-wrapper/info-collection/VideoStreamInfoCollection.h>
 #include<atomic>
 #include<ffmpeg-wrapper/base_include.h>

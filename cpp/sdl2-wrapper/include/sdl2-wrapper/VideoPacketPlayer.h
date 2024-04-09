@@ -1,9 +1,9 @@
 #pragma once
-#include<DecoderPipe.h>
+#include<ffmpeg-wrapper/pipe/DecoderPipe.h>
 #include<ErrorCode.h>
 #include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
-#include<IPacketConsumer.h>
-#include<PacketPump.h>
+#include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
+#include<ffmpeg-wrapper/pipe/PacketPump.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<jccpp/IDisposable.h>
 #include<sdl2-wrapper/VideoFramePlayer.h>

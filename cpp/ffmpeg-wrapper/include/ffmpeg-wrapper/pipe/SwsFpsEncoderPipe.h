@@ -1,8 +1,8 @@
 #pragma once
-#include<EncoderPipe.h>
-#include<FpsAdjustPipe.h>
+#include<ffmpeg-wrapper/pipe/EncoderPipe.h>
+#include<ffmpeg-wrapper/pipe/FpsAdjustPipe.h>
 #include<ffmpeg-wrapper/output-format/OutputFormat.h>
-#include<SwsPipe.h>
+#include<ffmpeg-wrapper/pipe/SwsPipe.h>
 #include<ffmpeg-wrapper/info-collection/VideoStreamInfoCollection.h>
 
 namespace video

@@ -2,7 +2,7 @@
 #include<sdl2-wrapper/AVPacketPlayer.h>
 #include<jccpp/stream/FileStream.h>
 #include<ffmpeg-wrapper/input-format/InputFormat.h>
-#include<PacketPump.h>
+#include<ffmpeg-wrapper/pipe/PacketPump.h>
 
 AVPacketPlayer::AVPacketPlayer(int x, int y, AVStreamWrapper &video_stream, AVStreamWrapper &audio_stream)
 {

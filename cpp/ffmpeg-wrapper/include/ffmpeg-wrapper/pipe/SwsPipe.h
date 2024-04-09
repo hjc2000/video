@@ -1,6 +1,6 @@
 #pragma once
-#include<IFrameConsumer.h>
-#include<PipeFrameSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/PipeFrameSource.h>
 #include<SwsContextWrapper.h>
 #include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>
 

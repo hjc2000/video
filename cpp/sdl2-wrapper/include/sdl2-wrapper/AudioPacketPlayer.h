@@ -1,10 +1,10 @@
 #pragma once
 #include<AVCodecContextWrapper.h>
 #include<AVStreamWrapper.h>
-#include<DecoderPipe.h>
-#include<PacketPump.h>
 #include<atomic>
 #include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
+#include<ffmpeg-wrapper/pipe/DecoderPipe.h>
+#include<ffmpeg-wrapper/pipe/PacketPump.h>
 #include<jccpp/CancellationTokenSource.h>
 #include<jccpp/TaskCompletionSignal.h>
 #include<jccpp/container/HysteresisBlockingQueue.h>

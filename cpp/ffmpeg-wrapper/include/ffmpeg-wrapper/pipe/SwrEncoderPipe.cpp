@@ -1,4 +1,4 @@
-#include "SwrEncoderPipe.h"
+#include "ffmpeg-wrapper/pipe/SwrEncoderPipe.h"
 
 void video::SwrEncoderPipe::SendFrame(AVFrameWrapper *frame)
 {

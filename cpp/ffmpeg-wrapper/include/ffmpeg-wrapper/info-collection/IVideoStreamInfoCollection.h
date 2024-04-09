@@ -1,6 +1,7 @@
 #pragma once
-#include<ffmpeg-wrapper/info-collection/IVideoFrameInfoCollection.h>
+#include<AVCompare.h>
 #include<ffmpeg-wrapper/base_include.h>
+#include<ffmpeg-wrapper/info-collection/IVideoFrameInfoCollection.h>
 
 namespace video
 {
@@ -41,7 +42,7 @@ namespace video
 		T frame_interval_in_milliseconds()
 		{
 			static_assert(std::is_same<T, double>::value || std::is_same<T, uint32_t>::value,
-						  "Unsupported type for frame_interval_in_milliseconds");
+				"Unsupported type for frame_interval_in_milliseconds");
 
 			return T();
 		}

@@ -1,7 +1,7 @@
 #pragma once
 #include<ErrorCode.h>
-#include<IFrameConsumer.h>
-#include<IFrameSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameSource.h>
 #include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>
 #include<jccpp/Wrapper.h>
 #include<atomic>

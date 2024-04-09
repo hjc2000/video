@@ -1,14 +1,14 @@
 #pragma once
 #include<AVCodecExtention.h>
 #include<AVStreamWrapper.h>
-#include<IFrameConsumer.h>
-#include<IFrameSource.h>
-#include<IPacketConsumer.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
 #include<ffmpeg-wrapper/info-collection/IAudioFrameInfoCollection.h>
 #include<ffmpeg-wrapper/info-collection/IVideoStreamInfoCollection.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
 #include<jccpp/Wrapper.h>
 
 namespace video

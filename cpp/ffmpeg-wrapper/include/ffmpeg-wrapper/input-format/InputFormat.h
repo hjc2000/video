@@ -1,7 +1,7 @@
 #pragma once
 #include<AVIOContextWrapper.h>
 #include<AVProgramWrapper.h>
-#include<IPacketSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IPacketSource.h>
 #include<jccpp/Wrapper.h>
 #include<functional>
 #include<ffmpeg-wrapper/base_include.h>

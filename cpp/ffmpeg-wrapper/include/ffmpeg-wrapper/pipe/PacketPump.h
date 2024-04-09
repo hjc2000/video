@@ -1,9 +1,9 @@
 #pragma once
+#include<atomic>
+#include<ffmpeg-wrapper/pipe/interface/IPacketSource.h>
+#include<ffmpeg-wrapper/pipe/interface/PipePacketSource.h>
 #include<jccpp/CancellationTokenSource.h>
 #include<jccpp/IDisposable.h>
-#include<IPacketSource.h>
-#include<PipePacketSource.h>
-#include<atomic>
 
 namespace video
 {

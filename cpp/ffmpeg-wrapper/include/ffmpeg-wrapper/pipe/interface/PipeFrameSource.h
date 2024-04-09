@@ -1,5 +1,5 @@
 #pragma once
-#include<IFrameConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<jccpp/container/List.h>
 
 namespace video

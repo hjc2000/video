@@ -1,6 +1,6 @@
 #pragma once
-#include<IPacketConsumer.h>
-#include<PipePacketSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/PipePacketSource.h>
 
 namespace video
 {

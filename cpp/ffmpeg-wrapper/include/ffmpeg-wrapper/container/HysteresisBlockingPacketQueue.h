@@ -1,8 +1,8 @@
 #pragma once
 #include<AVPacketWrapper.h>
 #include<jccpp/container/HysteresisBlockingQueue.h>
-#include<IPacketConsumer.h>
-#include<IPacketSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/IPacketSource.h>
 
 namespace video
 {

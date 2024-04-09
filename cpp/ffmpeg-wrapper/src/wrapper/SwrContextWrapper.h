@@ -4,8 +4,8 @@
 #include<ffmpeg-wrapper/info-collection/AudioStreamInfoCollection.h>
 #include<ErrorCode.h>
 #include<ffmpeg-wrapper/info-collection/IAudioStreamInfoCollection.h>
-#include<IFrameConsumer.h>
-#include<IFrameSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameSource.h>
 #include<atomic>
 #include<ffmpeg-wrapper/base_include.h>
 #include<mutex>

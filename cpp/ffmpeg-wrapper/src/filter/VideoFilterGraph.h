@@ -1,9 +1,9 @@
 #pragma once
 #include<AVDictionaryWrapper.h>
 #include<AVFilterContextWrapper.h>
-#include<IFrameConsumer.h>
-#include<IFrameSource.h>
 #include<ffmpeg-wrapper/info-collection/VideoStreamInfoCollection.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameSource.h>
 
 namespace video
 {

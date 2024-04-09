@@ -1,10 +1,10 @@
 #pragma once
 #include<AVChannelLayoutExtension.h>
 #include<AVFrameWrapper.h>
-#include<IFrameConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<SinSignalSource.h>
 #include<SwrContextWrapper.h>
-#include<SwrPipe.h>
+#include<ffmpeg-wrapper/pipe/SwrPipe.h>
 #include<condition_variable>
 #include<ffmpeg-wrapper/container/HysteresisBlockingFrameQueue.h>
 #include<jccpp/TimeInterpolator.h>

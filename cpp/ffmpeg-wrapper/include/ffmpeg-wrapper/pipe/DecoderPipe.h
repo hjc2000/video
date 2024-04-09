@@ -1,16 +1,16 @@
 #pragma once
 #include<AVCodecContextWrapper.h>
-#include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
 #include<AVStreamWrapper.h>
 #include<AVToString.h>
 #include<ErrorCode.h>
-#include<jccpp/IDisposable.h>
-#include<IFrameConsumer.h>
-#include<IPacketConsumer.h>
-#include<jccpp/container/List.h>
-#include<PipeFrameSource.h>
-#include<jccpp/TaskCompletionSignal.h>
 #include<atomic>
+#include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/PipeFrameSource.h>
+#include<jccpp/IDisposable.h>
+#include<jccpp/TaskCompletionSignal.h>
+#include<jccpp/container/List.h>
 #include<vector>
 
 namespace video

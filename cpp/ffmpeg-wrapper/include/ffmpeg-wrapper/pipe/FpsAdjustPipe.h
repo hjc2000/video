@@ -1,7 +1,7 @@
 #pragma once
 #include<AVCalculate.h>
 #include<ErrorCode.h>
-#include<PipeFrameSource.h>
+#include<ffmpeg-wrapper/pipe/interface/PipeFrameSource.h>
 #include<VideoFilterGraph.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<jccpp/Wrapper.h>

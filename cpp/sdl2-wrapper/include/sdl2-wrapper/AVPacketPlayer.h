@@ -1,5 +1,5 @@
 #pragma once
-#include<IPacketConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
 #include<jccpp/IDisposable.h>
 #include<jccpp/container/HysteresisBlockingQueue.h>
 #include<sdl2-wrapper/AudioPacketPlayer.h>

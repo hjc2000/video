@@ -2,7 +2,7 @@
 #include<AVPacketWrapper.h>
 #include<AVProgramWrapper.h>
 #include<AVStreamWrapper.h>
-#include<IPacketConsumer.h>
+#include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
 #include<jccpp/container/List.h>
 #include<jccpp/Wrapper.h>
 #include<ffmpeg-wrapper/base_include.h>
