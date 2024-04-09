@@ -12,7 +12,6 @@
 #include "tsDVBCharTableUTF8.h"
 #include "tsDuckConfigFile.h"
 #include "tsDuckContext.h"
-#include "tsHFBand.h"
 #include "tsTime.h"
 
 
@@ -218,22 +217,6 @@ ts::UString ts::DuckContext::defaultHFRegion() const
 		return DuckConfigFile::Instance().value(u"default.region", u"europe");
 	}
 }
-
-const ts::HFBand *ts::DuckContext::hfBand(const UString &name, bool silent_band) const
-{
-	return HFBand::GetBand(defaultHFRegion(), name, *_report, silent_band);
-}
-
-const ts::HFBand *ts::DuckContext::vhfBand() const
-{
-	return HFBand::GetBand(defaultHFRegion(), u"VHF", *_report);
-}
-
-const ts::HFBand *ts::DuckContext::uhfBand() const
-{
-	return HFBand::GetBand(defaultHFRegion(), u"UHF", *_report);
-}
-
 
 //----------------------------------------------------------------------------
 // Set a non-standard time reference offset using a name.

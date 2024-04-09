@@ -347,27 +347,6 @@ namespace ts
 		UString defaultHFRegion() const;
 
 		//!
-		//! Get the description of an HF band for the default region.
-		//! @param [in] name Name of the HF band to search (e.g. u"UHF", u"VHF", u"BS", u"CS").
-		//! @param [in] silent_band If true, do not report error message if the band is not found in
-		//! the file. Other errors (HF band file not found, region not found) are still reported.
-		//! @return The description of the band for the default region. Never null.
-		//!
-		const HFBand *hfBand(const UString &name, bool silent_band = false) const;
-
-		//!
-		//! Get the description of the VHF band for the default region.
-		//! @return The description of the VHF band for the default region. Never null.
-		//!
-		const HFBand *vhfBand() const;
-
-		//!
-		//! Get the description of the UHF band for the default region.
-		//! @return The description of the UHF band for the default region. Never null.
-		//!
-		const HFBand *uhfBand() const;
-
-		//!
 		//! Set a non-standard time reference offset.
 		//! In DVB SI, reference times are UTC. These SI can be reused in non-standard ways
 		//! where the stored times use another reference. This is the case with ARIB and ABNT
