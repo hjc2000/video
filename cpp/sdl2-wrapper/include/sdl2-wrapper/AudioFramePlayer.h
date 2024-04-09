@@ -1,12 +1,12 @@
 #pragma once
 #include<AVChannelLayoutExtension.h>
 #include<AVFrameWrapper.h>
-#include<HysteresisBlockingFrameQueue.h>
 #include<IFrameConsumer.h>
 #include<SinSignalSource.h>
 #include<SwrContextWrapper.h>
 #include<SwrPipe.h>
 #include<condition_variable>
+#include<ffmpeg-wrapper/container/HysteresisBlockingFrameQueue.h>
 #include<jccpp/TimeInterpolator.h>
 #include<sdl2-wrapper/IRefTimer.h>
 #include<sdl2-wrapper/SDL_DefaultAudioDevice.h>

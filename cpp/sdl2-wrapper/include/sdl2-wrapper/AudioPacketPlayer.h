@@ -2,9 +2,9 @@
 #include<AVCodecContextWrapper.h>
 #include<AVStreamWrapper.h>
 #include<DecoderPipe.h>
-#include<HysteresisBlockingPacketQueue.h>
 #include<PacketPump.h>
 #include<atomic>
+#include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
 #include<jccpp/CancellationTokenSource.h>
 #include<jccpp/TaskCompletionSignal.h>
 #include<jccpp/container/HysteresisBlockingQueue.h>

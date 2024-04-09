@@ -1,7 +1,7 @@
 #pragma once
 #include<DecoderPipe.h>
 #include<ErrorCode.h>
-#include<HysteresisBlockingPacketQueue.h>
+#include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
 #include<IPacketConsumer.h>
 #include<PacketPump.h>
 #include<ffmpeg-wrapper/base_include.h>
