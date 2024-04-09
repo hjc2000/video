@@ -1,4 +1,4 @@
-#include"TSPacketQueue.h"
+#include"tsduck/container/TSPacketQueue.h"
 
 using namespace video;
 using namespace std;
