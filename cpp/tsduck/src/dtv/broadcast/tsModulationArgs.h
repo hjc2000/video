@@ -320,6 +320,7 @@ namespace ts
 		//! Applies to: ISDB-T.
 		//!
 		std::optional<bool> isdbt_partial_reception{};
+
 		//!
 		//! Maximum value for ISDB-T segment count.
 		//!
