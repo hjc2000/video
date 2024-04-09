@@ -1,4 +1,4 @@
-#include "TableHandler.h"
+#include "tsduck/handler/TableHandler.h"
 
 video::TableHandler::TableHandler()
 {

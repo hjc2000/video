@@ -1,10 +1,10 @@
 #pragma once
 #include<ITSPacketConsumer.h>
-#include<TableHandler.h>
 #include<TsDuckToString.h>
 #include<fstream>
 #include<string>
 #include<tsTSPacket.h>
+#include<tsduck/handler/TableHandler.h>
 
 namespace video
 {

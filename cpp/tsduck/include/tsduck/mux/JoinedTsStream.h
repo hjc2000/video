@@ -1,10 +1,10 @@
 #pragma once
 #include<ITSPacketConsumer.h>
 #include<ITSPacketSource.h>
-#include<tsduck/container/TSPacketQueue.h>
-#include<TableHandler.h>
-#include<jccpp/define.h>
 #include<functional>
+#include<jccpp/define.h>
+#include<tsduck/container/TSPacketQueue.h>
+#include<tsduck/handler/TableHandler.h>
 
 namespace video
 {

@@ -1,4 +1,4 @@
-#include"TableRepeater.h"
+#include"tsduck/corrector/TableRepeater.h"
 
 using namespace std;
 

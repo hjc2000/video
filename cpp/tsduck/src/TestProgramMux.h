@@ -1,6 +1,6 @@
 #pragma once
 #include<TSDumper.h>
-#include<TSOutputCorrector.h>
+#include<tsduck/corrector/TSOutputCorrector.h>
 #include<TableOperator.h>
 #include<jccpp/stream/FileStream.h>
 #include<tsDuckContext.h>

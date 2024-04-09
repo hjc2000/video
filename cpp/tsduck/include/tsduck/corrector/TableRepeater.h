@@ -1,11 +1,11 @@
 #pragma once
-#include<jccpp/Exception.h>
 #include<ITSPacketConsumer.h>
 #include<PipeTsPacketSource.h>
 #include<TableOperator.h>
-#include<TableVersionChangeHandler.h>
+#include<jccpp/Exception.h>
 #include<tsDuckContext.h>
 #include<tsSectionDemux.h>
+#include<tsduck/handler/TableVersionChangeHandler.h>
 
 namespace video
 {

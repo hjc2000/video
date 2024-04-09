@@ -1,8 +1,8 @@
 #pragma once
 #include<PidProvider.h>
 #include<TableOperator.h>
-#include<TableRepeater.h>
-#include<TableVersionChangeHandler.h>
+#include<tsduck/corrector/TableRepeater.h>
+#include<tsduck/handler/TableVersionChangeHandler.h>
 
 namespace video
 {

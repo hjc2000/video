@@ -1,6 +1,6 @@
 #pragma once
-#include<CCCorrector.h>
-#include<TableRepeater.h>
+#include<tsduck/corrector/CCCorrector.h>
+#include<tsduck/corrector/TableRepeater.h>
 
 namespace video
 {

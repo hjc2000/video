@@ -1,7 +1,7 @@
 #pragma once
 #include<ITSPacketConsumer.h>
 #include<PipeTsPacketSource.h>
-#include<TableVersionChangeHandler.h>
+#include<tsduck/handler/TableVersionChangeHandler.h>
 
 namespace video
 {

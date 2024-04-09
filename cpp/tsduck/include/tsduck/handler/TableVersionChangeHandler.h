@@ -1,7 +1,7 @@
 #pragma once
-#include<TableHandler.h>
 #include<TableOperator.h>
 #include<functional>
+#include<tsduck/handler/TableHandler.h>
 
 namespace video
 {

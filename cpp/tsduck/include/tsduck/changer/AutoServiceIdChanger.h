@@ -1,7 +1,7 @@
 #pragma once
 #include<ServiceIdProvider.h>
-#include<TableRepeater.h>
-#include<TableVersionChangeHandler.h>
+#include<tsduck/corrector/TableRepeater.h>
+#include<tsduck/handler/TableVersionChangeHandler.h>
 
 namespace video
 {

@@ -1,4 +1,4 @@
-#include"CCCorrector.h"
+#include"tsduck/corrector/CCCorrector.h"
 
 void video::CCCorrector::CorrectCC(ts::TSPacket &packet)
 {
