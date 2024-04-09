@@ -50,21 +50,6 @@ namespace ts {
         virtual ~TablesDisplay() = default;
 
         //!
-        //! Add command line option definitions in an Args.
-        //! @param [in,out] args Command line arguments to update.
-        //!
-        void defineArgs(Args& args);
-
-        //!
-        //! Load arguments from command line.
-        //! Args error indicator is set in case of incorrect arguments.
-        //! @param [in,out] duck TSDuck execution context.
-        //! @param [in,out] args Command line arguments.
-        //! @return True on success, false on error in argument line.
-        //!
-        bool loadArgs(DuckContext& duck, Args& args);
-
-        //!
         //! Get the TSDuck execution context.
         //! @return A reference to the TSDuck execution context.
         //!

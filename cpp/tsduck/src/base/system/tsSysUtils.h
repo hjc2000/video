@@ -117,13 +117,6 @@ namespace ts {
     TSDUCKDLL MilliSecond GetProcessCpuTime();
 
     //!
-    //! Get the virtual memory size of the process in bytes.
-    //! @return The virtual memory size of the process in bytes.
-    //! @throw ts::Exception on error.
-    //!
-    TSDUCKDLL size_t GetProcessVirtualSize();
-
-    //!
     //! Ensure that writing to a broken pipe does not kill the current process.
     //!
     //! On UNIX systems, writing to a <i>broken pipe</i>, i.e. a pipe with
@@ -156,38 +149,6 @@ namespace ts {
     //! @return True if the standard error is a terminal.
     //!
     TSDUCKDLL bool StdErrIsTerminal();
-
-    //!
-    //! Put the standard input stream in binary mode.
-    //!
-    //! On UNIX systems, this does not make any difference.
-    //! On Windows systems, however, in a stream which is not open in
-    //! binary mode, there is automatic translation between LF and CR-LF.
-    //! The standard input is open in text mode (non-binary).
-    //! This function forces it into binary mode.
-    //!
-    //! @param [in,out] report Where to report errors.
-    //! @return True on success, false on error.
-    //! If @a report is a subclass of ts::Args, terminate the application on error.
-    //! @see SetBinaryModeStdout()
-    //!
-    TSDUCKDLL bool SetBinaryModeStdin(Report& report = CERR);
-
-    //!
-    //! Put the standard output stream in binary mode.
-    //!
-    //! On UNIX systems, this does not make any difference.
-    //! On Windows systems, however, in a stream which is not open in
-    //! binary mode, there is automatic translation between LF and CR-LF.
-    //! The standard output is open in text mode (non-binary).
-    //! This function forces it into binary mode.
-    //!
-    //! @param [in,out] report Where to report errors.
-    //! @return True on success, false on error.
-    //! If @a report is a subclass of ts::Args, terminate the application on error.
-    //! @see SetBinaryModeStdout()
-    //!
-    TSDUCKDLL bool SetBinaryModeStdout(Report& report = CERR);
 
     //!
     //! Get the name of a class from the @c type_info of an object.

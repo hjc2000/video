@@ -6,7 +6,6 @@
 //
 //----------------------------------------------------------------------------
 
-#include "tsArgs.h"
 #include "tsFileUtils.h"
 #include "tsSysUtils.h"
 #include "tsTime.h"
@@ -238,159 +237,6 @@ ts::MilliSecond ts::GetProcessCpuTime()
 
 
 //----------------------------------------------------------------------------
-// Get the virtual memory size of the process in bytes.
-//----------------------------------------------------------------------------
-
-size_t ts::GetProcessVirtualSize()
-{
-	#if defined(TS_WINDOWS)
-
-	::PROCESS_MEMORY_COUNTERS_EX mem_counters;
-	TS_ZERO(mem_counters);
-	if (::GetProcessMemoryInfo(::GetCurrentProcess(), (::PROCESS_MEMORY_COUNTERS *)&mem_counters, sizeof(mem_counters)) == 0)
-	{
-		throw ts::Exception(u"GetProcessMemoryInfo error", ::GetLastError());
-	}
-	return size_t(mem_counters.PrivateUsage);
-
-	#elif defined(TS_LINUX)
-
-	// On Linux, the VSIZE in pages is in the first field of /proc/self/statm.
-	size_t vsize = 0;
-	std::ifstream file("/proc/self/statm");
-	file >> vsize;
-	file.close();
-
-	// Get page size in bytes.
-	const long psize = ::sysconf(_SC_PAGESIZE);
-	if (psize < 0)
-	{
-		throw ts::Exception(u"sysconf(_SC_PAGESIZE) error", errno);
-	}
-	return vsize * size_t(psize);
-
-	#elif defined(TS_MAC)
-
-	// macOS implementation.
-
-	// Get the virtual memory size using task_info (mach kernel).
-	::mach_task_basic_info_data_t taskinfo;
-	TS_ZERO(taskinfo);
-	::mach_msg_type_number_t count = MACH_TASK_BASIC_INFO_COUNT;
-	const ::kern_return_t status1 = ::task_info(::mach_task_self(), MACH_TASK_BASIC_INFO, ::task_info_t(&taskinfo), &count);
-	if (status1 != KERN_SUCCESS)
-	{
-		throw ts::Exception(u"task_info error", errno);
-	}
-	return size_t(taskinfo.virtual_size);
-
-	#elif defined(TS_FREEBSD)
-
-	// FreeBSD implementation.
-
-	// Get the virtual memory size using procstat_getprocs() on current process.
-	::procstat *pstat = ::procstat_open_sysctl();
-	if (pstat == nullptr)
-	{
-		throw ts::Exception(u"procstat_open_sysctl error", errno);
-	}
-
-	unsigned int kproc_count = 0;
-	::kinfo_proc *kproc = ::procstat_getprocs(pstat, KERN_PROC_PID, ::getpid(), &kproc_count);
-	if (kproc == nullptr || kproc_count == 0)
-	{
-		throw ts::Exception(u"procstat_getprocs error", errno);
-	}
-	const size_t size = size_t(kproc->ki_size);
-
-	::procstat_freeprocs(pstat, kproc);
-	::procstat_close(pstat);
-	return size;
-
-	#elif defined(TS_OPENBSD)
-
-	// OpenBSD implementation.
-
-	// Use the kvm library to get the process virtual size.
-	::kvm_t *kvm = ::kvm_open(nullptr, nullptr, nullptr, KVM_NO_FILES, "kvm_open");
-	if (kvm == nullptr)
-	{
-		throw ts::Exception(u"kvm_open error", errno);
-	}
-
-	int count = 0;
-	::kinfo_proc *kinfo = ::kvm_getprocs(kvm, KERN_PROC_PID, ::getpid(), sizeof(::kinfo_proc), &count);
-	if (kinfo == nullptr || count == 0)
-	{
-		throw ts::Exception(u"kvm_getprocs error", errno);
-	}
-
-	// The virtual memory size is text size + data size + stack size.
-	// Cannot use p_vm_map_size, it is always zero.
-	const long pagesize = ::sysconf(_SC_PAGESIZE);
-	const size_t size = size_t((kinfo->p_vm_tsize + kinfo->p_vm_dsize + kinfo->p_vm_ssize) * pagesize);
-
-	::kvm_close(kvm);
-	return size;
-
-	#elif defined(TS_DRAGONFLYBSD)
-
-	// DragonFlyBSD implementation.
-
-	// Similar to OpenBSD but some symbols have different names and kvm_getprocs() has no way
-	// to describe the current size of struct kinfo_proc. Moreover, /dev/null must be passed as
-	// execfile and corefile. Otherwise, a permission denied error is returned on /dev/mem.
-	::kvm_t *kvm = ::kvm_open("/dev/null", "/dev/null", nullptr, O_RDONLY, "kvm_open");
-	if (kvm == nullptr)
-	{
-		throw ts::Exception(u"kvm_open error", errno);
-	}
-
-	int count = 0;
-	::kinfo_proc *kinfo = ::kvm_getprocs(kvm, KERN_PROC_PID, ::getpid(), &count);
-	if (kinfo == nullptr || count == 0)
-	{
-		throw ts::Exception(u"kvm_getprocs error", errno);
-	}
-
-	// The virtual memory size is directly in kp_vm_map_size, in bytes.
-	const size_t size = size_t(kinfo->kp_vm_map_size);
-
-	::kvm_close(kvm);
-	return size;
-
-	#elif defined(TS_NETBSD)
-
-	// NetBSD implementation.
-
-	// Similar to OpenBSD but use struct kinfo_proc2 and kvm_getproc2().
-	::kvm_t *kvm = ::kvm_open(nullptr, nullptr, nullptr, KVM_NO_FILES, "kvm_open");
-	if (kvm == nullptr)
-	{
-		throw ts::Exception(u"kvm_open error", errno);
-	}
-
-	int count = 0;
-	::kinfo_proc2 *kinfo = ::kvm_getproc2(kvm, KERN_PROC_PID, ::getpid(), sizeof(::kinfo_proc2), &count);
-	if (kinfo == nullptr || count == 0)
-	{
-		throw ts::Exception(u"kvm_getprocs error", errno);
-	}
-
-	// The virtual memory size is text size + data size + stack size.
-	const long pagesize = ::sysconf(_SC_PAGESIZE);
-	const size_t size = size_t((kinfo->p_vm_tsize + kinfo->p_vm_dsize + kinfo->p_vm_ssize) * pagesize);
-
-	::kvm_close(kvm);
-	return size;
-
-	#else
-	#error "ts::GetProcessVirtualSize not implemented on this system"
-	#endif
-}
-
-
-//----------------------------------------------------------------------------
 // Ignore SIGPIPE. On UNIX systems: writing to a broken pipe returns an
 // error instead of killing the process. On Windows systems: does nothing.
 //----------------------------------------------------------------------------
@@ -400,47 +246,6 @@ void ts::IgnorePipeSignal()
 	#if !defined(TS_WINDOWS)
 	::signal(SIGPIPE, SIG_IGN);
 	#endif
-}
-
-
-//----------------------------------------------------------------------------
-// Put standard input / output stream in binary mode.
-//----------------------------------------------------------------------------
-
-bool ts::SetBinaryModeStdin(Report &report)
-{
-	#if defined(TS_WINDOWS)
-	report.debug(u"setting standard input to binary mode");
-	if (::_setmode(_fileno(stdin), _O_BINARY) < 0)
-	{
-		report.error(u"cannot set standard input to binary mode");
-		Args *args = dynamic_cast<Args *>(&report);
-		if (args != 0)
-		{
-			args->exitOnError();
-		}
-		return false;
-	}
-	#endif
-	return true;
-}
-
-bool ts::SetBinaryModeStdout(Report &report)
-{
-	#if defined(TS_WINDOWS)
-	report.debug(u"setting standard output to binary mode");
-	if (::_setmode(_fileno(stdout), _O_BINARY) < 0)
-	{
-		report.error(u"cannot set standard output to binary mode");
-		Args *args = dynamic_cast<Args *>(&report);
-		if (args != 0)
-		{
-			args->exitOnError();
-		}
-		return false;
-	}
-	#endif
-	return true;
 }
 
 
@@ -548,6 +353,6 @@ ts::UString ts::ClassName(const std::type_info &info)
 		{
 			name.erase(0, 23);
 		}
-	}
+}
 	return name;
 }
