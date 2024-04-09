@@ -1,5 +1,5 @@
 #pragma once
-#include<ITSPacketConsumer.h>
+#include<tsduck/interface/ITSPacketConsumer.h>
 #include<jccpp/stream/Stream.h>
 
 namespace video

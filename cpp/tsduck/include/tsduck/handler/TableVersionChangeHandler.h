@@ -1,5 +1,5 @@
 #pragma once
-#include<TableOperator.h>
+#include<tsduck/TableOperator.h>
 #include<functional>
 #include<tsduck/handler/TableHandler.h>
 

@@ -1,4 +1,4 @@
-#include"TsDuckToString.h"
+#include"tsduck/TsDuckToString.h"
 
 std::string ToString(ts::TSPacket const &packet)
 {

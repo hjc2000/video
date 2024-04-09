@@ -1,7 +1,7 @@
 ﻿#include<CLI/CLI.hpp>
 #include<jccpp/Exception.h>
 #include<jccpp/stream/FileStream.h>
-#include<TSDumper.h>
+#include<tsduck/TSDumper.h>
 #include<tsduck/io/TSPacketStreamReader.h>
 #include<iostream>
 

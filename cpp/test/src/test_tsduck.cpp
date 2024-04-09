@@ -1,8 +1,8 @@
 #include "test_tsduck.h"
-#include<TestProgramMux.h>
 #include<filesystem>
 #include<jccpp/stream/FileStream.h>
 #include<tsCerrReport.h>
+#include<tsduck/TestProgramMux.h>
 #include<tsduck/io/TSPacketStreamReader.h>
 #include<tsduck/mux/JoinedTsStream.h>
 

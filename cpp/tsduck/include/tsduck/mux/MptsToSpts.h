@@ -1,7 +1,7 @@
 #pragma once
-#include<ITSPacketConsumer.h>
-#include<PipeTsPacketSource.h>
-#include<TableOperator.h>
+#include<tsduck/interface/ITSPacketConsumer.h>
+#include<tsduck/PipeTsPacketSource.h>
+#include<tsduck/TableOperator.h>
 #include<tsduck/handler/TableHandler.h>
 
 namespace video

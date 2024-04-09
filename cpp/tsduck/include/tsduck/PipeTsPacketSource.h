@@ -1,9 +1,9 @@
 #pragma once
-#include<ITSPacketConsumer.h>
 #include<jccpp/container/List.h>
 #include<jccpp/define.h>
 #include<memory>
 #include<tsTSPacket.h>
+#include<tsduck/interface/ITSPacketConsumer.h>
 
 using std::shared_ptr;
 

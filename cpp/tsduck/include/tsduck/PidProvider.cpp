@@ -1,4 +1,4 @@
-#include"PidProvider.h"
+#include"tsduck/PidProvider.h"
 
 using namespace std;
 using namespace video;

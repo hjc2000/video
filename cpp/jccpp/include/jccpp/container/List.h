@@ -1,4 +1,5 @@
 #pragma once
+#include<algorithm>
 #include<jccpp/Exception.h>
 #include<jccpp/container/IList.h>
 #include<vector>

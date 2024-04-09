@@ -1,5 +1,5 @@
 #pragma once
-#include<ITSPacketSource.h>
+#include<tsduck/interface/ITSPacketSource.h>
 #include<jccpp/stream/Stream.h>
 #include<tsTSPacketStream.h>
 

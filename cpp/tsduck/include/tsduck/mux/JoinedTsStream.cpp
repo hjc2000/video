@@ -1,5 +1,5 @@
 #include"tsduck/mux/JoinedTsStream.h"
-#include<TableOperator.h>
+#include<tsduck/TableOperator.h>
 
 using namespace video;
 using namespace std;

@@ -1,9 +1,9 @@
 #pragma once
-#include<TSDumper.h>
-#include<tsduck/corrector/TSOutputCorrector.h>
-#include<TableOperator.h>
 #include<jccpp/stream/FileStream.h>
 #include<tsDuckContext.h>
+#include<tsduck/TSDumper.h>
+#include<tsduck/TableOperator.h>
+#include<tsduck/corrector/TSOutputCorrector.h>
 #include<tsduck/io/TSPacketStreamWriter.h>
 #include<tsduck/mux/AutoChangeIdProgramMux.h>
 

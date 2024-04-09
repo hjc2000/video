@@ -1,5 +1,5 @@
 #pragma once
-#include<ServiceIdProvider.h>
+#include<tsduck/ServiceIdProvider.h>
 #include<tsduck/corrector/TableRepeater.h>
 #include<tsduck/handler/TableVersionChangeHandler.h>
 

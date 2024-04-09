@@ -1,6 +1,6 @@
 #pragma once
-#include<ITSPacketConsumer.h>
-#include<ITSPacketSource.h>
+#include<tsduck/interface/ITSPacketConsumer.h>
+#include<tsduck/interface/ITSPacketSource.h>
 #include<functional>
 #include<jccpp/define.h>
 #include<tsduck/container/TSPacketQueue.h>

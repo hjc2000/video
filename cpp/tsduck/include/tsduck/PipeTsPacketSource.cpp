@@ -1,4 +1,4 @@
-#include"PipeTsPacketSource.h"
+#include"tsduck/PipeTsPacketSource.h"
 
 using namespace video;
 using namespace std;

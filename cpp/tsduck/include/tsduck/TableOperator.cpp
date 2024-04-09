@@ -1,4 +1,4 @@
-#include"TableOperator.h"
+#include"tsduck/TableOperator.h"
 
 std::vector<ts::TSPacket> video::TableOperator::ToTsPacket(
 	ts::DuckContext &duck,

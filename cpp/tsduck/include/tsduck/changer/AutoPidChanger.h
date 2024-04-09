@@ -1,6 +1,6 @@
 #pragma once
-#include<PidProvider.h>
-#include<TableOperator.h>
+#include<tsduck/PidProvider.h>
+#include<tsduck/TableOperator.h>
 #include<tsduck/corrector/TableRepeater.h>
 #include<tsduck/handler/TableVersionChangeHandler.h>
 

@@ -1,7 +1,7 @@
 #pragma once
 #include<jccpp/CancellationTokenSource.h>
-#include<ITSPacketConsumer.h>
 #include<tsTSPacket.h>
+#include<tsduck/interface/ITSPacketConsumer.h>
 
 namespace video
 {

@@ -1,6 +1,6 @@
 #pragma once
-#include<ITSPacketConsumer.h>
-#include<ITSPacketSource.h>
+#include<tsduck/interface/ITSPacketConsumer.h>
+#include<tsduck/interface/ITSPacketSource.h>
 #include<jccpp/container/Queue.h>
 
 namespace video
