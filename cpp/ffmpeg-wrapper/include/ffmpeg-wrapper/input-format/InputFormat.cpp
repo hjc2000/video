@@ -1,7 +1,7 @@
 #include"ffmpeg-wrapper/input-format/InputFormat.h"
-#include<AVDictionaryWrapper.h>
-#include<AVPacketWrapper.h>
-#include<AVStreamWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVDictionaryWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVPacketWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 #include<ffmpeg-wrapper/AVToString.h>
 #include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/base_include.h>

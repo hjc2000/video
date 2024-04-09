@@ -1,6 +1,6 @@
 #include "sdl2-wrapper/AudioFramePlayer.h"
-#include<AVCodecContextWrapper.h>
-#include<AVStreamWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVCodecContextWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 #include<ffmpeg-wrapper/input-format/InputFormat.h>
 
 using namespace video;

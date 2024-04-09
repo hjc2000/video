@@ -1,5 +1,5 @@
 #pragma once
-#include<AVFrameWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVFrameWrapper.h>
 #include<ffmpeg-wrapper/info-collection/AudioFrameInfoCollection.h>
 #include<ffmpeg-wrapper/info-collection/AudioStreamInfoCollection.h>
 #include<ffmpeg-wrapper/ErrorCode.h>

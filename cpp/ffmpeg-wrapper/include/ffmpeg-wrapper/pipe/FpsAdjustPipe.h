@@ -2,7 +2,7 @@
 #include<ffmpeg-wrapper/AVCalculate.h>
 #include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/pipe/interface/PipeFrameSource.h>
-#include<VideoFilterGraph.h>
+#include<ffmpeg-wrapper/filter/VideoFilterGraph.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<jccpp/Wrapper.h>
 #include<jccpp/container/List.h>

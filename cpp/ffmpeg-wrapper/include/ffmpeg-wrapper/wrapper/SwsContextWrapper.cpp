@@ -1,5 +1,5 @@
-#include "SwsContextWrapper.h"
-#include<SwrContextWrapper.h>
+#include "ffmpeg-wrapper/wrapper/SwsContextWrapper.h"
+#include<ffmpeg-wrapper/wrapper/SwrContextWrapper.h>
 
 using namespace video;
 

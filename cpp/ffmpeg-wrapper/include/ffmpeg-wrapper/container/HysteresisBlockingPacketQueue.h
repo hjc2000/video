@@ -1,5 +1,5 @@
 #pragma once
-#include<AVPacketWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVPacketWrapper.h>
 #include<jccpp/container/HysteresisBlockingQueue.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketSource.h>

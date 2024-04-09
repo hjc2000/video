@@ -1,8 +1,8 @@
 #pragma once
+#include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<ffmpeg-wrapper/pipe/interface/PipeFrameSource.h>
-#include<SwsContextWrapper.h>
-#include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>
+#include<ffmpeg-wrapper/wrapper/SwsContextWrapper.h>
 
 namespace video
 {

@@ -1,11 +1,11 @@
 #pragma once
-#include<AVPacketWrapper.h>
-#include<AVProgramWrapper.h>
-#include<AVStreamWrapper.h>
-#include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
-#include<jccpp/container/List.h>
-#include<jccpp/Wrapper.h>
 #include<ffmpeg-wrapper/base_include.h>
+#include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
+#include<ffmpeg-wrapper/wrapper/AVPacketWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVProgramWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
+#include<jccpp/Wrapper.h>
+#include<jccpp/container/List.h>
 #include<mutex>
 #include<thread>
 

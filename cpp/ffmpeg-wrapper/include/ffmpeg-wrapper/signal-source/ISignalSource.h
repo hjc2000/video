@@ -1,5 +1,5 @@
 #pragma once
-#include<AVFrameWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVFrameWrapper.h>
 #include<ffmpeg-wrapper/AVSampleFormatExtention.h>
 #include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/base_include.h>

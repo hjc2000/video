@@ -1,5 +1,5 @@
 #include "ffmpeg-wrapper/signal-source/ISignalSource.h"
-#include<AVFrameWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVFrameWrapper.h>
 
 int video::ISignalSource::ReadFrame(shared_ptr<AVFrameWrapper> frame)
 {

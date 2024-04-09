@@ -1,5 +1,5 @@
 #pragma once
-#include<AVFrameWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVFrameWrapper.h>
 #include<sdl2-wrapper/SDL_Initializer.h>
 
 namespace video

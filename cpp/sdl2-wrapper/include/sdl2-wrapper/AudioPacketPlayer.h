@@ -1,6 +1,6 @@
 #pragma once
-#include<AVCodecContextWrapper.h>
-#include<AVStreamWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVCodecContextWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 #include<atomic>
 #include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
 #include<ffmpeg-wrapper/pipe/DecoderPipe.h>

@@ -1,7 +1,7 @@
 #pragma once
 #include<ffmpeg-wrapper/AVChannelLayoutExtension.h>
-#include<AVFrameWrapper.h>
-#include<SwrContextWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVFrameWrapper.h>
+#include<ffmpeg-wrapper/wrapper/SwrContextWrapper.h>
 #include<condition_variable>
 #include<ffmpeg-wrapper/container/HysteresisBlockingFrameQueue.h>
 #include<ffmpeg-wrapper/pipe/SwrPipe.h>

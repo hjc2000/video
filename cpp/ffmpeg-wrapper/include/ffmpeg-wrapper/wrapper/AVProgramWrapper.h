@@ -1,6 +1,6 @@
 #pragma once
-#include<AVDictionaryWrapper.h>
-#include<AVStreamWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVDictionaryWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<jccpp/ToString.h>
 #include<jccpp/Wrapper.h>

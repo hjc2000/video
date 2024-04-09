@@ -1,10 +1,10 @@
 #pragma once
-#include<AVIOContextWrapper.h>
-#include<AVProgramWrapper.h>
-#include<ffmpeg-wrapper/pipe/interface/IPacketSource.h>
-#include<jccpp/Wrapper.h>
-#include<functional>
 #include<ffmpeg-wrapper/base_include.h>
+#include<ffmpeg-wrapper/pipe/interface/IPacketSource.h>
+#include<ffmpeg-wrapper/wrapper/AVIOContextWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVProgramWrapper.h>
+#include<functional>
+#include<jccpp/Wrapper.h>
 #include<string>
 
 namespace video

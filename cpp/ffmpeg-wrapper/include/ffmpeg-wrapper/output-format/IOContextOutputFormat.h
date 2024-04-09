@@ -1,5 +1,5 @@
 #pragma once
-#include<AVIOContextWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVIOContextWrapper.h>
 #include<ffmpeg-wrapper/output-format/OutputFormat.h>
 
 namespace video
