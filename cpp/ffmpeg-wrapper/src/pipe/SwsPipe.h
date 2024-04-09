@@ -2,7 +2,7 @@
 #include<IFrameConsumer.h>
 #include<PipeFrameSource.h>
 #include<SwsContextWrapper.h>
-#include<VideoFrameInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>
 
 namespace video
 {

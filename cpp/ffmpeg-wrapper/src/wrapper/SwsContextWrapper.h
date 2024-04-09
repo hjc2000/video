@@ -2,7 +2,7 @@
 #include<ErrorCode.h>
 #include<IFrameConsumer.h>
 #include<IFrameSource.h>
-#include<VideoFrameInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>
 #include<jccpp/Wrapper.h>
 #include<atomic>
 #include<ffmpeg-wrapper/base_include.h>

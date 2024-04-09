@@ -1,6 +1,6 @@
 #pragma once
-#include<IAudioStreamInfoCollection.h>
-#include<IVideoStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/IAudioStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/IVideoStreamInfoCollection.h>
 #include<jccpp/Wrapper.h>
 #include<ffmpeg-wrapper/base_include.h>
 

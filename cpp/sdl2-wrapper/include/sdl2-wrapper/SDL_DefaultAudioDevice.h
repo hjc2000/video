@@ -1,5 +1,5 @@
 #pragma once
-#include<IAudioFrameInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/IAudioFrameInfoCollection.h>
 #include<atomic>
 #include<jccpp/IDisposable.h>
 #include<jccpp/Json.h>

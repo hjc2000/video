@@ -1,9 +1,9 @@
 #pragma once
-#include<AudioStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/AudioStreamInfoCollection.h>
 #include<ffmpeg-wrapper/format/output-format/OutputFormat.h>
 #include<SwrEncoderPipe.h>
 #include<SwsFpsEncoderPipe.h>
-#include<VideoStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/VideoStreamInfoCollection.h>
 
 namespace video
 {

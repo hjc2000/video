@@ -1,4 +1,4 @@
-#include"AVStreamInfoCollection.h"
+#include"ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h"
 
 using namespace video;
 

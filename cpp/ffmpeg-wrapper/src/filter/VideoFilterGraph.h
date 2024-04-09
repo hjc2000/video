@@ -3,7 +3,7 @@
 #include<AVFilterContextWrapper.h>
 #include<IFrameConsumer.h>
 #include<IFrameSource.h>
-#include<VideoStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/VideoStreamInfoCollection.h>
 
 namespace video
 {

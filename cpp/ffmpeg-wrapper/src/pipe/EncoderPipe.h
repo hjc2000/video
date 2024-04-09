@@ -1,13 +1,13 @@
 #pragma once
 #include<AVCodecContextWrapper.h>
 #include<AVStreamWrapper.h>
-#include<AudioStreamInfoCollection.h>
 #include<IFrameConsumer.h>
 #include<IPacketSource.h>
-#include<IVideoStreamInfoCollection.h>
-#include<VideoStreamInfoCollection.h>
 #include<atomic>
 #include<ffmpeg-wrapper/format/output-format/OutputFormat.h>
+#include<ffmpeg-wrapper/info-collection/AudioStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/IVideoStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/VideoStreamInfoCollection.h>
 #include<jccpp/IDisposable.h>
 
 namespace video

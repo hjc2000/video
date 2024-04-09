@@ -3,7 +3,7 @@
 #include<FpsAdjustPipe.h>
 #include<ffmpeg-wrapper/format/output-format/OutputFormat.h>
 #include<SwsPipe.h>
-#include<VideoStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/VideoStreamInfoCollection.h>
 
 namespace video
 {

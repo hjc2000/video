@@ -1,5 +1,5 @@
 #pragma once
-#include<AVStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
 #include<PipeFrameSource.h>
 
 namespace video

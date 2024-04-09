@@ -1,5 +1,5 @@
 #pragma once
-#include<IVideoFrameInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/IVideoFrameInfoCollection.h>
 
 namespace video
 {

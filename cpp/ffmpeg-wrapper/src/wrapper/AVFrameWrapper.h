@@ -1,12 +1,12 @@
 #pragma once
 #include<AVCalculate.h>
 #include<AVToString.h>
-#include<AudioFrameInfoCollection.h>
-#include<AudioStreamInfoCollection.h>
 #include<ErrorCode.h>
-#include<VideoFrameInfoCollection.h>
 #include<chrono>
 #include<ffmpeg-wrapper/base_include.h>
+#include<ffmpeg-wrapper/info-collection/AudioFrameInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/AudioStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>
 #include<jccpp/Wrapper.h>
 #include<jccpp/stream/Stream.h>
 

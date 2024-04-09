@@ -3,7 +3,7 @@
 #include<string>
 #include<sstream>
 #include<jccpp/Wrapper.h>
-#include<IAudioFrameInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/IAudioFrameInfoCollection.h>
 #include<jccpp/Json.h>
 
 using std::string;

@@ -2,7 +2,7 @@
 #include<ErrorCode.h>
 #include<AVFrameWrapper.h>
 #include<AVSampleFormatExtention.h>
-#include<IAudioFrameInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/IAudioFrameInfoCollection.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/base_include.h>
 

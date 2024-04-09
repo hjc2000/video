@@ -1,9 +1,9 @@
 #pragma once
 #include<AVFrameWrapper.h>
-#include<AudioFrameInfoCollection.h>
-#include<AudioStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/AudioFrameInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/AudioStreamInfoCollection.h>
 #include<ErrorCode.h>
-#include<IAudioStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/IAudioStreamInfoCollection.h>
 #include<IFrameConsumer.h>
 #include<IFrameSource.h>
 #include<atomic>

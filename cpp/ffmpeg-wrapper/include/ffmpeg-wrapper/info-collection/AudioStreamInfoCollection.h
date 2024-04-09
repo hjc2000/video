@@ -1,5 +1,5 @@
 #pragma once
-#include<IAudioStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/IAudioStreamInfoCollection.h>
 
 namespace video
 {

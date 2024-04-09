@@ -1,4 +1,4 @@
-#include<VideoFrameInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>
 
 int video::VideoFrameInfoCollection::width()
 {

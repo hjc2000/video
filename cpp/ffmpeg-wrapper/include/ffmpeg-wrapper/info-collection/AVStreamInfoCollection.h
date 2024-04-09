@@ -1,7 +1,7 @@
 #pragma once
 #include<AVStreamWrapper.h>
-#include<IAudioStreamInfoCollection.h>
-#include<IVideoStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/IAudioStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/IVideoStreamInfoCollection.h>
 
 namespace video
 {
