@@ -2,13 +2,13 @@
 #include<AVCodecContextWrapper.h>
 #include<AVStreamWrapper.h>
 #include<AudioStreamInfoCollection.h>
-#include<jccpp/IDisposable.h>
 #include<IFrameConsumer.h>
 #include<IPacketSource.h>
 #include<IVideoStreamInfoCollection.h>
-#include<OutputFormat.h>
 #include<VideoStreamInfoCollection.h>
 #include<atomic>
+#include<ffmpeg-wrapper/format/output-format/OutputFormat.h>
+#include<jccpp/IDisposable.h>
 
 namespace video
 {

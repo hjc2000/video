@@ -99,10 +99,10 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 
 
 #include<jccpp/container/List.h>
-#include<InputFormat.h>
+#include<ffmpeg-wrapper/format/input-format/InputFormat.h>
 #include<jccpp/stream/FileStream.h>
 #include<JoinedInputFormatDemuxDecoder.h>
-#include<StreamOutputFormat.h>
+#include<ffmpeg-wrapper/format/output-format/StreamOutputFormat.h>
 
 /// <summary>
 ///		测试函数

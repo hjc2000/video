@@ -1,6 +1,6 @@
 #pragma once
 #include<AudioStreamInfoCollection.h>
-#include<OutputFormat.h>
+#include<ffmpeg-wrapper/format/output-format/OutputFormat.h>
 #include<SwrEncoderPipe.h>
 #include<SwsFpsEncoderPipe.h>
 #include<VideoStreamInfoCollection.h>

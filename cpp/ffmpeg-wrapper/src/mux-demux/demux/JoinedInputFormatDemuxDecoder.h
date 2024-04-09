@@ -1,10 +1,10 @@
 #pragma once
 #include<AVStreamInfoCollection.h>
-#include<jccpp/CancellationTokenSource.h>
 #include<DecoderPipe.h>
 #include<InfinitePacketPipe.h>
-#include<InputFormat.h>
+#include<ffmpeg-wrapper/format/input-format/InputFormat.h>
 #include<functional>
+#include<jccpp/CancellationTokenSource.h>
 #include<memory>
 
 namespace video
