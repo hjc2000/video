@@ -1,5 +1,5 @@
 #pragma once
-#include<ffmpeg-wrapper/format/output-format/OutputFormat.h>
+#include<ffmpeg-wrapper/output-format/OutputFormat.h>
 #include<functional>
 #include<ffmpeg-wrapper/base_include.h>
 #include<iostream>

@@ -1,4 +1,4 @@
-#include"ffmpeg-wrapper/format/input-format/InputFormat.h"
+#include"ffmpeg-wrapper/input-format/InputFormat.h"
 #include<AVDictionaryWrapper.h>
 #include<AVPacketWrapper.h>
 #include<AVStreamWrapper.h>

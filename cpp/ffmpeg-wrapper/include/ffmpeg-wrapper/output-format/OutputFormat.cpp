@@ -1,4 +1,4 @@
-#include "ffmpeg-wrapper/format/output-format/OutputFormat.h"
+#include "ffmpeg-wrapper/output-format/OutputFormat.h"
 #include<ErrorCode.h>
 
 using namespace video;

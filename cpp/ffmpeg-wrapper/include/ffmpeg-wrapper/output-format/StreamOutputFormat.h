@@ -1,5 +1,5 @@
 #pragma once
-#include<ffmpeg-wrapper/format/output-format/IOContextOutputFormat.h>
+#include<ffmpeg-wrapper/output-format/IOContextOutputFormat.h>
 
 namespace video
 {

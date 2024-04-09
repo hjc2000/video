@@ -1,7 +1,7 @@
 #pragma once
 #include<EncoderPipe.h>
 #include<FpsAdjustPipe.h>
-#include<ffmpeg-wrapper/format/output-format/OutputFormat.h>
+#include<ffmpeg-wrapper/output-format/OutputFormat.h>
 #include<SwsPipe.h>
 #include<ffmpeg-wrapper/info-collection/VideoStreamInfoCollection.h>
 
