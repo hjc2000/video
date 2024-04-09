@@ -1,6 +1,6 @@
 #pragma once
-#include<AVCodecExtention.h>
 #include<AVStreamWrapper.h>
+#include<ffmpeg-wrapper/AVCodecExtention.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>

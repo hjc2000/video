@@ -1,4 +1,4 @@
-#include "ImageBuffer.h"
+#include "ffmpeg-wrapper/ImageBuffer.h"
 #include<AVFrameWrapper.h>
 #include<ffmpeg-wrapper/base_include.h>
 

@@ -2,7 +2,7 @@
 #include<AVFrameWrapper.h>
 #include<ffmpeg-wrapper/info-collection/AudioFrameInfoCollection.h>
 #include<ffmpeg-wrapper/info-collection/AudioStreamInfoCollection.h>
-#include<ErrorCode.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/info-collection/IAudioStreamInfoCollection.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameSource.h>

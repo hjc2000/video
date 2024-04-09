@@ -1,8 +1,8 @@
 #pragma once
 #include<AVCodecContextWrapper.h>
 #include<AVStreamWrapper.h>
-#include<AVToString.h>
-#include<ErrorCode.h>
+#include<ffmpeg-wrapper/AVToString.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<atomic>
 #include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>

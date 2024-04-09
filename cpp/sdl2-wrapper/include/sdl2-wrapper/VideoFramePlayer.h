@@ -1,7 +1,7 @@
 #pragma once
 #include<AVCodecContextWrapper.h>
 #include<AVStreamWrapper.h>
-#include<ErrorCode.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<ffmpeg-wrapper/info-collection/VideoStreamInfoCollection.h>
 #include<atomic>

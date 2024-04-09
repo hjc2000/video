@@ -1,7 +1,7 @@
 #pragma once
 #include<AVFrameWrapper.h>
-#include<AVSampleFormatExtention.h>
-#include<ErrorCode.h>
+#include<ffmpeg-wrapper/AVSampleFormatExtention.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/signal-source/ISignalSource.h>

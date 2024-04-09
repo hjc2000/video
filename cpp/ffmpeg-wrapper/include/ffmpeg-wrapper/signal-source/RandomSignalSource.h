@@ -1,5 +1,5 @@
 #pragma once
-#include<ErrorCode.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/signal-source/ISignalSource.h>
 #include<ffmpeg-wrapper/signal-source/PeriodicSignalSource.h>

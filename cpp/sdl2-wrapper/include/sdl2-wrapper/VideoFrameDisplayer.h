@@ -1,8 +1,8 @@
 #pragma once
 #include<AVFrameWrapper.h>
-#include<AVPixelFormatExtension.h>
-#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
+#include<ffmpeg-wrapper/AVPixelFormatExtension.h>
 #include<ffmpeg-wrapper/info-collection/IVideoStreamInfoCollection.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<sdl2-wrapper/SDL_EventGetter.h>
 #include<sdl2-wrapper/SDL_RendererWrapper.h>
 #include<sdl2-wrapper/SDL_TextureWrapper.h>

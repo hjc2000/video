@@ -1,8 +1,7 @@
 #pragma once
-#include<AVChannelLayoutExtension.h>
-#include<AVCompare.h>
-#include<AVSampleFormatExtention.h>
-#include<AVSampleFormatExtention.h>
+#include<ffmpeg-wrapper/AVChannelLayoutExtension.h>
+#include<ffmpeg-wrapper/AVCompare.h>
+#include<ffmpeg-wrapper/AVSampleFormatExtention.h>
 #include<ffmpeg-wrapper/base_include.h>
 
 namespace video

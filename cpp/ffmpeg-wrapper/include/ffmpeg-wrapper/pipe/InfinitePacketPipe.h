@@ -1,7 +1,7 @@
 #pragma once
-#include<AVCalculate.h>
-#include<AVCompare.h>
-#include<AVToString.h>
+#include<ffmpeg-wrapper/AVCalculate.h>
+#include<ffmpeg-wrapper/AVCompare.h>
+#include<ffmpeg-wrapper/AVToString.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
 #include<ffmpeg-wrapper/pipe/interface/PipePacketSource.h>
 

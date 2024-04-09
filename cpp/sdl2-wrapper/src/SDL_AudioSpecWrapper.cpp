@@ -1,5 +1,5 @@
 #include "sdl2-wrapper/SDL_AudioSpecWrapper.h"
-#include<AVChannelLayoutExtension.h>
+#include<ffmpeg-wrapper/AVChannelLayoutExtension.h>
 #include<jccpp/Exception.h>
 
 AVRational video::SDL_AudioSpecWrapper::time_base()

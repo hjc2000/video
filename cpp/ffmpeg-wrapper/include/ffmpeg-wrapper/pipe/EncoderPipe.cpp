@@ -1,5 +1,5 @@
 #include"ffmpeg-wrapper/pipe/EncoderPipe.h"
-#include<ErrorCode.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 
 using namespace video;
 

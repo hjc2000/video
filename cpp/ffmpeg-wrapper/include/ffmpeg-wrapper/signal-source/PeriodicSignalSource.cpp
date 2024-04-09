@@ -1,5 +1,5 @@
 #include "ffmpeg-wrapper/signal-source/PeriodicSignalSource.h"
-#include<AVChannelLayoutExtension.h>
+#include<ffmpeg-wrapper/AVChannelLayoutExtension.h>
 
 using namespace video;
 

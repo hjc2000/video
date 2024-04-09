@@ -1,5 +1,5 @@
 #pragma once
-#include<ErrorCode.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameSource.h>
 #include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>

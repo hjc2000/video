@@ -1,5 +1,5 @@
 #pragma once
-#include<AVCompare.h>
+#include<ffmpeg-wrapper/AVCompare.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/info-collection/IVideoFrameInfoCollection.h>
 

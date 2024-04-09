@@ -2,8 +2,8 @@
 #include<AVDictionaryWrapper.h>
 #include<AVPacketWrapper.h>
 #include<AVStreamWrapper.h>
-#include<AVToString.h>
-#include<ErrorCode.h>
+#include<ffmpeg-wrapper/AVToString.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/base_include.h>
 
 using namespace video;

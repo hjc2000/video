@@ -1,4 +1,4 @@
-#include "AVChannelLayoutExtension.h"
+#include "ffmpeg-wrapper/AVChannelLayoutExtension.h"
 
 string video::AVChannelLayoutExtension::channel_layout_description(AVChannelLayout layout)
 {

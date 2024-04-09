@@ -1,6 +1,6 @@
 #pragma once
 #include<ffmpeg-wrapper/pipe/DecoderPipe.h>
-#include<ErrorCode.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
 #include<ffmpeg-wrapper/pipe/PacketPump.h>

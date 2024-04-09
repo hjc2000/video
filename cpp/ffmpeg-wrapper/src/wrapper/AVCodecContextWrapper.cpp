@@ -1,11 +1,11 @@
 #include"AVCodecContextWrapper.h"
-#include<AVCalculate.h>
-#include<AVCodecExtention.h>
+#include<ffmpeg-wrapper/AVCalculate.h>
+#include<ffmpeg-wrapper/AVCodecExtention.h>
 #include<AVDictionaryWrapper.h>
 #include<AVFrameWrapper.h>
 #include<AVPacketWrapper.h>
 #include<AVStreamWrapper.h>
-#include<ErrorCode.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<jccpp/Exception.h>
 #include<format>
 #include<ffmpeg-wrapper/base_include.h>

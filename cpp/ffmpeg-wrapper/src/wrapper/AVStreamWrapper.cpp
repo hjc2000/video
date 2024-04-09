@@ -1,7 +1,7 @@
 #include<AVCodecContextWrapper.h>
-#include<AVCodecExtention.h>
+#include<ffmpeg-wrapper/AVCodecExtention.h>
 #include<AVStreamWrapper.h>
-#include<ErrorCode.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/base_include.h>
 
 using namespace video;
