@@ -12,11 +12,10 @@
 //----------------------------------------------------------------------------
 
 #pragma once
-#include "tsTS.h"
 #include "tsByteBlock.h"
-#include "tsTimeSource.h"
 #include "tsCompactBitSet.h"
-#include "tsResidentBuffer.h"
+#include "tsTS.h"
+#include "tsTimeSource.h"
 
 namespace ts
 {
@@ -317,10 +316,4 @@ namespace ts
 	//! Vector of packet metadata.
 	//!
 	typedef std::vector<TSPacketMetadata> TSPacketMetadataVector;
-
-	//!
-	//! Metadata for TS packet are accessed in a memory-resident buffer.
-	//! A packet and its metadata have the same index in their respective buffer.
-	//!
-	typedef ResidentBuffer<TSPacketMetadata> PacketMetadataBuffer;
 }
