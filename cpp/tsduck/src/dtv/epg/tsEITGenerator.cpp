@@ -324,17 +324,6 @@ bool ts::EITGenerator::loadEvents(const SectionPtrVector& sections, bool get_act
 }
 
 
-//----------------------------------------------------------------------------
-// Save all current EIT sections.
-//----------------------------------------------------------------------------
-
-void ts::EITGenerator::saveEITs(SectionFile& secfile)
-{
-    SectionPtrVector sections;
-    saveEITs(sections);
-    secfile.add(sections);
-}
-
 void ts::EITGenerator::saveEITs(SectionPtrVector& sections)
 {
     // If the reference time is not set, force it to the start time of the oldest event in the database.

@@ -9,11 +9,8 @@
 #include "tsBinaryTable.h"
 #include "tsDuckContext.h"
 #include "tsPSILogger.h"
-#include "tsSectionFile.h"
 #include "tsTSPacket.h"
 #include "tsTablesDisplay.h"
-#include "tsjsonArray.h"
-#include "tsjsonObject.h"
 #include "tsxmlElement.h"
 
 #define MIN_CLEAR_PACKETS 100000
@@ -41,86 +38,11 @@ ts::PSILogger::~PSILogger()
 
 bool ts::PSILogger::open()
 {
-	// Reset content.
-	_xml_doc.clear();
-	_x2j_conv.clear();
-	_clear_packets_cnt = _scrambled_packets_cnt = 0;
-	_previous_pat.clear();
-	_previous_pat.invalidate();
-
-	// Set XML options in document.
-	_xml_doc.setTweaks(_xml_tweaks);
-	_x2j_conv.setTweaks(_xml_tweaks);
-
-	// Load the XML model for tables if we need to convert to JSON.
-	if ((_use_json || _log_json_line) && !SectionFile::LoadModel(_x2j_conv))
-	{
-		return false;
-	}
-
-	// Open/create the destination
-	if (_use_text)
-	{
-		if (!_duck.setOutput(_text_destination))
-		{
-			_abort = true;
-			return false;
-		}
-		// Initial blank line
-		_duck.out() << std::endl;
-	}
-
-	// Open/create the XML output.
-	if (_use_xml && !_xml_doc.open(u"tsduck", u"", _xml_destination, std::cout))
-	{
-		_abort = true;
-		return false;
-	}
-
-	// Open/create the JSON output.
-	if (_use_json)
-	{
-		json::ValuePtr root;
-		if (_xml_tweaks.x2jIncludeRoot)
-		{
-			root = new json::Object;
-			root->add(u"#name", u"tsduck");
-			root->add(u"#nodes", json::ValuePtr(new json::Array));
-		}
-		if (!_json_doc.open(root, _json_destination, std::cout))
-		{
-			_abort = true;
-			return false;
-		}
-	}
-
-	// Specify the PID filters
-	_demux.reset();
-	if (!_cat_only)
-	{
-		_demux.addPID(PID_PAT);   // MPEG
-		_demux.addPID(PID_TSDT);  // MPEG
-		_demux.addPID(PID_SDT);   // DVB, ISDB (also contain BAT)
-		_demux.addPID(PID_PCAT);  // ISDB
-		_demux.addPID(PID_BIT);   // ISDB
-		_demux.addPID(PID_LDT);   // ISDB (also contain NBIT)
-		_demux.addPID(PID_PSIP);  // ATSC
-	}
-	if (!_clear)
-	{
-		_demux.addPID(PID_CAT);
-	}
-
-	// Type of sections to get.
-	_demux.setCurrentNext(_use_current, _use_next);
-
 	return true;
 }
 
 void ts::PSILogger::close()
 {
-	_xml_doc.close();
-	_json_doc.close();
 }
 
 
@@ -427,83 +349,7 @@ void ts::PSILogger::handleSection(SectionDemux &, const Section &sect)
 
 void ts::PSILogger::displayTable(const BinaryTable &table)
 {
-	// Text output.
-	if (_use_text)
-	{
-		_display.displayTable(table);
-		_duck.out() << std::endl;
-	}
 
-	// XML options.
-	BinaryTable::XMLOptions xml_options;
-	xml_options.setPID = true;
-
-	// Full XML output.
-	if (_use_xml)
-	{
-		// Convert the table into an XML structure.
-		table.toXML(_duck, _xml_doc.rootElement(), xml_options);
-
-		// Print and delete the new table.
-		_xml_doc.flush();
-	}
-
-	// Save table in JSON format.
-	if (_use_json)
-	{
-		// First, build an XML document with the table.
-		xml::Document doc(_report);
-		doc.initialize(u"tsduck");
-		table.toXML(_duck, doc.rootElement(), xml_options);
-
-		// Convert to JSON. Force "tsduck" root to appear so that the path to the first table is always the same.
-		// Query the first (and only) converted table and add it to the running document.
-		_json_doc.add(_x2j_conv.convertToJSON(doc, true)->query(u"#nodes[0]"));
-	}
-
-	// XML and/or JSON one-liner in the log.
-	if (_log_xml_line || _log_json_line)
-	{
-
-		// Build an XML document.
-		xml::Document doc;
-		doc.initialize(u"tsduck");
-
-		// Convert the table into an XML structure.
-		xml::Element *elem = table.toXML(_duck, doc.rootElement(), xml_options);
-		if (elem != nullptr)
-		{
-			// Log the XML line.
-			if (_log_xml_line)
-			{
-				_report.info(_log_xml_prefix + doc.oneLiner());
-			}
-
-			// Log the JSON line.
-			if (_log_json_line)
-			{
-				// Convert the XML document into JSON.
-				// Force "tsduck" root to appear so that the path to the first table is always the same.
-				const json::ValuePtr root(_x2j_conv.convertToJSON(doc, true));
-
-				// Query the first (and only) converted table and log it as one line.
-				_report.info(_log_json_prefix + root->query(u"#nodes[0]").oneLiner(_report));
-			}
-		}
-	}
-
-	// Notify table, either at once or section by section.
-	if (_table_handler != nullptr)
-	{
-		_table_handler->handleTable(_demux, table);
-	}
-	else if (_section_handler != nullptr)
-	{
-		for (size_t i = 0; i < table.sectionCount(); ++i)
-		{
-			_section_handler->handleSection(_demux, *table.sectionAt(i));
-		}
-	}
 }
 
 

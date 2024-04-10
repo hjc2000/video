@@ -14,8 +14,6 @@
 #pragma once
 #include "tsPAT.h"
 #include "tsSectionDemux.h"
-#include "tsjsonRunningDocument.h"
-#include "tsxmlJSONConverter.h"
 #include "tsxmlRunningDocument.h"
 
 namespace ts
@@ -130,8 +128,6 @@ namespace ts
 		TableHandlerInterface *_table_handler = nullptr;   // If not null, also log all complete tables through this handler.
 		SectionHandlerInterface *_section_handler = nullptr; // If not null, also log all sections through this handler.
 		xml::RunningDocument     _xml_doc{ _report };         // XML document, built on-the-fly.
-		xml::JSONConverter       _x2j_conv{ _report };        // XML-to-JSON converter.
-		json::RunningDocument    _json_doc{ _report };        // JSON document, built on-the-fly.
 		bool                     _abort = false;
 		bool                     _pat_ok = false;            // Got a PAT
 		bool                     _cat_ok = false;            // Got a CAT or not interested in CAT
