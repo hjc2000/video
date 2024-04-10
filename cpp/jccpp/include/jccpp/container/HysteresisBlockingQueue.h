@@ -63,7 +63,7 @@ namespace jc
 	private:
 		/// <summary>
 		///		* 被冲洗后入队会抛出异常。
-		///		* 被冲洗后，_queue_avaliable 将被 Dispose，出队不会再被阻塞。
+		///		* 被冲洗后出队不会再被阻塞。
 		/// </summary>
 		std::atomic_bool _flushed = false;
 
