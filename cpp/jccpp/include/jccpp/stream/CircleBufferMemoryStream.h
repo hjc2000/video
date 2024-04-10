@@ -122,6 +122,5 @@ namespace jc
 		/// <param name="value"></param>
 		void SetPosition(int64_t value) override;
 		#pragma endregion
-
 	};
 }
