@@ -100,8 +100,8 @@ void test_SptsEncodeMux()
 
 	VideoStreamInfoCollection out_video_stream_infos;
 	out_video_stream_infos._frame_rate = AVRational{ 30,1 };
-	out_video_stream_infos._width = 1920;
-	out_video_stream_infos._height = 1080;
+	out_video_stream_infos._width = 1920 * 2;
+	out_video_stream_infos._height = 1080 * 2;
 	out_video_stream_infos._pixel_format = AVPixelFormat::AV_PIX_FMT_YUV420P;
 	out_video_stream_infos._time_base = AVRational{ 1,90000 };
 
@@ -116,19 +116,19 @@ void test_SptsEncodeMux()
 			out_fmt_ctx,
 			out_video_stream_infos,
 			"hevc_amf",
-			-1,
+			35 * 1000 * 1000,
 			out_audio_stream_infos,
 			"aac"
 		}
 	};
 
 	Queue<std::string> file_queue;
-	file_queue.Enqueue("fallen-down.ts");
-	file_queue.Enqueue("Nightglow.mp4");
 	file_queue.Enqueue("水龙吟.ts");
+	file_queue.Enqueue("等你下课.mp4");
 	file_queue.Enqueue("idol.mp4");
 	file_queue.Enqueue("moon.mp4");
 	file_queue.Enqueue("zf.ts");
+	file_queue.Enqueue("天下无双.mkv");
 
 	shared_ptr<JoinedInputFormatDemuxDecoder> joined_input_format_demux_decoder{ new JoinedInputFormatDemuxDecoder{} };
 	joined_input_format_demux_decoder->AddVideoFrameConsumer(spts_encode_mux->VideoEncodePipe());

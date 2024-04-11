@@ -143,7 +143,7 @@ int main()
 	TaskCompletionSignal copying_stream_thread_stopped{ false };
 	thread([&]()
 	{
-		shared_ptr<FileStream> fstream = FileStream::Open("idol.ts");
+		shared_ptr<FileStream> fstream = FileStream::Open("mux_out.ts");
 		JoinedStream jstream;
 		jstream._stream_end_callback = [&]()
 		{
