@@ -90,7 +90,7 @@ namespace video
 		#pragma endregion
 
 	private:
-		#pragma region 码器
+		#pragma region AVCodec
 		/// <summary>
 		///		与本类绑定的 AVCodec
 		/// </summary>
@@ -106,70 +106,34 @@ namespace video
 		#pragma endregion
 
 	public:
-		/**
-		 * @brief 打开编解码器。
-		 * 注意，打开前一定要先设置编解码器的参数。可以使用 set_encoder_param 函数设置，也可以直接用
-		 * AVCodecContextWrapper(const AVCodec *codec, AVCodecParameters *param, bool auto_open_codec = false);
-		 * 构造一个已经设置好参数的编解码器。
-		 *
-		 * @param dic
-		*/
+		/// <summary>
+		///		打开编解码器。
+		///		- 打开前一定要先设置编解码器的参数。
+		/// </summary>
+		/// <param name="dic"></param>
 		void Open(AVDictionary **dic = nullptr);
 
-		/**
-		 * @brief 设置此码器上下文的参数。调用此方法不会设置时间基，需要另外手动设置。
-		 * @param param
-		*/
 		void SetCodecParams(AVCodecParameters *param);
 
-		/**
-		 * @brief 设置全局头部。
-		 * 某些封装格式要求编码器在编码的时候设置全局头部。
-		 * 要知道封装格式是不是需要设置全局头部，可以查看 AVFormatContextWrapper 的 NeedGlobalHeader
-		 * 属性。
-		*/
+		/// <summary>
+		///		设置全局头部
+		///		- 某些封装格式要求编码器在编码的时候设置全局头部。要知道封装格式是不是需要设置全局头部，
+		///		  可以查看 AVFormatContextWrapper 的 NeedGlobalHeader 属性。
+		/// </summary>
 		void SetGlobalHeader()
 		{
 			_wrapped_obj->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 		}
 
-		/**
-		 * @brief 将未编码帧送入编码器进行编码。随后可调用 read_packet 方法接收编码完成的包。
-		 * - 送入的帧的 pts 会被缩放为本对象时间基上的 pts，然后将帧的时间基设置为本对象的时间基。
-		 *
-		 * @param frame 要被编码的帧。可以送入空指针，此时表示冲洗编码器。
-		 * @return 成功返回 0，失败返回错误代码
-		 *
-		 * @exception SendFrameException
-		*/
+		#pragma region 编码
 		void SendFrame(AVFrameWrapper *frame);
-
-		/**
-		 * @brief 接收包
-		 * - AVCodecContext 输出的包不带时间基，只带时间戳。但本函数会补充设置时间基，
-		 * 将包的时间基设置为本对象的时间基。
-		 *
-		 * @param packet
-		 * @return
-		*/
 		int ReadPacket(AVPacketWrapper &packet);
+		#pragma endregion
 
-		/**
-		 * @brief 向编码器发送包
-		 * @param packet 要被解码的包。可以传入空指针，此时表示冲洗解码器。
-		 * @exception SendPacketException 送入包失败会抛出异常
-		*/
+		#pragma region 解码
 		void SendPacket(AVPacketWrapper *packet) override;
-
-		/**
-		 * @brief 接收解码后的帧
-		 * - 在实际接收帧之前，此帧如果有引用缓冲区，会首先解除对缓冲区的引用。
-		 * - 接收到的帧的时间基会被赋值为本对象的时间基。
-		 *
-		 * @param frame 用来接收数据的帧
-		 * @return 接收成功返回 0，失败返回错误代码。
-		*/
 		int ReadFrame(AVFrameWrapper &frame) override;
+		#pragma endregion
 
 		#pragma region IAudioStreamInfoCollection, IVideoStreamInfoCollection
 		AVChannelLayout ch_layout() override;
