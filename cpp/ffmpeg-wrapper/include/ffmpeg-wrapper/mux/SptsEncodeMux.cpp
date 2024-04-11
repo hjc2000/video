@@ -116,7 +116,7 @@ void test_SptsEncodeMux()
 			out_fmt_ctx,
 			out_video_stream_infos,
 			"hevc_amf",
-			15 * 1000 * 1000,
+			-1,
 			out_audio_stream_infos,
 			"aac"
 		}

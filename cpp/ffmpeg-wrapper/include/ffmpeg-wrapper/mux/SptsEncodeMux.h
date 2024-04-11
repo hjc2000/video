@@ -22,7 +22,9 @@ namespace video
 		/// <param name="out_format">输出格式</param>
 		/// <param name="video_stream_infos">输出的视频流信息</param>
 		/// <param name="video_codec_name">输出的视频所使用的编码器名称</param>
-		/// <param name="video_out_bitrate_in_bps">期望的视频输出比特率，传入小于等于 0 的数表示自动</param>
+		/// <param name="video_out_bitrate_in_bps">
+		///		期望的视频输出比特率，传入小于等于 0 的数表示自动
+		/// </param>
 		/// <param name="audio_stream_infos">输出的音频流信息</param>
 		/// <param name="audio_codec_name">输出音频所使用的编码器名称</param>
 		SptsEncodeMux(
