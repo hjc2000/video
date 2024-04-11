@@ -14,7 +14,7 @@ EncoderPipe::EncoderPipe(
 	_encoder_ctx = AVCodecContextWrapper::CreateEncoder(
 		codec_name,
 		in_stream_infos,
-		output_format->NeedGlobalHeader(),
+		_output_format->NeedGlobalHeader(),
 		false
 	);
 
@@ -34,7 +34,7 @@ EncoderPipe::EncoderPipe(
 	//(*_encoder_ctx)->color_trc = AVCOL_TRC_SMPTE2084;
 
 	_encoder_ctx->Open();
-	_new_stream = output_format->CreateNewStream(_encoder_ctx);
+	_new_stream = _output_format->CreateNewStream(_encoder_ctx);
 }
 
 EncoderPipe::EncoderPipe(
@@ -47,10 +47,10 @@ EncoderPipe::EncoderPipe(
 	_encoder_ctx = AVCodecContextWrapper::CreateEncoder(
 		codec_name,
 		in_stream_infos,
-		output_format->NeedGlobalHeader()
+		_output_format->NeedGlobalHeader()
 	);
 
-	_new_stream = output_format->CreateNewStream(_encoder_ctx);
+	_new_stream = _output_format->CreateNewStream(_encoder_ctx);
 }
 
 void EncoderPipe::ReadAndSendPacketToOutputFormat()

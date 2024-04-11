@@ -20,16 +20,13 @@ namespace video
 		public IPacketConsumer
 	{
 	public:
-		virtual ~OutputFormat() {}
+		virtual ~OutputFormat() = default;
 
 	private:
 		std::mutex _not_private_methods_lock;
 		int _flush_times = 0;
 		List<int> _flushed_stream_index_list;
 
-		/**
-		* @brief 向格式写尾部
-		*/
 		void WriteTrailer();
 
 	public:
@@ -58,10 +55,6 @@ namespace video
 		/// <param name="packet"></param>
 		void SendPacket(AVPacketWrapper *packet) override;
 
-		/**
-		 * @brief 向格式写头部
-		 * @param dic
-		*/
 		void WriteHeader(AVDictionary **dic = nullptr);
 
 		AVStreamWrapper CreateNewStream();

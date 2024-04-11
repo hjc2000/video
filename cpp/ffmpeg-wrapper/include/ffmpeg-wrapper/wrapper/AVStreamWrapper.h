@@ -47,20 +47,11 @@ namespace video
 		/// <returns></returns>
 		AVCodec const *Codec();
 
-		/**
-		 * @brief 获取本流的比特率。就是从 CodecParams 属性里拿的。
-		 * @return
-		*/
 		int64_t Bitrate();
-
-		/// <summary>
-		///		获取本流的媒体类型
-		/// </summary>
-		/// <returns></returns>
 		AVMediaType MediaType();
 
 		/// <summary>
-		///		获取此流在格式中的索引值
+		///		获取本流在格式中的索引值
 		/// </summary>
 		/// <returns></returns>
 		int Index();
