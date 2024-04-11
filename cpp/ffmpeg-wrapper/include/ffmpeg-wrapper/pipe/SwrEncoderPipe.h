@@ -45,14 +45,5 @@ namespace video
 		/// </summary>
 		/// <param name="frame"></param>
 		void SendFrame(AVFrameWrapper *frame) override;
-
-		/// <summary>
-		///		获取内部的音频流。
-		/// </summary>
-		/// <returns></returns>
-		AVStreamWrapper NewAudioStream()
-		{
-			return _encoder_pipe->Stream();
-		}
 	};
 }

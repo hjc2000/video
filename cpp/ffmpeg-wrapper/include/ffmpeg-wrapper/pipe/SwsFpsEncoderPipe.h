@@ -7,10 +7,22 @@
 
 namespace video
 {
-	class SwsFpsEncoderPipe :
-		public IFrameConsumer
+	class SwsFpsEncoderPipe :public IFrameConsumer
 	{
 	public:
+		/// <summary>
+		///		
+		/// </summary>
+		/// <param name="desire_out_video_stream_infos"></param>
+		/// <param name="encoder_pipe">
+		///		自定义的编码管道。例如对于特定的开发板，将硬件编码器封装，实现 IFrameConsumer 接口，
+		///		就可以将该对象传给本构造函数，这样就能利用这个编码器了。
+		/// </param>
+		SwsFpsEncoderPipe(
+			IVideoStreamInfoCollection &desire_out_video_stream_infos,
+			shared_ptr<IFrameConsumer> encoder_pipe
+		);
+
 		/// <summary>
 		///		
 		/// </summary>
@@ -28,16 +40,11 @@ namespace video
 		);
 
 	private:
-		shared_ptr<EncoderPipe> _video_encoder_pipe;
+		shared_ptr<IFrameConsumer> _video_encoder_pipe;
 		shared_ptr<SwsPipe> _sws_pipe;
 		shared_ptr<FpsAdjustPipe> _fps_adjust_pipe;
 
 	public:
-		AVStreamWrapper NewVideoStream()
-		{
-			return _video_encoder_pipe->Stream();
-		}
-
 		void SendFrame(AVFrameWrapper *frame) override;
 	};
 }

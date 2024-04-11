@@ -65,11 +65,5 @@ namespace video
 		/// </summary>
 		/// <param name="frame"></param>
 		void SendFrame(AVFrameWrapper *frame) override;
-
-		/// <summary>
-		///		被本编码管道创建并绑定的新流。
-		/// </summary>
-		/// <returns></returns>
-		AVStreamWrapper Stream();
 	};
 }

@@ -95,8 +95,3 @@ void EncoderPipe::SendFrame(AVFrameWrapper *frame)
 	_encoder_ctx->SendFrame(frame);
 	ReadAndSendPacketToOutputFormat();
 }
-
-AVStreamWrapper EncoderPipe::Stream()
-{
-	return _new_stream;
-}
