@@ -152,3 +152,8 @@ DotNetStream *CreateDotnetStream(
 		error_message_buffer,
 	};
 }
+
+void FreeDotnetStream(DotNetStream *obj)
+{
+	delete obj;
+}

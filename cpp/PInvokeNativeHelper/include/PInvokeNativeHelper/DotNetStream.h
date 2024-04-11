@@ -2,6 +2,11 @@
 #include<jccpp/Exception.h>
 #include<jccpp/stream/Stream.h>
 
+/// <summary>
+///		本类对象应该由 C# 调用 C 接口函数 CreateDotnetStream 进行创建。
+///		C# 侧需要保持住在堆上的本对象的指针，同时，本类对象的生命周期内，
+///		绑定的 C# 的 Stream 对象应该始终有效，不能被回收。
+/// </summary>
 class DotNetStream :public Stream
 {
 public:
@@ -90,4 +95,6 @@ extern "C"
 		int64_t(*error_message_size)(),
 		uint8_t *(*error_message_buffer)()
 	);
+
+	void FreeDotnetStream(DotNetStream *obj);
 }
