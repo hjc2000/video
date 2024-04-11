@@ -20,5 +20,6 @@ namespace video
 		void AddFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer) override;
 		bool RemoveFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer) override;
 		void ClearFrameConsumer() override;
+		void SendFrame(AVFrameWrapper *frame) override;
 	};
 }

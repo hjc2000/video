@@ -28,3 +28,8 @@ void video::SwsFpsPipe::ClearFrameConsumer()
 {
 	_fps_adjust_pipe->ClearFrameConsumer();
 }
+
+void video::SwsFpsPipe::SendFrame(AVFrameWrapper *frame)
+{
+	_sws_pipe->SendFrame(frame);
+}

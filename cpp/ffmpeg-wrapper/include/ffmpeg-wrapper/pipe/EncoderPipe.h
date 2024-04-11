@@ -31,7 +31,7 @@ namespace video
 		///		想要输出的比特率。设置越大质量越高。设置为小于等于 0 表示自动。
 		/// </param>
 		EncoderPipe(
-			char const *codec_name,
+			std::string codec_name,
 			IVideoStreamInfoCollection &in_stream_infos,
 			shared_ptr<OutputFormat> output_format,
 			int64_t out_bit_rate_in_bps = -1
@@ -44,7 +44,7 @@ namespace video
 		/// <param name="in_stream_infos">编码器输入流信息。</param>
 		/// <param name="output_format">编码后的包要写入的封装。</param>
 		EncoderPipe(
-			char const *codec_name,
+			std::string codec_name,
 			IAudioStreamInfoCollection &in_stream_infos,
 			shared_ptr<OutputFormat> output_format
 		);

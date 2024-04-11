@@ -37,32 +37,17 @@ video::SptsEncodeMux::SptsEncodeMux(
 
 void video::SptsEncodeMux::InitVideoEncodePipe()
 {
-	try
-	{
-		_video_encode_pipe = shared_ptr<SwsFpsEncoderPipe>{
-			new SwsFpsEncoderPipe{
-				_video_codec_name,
-				_video_stream_infos,
-				_out_format,
-				_video_out_bitrate_in_bps,
-			}
-		};
-	}
-	catch (...)
-	{
-		cout << CODE_POS_STR
-			<< std::format("找不到编码器 {}，现在尝试使用 libx265。", _video_codec_name)
-			<< endl;
+	_video_encode_pipe = shared_ptr<EncoderPipe>{
+		new EncoderPipe{
+			_video_codec_name,
+			_video_stream_infos,
+			_out_format,
+			_video_out_bitrate_in_bps
+		}
+	};
 
-		_video_encode_pipe = shared_ptr<SwsFpsEncoderPipe>{
-			new SwsFpsEncoderPipe{
-				"libx265",
-				_video_stream_infos,
-				_out_format,
-				_video_out_bitrate_in_bps,
-			}
-		};
-	}
+	_sws_fps_pipe = shared_ptr<SwsFpsPipe>{ new SwsFpsPipe{_video_stream_infos} };
+	_sws_fps_pipe->AddFrameConsumer(_video_encode_pipe);
 }
 
 void video::SptsEncodeMux::InitAudioEncodePipe()
@@ -89,7 +74,7 @@ void video::SptsEncodeMux::WriteHeader()
 
 shared_ptr<IFrameConsumer> video::SptsEncodeMux::VideoEncodePipe()
 {
-	return _video_encode_pipe;
+	return _sws_fps_pipe;
 }
 
 shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
