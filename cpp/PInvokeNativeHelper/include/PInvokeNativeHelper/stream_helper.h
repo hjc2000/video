@@ -34,8 +34,6 @@ public:
 };
 
 
-
-
 extern "C"
 {
 	StreamHandle *GetFileStream(std::string *url);

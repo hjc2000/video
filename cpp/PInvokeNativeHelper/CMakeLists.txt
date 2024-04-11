@@ -17,4 +17,4 @@ add_library(${ProjectName} SHARED)
 target_compile_definitions(${ProjectName} PRIVATE Predefine_ResourceDir="${CMAKE_CURRENT_SOURCE_DIR}/资源")
 
 target_import_src(${ProjectName})
-target_link_libraries(${ProjectName} PUBLIC jccpp ffmpeg-wrapper)
+target_link_libraries(${ProjectName} PUBLIC jccpp)
