@@ -64,22 +64,14 @@ namespace video
 		*/
 		void WriteHeader(AVDictionary **dic = nullptr);
 
-		/**
-		 * @brief 创建一个新的流。只有输出格式才能使用这个函数
-		 * @param pCodec 码器
-		 * @return 创建成功则返回 AVStreamWrapper 的共享指针。失败会抛出异常。
-		*/
 		AVStreamWrapper CreateNewStream();
 
-		/**
-		 * @brief 创建流，并用传进来的编码器来设置流的参数。设置的参数中包括时间基和帧率。对于音频流，帧率是无用的，
-		 * 但是设置了也没什么不好的影响。
-		 *
-		 * @param codec_ctx
-		 * @return 创建流成功则返回流
-		 *
-		 * @exception Exception 创建流失败或设置流参数失败会抛出异常
-		*/
+		/// <summary>
+		///		创建流，并用传进来的编码器来设置流的参数。设置的参数中包括时间基和帧率。
+		///		对于音频流，帧率是无用的，但是设置了也没什么不好的影响。
+		/// </summary>
+		/// <param name="codec_ctx"></param>
+		/// <returns>创建流成功则返回流</returns>
 		AVStreamWrapper CreateNewStream(shared_ptr<AVCodecContextWrapper> codec_ctx);
 	};
 }

@@ -1,8 +1,8 @@
 #pragma once
+#include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/info-collection/IAudioStreamInfoCollection.h>
 #include<ffmpeg-wrapper/info-collection/IVideoStreamInfoCollection.h>
 #include<jccpp/Wrapper.h>
-#include<ffmpeg-wrapper/base_include.h>
 
 namespace video
 {
@@ -23,10 +23,15 @@ namespace video
 
 	public:
 		/// <summary>
-		///		获取本流的码器参数
+		///		获取本流的编解码器参数
 		/// </summary>
 		/// <returns></returns>
-		AVCodecParameters &CodecParams();
+		AVCodecParameters &CodecParams() const;
+		/// <summary>
+		///		设置本流的编解码器参数。
+		/// </summary>
+		/// <param name="params"></param>
+		void SetCodecParams(AVCodecParameters const &params);
 
 		/// <summary>
 		///		通过码器上下文设置此流信息。除了会用码器上下文来设置本流的 AVCodecParameters 外，还会
@@ -34,7 +39,7 @@ namespace video
 		/// </summary>
 		/// <param name="codec_ctx">此码器上下文的信息将被复制到此流中</param>
 		/// <returns>设置成功则返回值大于等于0，失败则返回小于 0 的错误代码</returns>
-		int SetCodecParam(shared_ptr<AVCodecContextWrapper> codec_ctx);
+		int SetCodecParams(shared_ptr<AVCodecContextWrapper> codec_ctx);
 
 		/// <summary>
 		///		获取此流对应的码器

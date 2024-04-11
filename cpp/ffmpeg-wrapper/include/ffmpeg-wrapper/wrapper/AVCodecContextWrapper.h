@@ -120,7 +120,7 @@ namespace video
 		 * @brief 设置此码器上下文的参数。调用此方法不会设置时间基，需要另外手动设置。
 		 * @param param
 		*/
-		void SetCodecParam(AVCodecParameters *param);
+		void SetCodecParams(AVCodecParameters *param);
 
 		/**
 		 * @brief 设置全局头部。

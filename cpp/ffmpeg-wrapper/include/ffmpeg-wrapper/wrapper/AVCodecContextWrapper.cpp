@@ -26,7 +26,7 @@ AVCodecContextWrapper::AVCodecContextWrapper(AVCodec const *codec)
 AVCodecContextWrapper::AVCodecContextWrapper(const AVCodec *codec, AVCodecParameters *param)
 	: AVCodecContextWrapper(codec)
 {
-	SetCodecParam(param);
+	SetCodecParams(param);
 }
 
 AVCodecContextWrapper::~AVCodecContextWrapper()
@@ -67,11 +67,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 		throw jc::Exception();
 	}
 
-	shared_ptr<AVCodecContextWrapper> ctx{
-		new AVCodecContextWrapper{
-			codec,
-	}
-	};
+	shared_ptr<AVCodecContextWrapper> ctx{ new AVCodecContextWrapper{codec,} };
 
 	// 设置编码器参数
 	(*ctx)->codec_type = AVMediaType::AVMEDIA_TYPE_AUDIO;
@@ -134,7 +130,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 }
 #pragma endregion
 
-void AVCodecContextWrapper::SetCodecParam(AVCodecParameters *param)
+void AVCodecContextWrapper::SetCodecParams(AVCodecParameters *param)
 {
 	int ret = ::avcodec_parameters_to_context(_wrapped_obj, param);
 	if (ret < 0)
