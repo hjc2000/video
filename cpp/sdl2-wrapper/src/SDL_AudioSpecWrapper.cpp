@@ -82,7 +82,7 @@ void video::SDL_AudioSpecWrapper::set_sample_rate(int value)
 
 AVChannelLayout video::SDL_AudioSpecWrapper::ch_layout()
 {
-	return AVChannelLayoutExtension::get_default_ch_layout(_wrapped_obj->channels);
+	return AVChannelLayoutExtension::GetDefaultChannelLayout(_wrapped_obj->channels);
 }
 
 void video::SDL_AudioSpecWrapper::set_ch_layout(AVChannelLayout value)

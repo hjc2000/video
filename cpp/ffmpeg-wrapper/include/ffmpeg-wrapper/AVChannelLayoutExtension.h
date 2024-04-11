@@ -49,7 +49,7 @@ namespace video
 		/// <returns></returns>
 		static AVChannelLayout get_3_0_layout_channel();
 
-		static AVChannelLayout get_default_ch_layout(int nb_channels)
+		static AVChannelLayout GetDefaultChannelLayout(int nb_channels)
 		{
 			AVChannelLayout ch_layout;
 			av_channel_layout_default(&ch_layout, nb_channels);
