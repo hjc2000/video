@@ -10,14 +10,13 @@
 
 namespace jc
 {
-	/**
-	 * @brief 带有滞回特性的阻塞队列。
-	 * - 队列满时，再往里送会阻塞，直到队列中的元素被消费到小于一定阈值才取消阻塞。
-	 * - 队列空时，再往外拿会阻塞，直到队列中的元素大于一定阈值才取消阻塞。
-	 * - 本队列线程安全。
-	 *
-	 * @tparam T
-	*/
+	/// <summary>
+	///		带有滞回特性的阻塞队列。
+	///		- 队列满时，再往里送会阻塞，直到队列中的元素被消费到小于一定阈值才取消阻塞。
+	///		- 队列空时，再往外拿会阻塞，直到队列中的元素大于一定阈值才取消阻塞。
+	///		- 本队列线程安全。
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
 	template<typename T>
 	class HysteresisBlockingQueue :public IQueue<T>, public IDisposable
 	{
@@ -105,15 +104,13 @@ namespace jc
 			return _queue.Count();
 		}
 
-		/**
-		 * @brief 退队。
-		 * 注意，在 Dispose 或析构函数执行后，本方法会被无条件取消阻塞，此时如果队列为空，
-		 * 会抛出异常。
-		 *
-		 * @return
-		 * @exception InvalidOperationException 队列为空会引发此异常。
-		 * @exception ObjectDisposedException
-		*/
+		/// <summary>
+		///		退队。
+		///		- 队列空了再次尝试退队会受到阻塞，直到队列里的元素数量大于阈值。
+		///		- 在 Dispose 或 Flush 或析构函数执行后，本方法会被无条件取消阻塞，此时如果队列为空，
+		///		  会抛出异常。
+		/// </summary>
+		/// <returns></returns>
 		T Dequeue()
 		{
 			std::unique_lock<std::mutex> l(_not_private_methods_lock);
@@ -144,12 +141,6 @@ namespace jc
 			return element;
 		}
 
-		/**
-		 * @brief
-		 * @param out
-		 * @return
-		 * @exception ObjectDisposedException
-		*/
 		bool TryDequeue(T &out)
 		{
 			std::unique_lock<std::mutex> l(_not_private_methods_lock);
@@ -180,14 +171,13 @@ namespace jc
 			return result;
 		}
 
-		/**
-		 * @brief 入队。
-		 * - 如果队列满了会受到阻塞，直到队列元素被消费到小于阈值时才取消阻塞。
-		 *
-		 * @param obj 要入队的对象。
-		 * @exception InvalidOperationException 冲洗后如果再调用本方法会抛出异常。
-		 * @exception ObjectDisposedException Dispose 后再次调用本方法会抛出异常。
-		*/
+		/// <summary>
+		///		入队。
+		///		- 如果队列满了会受到阻塞，直到队列元素被消费到小于阈值时才取消阻塞。
+		///		- Dispose 和 Flush 会无条件取消阻塞。但是，Dispose 和 Flush 后，
+		///		  再次尝试入队会抛出异常。
+		/// </summary>
+		/// <param name="obj"></param>
 		void Enqueue(T obj)
 		{
 			std::unique_lock<std::mutex> l(_not_private_methods_lock);
@@ -236,8 +226,8 @@ namespace jc
 
 		/// <summary>
 		///		冲洗队列。
-		///		* 冲洗后，再尝试入队会抛出异常。
-		///		* 冲洗后，出队操作将不会被阻塞，即使队列中为空。
+		///		- 冲洗后，再尝试入队会抛出异常。
+		///		- 冲洗后，出队操作将不会被阻塞，即使队列中为空。
 		/// </summary>
 		/// <exception cref="ObjectDisposedException"></exception>
 		void Flush()
@@ -252,6 +242,10 @@ namespace jc
 			_queue_avaliable_cv.notify_all();
 		}
 
+		/// <summary>
+		///		检查队列是否已被冲洗。
+		/// </summary>
+		/// <returns></returns>
 		bool Flushed()
 		{
 			return _flushed;
