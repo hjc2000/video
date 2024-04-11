@@ -99,14 +99,14 @@ void test_SptsEncodeMux()
 	shared_ptr<StreamOutputFormat> out_fmt_ctx{ new StreamOutputFormat{".ts",out_fs} };
 
 	VideoStreamInfoCollection out_video_stream_infos;
-	out_video_stream_infos._frame_rate = AVRational{ 30,1 };
-	out_video_stream_infos._width = 1920 * 2;
-	out_video_stream_infos._height = 1080 * 2;
+	out_video_stream_infos._frame_rate = AVRational{ 60,1 };
+	out_video_stream_infos._width = 1920;
+	out_video_stream_infos._height = 1080;
 	out_video_stream_infos._pixel_format = AVPixelFormat::AV_PIX_FMT_YUV420P;
 	out_video_stream_infos._time_base = AVRational{ 1,90000 };
 
 	AudioStreamInfoCollection out_audio_stream_infos;
-	out_audio_stream_infos._ch_layout = AVChannelLayoutExtension::get_2_0_layout_channel();
+	out_audio_stream_infos._ch_layout = AVChannelLayoutExtension::get_default_ch_layout(6);
 	out_audio_stream_infos._sample_format = AVSampleFormat::AV_SAMPLE_FMT_FLTP;
 	out_audio_stream_infos._sample_rate = 48000;
 	out_audio_stream_infos._time_base = AVRational{ 1,90000 };
@@ -116,19 +116,15 @@ void test_SptsEncodeMux()
 			out_fmt_ctx,
 			out_video_stream_infos,
 			"hevc_amf",
-			35 * 1000 * 1000,
+			15 * 1000 * 1000,
 			out_audio_stream_infos,
 			"aac"
 		}
 	};
 
 	Queue<std::string> file_queue;
-	file_queue.Enqueue("水龙吟.ts");
-	file_queue.Enqueue("等你下课.mp4");
-	file_queue.Enqueue("idol.mp4");
-	file_queue.Enqueue("moon.mp4");
-	file_queue.Enqueue("zf.ts");
-	file_queue.Enqueue("天下无双.mkv");
+	file_queue.Enqueue("14_[杜比视界]Dolby Vision全景声NASA_4K.mp4");
+	file_queue.Enqueue("14_[杜比视界]Dolby Vision全景声NASA_4K.mp4");
 
 	shared_ptr<JoinedInputFormatDemuxDecoder> joined_input_format_demux_decoder{ new JoinedInputFormatDemuxDecoder{} };
 	joined_input_format_demux_decoder->AddVideoFrameConsumer(spts_encode_mux->VideoEncodePipe());

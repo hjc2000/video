@@ -1,15 +1,15 @@
 ﻿#include "tool_printf.h"
 #include<A3Device.h>
-#include<jccpp/Exception.h>
-#include<jccpp/stream/FileStream.h>
 #include<FileTsSource.h>
-#include<jccpp/stream/JoinedStream.h>
-#include<jccpp/TaskCompletionSignal.h>
 #include<TsPusher.h>
 #include<UsbA3Device.h>
 #include<UsbA3Device.h>
 #include<chrono>
 #include<iostream>
+#include<jccpp/Exception.h>
+#include<jccpp/TaskCompletionSignal.h>
+#include<jccpp/stream/FileStream.h>
+#include<jccpp/stream/JoinedStream.h>
 #include<memory>
 #include<semaphore>
 
@@ -20,57 +20,8 @@ using std::cout;
 using std::endl;
 using std::shared_ptr;
 
-/// <summary>
-///		解析命令行
-/// </summary>
-/// <param name="argc">命令行参数的数量</param>
-/// <param name="argv">命令行参数的数组</param>
-/// <param name="pustream"></param>
-/// <returns>解析命令行成功会返回 TsSource 对象，否则返回 nullptr</returns>
-shared_ptr<TsSource> parser_cmd_source(int32_t argc, char **argv)
-{
-	///>>> 执行到这里说明参数数量 >= 4
-
-	// 如果参数大于等于 4，则第 3 个参数必须是视频源的协议，第 4 个参数是视频源的 URL
-	shared_ptr<TsSource> stream_source;
-	if (strcmp(argv[1], "file") == 0)
-	{
-		stream_source = shared_ptr<TsSource>{ new FileTsSource{} };
-		FileTsSource::cross_stream_file_get(argv[2], static_pointer_cast<FileTsSource>(stream_source));
-	}
-	else
-	{
-		throw jc::Exception("不支持的协议");
-	}
-
-	return stream_source;
-}
-
 int main()
 {
-	#if 01
-	// ./app_stream dvbt file qq.ts
-	const char *args[] = {
-		"./app_stream",
-		"file",
-		"mux_out.ts",
-	};
-	#else
-	// ./app_stream dvbt udp udp://127.0.0.1:40000
-	const char *args[] = {
-		"./app_stream",
-		"udp",
-		"udp://localhost:1234",
-	};
-	#endif
-
-	shared_ptr<TsSource> streamsource = parser_cmd_source(4, (char **)args);
-
-	/*
-		step 1 :
-		- initialized supported device and open
-	*/
-
 	UsbContextWrapper usb_contex{};
 	UsbDeviceListWrapper usb_list{};
 	usb_list.FindDevices(usb_contex);
@@ -86,7 +37,6 @@ int main()
 	printf_chip_info(&pinfo);
 
 	int nres = vatek_success;
-	nres = streamsource->Start();
 
 	// 设置调制器
 	ModulatorParamCollection modulator_param;
