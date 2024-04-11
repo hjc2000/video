@@ -1,14 +1,14 @@
 #include"ffmpeg-wrapper/wrapper/AVCodecContextWrapper.h"
 #include<ffmpeg-wrapper/AVCalculate.h>
 #include<ffmpeg-wrapper/AVCodecExtention.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
+#include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/wrapper/AVDictionaryWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVFrameWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVPacketWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
-#include<ffmpeg-wrapper/ErrorCode.h>
-#include<jccpp/Exception.h>
 #include<format>
-#include<ffmpeg-wrapper/base_include.h>
+#include<jccpp/Exception.h>
 
 using namespace video;
 
@@ -106,11 +106,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 		throw jc::Exception();
 	}
 
-	shared_ptr<AVCodecContextWrapper> ctx{
-		new AVCodecContextWrapper{
-			codec,
-	}
-	};
+	shared_ptr<AVCodecContextWrapper> ctx{ new AVCodecContextWrapper{codec} };
 
 	// 设置编码器参数
 	(*ctx)->codec_type = AVMediaType::AVMEDIA_TYPE_VIDEO;
@@ -122,8 +118,8 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 	(*ctx)->time_base = infos.time_base();
 	(*ctx)->framerate = infos.frame_rate();
 
+	(*ctx)->gop_size = infos.frame_rate().num / infos.frame_rate().den;
 	//(*ctx)->max_b_frames = 10;
-	//(*ctx)->gop_size = 60;
 	if (set_global_header)
 	{
 		ctx->SetGlobalHeader();

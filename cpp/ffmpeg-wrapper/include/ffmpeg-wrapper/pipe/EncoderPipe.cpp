@@ -24,8 +24,6 @@ EncoderPipe::EncoderPipe(
 		(*_encoder_ctx)->bit_rate = out_bit_rate_in_bps;
 	}
 
-	(*_encoder_ctx)->gop_size = in_stream_infos.frame_rate().num / in_stream_infos.frame_rate().den;
-
 	//// 设置色彩空间为 Rec.2020
 	//(*_encoder_ctx)->colorspace = AVCOL_SPC_BT2020_NCL;
 

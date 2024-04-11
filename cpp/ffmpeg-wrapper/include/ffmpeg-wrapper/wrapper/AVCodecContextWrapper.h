@@ -1,5 +1,4 @@
 #pragma once
-#include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 #include<ffmpeg-wrapper/AVCodecExtention.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/base_include.h>
@@ -9,6 +8,7 @@
 #include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameSource.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
+#include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 #include<jccpp/Wrapper.h>
 
 namespace video
