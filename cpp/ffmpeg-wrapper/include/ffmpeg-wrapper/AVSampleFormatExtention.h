@@ -32,7 +32,14 @@ namespace video
 		///		返回 AVSampleFormat。
 		///		如果无法解析字符串，返回 AVSampleFormat::AV_SAMPLE_FMT_NONE。
 		/// </returns>
-		AVSampleFormat string_to_av_sample_format(std::string str);
+	 	static AVSampleFormat string_to_av_sample_format(std::string str);
+
+		/// <summary>
+		///		分析特定编码器需要多少个采样点。
+		/// </summary>
+		/// <param name="codec_name"></param>
+		/// <returns></returns>
+		static int ParseRequiredSampleCount(std::string codec_name);
 	};
 }
 

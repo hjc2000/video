@@ -21,3 +21,16 @@ AVSampleFormat video::AVSampleFormatExtention::string_to_av_sample_format(string
 {
 	return ::av_get_sample_fmt(str.c_str());
 }
+
+int video::AVSampleFormatExtention::ParseRequiredSampleCount(std::string codec_name)
+{
+	int nb_samples = 1024;
+
+	// 根据编码器来确定采样点数量。编码器对采样点数量有要求。
+	if (std::string(codec_name) == "aac")
+	{
+		nb_samples = 1024;
+	}
+
+	return nb_samples;
+}

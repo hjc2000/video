@@ -1,4 +1,6 @@
 #include "SwsFpsPipe.h"
+#include<FpsAdjustPipe.h>
+#include<SwsPipe.h>
 
 using namespace video;
 

@@ -1,7 +1,7 @@
 #pragma once
+#include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/pipe/EncoderPipe.h>
 #include<ffmpeg-wrapper/pipe/SwrPipe.h>
-#include<ffmpeg-wrapper/base_include.h>
 #include<string>
 
 namespace video
@@ -23,7 +23,7 @@ namespace video
 		/// </param>
 		/// <param name="output_format">编码后要将包写入的封装。</param>
 		SwrEncoderPipe(
-			char const *codec_name,
+			std::string codec_name,
 			IAudioStreamInfoCollection &desire_encode_out_stream_infos,
 			shared_ptr<OutputFormat> output_format
 		);
@@ -31,13 +31,6 @@ namespace video
 	private:
 		shared_ptr<EncoderPipe> _encoder_pipe;
 		shared_ptr<SwrPipe> _swr_pipe;
-
-		/// <summary>
-		///		分析特定编码器需要多少个采样点。
-		/// </summary>
-		/// <param name="codec_name"></param>
-		/// <returns></returns>
-		int ParseRequiredSampleCount(std::string codec_name);
 
 	public:
 		/// <summary>

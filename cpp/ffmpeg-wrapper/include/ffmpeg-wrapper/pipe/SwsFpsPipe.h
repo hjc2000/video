@@ -1,10 +1,12 @@
 #pragma once
-#include<ffmpeg-wrapper/pipe/FpsAdjustPipe.h>
-#include<ffmpeg-wrapper/pipe/SwsPipe.h>
+#include<ffmpeg-wrapper/info-collection/IVideoStreamInfoCollection.h>
 #include<ffmpeg-wrapper/pipe/interface/PipeFrameSource.h>
 
 namespace video
 {
+	class SwsPipe;
+	class FpsAdjustPipe;
+
 	class SwsFpsPipe :
 		public IFrameConsumer,
 		public IPipeFrameSource

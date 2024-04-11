@@ -1,4 +1,4 @@
-#include "ffmpeg-wrapper/pipe/SwsPipe.h"
+#include "SwsPipe.h"
 
 void video::SwsPipe::SendFrame(AVFrameWrapper *frame)
 {

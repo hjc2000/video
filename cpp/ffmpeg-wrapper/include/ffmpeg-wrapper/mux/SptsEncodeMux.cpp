@@ -1,5 +1,6 @@
 #include"ffmpeg-wrapper/mux/SptsEncodeMux.h"
 #include<iostream>
+#include<jccpp/container/Queue.h>
 
 using namespace video;
 using namespace std;
