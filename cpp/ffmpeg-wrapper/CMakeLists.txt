@@ -15,5 +15,5 @@ include(target_import_ffmpeg)
 # 编译为动态库
 add_library(${ProjectName} SHARED)
 target_import_src(${ProjectName})
-target_link_libraries(${ProjectName} PUBLIC jccpp)
+target_link_libraries(${ProjectName} PUBLIC jccpp PInvokeNativeHelper)
 target_import_ffmpeg(${ProjectName})
