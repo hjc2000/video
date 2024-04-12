@@ -90,12 +90,12 @@ void video::SDL_AudioSpecWrapper::set_ch_layout(AVChannelLayout value)
 	_wrapped_obj->channels = value.nb_channels;
 }
 
-int video::SDL_AudioSpecWrapper::nb_samples()
+int video::SDL_AudioSpecWrapper::SampleCount()
 {
 	return _wrapped_obj->samples;
 }
 
-void video::SDL_AudioSpecWrapper::set_nb_samples(int value)
+void video::SDL_AudioSpecWrapper::SetSampleCount(int value)
 {
 	_wrapped_obj->samples = value;
 }

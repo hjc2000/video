@@ -153,7 +153,7 @@ namespace video
 		bool can_fill_output_frame(AVFrameWrapper &output_frame)
 		{
 			// get_delay_as_out_nb_samples 是公共方法，已经加锁了，所以这里不用加锁。
-			return get_delay_as_out_nb_samples() > output_frame.nb_samples() + 50;
+			return get_delay_as_out_nb_samples() > output_frame.SampleCount() + 50;
 		}
 
 		/// <summary>

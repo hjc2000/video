@@ -70,8 +70,8 @@ namespace video
 		void set_sample_rate(int value) override;
 		AVChannelLayout ch_layout() override;
 		void set_ch_layout(AVChannelLayout value) override;
-		int nb_samples() override;
-		void set_nb_samples(int value) override;
+		int SampleCount() override;
+		void SetSampleCount(int value) override;
 		#pragma endregion
 
 		Json ToJson() override;

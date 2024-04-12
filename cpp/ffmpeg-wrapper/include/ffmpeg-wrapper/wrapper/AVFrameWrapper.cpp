@@ -14,7 +14,7 @@ AVFrameWrapper::AVFrameWrapper()
 AVFrameWrapper::AVFrameWrapper(IAudioStreamInfoCollection &infos, int nb_samples) :AVFrameWrapper()
 {
 	IAudioStreamInfoCollection::operator=(infos);
-	set_nb_samples(nb_samples);
+	SetSampleCount(nb_samples);
 	get_buffer(0);
 }
 
@@ -71,7 +71,7 @@ int video::AVFrameWrapper::audio_data_size()
 	int buf_size = av_samples_get_buffer_size(
 		nullptr,
 		ch_layout().nb_channels,
-		nb_samples(),
+		SampleCount(),
 		sample_format(),
 		1
 	);
@@ -84,7 +84,7 @@ void video::AVFrameWrapper::mute(int offset)
 	av_samples_set_silence(
 		_wrapped_obj->extended_data,
 		offset,
-		nb_samples() - offset,
+		SampleCount() - offset,
 		ch_layout().nb_channels,
 		sample_format()
 	);
@@ -176,12 +176,12 @@ void video::AVFrameWrapper::set_sample_format(AVSampleFormat value)
 	_wrapped_obj->format = value;
 }
 
-int video::AVFrameWrapper::nb_samples()
+int video::AVFrameWrapper::SampleCount()
 {
 	return _wrapped_obj->nb_samples;
 }
 
-void video::AVFrameWrapper::set_nb_samples(int value)
+void video::AVFrameWrapper::SetSampleCount(int value)
 {
 	_wrapped_obj->nb_samples = value;
 }

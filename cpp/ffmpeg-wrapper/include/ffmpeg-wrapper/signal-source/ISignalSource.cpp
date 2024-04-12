@@ -17,7 +17,7 @@ int video::ISignalSource::ReadFrame(shared_ptr<AVFrameWrapper> frame)
 	int nb_channels = frame->ch_layout().nb_channels;
 
 	// 一个音频帧有 nb_samples 个采样值
-	for (int i = 0; i < frame->nb_samples(); i++)
+	for (int i = 0; i < frame->SampleCount(); i++)
 	{
 		// 采样一次
 		double amp = sample();

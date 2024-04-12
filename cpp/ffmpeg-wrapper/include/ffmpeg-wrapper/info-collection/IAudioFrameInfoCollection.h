@@ -16,13 +16,13 @@ namespace video
 		IAudioFrameInfoCollection &operator=(IAudioFrameInfoCollection &value)
 		{
 			IAudioStreamInfoCollection::operator=(value);
-			set_nb_samples(value.nb_samples());
+			SetSampleCount(value.SampleCount());
 			return *this;
 		}
 
 	public:
-		virtual int nb_samples() = 0;
-		virtual void set_nb_samples(int value) = 0;
+		virtual int SampleCount() = 0;
+		virtual void SetSampleCount(int value) = 0;
 	};
 
 }
@@ -36,5 +36,5 @@ namespace video
 inline bool operator==(video::IAudioFrameInfoCollection &left, video::IAudioFrameInfoCollection &right)
 {
 	return (video::IAudioStreamInfoCollection &)left == (video::IAudioStreamInfoCollection &)right &&
-		left.nb_samples() == right.nb_samples();
+		left.SampleCount() == right.SampleCount();
 }

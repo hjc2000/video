@@ -83,12 +83,12 @@ void video::SDL_DefaultAudioDevice::set_ch_layout(AVChannelLayout value)
 	throw jc::NotSupportedException();
 }
 
-int video::SDL_DefaultAudioDevice::nb_samples()
+int video::SDL_DefaultAudioDevice::SampleCount()
 {
-	return _abtained_spec.nb_samples();
+	return _abtained_spec.SampleCount();
 }
 
-void video::SDL_DefaultAudioDevice::set_nb_samples(int value)
+void video::SDL_DefaultAudioDevice::SetSampleCount(int value)
 {
 	throw jc::NotSupportedException();
 }

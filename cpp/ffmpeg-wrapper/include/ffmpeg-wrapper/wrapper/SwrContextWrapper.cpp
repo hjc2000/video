@@ -75,7 +75,7 @@ void video::SwrContextWrapper::SendFrame(AVFrameWrapper *input_frame)
 	}
 
 	_in_pts_when_send_frame = input_frame->pts();
-	int ret = convert(nullptr, 0, (*input_frame)->extended_data, input_frame->nb_samples());
+	int ret = convert(nullptr, 0, (*input_frame)->extended_data, input_frame->SampleCount());
 	if (ret < 0)
 	{
 		throw SendFrameException();
@@ -137,10 +137,10 @@ int SwrContextWrapper::convert(uint8_t **out, int out_count, uint8_t **in, int i
 int SwrContextWrapper::convert(AVFrameWrapper *input_frame, AVFrameWrapper *output_frame)
 {
 	uint8_t **in = input_frame ? (*input_frame)->extended_data : nullptr;
-	int in_count = input_frame ? input_frame->nb_samples() : 0;
+	int in_count = input_frame ? input_frame->SampleCount() : 0;
 
 	uint8_t **out = output_frame ? (*output_frame)->extended_data : nullptr;
-	int out_count = output_frame ? output_frame->nb_samples() : 0;
+	int out_count = output_frame ? output_frame->SampleCount() : 0;
 
 	// 重采样
 	int ret = convert(out, out_count, in, in_count);
@@ -154,7 +154,7 @@ int SwrContextWrapper::read_frame_in_flushing_mode(AVFrameWrapper &output_frame)
 	cout << "冲洗缓冲区冲洗出了" << count << "个采样点" << endl;
 
 	// 如果有填充（即 count > 0）且填充了不完整的帧
-	if (count > 0 && count < output_frame.nb_samples())
+	if (count > 0 && count < output_frame.SampleCount())
 	{
 		// 将后面没被填充的采样点设置为静音
 		output_frame.mute(count);
@@ -179,7 +179,7 @@ int SwrContextWrapper::read_frame_in_non_flushing_mode(AVFrameWrapper &output_fr
 	{
 		// 可以填充一个完整的帧
 		int count = convert(nullptr, &output_frame);
-		if (count != output_frame.nb_samples())
+		if (count != output_frame.SampleCount())
 		{
 			throw jc::Exception("read_frame 没有填充完整的 output_frame，本来认为这里一定会填充完整的帧的。");
 		}
@@ -207,14 +207,14 @@ int SwrContextWrapper::send_silence_samples(uint32_t nb_samples)
 	}
 
 	// 循环次数
-	uint32_t loop_times = nb_samples / _silence_frame->nb_samples();
+	uint32_t loop_times = nb_samples / _silence_frame->SampleCount();
 	for (uint32_t i = 0; i < loop_times; i++)
 	{
 		SendFrame(_silence_frame.get());
 	}
 
 	// 求模，取余数，看用 _silence_frame 填充 loop_times 次后还会剩下几个采样点才能达到 nb_samples
-	uint32_t remain_nb_samples = nb_samples % _silence_frame->nb_samples();
+	uint32_t remain_nb_samples = nb_samples % _silence_frame->SampleCount();
 	int ret = convert(nullptr,
 		0,
 		(*_silence_frame)->extended_data,

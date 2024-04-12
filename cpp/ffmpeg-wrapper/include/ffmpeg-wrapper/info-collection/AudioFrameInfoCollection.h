@@ -78,12 +78,12 @@ namespace video
 			_ch_layout = value;
 		}
 
-		int nb_samples() override
+		int SampleCount() override
 		{
 			return _nb_samples;
 		}
 
-		void set_nb_samples(int value) override
+		void SetSampleCount(int value) override
 		{
 			_nb_samples = value;
 		}

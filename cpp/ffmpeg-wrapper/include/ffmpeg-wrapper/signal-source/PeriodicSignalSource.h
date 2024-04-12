@@ -165,7 +165,7 @@ namespace video
 		///		用户可以自由设置 nb_samples 属性。
 		/// </summary>
 		/// <returns></returns>
-		int nb_samples() override;
-		void set_nb_samples(int value) override;
+		int SampleCount() override;
+		void SetSampleCount(int value) override;
 	};
 }

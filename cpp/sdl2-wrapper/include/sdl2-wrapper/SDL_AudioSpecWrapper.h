@@ -30,7 +30,7 @@ namespace video
 		{
 			set_sample_format(infos.sample_format());
 			set_sample_rate(infos.sample_rate());
-			set_nb_samples(infos.nb_samples());
+			SetSampleCount(infos.SampleCount());
 			set_ch_layout(infos.ch_layout());
 		}
 
@@ -113,7 +113,7 @@ namespace video
 		AVChannelLayout ch_layout() override;
 		void set_ch_layout(AVChannelLayout value) override;
 
-		int nb_samples() override;
-		void set_nb_samples(int value) override;
+		int SampleCount() override;
+		void SetSampleCount(int value) override;
 	};
 }
