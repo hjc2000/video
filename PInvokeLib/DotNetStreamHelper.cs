@@ -212,7 +212,7 @@ public partial class DotNetStreamHelper : IDisposable
 		_stream = stream;
 		unsafe
 		{
-			_cpp_obj = CreateDotNetStream(
+			CppObjRawPtr = CreateDotNetStream(
 				CanRead,
 				CanWrite,
 				CanSeek,
@@ -245,10 +245,10 @@ public partial class DotNetStreamHelper : IDisposable
 		_disposed = true;
 		GC.SuppressFinalize(this);
 
-		FreeDotNetStream(_cpp_obj);
+		FreeDotNetStream(CppObjRawPtr);
 	}
 
 	private Stream _stream;
-	private nuint _cpp_obj;
 	private bool _error = false;
+	private nuint CppObjRawPtr { get; }
 }
