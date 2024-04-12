@@ -3,24 +3,18 @@
 #include<ffmpeg-wrapper/AVToString.h>
 #include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
+#include<ffmpeg-wrapper/pipe/interface/IDecoderPipe.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
-#include<ffmpeg-wrapper/pipe/interface/PipeFrameSource.h>
 #include<ffmpeg-wrapper/wrapper/AVCodecContextWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
-#include<jccpp/IDisposable.h>
 #include<jccpp/TaskCompletionSignal.h>
 #include<jccpp/container/List.h>
 #include<vector>
 
 namespace video
 {
-	class DecoderPipe final :
-		public IPacketConsumer,
-		public PipeFrameSource,
-		public IDisposable,
-		public IAudioStreamInfoCollection,
-		public IVideoStreamInfoCollection
+	class DecoderPipe final :public IDecoderPipe
 	{
 	public:
 		DecoderPipe(AVStreamInfoCollection stream);
