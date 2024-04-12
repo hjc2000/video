@@ -19,11 +19,6 @@ void DecoderPipe::Dispose()
 	_disposed = true;
 }
 
-shared_ptr<AVCodecContextWrapper> DecoderPipe::DecoderContext()
-{
-	return _decoder;
-}
-
 void DecoderPipe::SendPacket(AVPacketWrapper *packet)
 {
 	if (_consumer_list.Count() == 0)

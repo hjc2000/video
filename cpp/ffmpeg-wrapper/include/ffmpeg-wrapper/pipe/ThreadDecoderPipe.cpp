@@ -14,15 +14,12 @@ void video::ThreadDecoderPipe::Dispose()
 
 void video::ThreadDecoderPipe::SendPacket(AVPacketWrapper *packet)
 {
-}
 
-shared_ptr<AVCodecContextWrapper> video::ThreadDecoderPipe::DecoderContext()
-{
-	return _decoder_pipe->DecoderContext();
 }
 
 void video::ThreadDecoderPipe::FlushDecoderButNotFlushConsumers()
 {
+
 }
 
 AVRational video::ThreadDecoderPipe::TimeBase() const
