@@ -17,7 +17,7 @@ AudioPacketPlayer::AudioPacketPlayer(AVStreamWrapper &stream)
 
 	// 将包从队列送到管道解码器的泵
 	_packet_pump = shared_ptr<PacketPump>{ new PacketPump{_packet_queue} };
-	_packet_pump->AddPacketConsumer(_decoder_pipe);
+	_packet_pump->PacketConsumerList().Add(_decoder_pipe);
 	#pragma endregion
 
 	// 解码线程

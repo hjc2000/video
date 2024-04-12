@@ -9,13 +9,14 @@ namespace video
 {
 	class InfinitePacketPipe :
 		public IPacketConsumer,
-		public PipePacketSource
+		public IPipePacketSource
 	{
 	private:
 		int64_t _last_pts = 0;
 		int64_t _last_dts = 0;
 		int64_t _offset = 0;
 		int64_t _last_packet_duration = 0;
+		List<shared_ptr<IPacketConsumer>> _consumer_list;
 
 		void UpdateLastPacketDuration(int64_t value);
 		void UpdateLastPts(int64_t value);
@@ -37,6 +38,11 @@ namespace video
 		#pragma endregion
 
 	public:
+		List<shared_ptr<IPacketConsumer>> &PacketConsumerList() override
+		{
+			return _consumer_list;
+		}
+
 		/// <summary>
 		///		送入包。会在调整包的 pts 和 dts 后送给消费者。
 		/// 

@@ -1,8 +1,8 @@
-#include<ffmpeg-wrapper/wrapper/AVIOContextWrapper.h>
-#include<sdl2-wrapper/AVPacketPlayer.h>
-#include<jccpp/stream/FileStream.h>
 #include<ffmpeg-wrapper/input-format/InputFormat.h>
 #include<ffmpeg-wrapper/pipe/PacketPump.h>
+#include<ffmpeg-wrapper/wrapper/AVIOContextWrapper.h>
+#include<jccpp/stream/FileStream.h>
+#include<sdl2-wrapper/AVPacketPlayer.h>
 
 AVPacketPlayer::AVPacketPlayer(int x, int y, AVStreamWrapper &video_stream, AVStreamWrapper &audio_stream)
 {
@@ -77,7 +77,7 @@ void video::test_AVPacketPlayer()
 	TaskCompletionSignal thread_has_exited{ false };
 
 	PacketPump packet_pump{ in_fmt_ctx };
-	packet_pump.AddPacketConsumer(player);
+	packet_pump.PacketConsumerList().Add(player);
 	thread([&]()
 	{
 		// 将包从封装泵送到播放器。

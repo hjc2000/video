@@ -7,31 +7,15 @@ namespace video
 	class IPipePacketSource
 	{
 	public:
-		virtual ~IPipePacketSource() {}
+		virtual ~IPipePacketSource() = default;
 
 	public:
-		virtual void AddPacketConsumer(shared_ptr<IPacketConsumer> packet_comsumer) = 0;
-		virtual bool RemovePacketConsumer(shared_ptr<IPacketConsumer> packet_comsumer) = 0;
-		virtual void ClearPacketConsumer() = 0;
-	};
-
-	class PipePacketSource :public IPipePacketSource
-	{
-	public:
-		virtual ~PipePacketSource() {}
-
-	protected:
-		List<shared_ptr<IPacketConsumer>> _consumer_list;
+		virtual List<shared_ptr<IPacketConsumer>> &PacketConsumerList() = 0;
 
 		/// <summary>
 		///		向每个消费者送入包
 		/// </summary>
 		/// <param name="packet"></param>
 		void SendPacketToEachConsumer(AVPacketWrapper *packet);
-
-	public:
-		void AddPacketConsumer(shared_ptr<IPacketConsumer> packet_comsumer) override;
-		bool RemovePacketConsumer(shared_ptr<IPacketConsumer> packet_comsumer) override;
-		void ClearPacketConsumer() override;
 	};
 }

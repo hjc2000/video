@@ -1,5 +1,6 @@
 #pragma once
 #include<atomic>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketSource.h>
 #include<ffmpeg-wrapper/pipe/interface/IPipePacketSource.h>
 #include<jccpp/CancellationTokenSource.h>
@@ -11,7 +12,7 @@ namespace video
 	 * @brief 从 IPacketSource 中读取包，送入 IPacketConsumer
 	*/
 	class PacketPump :
-		public PipePacketSource,
+		public IPipePacketSource,
 		public IDisposable
 	{
 		#pragma region 生命周期
@@ -39,6 +40,11 @@ namespace video
 		#pragma endregion
 
 	public:
+		List<shared_ptr<IPacketConsumer>> &PacketConsumerList() override
+		{
+			return _consumer_list;
+		}
+
 		/// <summary>
 		///		每次读取包后，在将包送给消费者之前会回调。
 		/// </summary>
@@ -97,5 +103,6 @@ namespace video
 
 	private:
 		shared_ptr<IPacketSource> _packet_source;
+		List<shared_ptr<IPacketConsumer>> _consumer_list;
 	};
 }
