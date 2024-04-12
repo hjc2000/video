@@ -60,7 +60,6 @@ namespace video
 		/// <returns>成功返回 0，失败返回错误代码</returns>
 		int ReadPacket(AVPacketWrapper &packet) override;
 
-	public:
 		/// <summary>
 		///		获取视频时长。要先调用 FindStreamInfo 方法分析流信息后才能调用此方法，
 		///		否则得到的结果是错误的

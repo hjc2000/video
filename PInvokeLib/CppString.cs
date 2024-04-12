@@ -29,7 +29,7 @@ public partial class CppString : IDisposable
 	/// </summary>
 	public CppString()
 	{
-		RawPtr = CreateEmptyString();
+		CppObjRawPtr = CreateEmptyString();
 	}
 
 	/// <summary>
@@ -38,7 +38,7 @@ public partial class CppString : IDisposable
 	/// <param name="std_string"></param>
 	public CppString(nuint std_string)
 	{
-		RawPtr = std_string;
+		CppObjRawPtr = std_string;
 	}
 
 	~CppString()
@@ -57,11 +57,11 @@ public partial class CppString : IDisposable
 		_disposed = true;
 		GC.SuppressFinalize(this);
 
-		FreeStdString(RawPtr);
+		FreeStdString(CppObjRawPtr);
 	}
 	#endregion
 
-	public nuint RawPtr { get; }
+	public nuint CppObjRawPtr { get; }
 
 	/// <summary>
 	///		获取字符串所占的字节数
@@ -70,7 +70,7 @@ public partial class CppString : IDisposable
 	{
 		get
 		{
-			return String_GetSize(RawPtr);
+			return String_GetSize(CppObjRawPtr);
 		}
 	}
 
@@ -90,7 +90,7 @@ public partial class CppString : IDisposable
 			{
 				fixed (byte* ptr = char_arr)
 				{
-					String_Set(RawPtr, ptr, char_arr.Length);
+					String_Set(CppObjRawPtr, ptr, char_arr.Length);
 				}
 			}
 		}
@@ -110,7 +110,7 @@ public partial class CppString : IDisposable
 
 		unsafe
 		{
-			byte* cstring_buffer = String_GetBuffer(RawPtr);
+			byte* cstring_buffer = String_GetBuffer(CppObjRawPtr);
 			Span<byte> char_arr = new(cstring_buffer, size);
 			return Encoding.UTF8.GetString(char_arr);
 		}

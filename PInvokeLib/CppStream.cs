@@ -57,7 +57,7 @@ public partial class CppStream(nuint stream) : Stream
 			Value = url
 		};
 		string str = std_str.ToString();
-		nuint fs = GetFileStream(std_str.RawPtr);
+		nuint fs = GetFileStream(std_str.CppObjRawPtr);
 		return new CppStream(fs);
 	}
 
