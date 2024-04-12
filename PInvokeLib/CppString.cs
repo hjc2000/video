@@ -24,11 +24,18 @@ public partial class CppString
 public partial class CppString : IDisposable
 {
 	#region 生命周期
+	/// <summary>
+	///		会在 C++ 侧创建一个空的 std::string 用于绑定。
+	/// </summary>
 	public CppString()
 	{
 		RawPtr = CreateEmptyString();
 	}
 
+	/// <summary>
+	///		接管一个 std::string 指针。本对象释放时会执行 C++ 侧的 delete 删除它。
+	/// </summary>
+	/// <param name="std_string"></param>
 	public CppString(nuint std_string)
 	{
 		RawPtr = std_string;
@@ -89,6 +96,10 @@ public partial class CppString : IDisposable
 		}
 	}
 
+	/// <summary>
+	///		从 std::string 缓冲区读取内容到 C# 的缓冲区，然后转成 C# 的 string。
+	/// </summary>
+	/// <returns></returns>
 	public override string ToString()
 	{
 		int size = Size;
