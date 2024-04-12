@@ -14,12 +14,12 @@ void video::ThreadDecoderPipe::Dispose()
 
 void video::ThreadDecoderPipe::SendPacket(AVPacketWrapper *packet)
 {
-
+	throw jc::NotImplementedException();
 }
 
 void video::ThreadDecoderPipe::FlushDecoderButNotFlushConsumers()
 {
-
+	throw jc::NotImplementedException();
 }
 
 AVRational video::ThreadDecoderPipe::TimeBase() const

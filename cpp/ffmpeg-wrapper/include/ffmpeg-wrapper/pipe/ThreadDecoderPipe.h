@@ -1,5 +1,7 @@
 #pragma once
 #include<ffmpeg-wrapper/pipe/DecoderPipe.h>
+#include<jccpp/Exception.h>
+#include<jccpp/TaskCompletionSignal.h>
 
 namespace video
 {
