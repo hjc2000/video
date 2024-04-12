@@ -57,7 +57,7 @@ void video::PeriodicSignalSource::set_ch_layout(AVChannelLayout value)
 	_ch_layout = value;
 }
 
-int video::PeriodicSignalSource::SampleCount()
+int video::PeriodicSignalSource::SampleCount() const
 {
 	return _nb_samples;
 }

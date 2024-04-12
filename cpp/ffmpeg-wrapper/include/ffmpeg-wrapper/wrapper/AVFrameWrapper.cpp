@@ -176,7 +176,7 @@ void video::AVFrameWrapper::set_sample_format(AVSampleFormat value)
 	_wrapped_obj->format = value;
 }
 
-int video::AVFrameWrapper::SampleCount()
+int video::AVFrameWrapper::SampleCount() const
 {
 	return _wrapped_obj->nb_samples;
 }

@@ -160,7 +160,7 @@ namespace video
 		AVSampleFormat sample_format() const override;
 		void set_sample_format(AVSampleFormat value) override;
 
-		int SampleCount() override;
+		int SampleCount() const override;
 		void SetSampleCount(int value) override;
 
 		AVChannelLayout ch_layout() override;

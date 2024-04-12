@@ -21,7 +21,7 @@ namespace video
 		}
 
 	public:
-		virtual int SampleCount() = 0;
+		virtual int SampleCount() const = 0;
 		virtual void SetSampleCount(int value) = 0;
 	};
 

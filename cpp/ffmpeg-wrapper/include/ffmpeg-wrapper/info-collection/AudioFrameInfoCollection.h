@@ -78,7 +78,7 @@ namespace video
 			_ch_layout = value;
 		}
 
-		int SampleCount() override
+		int SampleCount() const override
 		{
 			return _nb_samples;
 		}
