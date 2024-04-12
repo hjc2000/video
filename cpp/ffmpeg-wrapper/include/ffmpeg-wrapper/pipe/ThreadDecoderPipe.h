@@ -1,13 +1,15 @@
 #pragma once
+#include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
 #include<ffmpeg-wrapper/pipe/DecoderPipe.h>
 #include<jccpp/Exception.h>
 #include<jccpp/TaskCompletionSignal.h>
+#include<jccpp/define.h>
 
 namespace video
 {
 	class ThreadDecoderPipe final :
 		public IPacketConsumer,
-		public PipeFrameSource,
+		public IPipeFrameSource,
 		public IDisposable,
 		public IAudioStreamInfoCollection,
 		public IVideoStreamInfoCollection
@@ -18,6 +20,11 @@ namespace video
 
 	private:
 		shared_ptr<DecoderPipe> _decoder_pipe;
+		HysteresisBlockingPacketQueue _packet_queue{};
+		TaskCompletionSignal _decode_thread_exit{ true };
+		std::atomic_bool _do_not_flush_consumer = false;
+
+		void DecodeThreadFunc();
 
 	public:
 		/// <summary>
@@ -62,6 +69,13 @@ namespace video
 
 		AVRational FrameRate() const override;
 		void SetFrameRate(AVRational value) override;
+		#pragma endregion
+
+		#pragma region 通过 IPipeFrameSource 继承
+	public:
+		void AddFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer) override;
+		bool RemoveFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer) override;
+		void ClearFrameConsumer() override;
 		#pragma endregion
 
 	};

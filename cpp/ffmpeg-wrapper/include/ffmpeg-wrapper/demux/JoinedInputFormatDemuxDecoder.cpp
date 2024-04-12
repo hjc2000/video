@@ -17,6 +17,16 @@ void video::JoinedInputFormatDemuxDecoder::OpenInputIfNull()
 	}
 
 	// 成功打开新的输入格式。
+	if (_video_decode_pipe)
+	{
+		_video_decode_pipe->FlushDecoderButNotFlushConsumers();
+	}
+
+	if (_audio_decode_pipe)
+	{
+		_audio_decode_pipe->FlushDecoderButNotFlushConsumers();
+	}
+
 	_infinite_packet_pipe->ClearPacketConsumer();
 
 	// 如果有视频流，初始化视频解码管道

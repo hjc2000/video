@@ -16,6 +16,9 @@ namespace video
 		public IDisposable
 	{
 	public:
+		/// <summary>
+		///		清空队列，取消所有阻塞
+		/// </summary>
 		void Dispose() override;
 
 	private:
@@ -26,11 +29,15 @@ namespace video
 		/// <summary>
 		///		向队列送入包
 		/// </summary>
-		/// <param name="packet">送入空指针冲洗内部队列</param>
+		/// <param name="packet">
+		///		送入空指针冲洗内部队列。
+		///		冲洗后，送入包不会再被阻塞，而是会抛出异常。
+		/// </param>
 		void SendPacket(AVPacketWrapper *packet);
 
 		/// <summary>
-		///		读取包
+		///		读取包。
+		///		队列被冲洗后，读取完所有包后会遇到 ErrorCode::eof
 		/// </summary>
 		/// <param name="packet"></param>
 		/// <returns></returns>

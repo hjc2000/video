@@ -1,25 +1,88 @@
 #include"ThreadDecoderPipe.h"
+#include<iostream>
 
+using namespace std;
 using namespace video;
 
 video::ThreadDecoderPipe::ThreadDecoderPipe(AVStreamInfoCollection stream)
 {
 	_decoder_pipe = shared_ptr<DecoderPipe>{ new DecoderPipe{stream} };
+	std::thread([this]()
+	{
+		try
+		{
+			DecodeThreadFunc();
+		}
+		catch (std::exception &e)
+		{
+			cout << CODE_POS_STR << "解码线程遇到异常：" << e.what() << endl;
+		}
+		catch (...)
+		{
+			cout << CODE_POS_STR << "解码线程遇到未知异常" << endl;
+		}
+
+		_decode_thread_exit.SetResult();
+		cout << CODE_POS_STR << "解码线程退出" << endl;
+	}).detach();
+	_decode_thread_exit.Reset();
 }
 
 void video::ThreadDecoderPipe::Dispose()
 {
 	_decoder_pipe->Dispose();
+	_packet_queue.Dispose();
+}
+
+void video::ThreadDecoderPipe::DecodeThreadFunc()
+{
+	AVPacketWrapper packet;
+	while (true)
+	{
+		int read_packet_result = _packet_queue.ReadPacket(packet);
+		switch (read_packet_result)
+		{
+		case 0:
+			{
+				_decoder_pipe->SendPacket(&packet);
+				break;
+			}
+		case (int)ErrorCode::eof:
+			{
+				if (_do_not_flush_consumer)
+				{
+					_decoder_pipe->FlushDecoderButNotFlushConsumers();
+				}
+				else
+				{
+					_decoder_pipe->SendPacket(nullptr);
+				}
+
+				cout << CODE_POS_STR << "解码线程从队列中读取包时遇到 ErrorCode::eof";
+				return;
+			}
+		default:
+			{
+				throw jc::Exception(ToString((ErrorCode)read_packet_result));
+			}
+		}
+	}
 }
 
 void video::ThreadDecoderPipe::SendPacket(AVPacketWrapper *packet)
 {
-	throw jc::NotImplementedException();
+	if (packet == nullptr)
+	{
+		_do_not_flush_consumer = false;
+	}
+
+	_packet_queue.SendPacket(packet);
 }
 
 void video::ThreadDecoderPipe::FlushDecoderButNotFlushConsumers()
 {
-	throw jc::NotImplementedException();
+	_do_not_flush_consumer = true;
+	_packet_queue.SendPacket(nullptr);
 }
 
 AVRational video::ThreadDecoderPipe::TimeBase() const
@@ -100,4 +163,19 @@ AVRational video::ThreadDecoderPipe::FrameRate() const
 void video::ThreadDecoderPipe::SetFrameRate(AVRational value)
 {
 	_decoder_pipe->SetFrameRate(value);
+}
+
+void video::ThreadDecoderPipe::AddFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer)
+{
+	_decoder_pipe->AddFrameConsumer(frame_consumer);
+}
+
+bool video::ThreadDecoderPipe::RemoveFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer)
+{
+	return _decoder_pipe->RemoveFrameConsumer(frame_consumer);
+}
+
+void video::ThreadDecoderPipe::ClearFrameConsumer()
+{
+	_decoder_pipe->ClearFrameConsumer();
 }

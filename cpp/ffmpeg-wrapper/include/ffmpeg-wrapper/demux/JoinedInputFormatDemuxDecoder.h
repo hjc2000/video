@@ -3,6 +3,7 @@
 #include<ffmpeg-wrapper/input-format/InputFormat.h>
 #include<ffmpeg-wrapper/pipe/DecoderPipe.h>
 #include<ffmpeg-wrapper/pipe/InfinitePacketPipe.h>
+#include<ffmpeg-wrapper/pipe/ThreadDecoderPipe.h>
 #include<functional>
 #include<jccpp/CancellationTokenSource.h>
 #include<memory>
