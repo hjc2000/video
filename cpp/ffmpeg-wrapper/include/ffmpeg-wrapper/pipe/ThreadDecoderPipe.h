@@ -18,6 +18,11 @@ namespace video
 		shared_ptr<DecoderPipe> _decoder_pipe;
 
 	public:
+		/// <summary>
+		///		将包送入队列后就会立即返回，队列满了才会受到阻塞。
+		///		另一个线程会负责从队列中取出包进行解码。
+		/// </summary>
+		/// <param name="packet"></param>
 		void SendPacket(AVPacketWrapper *packet) override;
 
 		/// <summary>
