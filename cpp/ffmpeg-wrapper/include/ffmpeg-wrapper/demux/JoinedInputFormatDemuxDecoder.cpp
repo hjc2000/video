@@ -114,7 +114,7 @@ void video::JoinedInputFormatDemuxDecoder::AddAudioFrameConsumer(shared_ptr<IFra
 	_audio_frame_consumer_list.Add(consumer);
 }
 
-AVStreamInfoCollection video::JoinedInputFormatDemuxDecoder::GetVideoStreamInfos()
+AVStreamInfoCollection const &video::JoinedInputFormatDemuxDecoder::GetVideoStreamInfos()
 {
 	OpenInputIfNull();
 	if (_current_intput_format == nullptr)
@@ -126,7 +126,7 @@ AVStreamInfoCollection video::JoinedInputFormatDemuxDecoder::GetVideoStreamInfos
 	return _video_stream_infos;
 }
 
-AVStreamInfoCollection video::JoinedInputFormatDemuxDecoder::GetAudioStreamInfos()
+AVStreamInfoCollection const &video::JoinedInputFormatDemuxDecoder::GetAudioStreamInfos()
 {
 	OpenInputIfNull();
 	if (_current_intput_format == nullptr)

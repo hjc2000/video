@@ -30,11 +30,11 @@ namespace video
 		SptsEncodeMux(
 			shared_ptr<OutputFormat> out_format,
 			// 视频相关参数
-			IVideoStreamInfoCollection &video_stream_infos,
+			IVideoStreamInfoCollection const &video_stream_infos,
 			std::string video_codec_name,
 			int64_t video_out_bitrate_in_bps,
 			// 音频相关参数
-			IAudioStreamInfoCollection &audio_stream_infos,
+			IAudioStreamInfoCollection const &audio_stream_infos,
 			std::string audio_codec_name
 		);
 

@@ -8,11 +8,11 @@ using namespace std;
 video::SptsEncodeMux::SptsEncodeMux(
 	shared_ptr<OutputFormat> out_format,
 	// 视频相关参数
-	IVideoStreamInfoCollection &video_stream_infos,
+	IVideoStreamInfoCollection const &video_stream_infos,
 	std::string video_codec_name,
 	int64_t video_out_bitrate_in_bps,
 	// 音频相关参数
-	IAudioStreamInfoCollection &audio_stream_infos,
+	IAudioStreamInfoCollection const &audio_stream_infos,
 	std::string audio_codec_name
 )
 {
@@ -122,17 +122,14 @@ void test_SptsEncodeMux()
 		return nullptr;
 	};
 
-	AVStreamInfoCollection out_video_stream_infos = joined_input_format_demux_decoder->GetVideoStreamInfos();
-	AVStreamInfoCollection out_audio_stream_infos = joined_input_format_demux_decoder->GetAudioStreamInfos();
-
 	shared_ptr<Stream> out_fs = FileStream::CreateNewAnyway("mux_out.ts");
 	shared_ptr<StreamOutputFormat> out_fmt_ctx{ new StreamOutputFormat{".ts",out_fs} };
 	shared_ptr<SptsEncodeMux> spts_encode_mux{ new SptsEncodeMux{
 		out_fmt_ctx,
-		out_video_stream_infos,
+		joined_input_format_demux_decoder->GetVideoStreamInfos(),
 		"hevc_amf",
-		out_video_stream_infos.Bitrate(),
-		out_audio_stream_infos,
+		joined_input_format_demux_decoder->GetVideoStreamInfos().Bitrate(),
+		joined_input_format_demux_decoder->GetAudioStreamInfos(),
 		"aac"
 	} };
 

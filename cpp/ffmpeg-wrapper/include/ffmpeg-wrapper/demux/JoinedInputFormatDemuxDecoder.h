@@ -51,7 +51,7 @@ namespace video
 		void AddVideoFrameConsumer(shared_ptr<IFrameConsumer> consumer);
 		void AddAudioFrameConsumer(shared_ptr<IFrameConsumer> consumer);
 
-		AVStreamInfoCollection GetVideoStreamInfos();
-		AVStreamInfoCollection GetAudioStreamInfos();
+		AVStreamInfoCollection const &GetVideoStreamInfos();
+		AVStreamInfoCollection const &GetAudioStreamInfos();
 	};
 }
