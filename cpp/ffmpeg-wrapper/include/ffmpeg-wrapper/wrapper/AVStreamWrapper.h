@@ -59,7 +59,7 @@ namespace video
 		#pragma region IAudioStreamInfoCollection,IVideoStreamInfoCollection
 		AVSampleFormat sample_format() const override;
 		void set_sample_format(AVSampleFormat value) override;
-		AVChannelLayout ChannelLayout() override;
+		AVChannelLayout ChannelLayout() const override;
 		void SetChannelLayout(AVChannelLayout value) override;
 		int SampleRate() const override;
 		void SetSampleRate(int value) override;

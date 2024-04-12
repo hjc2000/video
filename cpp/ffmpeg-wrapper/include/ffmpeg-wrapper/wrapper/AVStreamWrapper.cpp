@@ -78,7 +78,7 @@ void video::AVStreamWrapper::set_sample_format(AVSampleFormat value)
 	_wrapped_obj->codecpar->format = value;
 }
 
-AVChannelLayout video::AVStreamWrapper::ChannelLayout()
+AVChannelLayout video::AVStreamWrapper::ChannelLayout() const
 {
 	return _wrapped_obj->codecpar->ch_layout;
 }

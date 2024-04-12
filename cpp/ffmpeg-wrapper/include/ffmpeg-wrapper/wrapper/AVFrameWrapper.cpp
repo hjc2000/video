@@ -186,7 +186,7 @@ void video::AVFrameWrapper::SetSampleCount(int value)
 	_wrapped_obj->nb_samples = value;
 }
 
-AVChannelLayout video::AVFrameWrapper::ChannelLayout()
+AVChannelLayout video::AVFrameWrapper::ChannelLayout() const
 {
 	return _wrapped_obj->ch_layout;
 }

@@ -68,7 +68,7 @@ namespace video
 		void set_sample_format(AVSampleFormat value) override;
 		int SampleRate() const override;
 		void SetSampleRate(int value) override;
-		AVChannelLayout ChannelLayout() override;
+		AVChannelLayout ChannelLayout() const override;
 		void SetChannelLayout(AVChannelLayout value) override;
 		int SampleCount() const override;
 		void SetSampleCount(int value) override;

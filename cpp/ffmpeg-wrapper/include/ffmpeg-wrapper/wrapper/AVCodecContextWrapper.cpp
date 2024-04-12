@@ -234,7 +234,7 @@ int AVCodecContextWrapper::ReadFrame(AVFrameWrapper &frame)
 #pragma endregion
 
 #pragma region IAudioStreamInfoCollection, IVideoStreamInfoCollection
-AVChannelLayout AVCodecContextWrapper::ChannelLayout()
+AVChannelLayout AVCodecContextWrapper::ChannelLayout() const
 {
 	return _wrapped_obj->ch_layout;
 }

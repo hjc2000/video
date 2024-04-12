@@ -40,7 +40,7 @@ namespace video
 		virtual int SampleRate() const = 0;
 		virtual void SetSampleRate(int value) = 0;
 
-		virtual AVChannelLayout ChannelLayout() = 0;
+		virtual AVChannelLayout ChannelLayout() const = 0;
 		virtual void SetChannelLayout(AVChannelLayout value) = 0;
 
 	public: // 接口扩展

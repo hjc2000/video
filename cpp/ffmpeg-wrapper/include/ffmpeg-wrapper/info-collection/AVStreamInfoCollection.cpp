@@ -115,7 +115,7 @@ void video::AVStreamInfoCollection::SetSampleRate(int value)
 	_sample_rate = value;
 }
 
-AVChannelLayout video::AVStreamInfoCollection::ChannelLayout()
+AVChannelLayout video::AVStreamInfoCollection::ChannelLayout() const
 {
 	return _ch_layout;
 }

@@ -80,7 +80,7 @@ void video::SDL_AudioSpecWrapper::SetSampleRate(int value)
 	_wrapped_obj->freq = value;
 }
 
-AVChannelLayout video::SDL_AudioSpecWrapper::ChannelLayout()
+AVChannelLayout video::SDL_AudioSpecWrapper::ChannelLayout() const
 {
 	return AVChannelLayoutExtension::GetDefaultChannelLayout(_wrapped_obj->channels);
 }

@@ -157,7 +157,7 @@ namespace video
 		///		但是，本类提供了字段，用户可以自由设置 ch_layout 属性。
 		/// </summary>
 		/// <returns></returns>
-		AVChannelLayout ChannelLayout() override;
+		AVChannelLayout ChannelLayout() const override;
 		void SetChannelLayout(AVChannelLayout value) override;
 
 		/// <summary>

@@ -163,7 +163,7 @@ namespace video
 		int SampleCount() const override;
 		void SetSampleCount(int value) override;
 
-		AVChannelLayout ChannelLayout() override;
+		AVChannelLayout ChannelLayout() const override;
 		void SetChannelLayout(AVChannelLayout value) override;
 
 		int SampleRate() const override;

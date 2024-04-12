@@ -149,7 +149,7 @@ void video::DecoderPipe::SetSampleRate(int value)
 	_stream_infos._sample_rate = value;
 }
 
-AVChannelLayout video::DecoderPipe::ChannelLayout()
+AVChannelLayout video::DecoderPipe::ChannelLayout() const
 {
 	return _stream_infos._ch_layout;
 }

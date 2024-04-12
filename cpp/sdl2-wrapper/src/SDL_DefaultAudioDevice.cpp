@@ -73,7 +73,7 @@ void video::SDL_DefaultAudioDevice::SetSampleRate(int value)
 	throw jc::NotSupportedException();
 }
 
-AVChannelLayout video::SDL_DefaultAudioDevice::ChannelLayout()
+AVChannelLayout video::SDL_DefaultAudioDevice::ChannelLayout() const
 {
 	return _abtained_spec.ChannelLayout();
 }

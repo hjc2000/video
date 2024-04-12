@@ -136,7 +136,7 @@ namespace video
 		#pragma endregion
 
 		#pragma region IAudioStreamInfoCollection, IVideoStreamInfoCollection
-		AVChannelLayout ChannelLayout() override;
+		AVChannelLayout ChannelLayout() const override;
 		void SetChannelLayout(AVChannelLayout value) override;
 		AVSampleFormat sample_format() const override;
 		void set_sample_format(AVSampleFormat value) override;

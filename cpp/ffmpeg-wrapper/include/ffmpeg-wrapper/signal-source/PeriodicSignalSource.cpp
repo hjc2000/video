@@ -47,7 +47,7 @@ void video::PeriodicSignalSource::set_sample_format(AVSampleFormat value)
 	throw jc::NotSupportedException();
 }
 
-AVChannelLayout video::PeriodicSignalSource::ChannelLayout()
+AVChannelLayout video::PeriodicSignalSource::ChannelLayout() const
 {
 	return _ch_layout;
 }

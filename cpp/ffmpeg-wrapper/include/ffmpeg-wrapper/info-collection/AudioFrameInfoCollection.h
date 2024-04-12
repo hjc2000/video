@@ -68,7 +68,7 @@ namespace video
 			_sample_rate = value;
 		}
 
-		AVChannelLayout ChannelLayout() override
+		AVChannelLayout ChannelLayout() const override
 		{
 			return _ch_layout;
 		}
