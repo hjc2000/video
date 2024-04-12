@@ -118,7 +118,7 @@ void DotNetStream::SetPosition(int64_t value)
 	CheckError();
 }
 
-DotNetStream *CreateDotnetStream(
+DotNetStream *CreateDotNetStream(
 	bool (*can_read)(),
 	bool (*can_write)(),
 	bool (*can_seek)(),
@@ -153,7 +153,7 @@ DotNetStream *CreateDotnetStream(
 	};
 }
 
-void FreeDotnetStream(DotNetStream *obj)
+void FreeDotNetStream(DotNetStream *obj)
 {
 	delete obj;
 }

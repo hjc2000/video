@@ -26,12 +26,12 @@ public partial class StdStringHelper : IDisposable
 	#region 生命周期
 	public StdStringHelper()
 	{
-		_std_string = CreateEmptyString();
+		RawPtr = CreateEmptyString();
 	}
 
 	public StdStringHelper(nuint std_string)
 	{
-		_std_string = std_string;
+		RawPtr = std_string;
 	}
 
 	~StdStringHelper()
@@ -50,9 +50,11 @@ public partial class StdStringHelper : IDisposable
 		_disposed = true;
 		GC.SuppressFinalize(this);
 
-		FreeStdString(_std_string);
+		FreeStdString(RawPtr);
 	}
 	#endregion
+
+	public nuint RawPtr { get; }
 
 	/// <summary>
 	///		获取字符串所占的字节数
@@ -61,20 +63,7 @@ public partial class StdStringHelper : IDisposable
 	{
 		get
 		{
-			return String_GetSize(_std_string);
-		}
-	}
-
-	/// <summary>
-	///		std::string 的指针
-	/// </summary>
-	private nuint _std_string;
-
-	public nuint RawPtr
-	{
-		get
-		{
-			return _std_string;
+			return String_GetSize(RawPtr);
 		}
 	}
 
@@ -94,7 +83,7 @@ public partial class StdStringHelper : IDisposable
 			{
 				fixed (byte* ptr = char_arr)
 				{
-					String_Set(_std_string, ptr, char_arr.Length);
+					String_Set(RawPtr, ptr, char_arr.Length);
 				}
 			}
 		}
@@ -110,7 +99,7 @@ public partial class StdStringHelper : IDisposable
 
 		unsafe
 		{
-			byte* cstring_buffer = String_GetBuffer(_std_string);
+			byte* cstring_buffer = String_GetBuffer(RawPtr);
 			Span<byte> char_arr = new(cstring_buffer, size);
 			return Encoding.UTF8.GetString(char_arr);
 		}

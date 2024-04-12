@@ -3,7 +3,7 @@
 #include<jccpp/stream/Stream.h>
 
 /// <summary>
-///		本类对象应该由 C# 调用 C 接口函数 CreateDotnetStream 进行创建。
+///		本类对象应该由 C# 调用 C 接口函数 CreateDotNetStream 进行创建。
 ///		C# 侧需要保持住在堆上的本对象的指针，同时，本类对象的生命周期内，
 ///		绑定的 C# 的 Stream 对象应该始终有效，不能被回收。
 /// </summary>
@@ -79,7 +79,26 @@ public:
 
 extern "C"
 {
-	DotNetStream *CreateDotnetStream(
+	/// <summary>
+	///		C# 调用本函数，将委托传进来。
+	///		创建出来的对象由 C# 负责释放，C++ 不要对本函数返回的指针执行 delete。
+	/// </summary>
+	/// <param name="can_read"></param>
+	/// <param name="can_write"></param>
+	/// <param name="can_seek"></param>
+	/// <param name="length"></param>
+	/// <param name="set_length"></param>
+	/// <param name="read"></param>
+	/// <param name="write"></param>
+	/// <param name="flush"></param>
+	/// <param name="close"></param>
+	/// <param name="position"></param>
+	/// <param name="set_position"></param>
+	/// <param name="error"></param>
+	/// <param name="error_message_size"></param>
+	/// <param name="error_message_buffer"></param>
+	/// <returns></returns>
+	DotNetStream *CreateDotNetStream(
 		bool (*can_read)(),
 		bool (*can_write)(),
 		bool (*can_seek)(),
@@ -96,5 +115,10 @@ extern "C"
 		uint8_t *(*error_message_buffer)()
 	);
 
-	void FreeDotnetStream(DotNetStream *obj);
+	/// <summary>
+	///		CreateDotNetStream 函数创建出来的对象由 C# 负责调用本函数进行释放，
+	///		C++ 不要对 CreateDotNetStream 函数返回的指针执行 delete。
+	/// </summary>
+	/// <param name="obj"></param>
+	void FreeDotNetStream(DotNetStream *obj);
 }

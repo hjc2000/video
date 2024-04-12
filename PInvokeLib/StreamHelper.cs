@@ -71,7 +71,6 @@ public partial class PINativeStream(nuint stream) : Stream
 		}
 
 		_disposed = true;
-
 		if (disposing)
 		{
 			// 垃圾回收时可能不存活的对象
@@ -117,7 +116,9 @@ public partial class PINativeStream(nuint stream) : Stream
 				break;
 			}
 		default:
-			throw new ArgumentOutOfRangeException(nameof(origin), "Invalid seek origin.");
+			{
+				throw new ArgumentOutOfRangeException(nameof(origin), "Invalid seek origin.");
+			}
 		}
 
 		// 确保新位置不超出流的边界
