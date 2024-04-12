@@ -3,7 +3,7 @@ using System.Text;
 
 namespace PInvokeLib;
 
-public partial class StdStringHelper
+public partial class CppString
 {
 	[LibraryImport("PInvokeNativeHelper", EntryPoint = "CreateEmptyString")]
 	private static unsafe partial nuint CreateEmptyString();
@@ -21,20 +21,20 @@ public partial class StdStringHelper
 	private static unsafe partial void FreeStdString(nuint std_string);
 }
 
-public partial class StdStringHelper : IDisposable
+public partial class CppString : IDisposable
 {
 	#region 生命周期
-	public StdStringHelper()
+	public CppString()
 	{
 		RawPtr = CreateEmptyString();
 	}
 
-	public StdStringHelper(nuint std_string)
+	public CppString(nuint std_string)
 	{
 		RawPtr = std_string;
 	}
 
-	~StdStringHelper()
+	~CppString()
 	{
 		Dispose();
 	}

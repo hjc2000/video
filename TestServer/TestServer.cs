@@ -48,7 +48,7 @@ app.UseWebSockets();
 app.MapGet("/video", async (HttpContext context) =>
 {
 	// http://localhost:8848/video
-	using PINativeStream video_stream = PINativeStream.GetFileStream(@"C:\Users\huang\source\repos\video\ffmpeg\资源\zf.ts");
+	using CppStream video_stream = CppStream.GetFileStream(@"C:\Users\huang\source\repos\video\ffmpeg\资源\zf.ts");
 	context.RequestAborted.Register(() =>
 	{
 		video_stream.Close();

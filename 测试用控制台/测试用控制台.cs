@@ -1,6 +1,6 @@
 ﻿using PInvokeLib;
 
-using PINativeStream video_stream = PINativeStream.GetFileStream(@"C:\Users\huang\source\repos\video\ffmpeg\资源\zf.ts");
+using CppStream video_stream = CppStream.GetFileStream(@"C:\Users\huang\source\repos\video\ffmpeg\资源\zf.ts");
 CancellationTokenSource cancel_read = new();
 _ = Task.Run(async () =>
 {

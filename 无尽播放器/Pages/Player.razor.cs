@@ -10,7 +10,7 @@ public partial class Player : ITSStreamSource
 	public async Task<Stream?> GetTSStreamAsync(CancellationToken cancellationToken)
 	{
 		await Task.CompletedTask;
-		PINativeStream stream = PINativeStream.GetFileStream("");
+		CppStream stream = CppStream.GetFileStream("");
 		return stream;
 	}
 }

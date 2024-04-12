@@ -2,7 +2,7 @@
 
 namespace PInvokeLib;
 
-public partial class PINativeStream
+public partial class CppStream
 {
 	[LibraryImport("PInvokeNativeHelper", EntryPoint = "GetFileStream")]
 	private static unsafe partial nuint GetFileStream(nuint std_string);
@@ -48,17 +48,17 @@ public partial class PINativeStream
 ///		用来读取 C++ 中的流
 /// </summary>
 /// <param name="stream">C++ 中流对象的指针</param>
-public partial class PINativeStream(nuint stream) : Stream
+public partial class CppStream(nuint stream) : Stream
 {
-	public static PINativeStream GetFileStream(string url)
+	public static CppStream GetFileStream(string url)
 	{
-		StdStringHelper std_str = new()
+		CppString std_str = new()
 		{
 			Value = url
 		};
 		string str = std_str.ToString();
 		nuint fs = GetFileStream(std_str.RawPtr);
-		return new PINativeStream(fs);
+		return new CppStream(fs);
 	}
 
 	private bool _disposed = false;
