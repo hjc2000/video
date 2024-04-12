@@ -1,7 +1,7 @@
 #pragma once
-#include<jccpp/IDisposable.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameSource.h>
+#include<jccpp/IDisposable.h>
 #include<jccpp/container/HysteresisBlockingQueue.h>
 
 namespace video

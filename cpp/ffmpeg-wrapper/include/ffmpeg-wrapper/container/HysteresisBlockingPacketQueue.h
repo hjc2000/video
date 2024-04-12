@@ -1,8 +1,8 @@
 #pragma once
-#include<ffmpeg-wrapper/wrapper/AVPacketWrapper.h>
-#include<jccpp/container/HysteresisBlockingQueue.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketSource.h>
+#include<ffmpeg-wrapper/wrapper/AVPacketWrapper.h>
+#include<jccpp/container/HysteresisBlockingQueue.h>
 
 namespace video
 {
@@ -14,10 +14,6 @@ namespace video
 		public IPacketSource,
 		public IDisposable
 	{
-		#pragma region 生命周期
-	private:
-		std::atomic_bool _disposed = false;
-
 	public:
 		void Dispose()
 		{
@@ -26,10 +22,10 @@ namespace video
 
 			_packet_queue.Dispose();
 		}
-		#pragma endregion
 
 	private:
 		jc::HysteresisBlockingQueue<AVPacketWrapper> _packet_queue{ 10 };
+		std::atomic_bool _disposed = false;
 
 	public:
 		/**
