@@ -75,17 +75,17 @@ int video::SDL_AudioSpecWrapper::SampleRate() const
 	return _wrapped_obj->freq;
 }
 
-void video::SDL_AudioSpecWrapper::set_sample_rate(int value)
+void video::SDL_AudioSpecWrapper::SetSampleRate(int value)
 {
 	_wrapped_obj->freq = value;
 }
 
-AVChannelLayout video::SDL_AudioSpecWrapper::ch_layout()
+AVChannelLayout video::SDL_AudioSpecWrapper::ChannelLayout()
 {
 	return AVChannelLayoutExtension::GetDefaultChannelLayout(_wrapped_obj->channels);
 }
 
-void video::SDL_AudioSpecWrapper::set_ch_layout(AVChannelLayout value)
+void video::SDL_AudioSpecWrapper::SetChannelLayout(AVChannelLayout value)
 {
 	_wrapped_obj->channels = value.nb_channels;
 }

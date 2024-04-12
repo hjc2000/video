@@ -22,7 +22,7 @@ double video::PeriodicSignalSource::sample()
 	return sample(current_t);
 }
 
-void video::PeriodicSignalSource::set_sample_rate(int value)
+void video::PeriodicSignalSource::SetSampleRate(int value)
 {
 	throw jc::NotSupportedException("不支持设置采样率。请重新构造一个 PeriodicSignalSource");
 }
@@ -47,12 +47,12 @@ void video::PeriodicSignalSource::set_sample_format(AVSampleFormat value)
 	throw jc::NotSupportedException();
 }
 
-AVChannelLayout video::PeriodicSignalSource::ch_layout()
+AVChannelLayout video::PeriodicSignalSource::ChannelLayout()
 {
 	return _ch_layout;
 }
 
-void video::PeriodicSignalSource::set_ch_layout(AVChannelLayout value)
+void video::PeriodicSignalSource::SetChannelLayout(AVChannelLayout value)
 {
 	_ch_layout = value;
 }

@@ -78,12 +78,12 @@ void video::AVStreamWrapper::set_sample_format(AVSampleFormat value)
 	_wrapped_obj->codecpar->format = value;
 }
 
-AVChannelLayout video::AVStreamWrapper::ch_layout()
+AVChannelLayout video::AVStreamWrapper::ChannelLayout()
 {
 	return _wrapped_obj->codecpar->ch_layout;
 }
 
-void video::AVStreamWrapper::set_ch_layout(AVChannelLayout value)
+void video::AVStreamWrapper::SetChannelLayout(AVChannelLayout value)
 {
 	_wrapped_obj->codecpar->ch_layout = value;
 }
@@ -93,7 +93,7 @@ int video::AVStreamWrapper::SampleRate() const
 	return _wrapped_obj->codecpar->sample_rate;
 }
 
-void video::AVStreamWrapper::set_sample_rate(int value)
+void video::AVStreamWrapper::SetSampleRate(int value)
 {
 	_wrapped_obj->codecpar->sample_rate = value;
 }

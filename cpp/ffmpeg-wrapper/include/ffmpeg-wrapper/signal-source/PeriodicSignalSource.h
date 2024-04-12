@@ -130,7 +130,7 @@ namespace video
 		///		不支持，调用将引发 NotSupportedException
 		/// </summary>
 		/// <param name="value"></param>
-		void set_sample_rate(int value);
+		void SetSampleRate(int value);
 
 		AVRational TimeBase() const override;
 
@@ -157,8 +157,8 @@ namespace video
 		///		但是，本类提供了字段，用户可以自由设置 ch_layout 属性。
 		/// </summary>
 		/// <returns></returns>
-		AVChannelLayout ch_layout() override;
-		void set_ch_layout(AVChannelLayout value) override;
+		AVChannelLayout ChannelLayout() override;
+		void SetChannelLayout(AVChannelLayout value) override;
 
 		/// <summary>
 		///		因为信号源可以填充任意采样点数的帧，所以本身没有一个固定的 nb_samples。但是，本类提供了字段，

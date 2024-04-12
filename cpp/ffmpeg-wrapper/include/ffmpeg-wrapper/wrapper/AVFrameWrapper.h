@@ -163,11 +163,11 @@ namespace video
 		int SampleCount() const override;
 		void SetSampleCount(int value) override;
 
-		AVChannelLayout ch_layout() override;
-		void set_ch_layout(AVChannelLayout value) override;
+		AVChannelLayout ChannelLayout() override;
+		void SetChannelLayout(AVChannelLayout value) override;
 
 		int SampleRate() const override;
-		void set_sample_rate(int value) override;
+		void SetSampleRate(int value) override;
 
 		/// <summary>
 		///		AVFrameWrapper 的时间基属性不一定是有效的。例如从重采样器或解码器

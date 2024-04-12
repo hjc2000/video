@@ -71,7 +71,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 
 	// 设置编码器参数
 	(*ctx)->codec_type = AVMediaType::AVMEDIA_TYPE_AUDIO;
-	(*ctx)->ch_layout = infos.ch_layout();
+	(*ctx)->ch_layout = infos.ChannelLayout();
 	(*ctx)->sample_fmt = infos.sample_format();
 	(*ctx)->sample_rate = infos.SampleRate();
 	(*ctx)->time_base = infos.TimeBase();
@@ -234,12 +234,12 @@ int AVCodecContextWrapper::ReadFrame(AVFrameWrapper &frame)
 #pragma endregion
 
 #pragma region IAudioStreamInfoCollection, IVideoStreamInfoCollection
-AVChannelLayout AVCodecContextWrapper::ch_layout()
+AVChannelLayout AVCodecContextWrapper::ChannelLayout()
 {
 	return _wrapped_obj->ch_layout;
 }
 
-void AVCodecContextWrapper::set_ch_layout(AVChannelLayout value)
+void AVCodecContextWrapper::SetChannelLayout(AVChannelLayout value)
 {
 	_wrapped_obj->ch_layout = value;
 }
@@ -259,7 +259,7 @@ int AVCodecContextWrapper::SampleRate() const
 	return _wrapped_obj->sample_rate;
 }
 
-void AVCodecContextWrapper::set_sample_rate(int value)
+void AVCodecContextWrapper::SetSampleRate(int value)
 {
 	_wrapped_obj->sample_rate = value;
 }

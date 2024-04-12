@@ -70,9 +70,9 @@ namespace video
 		AVSampleFormat sample_format() const override;
 		void set_sample_format(AVSampleFormat value) override;
 		int SampleRate() const override;
-		void set_sample_rate(int value) override;
-		AVChannelLayout ch_layout() override;
-		void set_ch_layout(AVChannelLayout value) override;
+		void SetSampleRate(int value) override;
+		AVChannelLayout ChannelLayout() override;
+		void SetChannelLayout(AVChannelLayout value) override;
 		#pragma endregion
 
 		#pragma region 通过 IVideoStreamInfoCollection 继承

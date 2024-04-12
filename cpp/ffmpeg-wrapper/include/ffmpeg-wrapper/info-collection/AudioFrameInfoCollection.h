@@ -63,17 +63,17 @@ namespace video
 			return _sample_rate;
 		}
 
-		void set_sample_rate(int value) override
+		void SetSampleRate(int value) override
 		{
 			_sample_rate = value;
 		}
 
-		AVChannelLayout ch_layout() override
+		AVChannelLayout ChannelLayout() override
 		{
 			return _ch_layout;
 		}
 
-		void set_ch_layout(AVChannelLayout value) override
+		void SetChannelLayout(AVChannelLayout value) override
 		{
 			_ch_layout = value;
 		}

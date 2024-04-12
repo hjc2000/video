@@ -144,17 +144,17 @@ int video::DecoderPipe::SampleRate() const
 	return _stream_infos._sample_rate;
 }
 
-void video::DecoderPipe::set_sample_rate(int value)
+void video::DecoderPipe::SetSampleRate(int value)
 {
 	_stream_infos._sample_rate = value;
 }
 
-AVChannelLayout video::DecoderPipe::ch_layout()
+AVChannelLayout video::DecoderPipe::ChannelLayout()
 {
 	return _stream_infos._ch_layout;
 }
 
-void video::DecoderPipe::set_ch_layout(AVChannelLayout value)
+void video::DecoderPipe::SetChannelLayout(AVChannelLayout value)
 {
 	_stream_infos._ch_layout = value;
 }

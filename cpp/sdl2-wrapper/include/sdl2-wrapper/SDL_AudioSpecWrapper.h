@@ -29,16 +29,16 @@ namespace video
 		SDL_AudioSpecWrapper(IAudioFrameInfoCollection &infos) :SDL_AudioSpecWrapper()
 		{
 			set_sample_format(infos.sample_format());
-			set_sample_rate(infos.SampleRate());
+			SetSampleRate(infos.SampleRate());
 			SetSampleCount(infos.SampleCount());
-			set_ch_layout(infos.ch_layout());
+			SetChannelLayout(infos.ChannelLayout());
 		}
 
 		SDL_AudioSpecWrapper(IAudioStreamInfoCollection &infos) :SDL_AudioSpecWrapper()
 		{
 			set_sample_format(infos.sample_format());
-			set_sample_rate(infos.SampleRate());
-			set_ch_layout(infos.ch_layout());
+			SetSampleRate(infos.SampleRate());
+			SetChannelLayout(infos.ChannelLayout());
 		}
 
 		SDL_AudioSpecWrapper(SDL_AudioSpecWrapper &other) :SDL_AudioSpecWrapper()
@@ -108,10 +108,10 @@ namespace video
 		void set_sample_format(AVSampleFormat value) override;
 
 		int SampleRate() const override;
-		void set_sample_rate(int value) override;
+		void SetSampleRate(int value) override;
 
-		AVChannelLayout ch_layout() override;
-		void set_ch_layout(AVChannelLayout value) override;
+		AVChannelLayout ChannelLayout() override;
+		void SetChannelLayout(AVChannelLayout value) override;
 
 		int SampleCount() const override;
 		void SetSampleCount(int value) override;

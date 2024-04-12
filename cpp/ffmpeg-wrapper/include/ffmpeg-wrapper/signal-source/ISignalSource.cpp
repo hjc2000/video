@@ -14,7 +14,7 @@ int video::ISignalSource::ReadFrame(shared_ptr<AVFrameWrapper> frame)
 	}
 
 	double *channel_buffer = (double *)(*frame)->extended_data[0];
-	int nb_channels = frame->ch_layout().nb_channels;
+	int nb_channels = frame->ChannelLayout().nb_channels;
 
 	// 一个音频帧有 nb_samples 个采样值
 	for (int i = 0; i < frame->SampleCount(); i++)

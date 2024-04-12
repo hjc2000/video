@@ -60,7 +60,7 @@ AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamWrapper &strea
 	_timebase = stream.TimeBase();
 	_sample_format = stream.sample_format();
 	_sample_rate = stream.SampleRate();
-	_ch_layout = stream.ch_layout();
+	_ch_layout = stream.ChannelLayout();
 	_width = stream.width();
 	_height = stream.height();
 	_pixel_format = stream.pixel_format();
@@ -110,17 +110,17 @@ int video::AVStreamInfoCollection::SampleRate() const
 	return _sample_rate;
 }
 
-void video::AVStreamInfoCollection::set_sample_rate(int value)
+void video::AVStreamInfoCollection::SetSampleRate(int value)
 {
 	_sample_rate = value;
 }
 
-AVChannelLayout video::AVStreamInfoCollection::ch_layout()
+AVChannelLayout video::AVStreamInfoCollection::ChannelLayout()
 {
 	return _ch_layout;
 }
 
-void video::AVStreamInfoCollection::set_ch_layout(AVChannelLayout value)
+void video::AVStreamInfoCollection::SetChannelLayout(AVChannelLayout value)
 {
 	_ch_layout = value;
 }

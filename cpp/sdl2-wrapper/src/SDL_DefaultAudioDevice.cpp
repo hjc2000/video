@@ -68,17 +68,17 @@ int video::SDL_DefaultAudioDevice::SampleRate() const
 	return _abtained_spec.SampleRate();
 }
 
-void video::SDL_DefaultAudioDevice::set_sample_rate(int value)
+void video::SDL_DefaultAudioDevice::SetSampleRate(int value)
 {
 	throw jc::NotSupportedException();
 }
 
-AVChannelLayout video::SDL_DefaultAudioDevice::ch_layout()
+AVChannelLayout video::SDL_DefaultAudioDevice::ChannelLayout()
 {
-	return _abtained_spec.ch_layout();
+	return _abtained_spec.ChannelLayout();
 }
 
-void video::SDL_DefaultAudioDevice::set_ch_layout(AVChannelLayout value)
+void video::SDL_DefaultAudioDevice::SetChannelLayout(AVChannelLayout value)
 {
 	throw jc::NotSupportedException();
 }

@@ -25,8 +25,8 @@ namespace video
 		{
 			SetTimeBase(value.TimeBase());
 			set_sample_format(value.sample_format());
-			set_sample_rate(value.SampleRate());
-			set_ch_layout(value.ch_layout());
+			SetSampleRate(value.SampleRate());
+			SetChannelLayout(value.ChannelLayout());
 			return *this;
 		}
 
@@ -38,10 +38,10 @@ namespace video
 		virtual void set_sample_format(AVSampleFormat value) = 0;
 
 		virtual int SampleRate() const = 0;
-		virtual void set_sample_rate(int value) = 0;
+		virtual void SetSampleRate(int value) = 0;
 
-		virtual AVChannelLayout ch_layout() = 0;
-		virtual void set_ch_layout(AVChannelLayout value) = 0;
+		virtual AVChannelLayout ChannelLayout() = 0;
+		virtual void SetChannelLayout(AVChannelLayout value) = 0;
 
 	public: // 接口扩展
 		/// <summary>
@@ -83,7 +83,7 @@ namespace video
 		/// <returns></returns>
 		string channel_layout_description()
 		{
-			return AVChannelLayoutExtension::channel_layout_description(ch_layout());
+			return AVChannelLayoutExtension::channel_layout_description(ChannelLayout());
 		}
 
 		/// <summary>
@@ -117,5 +117,5 @@ inline bool operator==(video::IAudioStreamInfoCollection &left, video::IAudioStr
 	return left.TimeBase() == right.TimeBase() &&
 		left.sample_format() == right.sample_format() &&
 		left.SampleRate() == right.SampleRate() &&
-		left.ch_layout() == right.ch_layout();
+		left.ChannelLayout() == right.ChannelLayout();
 }

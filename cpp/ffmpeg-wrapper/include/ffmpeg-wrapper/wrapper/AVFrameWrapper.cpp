@@ -70,7 +70,7 @@ int video::AVFrameWrapper::audio_data_size()
 	*/
 	int buf_size = av_samples_get_buffer_size(
 		nullptr,
-		ch_layout().nb_channels,
+		ChannelLayout().nb_channels,
 		SampleCount(),
 		sample_format(),
 		1
@@ -85,7 +85,7 @@ void video::AVFrameWrapper::mute(int offset)
 		_wrapped_obj->extended_data,
 		offset,
 		SampleCount() - offset,
-		ch_layout().nb_channels,
+		ChannelLayout().nb_channels,
 		sample_format()
 	);
 }
@@ -186,12 +186,12 @@ void video::AVFrameWrapper::SetSampleCount(int value)
 	_wrapped_obj->nb_samples = value;
 }
 
-AVChannelLayout video::AVFrameWrapper::ch_layout()
+AVChannelLayout video::AVFrameWrapper::ChannelLayout()
 {
 	return _wrapped_obj->ch_layout;
 }
 
-void video::AVFrameWrapper::set_ch_layout(AVChannelLayout value)
+void video::AVFrameWrapper::SetChannelLayout(AVChannelLayout value)
 {
 	_wrapped_obj->ch_layout = value;
 }
@@ -201,7 +201,7 @@ int video::AVFrameWrapper::SampleRate() const
 	return _wrapped_obj->sample_rate;
 }
 
-void video::AVFrameWrapper::set_sample_rate(int value)
+void video::AVFrameWrapper::SetSampleRate(int value)
 {
 	_wrapped_obj->sample_rate = value;
 }
