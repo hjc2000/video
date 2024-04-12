@@ -166,7 +166,7 @@ namespace video
 		AVChannelLayout ch_layout() override;
 		void set_ch_layout(AVChannelLayout value) override;
 
-		int sample_rate() override;
+		int sample_rate() const override;
 		void set_sample_rate(int value) override;
 
 		/// <summary>
@@ -174,7 +174,7 @@ namespace video
 		///		中输出的 AVFrameWrapper 的时间基属性就是无效值。
 		/// </summary>
 		/// <returns></returns>
-		AVRational TimeBase() override;
+		AVRational TimeBase() const override;
 		void set_time_base(AVRational value) override;
 		#pragma endregion
 

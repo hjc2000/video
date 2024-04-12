@@ -85,7 +85,7 @@ void video::AVStreamInfoCollection::SetIndex(int value)
 	_index = value;
 }
 
-AVRational video::AVStreamInfoCollection::TimeBase()
+AVRational video::AVStreamInfoCollection::TimeBase() const
 {
 	return _timebase;
 }
@@ -105,7 +105,7 @@ void video::AVStreamInfoCollection::set_sample_format(AVSampleFormat value)
 	_sample_format = value;
 }
 
-int video::AVStreamInfoCollection::sample_rate()
+int video::AVStreamInfoCollection::sample_rate() const
 {
 	return _sample_rate;
 }

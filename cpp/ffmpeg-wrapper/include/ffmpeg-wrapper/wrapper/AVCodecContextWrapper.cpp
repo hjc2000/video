@@ -254,7 +254,7 @@ void AVCodecContextWrapper::set_sample_format(AVSampleFormat value)
 	_wrapped_obj->sample_fmt = value;
 }
 
-int AVCodecContextWrapper::sample_rate()
+int AVCodecContextWrapper::sample_rate() const
 {
 	return _wrapped_obj->sample_rate;
 }
@@ -292,7 +292,7 @@ void AVCodecContextWrapper::set_pixel_format(AVPixelFormat value)
 	_wrapped_obj->pix_fmt = value;
 }
 
-AVRational AVCodecContextWrapper::TimeBase()
+AVRational AVCodecContextWrapper::TimeBase() const
 {
 	return _wrapped_obj->time_base;
 }

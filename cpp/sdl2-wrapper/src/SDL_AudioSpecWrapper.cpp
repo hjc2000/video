@@ -2,7 +2,7 @@
 #include<ffmpeg-wrapper/AVChannelLayoutExtension.h>
 #include<jccpp/Exception.h>
 
-AVRational video::SDL_AudioSpecWrapper::TimeBase()
+AVRational video::SDL_AudioSpecWrapper::TimeBase() const
 {
 	return AVRational{ 1,sample_rate() };
 }
@@ -70,7 +70,7 @@ void video::SDL_AudioSpecWrapper::set_sample_format(AVSampleFormat value)
 	}
 }
 
-int video::SDL_AudioSpecWrapper::sample_rate()
+int video::SDL_AudioSpecWrapper::sample_rate() const
 {
 	return _wrapped_obj->freq;
 }

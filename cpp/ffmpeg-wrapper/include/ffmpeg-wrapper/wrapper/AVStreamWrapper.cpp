@@ -88,7 +88,7 @@ void video::AVStreamWrapper::set_ch_layout(AVChannelLayout value)
 	_wrapped_obj->codecpar->ch_layout = value;
 }
 
-int video::AVStreamWrapper::sample_rate()
+int video::AVStreamWrapper::sample_rate() const
 {
 	return _wrapped_obj->codecpar->sample_rate;
 }
@@ -127,7 +127,7 @@ void video::AVStreamWrapper::set_pixel_format(AVPixelFormat value)
 	_wrapped_obj->codecpar->format = value;
 }
 
-AVRational video::AVStreamWrapper::TimeBase()
+AVRational video::AVStreamWrapper::TimeBase() const
 {
 	return _wrapped_obj->time_base;
 }

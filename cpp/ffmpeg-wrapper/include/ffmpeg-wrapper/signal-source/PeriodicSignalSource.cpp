@@ -27,7 +27,7 @@ void video::PeriodicSignalSource::set_sample_rate(int value)
 	throw jc::NotSupportedException("不支持设置采样率。请重新构造一个 PeriodicSignalSource");
 }
 
-AVRational video::PeriodicSignalSource::TimeBase()
+AVRational video::PeriodicSignalSource::TimeBase() const
 {
 	return AVRational{ 1,sample_rate() };
 }

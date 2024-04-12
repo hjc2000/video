@@ -78,7 +78,7 @@ namespace video
 		}
 
 		AVRational _time_base = AVRational{};
-		virtual AVRational TimeBase() override
+		virtual AVRational TimeBase() const override
 		{
 			return _time_base;
 		}

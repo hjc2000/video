@@ -43,7 +43,7 @@ void SDL_DefaultAudioDevice::Pause(bool pause)
 	SDL_PauseAudio(pause);
 }
 
-AVRational video::SDL_DefaultAudioDevice::TimeBase()
+AVRational video::SDL_DefaultAudioDevice::TimeBase() const
 {
 	return _abtained_spec.TimeBase();
 }
@@ -63,7 +63,7 @@ void video::SDL_DefaultAudioDevice::set_sample_format(AVSampleFormat value)
 	throw jc::NotSupportedException();
 }
 
-int video::SDL_DefaultAudioDevice::sample_rate()
+int video::SDL_DefaultAudioDevice::sample_rate() const
 {
 	return _abtained_spec.sample_rate();
 }

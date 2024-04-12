@@ -140,7 +140,7 @@ namespace video
 		void set_ch_layout(AVChannelLayout value) override;
 		AVSampleFormat sample_format() override;
 		void set_sample_format(AVSampleFormat value) override;
-		int sample_rate() override;
+		int sample_rate() const override;
 		void set_sample_rate(int value) override;
 
 		int width() override;
@@ -154,7 +154,7 @@ namespace video
 		///		无用的，无效的，不要试图从解码器中获取此参数。
 		/// </summary>
 		/// <returns></returns>
-		AVRational TimeBase() override;
+		AVRational TimeBase() const override;
 		void set_time_base(AVRational value) override;
 		AVRational FrameRate() const override;
 		void SetFrameRate(AVRational value) override;

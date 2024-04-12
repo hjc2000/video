@@ -26,7 +26,7 @@ namespace video
 		}
 
 	public:
-		virtual AVRational TimeBase() = 0;
+		virtual AVRational TimeBase() const = 0;
 		virtual void set_time_base(AVRational value) = 0;
 
 		virtual AVRational FrameRate() const = 0;

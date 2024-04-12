@@ -1,8 +1,8 @@
 #pragma once
 #include<ffmpeg-wrapper/AVCalculate.h>
+#include<ffmpeg-wrapper/base_include.h>
 #include<jccpp/Exception.h>
 #include<jccpp/Wrapper.h>
-#include<ffmpeg-wrapper/base_include.h>
 
 namespace video
 {

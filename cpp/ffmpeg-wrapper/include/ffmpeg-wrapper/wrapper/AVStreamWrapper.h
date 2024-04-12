@@ -61,7 +61,7 @@ namespace video
 		void set_sample_format(AVSampleFormat value) override;
 		AVChannelLayout ch_layout() override;
 		void set_ch_layout(AVChannelLayout value) override;
-		int sample_rate() override;
+		int sample_rate() const override;
 		void set_sample_rate(int value) override;
 
 		int width() override;
@@ -70,7 +70,7 @@ namespace video
 		void set_height(int value) override;
 		AVPixelFormat pixel_format() override;
 		void set_pixel_format(AVPixelFormat value) override;
-		AVRational TimeBase() override;
+		AVRational TimeBase() const override;
 		void set_time_base(AVRational value) override;
 		AVRational FrameRate() const override;
 		void SetFrameRate(AVRational value) override;

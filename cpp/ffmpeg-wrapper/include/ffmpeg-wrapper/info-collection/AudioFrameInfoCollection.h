@@ -38,7 +38,7 @@ namespace video
 		int _nb_samples = 0;
 
 	public:
-		AVRational TimeBase() override
+		AVRational TimeBase() const override
 		{
 			return _time_base;
 		}
@@ -58,7 +58,7 @@ namespace video
 			_sample_format = value;
 		}
 
-		int sample_rate() override
+		int sample_rate() const override
 		{
 			return _sample_rate;
 		}

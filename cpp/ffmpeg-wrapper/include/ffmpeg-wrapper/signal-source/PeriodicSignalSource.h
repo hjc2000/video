@@ -121,7 +121,7 @@ namespace video
 		*/
 		double sample() override;
 
-		int sample_rate()
+		int sample_rate() const
 		{
 			return _sample_rate;
 		}
@@ -132,7 +132,7 @@ namespace video
 		/// <param name="value"></param>
 		void set_sample_rate(int value);
 
-		AVRational TimeBase() override;
+		AVRational TimeBase() const override;
 
 		/// <summary>
 		///		不支持，调用将引发 NotSupportedException

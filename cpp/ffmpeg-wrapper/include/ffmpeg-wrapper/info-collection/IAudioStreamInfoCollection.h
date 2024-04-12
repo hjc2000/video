@@ -31,13 +31,13 @@ namespace video
 		}
 
 	public:
-		virtual AVRational TimeBase() = 0;
+		virtual AVRational TimeBase() const = 0;
 		virtual void set_time_base(AVRational value) = 0;
 
 		virtual AVSampleFormat sample_format() = 0;
 		virtual void set_sample_format(AVSampleFormat value) = 0;
 
-		virtual int sample_rate() = 0;
+		virtual int sample_rate() const = 0;
 		virtual void set_sample_rate(int value) = 0;
 
 		virtual AVChannelLayout ch_layout() = 0;

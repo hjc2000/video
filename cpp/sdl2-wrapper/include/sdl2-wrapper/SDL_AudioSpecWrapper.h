@@ -86,7 +86,7 @@ namespace video
 		}
 
 		// 通过 IAudioFrameInfoCollection 继承
-		AVRational TimeBase() override;
+		AVRational TimeBase() const override;
 		void set_time_base(AVRational value) override;
 
 		/// <summary>
@@ -107,7 +107,7 @@ namespace video
 		/// </param>
 		void set_sample_format(AVSampleFormat value) override;
 
-		int sample_rate() override;
+		int sample_rate() const override;
 		void set_sample_rate(int value) override;
 
 		AVChannelLayout ch_layout() override;
