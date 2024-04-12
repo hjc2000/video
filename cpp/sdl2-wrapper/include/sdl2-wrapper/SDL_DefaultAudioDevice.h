@@ -1,6 +1,6 @@
 #pragma once
-#include<ffmpeg-wrapper/info-collection/IAudioFrameInfoCollection.h>
 #include<atomic>
+#include<ffmpeg-wrapper/info-collection/IAudioFrameInfoCollection.h>
 #include<jccpp/IDisposable.h>
 #include<jccpp/Json.h>
 #include<jccpp/TaskCompletionSignal.h>
@@ -66,7 +66,7 @@ namespace video
 		void SetTimeBase(AVRational value) override;
 		AVSampleFormat sample_format() const override;
 		void set_sample_format(AVSampleFormat value) override;
-		int sample_rate() const override;
+		int SampleRate() const override;
 		void set_sample_rate(int value) override;
 		AVChannelLayout ch_layout() override;
 		void set_ch_layout(AVChannelLayout value) override;

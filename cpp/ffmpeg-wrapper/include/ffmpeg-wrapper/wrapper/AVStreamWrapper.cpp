@@ -88,7 +88,7 @@ void video::AVStreamWrapper::set_ch_layout(AVChannelLayout value)
 	_wrapped_obj->codecpar->ch_layout = value;
 }
 
-int video::AVStreamWrapper::sample_rate() const
+int video::AVStreamWrapper::SampleRate() const
 {
 	return _wrapped_obj->codecpar->sample_rate;
 }

@@ -166,7 +166,7 @@ namespace video
 		AVChannelLayout ch_layout() override;
 		void set_ch_layout(AVChannelLayout value) override;
 
-		int sample_rate() const override;
+		int SampleRate() const override;
 		void set_sample_rate(int value) override;
 
 		/// <summary>

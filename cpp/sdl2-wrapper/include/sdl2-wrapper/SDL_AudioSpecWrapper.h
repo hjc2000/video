@@ -1,10 +1,10 @@
 #pragma once
 #include<SDL.h>
-#include<string>
-#include<sstream>
-#include<jccpp/Wrapper.h>
 #include<ffmpeg-wrapper/info-collection/IAudioFrameInfoCollection.h>
 #include<jccpp/Json.h>
+#include<jccpp/Wrapper.h>
+#include<sstream>
+#include<string>
 
 using std::string;
 using std::stringstream;
@@ -29,7 +29,7 @@ namespace video
 		SDL_AudioSpecWrapper(IAudioFrameInfoCollection &infos) :SDL_AudioSpecWrapper()
 		{
 			set_sample_format(infos.sample_format());
-			set_sample_rate(infos.sample_rate());
+			set_sample_rate(infos.SampleRate());
 			SetSampleCount(infos.SampleCount());
 			set_ch_layout(infos.ch_layout());
 		}
@@ -37,7 +37,7 @@ namespace video
 		SDL_AudioSpecWrapper(IAudioStreamInfoCollection &infos) :SDL_AudioSpecWrapper()
 		{
 			set_sample_format(infos.sample_format());
-			set_sample_rate(infos.sample_rate());
+			set_sample_rate(infos.SampleRate());
 			set_ch_layout(infos.ch_layout());
 		}
 
@@ -107,7 +107,7 @@ namespace video
 		/// </param>
 		void set_sample_format(AVSampleFormat value) override;
 
-		int sample_rate() const override;
+		int SampleRate() const override;
 		void set_sample_rate(int value) override;
 
 		AVChannelLayout ch_layout() override;

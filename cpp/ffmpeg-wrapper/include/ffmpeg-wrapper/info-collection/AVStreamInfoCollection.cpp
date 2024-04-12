@@ -59,7 +59,7 @@ AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamWrapper &strea
 
 	_timebase = stream.TimeBase();
 	_sample_format = stream.sample_format();
-	_sample_rate = stream.sample_rate();
+	_sample_rate = stream.SampleRate();
 	_ch_layout = stream.ch_layout();
 	_width = stream.width();
 	_height = stream.height();
@@ -105,7 +105,7 @@ void video::AVStreamInfoCollection::set_sample_format(AVSampleFormat value)
 	_sample_format = value;
 }
 
-int video::AVStreamInfoCollection::sample_rate() const
+int video::AVStreamInfoCollection::SampleRate() const
 {
 	return _sample_rate;
 }

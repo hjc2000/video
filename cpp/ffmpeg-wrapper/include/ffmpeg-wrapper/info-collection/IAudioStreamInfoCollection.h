@@ -25,7 +25,7 @@ namespace video
 		{
 			SetTimeBase(value.TimeBase());
 			set_sample_format(value.sample_format());
-			set_sample_rate(value.sample_rate());
+			set_sample_rate(value.SampleRate());
 			set_ch_layout(value.ch_layout());
 			return *this;
 		}
@@ -37,7 +37,7 @@ namespace video
 		virtual AVSampleFormat sample_format() const = 0;
 		virtual void set_sample_format(AVSampleFormat value) = 0;
 
-		virtual int sample_rate() const = 0;
+		virtual int SampleRate() const = 0;
 		virtual void set_sample_rate(int value) = 0;
 
 		virtual AVChannelLayout ch_layout() = 0;
@@ -50,21 +50,21 @@ namespace video
 		/// <returns></returns>
 		double sample_interval()
 		{
-			return 1.0 / sample_rate();
+			return 1.0 / SampleRate();
 		}
 
 		/// <summary>
 		///		两个采样点之间的时间间隔，单位毫秒。
 		///		
 		///		本属性内部是
-		///		1.0 * 1000 / sample_rate()
-		///		即先 1.0 乘 1000 再除以 sample_rate()，这比先除以 sample_rate()
+		///		1.0 * 1000 / SampleRate()
+		///		即先 1.0 乘 1000 再除以 SampleRate()，这比先除以 SampleRate()
 		///		再乘 1000 的精度要高。
 		/// </summary>
 		/// <returns></returns>
 		double sample_interval_in_milliseconds()
 		{
-			return 1.0 * 1000 / sample_rate();
+			return 1.0 * 1000 / SampleRate();
 		}
 
 		/// <summary>
@@ -116,6 +116,6 @@ inline bool operator==(video::IAudioStreamInfoCollection &left, video::IAudioStr
 {
 	return left.TimeBase() == right.TimeBase() &&
 		left.sample_format() == right.sample_format() &&
-		left.sample_rate() == right.sample_rate() &&
+		left.SampleRate() == right.SampleRate() &&
 		left.ch_layout() == right.ch_layout();
 }

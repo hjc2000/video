@@ -73,7 +73,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 	(*ctx)->codec_type = AVMediaType::AVMEDIA_TYPE_AUDIO;
 	(*ctx)->ch_layout = infos.ch_layout();
 	(*ctx)->sample_fmt = infos.sample_format();
-	(*ctx)->sample_rate = infos.sample_rate();
+	(*ctx)->sample_rate = infos.SampleRate();
 	(*ctx)->time_base = infos.TimeBase();
 	if (set_global_header)
 	{
@@ -254,7 +254,7 @@ void AVCodecContextWrapper::set_sample_format(AVSampleFormat value)
 	_wrapped_obj->sample_fmt = value;
 }
 
-int AVCodecContextWrapper::sample_rate() const
+int AVCodecContextWrapper::SampleRate() const
 {
 	return _wrapped_obj->sample_rate;
 }

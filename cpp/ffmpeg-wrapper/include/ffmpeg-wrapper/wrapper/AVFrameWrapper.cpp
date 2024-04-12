@@ -196,7 +196,7 @@ void video::AVFrameWrapper::set_ch_layout(AVChannelLayout value)
 	_wrapped_obj->ch_layout = value;
 }
 
-int video::AVFrameWrapper::sample_rate() const
+int video::AVFrameWrapper::SampleRate() const
 {
 	return _wrapped_obj->sample_rate;
 }

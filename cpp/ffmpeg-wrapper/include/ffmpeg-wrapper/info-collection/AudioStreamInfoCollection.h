@@ -59,7 +59,7 @@ namespace video
 			_sample_format = value;
 		}
 
-		int sample_rate() const override
+		int SampleRate() const override
 		{
 			return _sample_rate;
 		}

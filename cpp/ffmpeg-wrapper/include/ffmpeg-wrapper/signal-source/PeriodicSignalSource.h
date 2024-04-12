@@ -1,10 +1,10 @@
 #pragma once
-#include<ffmpeg-wrapper/wrapper/AVFrameWrapper.h>
 #include<ffmpeg-wrapper/AVSampleFormatExtention.h>
 #include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/signal-source/ISignalSource.h>
+#include<ffmpeg-wrapper/wrapper/AVFrameWrapper.h>
 
 namespace video
 {
@@ -121,7 +121,7 @@ namespace video
 		*/
 		double sample() override;
 
-		int sample_rate() const
+		int SampleRate() const
 		{
 			return _sample_rate;
 		}

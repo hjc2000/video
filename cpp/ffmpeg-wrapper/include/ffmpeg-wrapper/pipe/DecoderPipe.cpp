@@ -139,7 +139,7 @@ void video::DecoderPipe::set_sample_format(AVSampleFormat value)
 	_stream_infos._sample_format = value;
 }
 
-int video::DecoderPipe::sample_rate() const
+int video::DecoderPipe::SampleRate() const
 {
 	return _stream_infos._sample_rate;
 }

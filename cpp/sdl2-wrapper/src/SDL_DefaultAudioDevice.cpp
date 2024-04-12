@@ -63,9 +63,9 @@ void video::SDL_DefaultAudioDevice::set_sample_format(AVSampleFormat value)
 	throw jc::NotSupportedException();
 }
 
-int video::SDL_DefaultAudioDevice::sample_rate() const
+int video::SDL_DefaultAudioDevice::SampleRate() const
 {
-	return _abtained_spec.sample_rate();
+	return _abtained_spec.SampleRate();
 }
 
 void video::SDL_DefaultAudioDevice::set_sample_rate(int value)

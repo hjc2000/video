@@ -4,7 +4,7 @@
 
 AVRational video::SDL_AudioSpecWrapper::TimeBase() const
 {
-	return AVRational{ 1,sample_rate() };
+	return AVRational{ 1,SampleRate() };
 }
 
 void video::SDL_AudioSpecWrapper::SetTimeBase(AVRational value)
@@ -70,7 +70,7 @@ void video::SDL_AudioSpecWrapper::set_sample_format(AVSampleFormat value)
 	}
 }
 
-int video::SDL_AudioSpecWrapper::sample_rate() const
+int video::SDL_AudioSpecWrapper::SampleRate() const
 {
 	return _wrapped_obj->freq;
 }

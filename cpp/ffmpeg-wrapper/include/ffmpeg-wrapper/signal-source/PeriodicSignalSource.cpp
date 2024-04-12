@@ -29,7 +29,7 @@ void video::PeriodicSignalSource::set_sample_rate(int value)
 
 AVRational video::PeriodicSignalSource::TimeBase() const
 {
-	return AVRational{ 1,sample_rate() };
+	return AVRational{ 1,SampleRate() };
 }
 
 void video::PeriodicSignalSource::SetTimeBase(AVRational value)
