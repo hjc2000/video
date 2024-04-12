@@ -242,7 +242,7 @@ int video::AVFrameWrapper::Width() const
 	return _wrapped_obj->width;
 }
 
-void video::AVFrameWrapper::set_width(int value)
+void video::AVFrameWrapper::SetWidth(int value)
 {
 	_wrapped_obj->width = value;
 }
@@ -252,7 +252,7 @@ int video::AVFrameWrapper::Height() const
 	return _wrapped_obj->height;
 }
 
-void video::AVFrameWrapper::set_height(int value)
+void video::AVFrameWrapper::SetHeight(int value)
 {
 	_wrapped_obj->height = value;
 }
@@ -262,7 +262,7 @@ AVPixelFormat video::AVFrameWrapper::PixelFormat() const
 	return AVPixelFormat(_wrapped_obj->format);
 }
 
-void video::AVFrameWrapper::set_pixel_format(AVPixelFormat value)
+void video::AVFrameWrapper::SetPixelFormat(AVPixelFormat value)
 {
 	_wrapped_obj->format = value;
 }

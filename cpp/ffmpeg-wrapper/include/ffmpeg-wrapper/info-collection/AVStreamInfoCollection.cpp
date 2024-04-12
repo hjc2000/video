@@ -130,7 +130,7 @@ int video::AVStreamInfoCollection::Width() const
 	return _width;
 }
 
-void video::AVStreamInfoCollection::set_width(int value)
+void video::AVStreamInfoCollection::SetWidth(int value)
 {
 	_width = value;
 }
@@ -140,7 +140,7 @@ int video::AVStreamInfoCollection::Height() const
 	return _height;
 }
 
-void video::AVStreamInfoCollection::set_height(int value)
+void video::AVStreamInfoCollection::SetHeight(int value)
 {
 	_height = value;
 }
@@ -150,7 +150,7 @@ AVPixelFormat video::AVStreamInfoCollection::PixelFormat() const
 	return _pixel_format;
 }
 
-void video::AVStreamInfoCollection::set_pixel_format(AVPixelFormat value)
+void video::AVStreamInfoCollection::SetPixelFormat(AVPixelFormat value)
 {
 	_pixel_format = value;
 }

@@ -42,7 +42,7 @@ namespace video
 		{
 			return _width;
 		}
-		void set_width(int value) override
+		void SetWidth(int value) override
 		{
 			_width = value;
 		}
@@ -52,7 +52,7 @@ namespace video
 		{
 			return _height;
 		}
-		void set_height(int value) override
+		void SetHeight(int value) override
 		{
 			_height = value;
 		}
@@ -62,7 +62,7 @@ namespace video
 		{
 			return _pixel_format;
 		}
-		void set_pixel_format(AVPixelFormat value) override
+		void SetPixelFormat(AVPixelFormat value) override
 		{
 			_pixel_format = value;
 		}

@@ -11,13 +11,7 @@ namespace video
 		virtual ~IVideoStreamInfoCollection() = default;
 
 	public:
-		IVideoStreamInfoCollection &operator=(IVideoStreamInfoCollection const &value)
-		{
-			IVideoFrameInfoCollection::operator=(value);
-			SetTimeBase(value.TimeBase());
-			SetFrameRate(value.FrameRate());
-			return *this;
-		}
+		IVideoStreamInfoCollection &operator=(IVideoStreamInfoCollection const &value);
 
 	public:
 		virtual AVRational TimeBase() const = 0;
@@ -26,11 +20,7 @@ namespace video
 		virtual AVRational FrameRate() const = 0;
 		virtual void SetFrameRate(AVRational value) = 0;
 
-	public:
-		uint32_t FrameIntervalInMilliseconds() const
-		{
-			return 1000 * FrameRate().den / FrameRate().num;
-		}
+		uint32_t FrameIntervalInMilliseconds() const;
 	};
 }
 

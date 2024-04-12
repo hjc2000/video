@@ -268,7 +268,7 @@ int AVCodecContextWrapper::Width() const
 {
 	return _wrapped_obj->width;
 }
-void AVCodecContextWrapper::set_width(int value)
+void AVCodecContextWrapper::SetWidth(int value)
 {
 	_wrapped_obj->width = value;
 }
@@ -277,7 +277,7 @@ int AVCodecContextWrapper::Height() const
 {
 	return _wrapped_obj->height;
 }
-void AVCodecContextWrapper::set_height(int value)
+void AVCodecContextWrapper::SetHeight(int value)
 {
 	_wrapped_obj->height = value;
 }
@@ -287,7 +287,7 @@ AVPixelFormat AVCodecContextWrapper::PixelFormat() const
 	return _wrapped_obj->pix_fmt;
 }
 
-void AVCodecContextWrapper::set_pixel_format(AVPixelFormat value)
+void AVCodecContextWrapper::SetPixelFormat(AVPixelFormat value)
 {
 	_wrapped_obj->pix_fmt = value;
 }

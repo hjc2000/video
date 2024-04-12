@@ -65,11 +65,11 @@ namespace video
 		void SetSampleRate(int value) override;
 
 		int Width() const override;
-		void set_width(int value) override;
+		void SetWidth(int value) override;
 		int Height() const override;
-		void set_height(int value) override;
+		void SetHeight(int value) override;
 		AVPixelFormat PixelFormat() const override;
-		void set_pixel_format(AVPixelFormat value) override;
+		void SetPixelFormat(AVPixelFormat value) override;
 		AVRational TimeBase() const override;
 		void SetTimeBase(AVRational value) override;
 		AVRational FrameRate() const override;
