@@ -5,7 +5,7 @@
 namespace video
 {
 	class SwrPipe :
-		public PipeFrameSource,
+		public IPipeFrameSource,
 		public IFrameConsumer
 	{
 	public:
@@ -20,6 +20,7 @@ namespace video
 		AudioStreamInfoCollection _in_stream_infos;
 		AudioFrameInfoCollection _desired_out_frame_infos;
 		AVFrameWrapper _swr_out_frame;
+		List<shared_ptr<IFrameConsumer>> _consumer_list;
 
 		/// <summary>
 		///		从 _swr 中读取帧，送给消费者。
@@ -39,6 +40,11 @@ namespace video
 		void change_swr();
 
 	public:
+		List<shared_ptr<IFrameConsumer>> &ConsumerList() override
+		{
+			return _consumer_list;
+		}
+
 		/// <summary>
 		///		向管道送入帧。重采样后会送给消费者。如果出口处没有任何消费者，则本函数会直接返回，不执行工作。
 		/// </summary>

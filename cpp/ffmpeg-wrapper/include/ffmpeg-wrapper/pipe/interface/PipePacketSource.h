@@ -33,11 +33,5 @@ namespace video
 		void AddPacketConsumer(shared_ptr<IPacketConsumer> packet_comsumer) override;
 		bool RemovePacketConsumer(shared_ptr<IPacketConsumer> packet_comsumer) override;
 		void ClearPacketConsumer() override;
-
-		/// <summary>
-		///		将另一个 PipePacketSource 的消费者复制过来。
-		/// </summary>
-		/// <param name="another"></param>
-		void AddConsumerFromAnotherPipe(PipePacketSource &another);
 	};
 }

@@ -170,18 +170,3 @@ void video::ThreadDecoderPipe::SetFrameRate(AVRational value)
 {
 	_decoder_pipe->SetFrameRate(value);
 }
-
-void video::ThreadDecoderPipe::AddFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer)
-{
-	_decoder_pipe->AddFrameConsumer(frame_consumer);
-}
-
-bool video::ThreadDecoderPipe::RemoveFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer)
-{
-	return _decoder_pipe->RemoveFrameConsumer(frame_consumer);
-}
-
-void video::ThreadDecoderPipe::ClearFrameConsumer()
-{
-	_decoder_pipe->ClearFrameConsumer();
-}

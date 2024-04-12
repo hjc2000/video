@@ -1,9 +1,9 @@
 #pragma once
 #include<ffmpeg-wrapper/AVCalculate.h>
 #include<ffmpeg-wrapper/ErrorCode.h>
-#include<ffmpeg-wrapper/pipe/interface/PipeFrameSource.h>
-#include<ffmpeg-wrapper/filter/VideoFilterGraph.h>
 #include<ffmpeg-wrapper/base_include.h>
+#include<ffmpeg-wrapper/filter/VideoFilterGraph.h>
+#include<ffmpeg-wrapper/pipe/interface/PipeFrameSource.h>
 #include<jccpp/Wrapper.h>
 #include<jccpp/container/List.h>
 #include<jccpp/container/Queue.h>
@@ -17,7 +17,7 @@ namespace video
 	*/
 	class FpsAdjustPipe :
 		public IFrameConsumer,
-		public PipeFrameSource
+		public IPipeFrameSource
 	{
 	public:
 		/// <summary>
@@ -28,6 +28,7 @@ namespace video
 		FpsAdjustPipe(IVideoStreamInfoCollection &input_video_stream_infos, AVRational desired_out_fps);
 
 	private:
+		List<shared_ptr<IFrameConsumer>> _consumer_list;
 		VideoStreamInfoCollection _input_video_stream_infos;
 		VideoFilterGraph _graph;
 		AVRational _desired_out_fps;
@@ -36,6 +37,11 @@ namespace video
 		void read_and_send_frame();
 
 	public:
+		List<shared_ptr<IFrameConsumer>> &ConsumerList() override
+		{
+			return _consumer_list;
+		}
+
 		/// <summary>
 		///		* 向 fps 调整管道送入帧。处理完后帧会穿过管道，送给消费者。
 		///		离开管道的帧的时间基为 1/fps。此外，输出帧的 pts 会与输入帧进行同步，防止

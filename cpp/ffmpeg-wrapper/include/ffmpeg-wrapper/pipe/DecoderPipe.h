@@ -31,10 +31,16 @@ namespace video
 		std::atomic_bool _disposed = false;
 		shared_ptr<AVCodecContextWrapper> _decoder;
 		AVFrameWrapper _decoder_out_frame;
+		List<shared_ptr<IFrameConsumer>> _consumer_list;
 
 		void read_and_send_frame();
 
 	public:
+		List<shared_ptr<IFrameConsumer>> &ConsumerList() override
+		{
+			return _consumer_list;
+		}
+
 		/// <summary>
 		///		送入包。会解码，然后将帧送给消费者。
 		///		如果没有任何消费者，本函数会直接返回，不会真正去解码，这样可以节省性能。

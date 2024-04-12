@@ -7,7 +7,7 @@
 namespace video
 {
 	class SwsPipe :
-		public PipeFrameSource,
+		public IPipeFrameSource,
 		public IFrameConsumer
 	{
 	public:
@@ -24,7 +24,14 @@ namespace video
 			};
 		}
 
+	protected:
+		List<shared_ptr<IFrameConsumer>> &ConsumerList() override
+		{
+			return _consumer_list;
+		}
+
 	private:
+		List<shared_ptr<IFrameConsumer>> _consumer_list;
 		shared_ptr<SwsContextWrapper> _sws_context;
 		VideoFrameInfoCollection _in_video_frame_infos;
 		VideoFrameInfoCollection _desire_out_video_frame_infos;

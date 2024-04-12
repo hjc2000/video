@@ -7,38 +7,54 @@ namespace video
 	class IPipeFrameSource
 	{
 	public:
-		virtual ~IPipeFrameSource() {}
+		virtual ~IPipeFrameSource() = default;
 
 	public:
-		virtual void AddFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer) = 0;
-		void AddFrameConsumer(List<shared_ptr<IFrameConsumer>> frame_consumers);
-		virtual bool RemoveFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer) = 0;
-		virtual void ClearFrameConsumer() = 0;
-	};
-
-	class PipeFrameSource :public IPipeFrameSource
-	{
-	public:
-		virtual ~PipeFrameSource() {}
-
-	protected:
-		List<shared_ptr<IFrameConsumer>> _consumer_list;
+		virtual List<shared_ptr<IFrameConsumer>> &ConsumerList() = 0;
 
 		/// <summary>
 		///		向每个消费者送入帧。
 		/// </summary>
-		void SendFrameToEachConsumer(AVFrameWrapper *frame);
+		void SendFrameToEachConsumer(AVFrameWrapper *frame)
+		{
+			for (shared_ptr<IFrameConsumer> &consumer : ConsumerList())
+			{
+				consumer->SendFrame(frame);
+			}
+		}
 
-	public:
-		using IPipeFrameSource::AddFrameConsumer;
-		void AddFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer) override;
-		bool RemoveFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer) override;
-		void ClearFrameConsumer() override;
+		void AddFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer)
+		{
+			if (!frame_consumer)
+			{
+				cout << CODE_POS_STR << "添加帧消费者时传入了空指针" << endl;
+				return;
+			}
 
-		/// <summary>
-		///		将另一个 PipeFrameSource 的消费者复制过来
-		/// </summary>
-		/// <param name="another"></param>
-		void AddConsumerFromAnotherPipe(PipeFrameSource &another);
+			ConsumerList().Add(frame_consumer);
+		}
+
+		void AddFrameConsumer(List<shared_ptr<IFrameConsumer>> frame_consumers)
+		{
+			for (auto consumer : frame_consumers)
+			{
+				AddFrameConsumer(consumer);
+			}
+		}
+
+		bool RemoveFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer)
+		{
+			if (!frame_consumer)
+			{
+				return false;
+			}
+
+			return ConsumerList().Remove(frame_consumer);
+		}
+
+		void ClearFrameConsumer()
+		{
+			ConsumerList().Clear();
+		}
 	};
 }

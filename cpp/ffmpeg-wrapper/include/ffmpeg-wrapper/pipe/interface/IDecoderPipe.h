@@ -10,7 +10,7 @@ namespace video
 	class IDecoderPipe :
 		public IDisposable,
 		public IPacketConsumer,
-		public PipeFrameSource,
+		public IPipeFrameSource,
 		public IAudioStreamInfoCollection,
 		public IVideoStreamInfoCollection
 	{

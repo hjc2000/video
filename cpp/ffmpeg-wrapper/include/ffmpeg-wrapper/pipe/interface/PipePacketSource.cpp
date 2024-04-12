@@ -35,17 +35,3 @@ void PipePacketSource::ClearPacketConsumer()
 {
 	_consumer_list.Clear();
 }
-
-void PipePacketSource::AddConsumerFromAnotherPipe(PipePacketSource &another)
-{
-	if (this == &another)
-	{
-		cout << CODE_POS_STR << "禁止复制自己的消费者列表" << endl;
-		throw jc::InvalidOperationException();
-	}
-
-	for (shared_ptr<IPacketConsumer> &consumer : another._consumer_list)
-	{
-		_consumer_list.Add(consumer);
-	}
-}

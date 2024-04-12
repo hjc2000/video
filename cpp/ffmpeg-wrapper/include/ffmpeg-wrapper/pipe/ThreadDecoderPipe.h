@@ -77,12 +77,9 @@ namespace video
 		void SetFrameRate(AVRational value) override;
 		#pragma endregion
 
-		#pragma region 通过 IPipeFrameSource 继承
-	public:
-		void AddFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer) override;
-		bool RemoveFrameConsumer(shared_ptr<IFrameConsumer> frame_consumer) override;
-		void ClearFrameConsumer() override;
-		#pragma endregion
-
+		List<shared_ptr<IFrameConsumer>> &ConsumerList() override
+		{
+			return _decoder_pipe->ConsumerList();
+		}
 	};
 }
