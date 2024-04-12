@@ -149,3 +149,18 @@ void FreeDotNetStream(DotNetStream *obj)
 	cout << "删除 DotNetStream" << endl;
 	delete obj;
 }
+
+void TestDotNetStream(DotNetStream *obj)
+{
+	uint8_t buffer[1];
+	while (true)
+	{
+		int64_t have_read = obj->ReadExactly(buffer, 0, 1);
+		if (have_read == 0)
+		{
+			return;
+		}
+
+		cout << (int)buffer[0] << endl;
+	}
+}

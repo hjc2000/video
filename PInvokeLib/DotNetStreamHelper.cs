@@ -27,6 +27,22 @@ public partial class DotNetStreamHelper
 	public unsafe delegate byte ErrorDelegate();
 	#endregion
 
+	/// <summary>
+	///		在 C++ 侧创建一个 DotNetStream 对象并返回它的指针。
+	/// </summary>
+	/// <param name="can_read"></param>
+	/// <param name="can_write"></param>
+	/// <param name="can_seek"></param>
+	/// <param name="length"></param>
+	/// <param name="set_length"></param>
+	/// <param name="read"></param>
+	/// <param name="write"></param>
+	/// <param name="flush"></param>
+	/// <param name="close"></param>
+	/// <param name="position"></param>
+	/// <param name="set_position"></param>
+	/// <param name="error"></param>
+	/// <returns></returns>
 	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "CreateDotNetStream")]
 	private static unsafe partial nuint CreateDotNetStream(
 		CanReadDelegate can_read,
@@ -43,8 +59,15 @@ public partial class DotNetStreamHelper
 		ErrorDelegate error
 	);
 
+	/// <summary>
+	///		释放 C++ 侧的 DotNetStream 对象。
+	/// </summary>
+	/// <param name="cpp_obj"></param>
 	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "FreeDotNetStream")]
 	private static unsafe partial void FreeDotNetStream(nuint cpp_obj);
+
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "TestDotNetStream")]
+	public static unsafe partial void TestDotNetStream(nuint cpp_obj);
 
 	#region 与委托兼容的方法
 	private byte CanRead()
@@ -250,5 +273,5 @@ public partial class DotNetStreamHelper : IDisposable
 
 	private Stream _stream;
 	private bool _error = false;
-	private nuint CppObjRawPtr { get; }
+	public nuint CppObjRawPtr { get; }
 }
