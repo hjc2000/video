@@ -3,7 +3,7 @@
 #include<ffmpeg-wrapper/AVCompare.h>
 #include<ffmpeg-wrapper/AVToString.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
-#include<ffmpeg-wrapper/pipe/interface/PipePacketSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IPipePacketSource.h>
 
 namespace video
 {

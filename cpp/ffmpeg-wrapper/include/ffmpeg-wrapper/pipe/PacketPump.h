@@ -1,7 +1,7 @@
 #pragma once
 #include<atomic>
 #include<ffmpeg-wrapper/pipe/interface/IPacketSource.h>
-#include<ffmpeg-wrapper/pipe/interface/PipePacketSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IPipePacketSource.h>
 #include<jccpp/CancellationTokenSource.h>
 #include<jccpp/IDisposable.h>
 
