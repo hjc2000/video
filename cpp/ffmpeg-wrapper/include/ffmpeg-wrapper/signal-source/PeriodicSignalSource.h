@@ -144,13 +144,13 @@ namespace video
 		///		永远只返回 AVSampleFormat::AV_SAMPLE_FMT_DBL
 		/// </summary>
 		/// <returns></returns>
-		AVSampleFormat sample_format();
+		AVSampleFormat SampleFormat();
 
 		/// <summary>
 		///		不支持，调用将引发 NotSupportedException
 		/// </summary>
 		/// <param name="value"></param>
-		void set_sample_format(AVSampleFormat value) override;
+		void SetSampleFormat(AVSampleFormat value) override;
 
 		/// <summary>
 		///		因为信号源可以填充任意声道数的交错类型的声道布局，所以本身没有一个固定的 ch_layout。

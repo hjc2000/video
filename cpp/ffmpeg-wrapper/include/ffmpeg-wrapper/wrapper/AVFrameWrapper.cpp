@@ -72,7 +72,7 @@ int video::AVFrameWrapper::audio_data_size()
 		nullptr,
 		ChannelLayout().nb_channels,
 		SampleCount(),
-		sample_format(),
+		SampleFormat(),
 		1
 	);
 
@@ -86,7 +86,7 @@ void video::AVFrameWrapper::mute(int offset)
 		offset,
 		SampleCount() - offset,
 		ChannelLayout().nb_channels,
-		sample_format()
+		SampleFormat()
 	);
 }
 
@@ -162,16 +162,16 @@ std::string AVFrameWrapper::ToString()
 		"pts={}, time_base={}, sample_format={}",
 		_wrapped_obj->pts,
 		::ToString(_wrapped_obj->time_base),
-		!_wrapped_obj->width ? ::ToString(sample_format()) : ""
+		!_wrapped_obj->width ? ::ToString(SampleFormat()) : ""
 	);
 }
 
-AVSampleFormat video::AVFrameWrapper::sample_format() const
+AVSampleFormat video::AVFrameWrapper::SampleFormat() const
 {
 	return (AVSampleFormat)_wrapped_obj->format;
 }
 
-void video::AVFrameWrapper::set_sample_format(AVSampleFormat value)
+void video::AVFrameWrapper::SetSampleFormat(AVSampleFormat value)
 {
 	_wrapped_obj->format = value;
 }

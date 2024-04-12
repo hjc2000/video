@@ -48,12 +48,12 @@ namespace video
 			_time_base = value;
 		}
 
-		AVSampleFormat sample_format() const override
+		AVSampleFormat SampleFormat() const override
 		{
 			return _sample_format;
 		}
 
-		void set_sample_format(AVSampleFormat value) override
+		void SetSampleFormat(AVSampleFormat value) override
 		{
 			_sample_format = value;
 		}

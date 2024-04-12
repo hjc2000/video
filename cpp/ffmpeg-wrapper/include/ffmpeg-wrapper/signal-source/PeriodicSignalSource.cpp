@@ -37,12 +37,12 @@ void video::PeriodicSignalSource::SetTimeBase(AVRational value)
 	throw jc::NotSupportedException();
 }
 
-AVSampleFormat video::PeriodicSignalSource::sample_format()
+AVSampleFormat video::PeriodicSignalSource::SampleFormat()
 {
 	return AVSampleFormat::AV_SAMPLE_FMT_DBL;
 }
 
-void video::PeriodicSignalSource::set_sample_format(AVSampleFormat value)
+void video::PeriodicSignalSource::SetSampleFormat(AVSampleFormat value)
 {
 	throw jc::NotSupportedException();
 }

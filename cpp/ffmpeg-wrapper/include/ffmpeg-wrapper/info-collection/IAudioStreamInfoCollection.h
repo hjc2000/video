@@ -15,21 +15,14 @@ namespace video
 		virtual ~IAudioStreamInfoCollection() {}
 
 	public:
-		IAudioStreamInfoCollection &operator=(IAudioStreamInfoCollection const &value)
-		{
-			SetTimeBase(value.TimeBase());
-			set_sample_format(value.sample_format());
-			SetSampleRate(value.SampleRate());
-			SetChannelLayout(value.ChannelLayout());
-			return *this;
-		}
+		IAudioStreamInfoCollection &operator=(IAudioStreamInfoCollection const &value);
 
 	public:
 		virtual AVRational TimeBase() const = 0;
 		virtual void SetTimeBase(AVRational value) = 0;
 
-		virtual AVSampleFormat sample_format() const = 0;
-		virtual void set_sample_format(AVSampleFormat value) = 0;
+		virtual AVSampleFormat SampleFormat() const = 0;
+		virtual void SetSampleFormat(AVSampleFormat value) = 0;
 
 		virtual int SampleRate() const = 0;
 		virtual void SetSampleRate(int value) = 0;
@@ -67,7 +60,7 @@ namespace video
 		/// <returns>返回 sample_format 的名称。如果是未知类型，返回空字符串</returns>
 		string sample_format_string() const
 		{
-			const char *name = av_get_sample_fmt_name(sample_format());
+			const char *name = av_get_sample_fmt_name(SampleFormat());
 			return name ? string(name) : "";
 		}
 
@@ -86,7 +79,7 @@ namespace video
 		/// <returns></returns>
 		bool IsPlanar() const
 		{
-			return av_sample_fmt_is_planar(sample_format());
+			return av_sample_fmt_is_planar(SampleFormat());
 		}
 
 		/// <summary>
@@ -95,7 +88,7 @@ namespace video
 		/// <returns>每个采样点的字节数</returns>
 		int BytesPerSample() const
 		{
-			return av_get_bytes_per_sample(sample_format());
+			return av_get_bytes_per_sample(SampleFormat());
 		}
 	};
 }
@@ -109,7 +102,7 @@ namespace video
 inline bool operator==(video::IAudioStreamInfoCollection &left, video::IAudioStreamInfoCollection &right)
 {
 	return left.TimeBase() == right.TimeBase() &&
-		left.sample_format() == right.sample_format() &&
+		left.SampleFormat() == right.SampleFormat() &&
 		left.SampleRate() == right.SampleRate() &&
 		left.ChannelLayout() == right.ChannelLayout();
 }

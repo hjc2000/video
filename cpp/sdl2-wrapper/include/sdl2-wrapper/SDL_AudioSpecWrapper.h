@@ -28,7 +28,7 @@ namespace video
 
 		SDL_AudioSpecWrapper(IAudioFrameInfoCollection &infos) :SDL_AudioSpecWrapper()
 		{
-			set_sample_format(infos.sample_format());
+			SetSampleFormat(infos.SampleFormat());
 			SetSampleRate(infos.SampleRate());
 			SetSampleCount(infos.SampleCount());
 			SetChannelLayout(infos.ChannelLayout());
@@ -36,7 +36,7 @@ namespace video
 
 		SDL_AudioSpecWrapper(IAudioStreamInfoCollection &infos) :SDL_AudioSpecWrapper()
 		{
-			set_sample_format(infos.sample_format());
+			SetSampleFormat(infos.SampleFormat());
 			SetSampleRate(infos.SampleRate());
 			SetChannelLayout(infos.ChannelLayout());
 		}
@@ -96,7 +96,7 @@ namespace video
 		///		如果 SDL_AudioSpec 的 format 字段内储存的 SDL 采样格式没有对应的 AVSampleFormat 值，
 		///		则会返回 AVSampleFormat::AV_SAMPLE_FMT_NONE
 		/// </returns>
-		AVSampleFormat sample_format() const override;
+		AVSampleFormat SampleFormat() const override;
 
 		/// <summary>
 		///		设置采样格式
@@ -105,7 +105,7 @@ namespace video
 		///		如果设置的 AVSampleFormat 值没有对应的 SDL 值，则会将 SDL_AudioSpec 的 format 字段
 		///		设置为 0.
 		/// </param>
-		void set_sample_format(AVSampleFormat value) override;
+		void SetSampleFormat(AVSampleFormat value) override;
 
 		int SampleRate() const override;
 		void SetSampleRate(int value) override;

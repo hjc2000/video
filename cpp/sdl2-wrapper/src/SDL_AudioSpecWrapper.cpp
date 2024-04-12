@@ -12,7 +12,7 @@ void video::SDL_AudioSpecWrapper::SetTimeBase(AVRational value)
 	throw jc::NotSupportedException();
 }
 
-AVSampleFormat video::SDL_AudioSpecWrapper::sample_format() const
+AVSampleFormat video::SDL_AudioSpecWrapper::SampleFormat() const
 {
 	switch (_wrapped_obj->format)
 	{
@@ -39,7 +39,7 @@ AVSampleFormat video::SDL_AudioSpecWrapper::sample_format() const
 	}
 }
 
-void video::SDL_AudioSpecWrapper::set_sample_format(AVSampleFormat value)
+void video::SDL_AudioSpecWrapper::SetSampleFormat(AVSampleFormat value)
 {
 	switch (value)
 	{

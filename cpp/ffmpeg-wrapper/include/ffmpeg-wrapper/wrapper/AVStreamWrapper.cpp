@@ -68,12 +68,12 @@ int AVStreamWrapper::Index()
 }
 
 #pragma region IAudioFrameInfoCollection
-AVSampleFormat video::AVStreamWrapper::sample_format() const
+AVSampleFormat video::AVStreamWrapper::SampleFormat() const
 {
 	return AVSampleFormat(_wrapped_obj->codecpar->format);
 }
 
-void video::AVStreamWrapper::set_sample_format(AVSampleFormat value)
+void video::AVStreamWrapper::SetSampleFormat(AVSampleFormat value)
 {
 	_wrapped_obj->codecpar->format = value;
 }

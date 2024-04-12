@@ -58,7 +58,7 @@ AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamWrapper &strea
 	_codec = stream.Codec();
 
 	_timebase = stream.TimeBase();
-	_sample_format = stream.sample_format();
+	_sample_format = stream.SampleFormat();
 	_sample_rate = stream.SampleRate();
 	_ch_layout = stream.ChannelLayout();
 	_width = stream.Width();
@@ -95,12 +95,12 @@ void video::AVStreamInfoCollection::SetTimeBase(AVRational value)
 	_timebase = value;
 }
 
-AVSampleFormat video::AVStreamInfoCollection::sample_format() const
+AVSampleFormat video::AVStreamInfoCollection::SampleFormat() const
 {
 	return _sample_format;
 }
 
-void video::AVStreamInfoCollection::set_sample_format(AVSampleFormat value)
+void video::AVStreamInfoCollection::SetSampleFormat(AVSampleFormat value)
 {
 	_sample_format = value;
 }
