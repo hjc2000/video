@@ -39,9 +39,9 @@ namespace video
 		/// <summary>
 		///		构造一个 fps 滤镜
 		/// </summary>
-		/// <param name="frame_rate"></param>
+		/// <param name="FrameRate"></param>
 		/// <returns></returns>
-		AVFilterContextWrapper alloc_fps_filter(AVRational frame_rate);
+		AVFilterContextWrapper alloc_fps_filter(AVRational FrameRate);
 
 		void config_graph();
 

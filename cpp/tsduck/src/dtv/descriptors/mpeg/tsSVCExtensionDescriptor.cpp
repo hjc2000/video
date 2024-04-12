@@ -41,7 +41,7 @@ void ts::SVCExtensionDescriptor::clearContent()
 {
     width = 0;
     height = 0;
-    frame_rate = 0;
+    FrameRate = 0;
     average_bitrate = 0;
     maximum_bitrate = 0;
     dependency_id = 0;
@@ -61,7 +61,7 @@ void ts::SVCExtensionDescriptor::serializePayload(PSIBuffer& buf) const
 {
     buf.putUInt16(width);
     buf.putUInt16(height);
-    buf.putUInt16(frame_rate);
+    buf.putUInt16(FrameRate);
     buf.putUInt16(average_bitrate);
     buf.putUInt16(maximum_bitrate);
     buf.putBits(dependency_id, 3);
@@ -83,7 +83,7 @@ void ts::SVCExtensionDescriptor::deserializePayload(PSIBuffer& buf)
 {
     width = buf.getUInt16();
     height = buf.getUInt16();
-    frame_rate = buf.getUInt16();
+    FrameRate = buf.getUInt16();
     average_bitrate = buf.getUInt16();
     maximum_bitrate = buf.getUInt16();
     buf.getBits(dependency_id, 3);
@@ -129,7 +129,7 @@ void ts::SVCExtensionDescriptor::buildXML(DuckContext& duck, xml::Element* root)
 {
     root->setIntAttribute(u"width", width);
     root->setIntAttribute(u"height", height);
-    root->setIntAttribute(u"frame_rate", frame_rate);
+    root->setIntAttribute(u"FrameRate", FrameRate);
     root->setIntAttribute(u"average_bitrate", average_bitrate);
     root->setIntAttribute(u"maximum_bitrate", maximum_bitrate);
     root->setIntAttribute(u"dependency_id", dependency_id);
@@ -149,7 +149,7 @@ bool ts::SVCExtensionDescriptor::analyzeXML(DuckContext& duck, const xml::Elemen
 {
     return  element->getIntAttribute(width, u"width", true) &&
             element->getIntAttribute(height, u"height", true) &&
-            element->getIntAttribute(frame_rate, u"frame_rate", true) &&
+            element->getIntAttribute(FrameRate, u"FrameRate", true) &&
             element->getIntAttribute(average_bitrate, u"average_bitrate", true) &&
             element->getIntAttribute(maximum_bitrate, u"maximum_bitrate", true) &&
             element->getIntAttribute(dependency_id, u"dependency_id", true, 0, 0x00, 0x07) &&

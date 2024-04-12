@@ -8,14 +8,14 @@ namespace video
 	class IVideoStreamInfoCollection :public IVideoFrameInfoCollection
 	{
 	public:
-		virtual ~IVideoStreamInfoCollection() {}
+		virtual ~IVideoStreamInfoCollection() = default;
 
 	public:
 		IVideoStreamInfoCollection &operator=(IVideoStreamInfoCollection &value)
 		{
 			IVideoFrameInfoCollection::operator=(value);
 			set_time_base(value.time_base());
-			set_frame_rate(value.frame_rate());
+			set_frame_rate(value.FrameRate());
 			return *this;
 		}
 
@@ -29,18 +29,18 @@ namespace video
 		virtual AVRational time_base() = 0;
 		virtual void set_time_base(AVRational value) = 0;
 
-		virtual AVRational frame_rate() = 0;
+		virtual AVRational FrameRate() const = 0;
 		virtual void set_frame_rate(AVRational value) = 0;
 
-	public:// 接口扩展
+	public:
 		uint32_t FrameIntervalInMilliseconds()
 		{
-			return 1000 / static_cast<uint32_t>(db_frame_rate());
+			return 1000 * FrameRate().den / FrameRate().num;
 		}
 
 		double db_frame_rate()
 		{
-			return av_q2d(frame_rate());
+			return av_q2d(FrameRate());
 		}
 	};
 }
@@ -55,7 +55,7 @@ inline bool operator==(video::IVideoStreamInfoCollection &left, video::IVideoStr
 {
 	return (video::IVideoFrameInfoCollection &)left == (video::IVideoFrameInfoCollection &)right &&
 		left.time_base() == right.time_base() &&
-		left.frame_rate() == right.frame_rate();
+		left.FrameRate() == right.FrameRate();
 }
 
 inline bool operator==(video::IVideoStreamInfoCollection const &left, video::IVideoStreamInfoCollection const &right)

@@ -68,7 +68,7 @@ namespace video
 		}
 
 		AVRational _frame_rate = AVRational{};
-		AVRational frame_rate() override
+		AVRational FrameRate() const override
 		{
 			return _frame_rate;
 		}

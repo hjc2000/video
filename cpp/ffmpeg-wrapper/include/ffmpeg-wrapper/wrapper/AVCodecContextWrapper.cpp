@@ -47,7 +47,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateDecoder(AVStreamI
 	};
 
 	ctx->set_time_base(stream.time_base());
-	ctx->set_frame_rate(stream.frame_rate());
+	ctx->set_frame_rate(stream.FrameRate());
 
 	ctx->Open();
 	return ctx;
@@ -112,9 +112,9 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 	(*ctx)->pix_fmt = infos.pixel_format();
 
 	(*ctx)->time_base = infos.time_base();
-	(*ctx)->framerate = infos.frame_rate();
+	(*ctx)->framerate = infos.FrameRate();
 
-	(*ctx)->gop_size = infos.frame_rate().num / infos.frame_rate().den;
+	(*ctx)->gop_size = infos.FrameRate().num / infos.FrameRate().den;
 	//(*ctx)->max_b_frames = 10;
 	if (set_global_header)
 	{
@@ -302,7 +302,7 @@ void AVCodecContextWrapper::set_time_base(AVRational value)
 	_wrapped_obj->time_base = value;
 }
 
-AVRational AVCodecContextWrapper::frame_rate()
+AVRational AVCodecContextWrapper::FrameRate() const
 {
 	return _wrapped_obj->framerate;
 }

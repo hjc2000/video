@@ -189,7 +189,7 @@ void video::DecoderPipe::set_pixel_format(AVPixelFormat value)
 	_stream_infos._pixel_format = value;
 }
 
-AVRational video::DecoderPipe::frame_rate()
+AVRational video::DecoderPipe::FrameRate() const
 {
 	return _stream_infos._frame_rate;
 }

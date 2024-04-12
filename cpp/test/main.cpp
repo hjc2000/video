@@ -12,8 +12,8 @@ int main(void)
 	try
 	{
 		std::filesystem::current_path(Predefine_ResourceDir);
-		test_SptsEncodeMux();
-		//test_AVPacketPlayer();
+		//test_SptsEncodeMux();
+		test_AVPacketPlayer();
 		//test_tsduck();
 		return 0;
 	}

@@ -46,7 +46,7 @@ int video::AVStreamWrapper::SetCodecParams(shared_ptr<AVCodecContextWrapper> cod
 {
 	// 设置时间基
 	_wrapped_obj->time_base = (*codec_ctx)->time_base;
-	_wrapped_obj->avg_frame_rate = codec_ctx->frame_rate();
+	_wrapped_obj->avg_frame_rate = codec_ctx->FrameRate();
 
 	// 将码器的参数设置到本流
 	return avcodec_parameters_from_context(_wrapped_obj->codecpar, *codec_ctx);
@@ -136,7 +136,7 @@ void video::AVStreamWrapper::set_time_base(AVRational value)
 	_wrapped_obj->time_base = value;
 }
 
-AVRational video::AVStreamWrapper::frame_rate()
+AVRational video::AVStreamWrapper::FrameRate() const
 {
 	return _wrapped_obj->avg_frame_rate;
 }

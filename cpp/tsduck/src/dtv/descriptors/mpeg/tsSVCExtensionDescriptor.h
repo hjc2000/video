@@ -26,7 +26,7 @@ namespace ts {
         // SVCExtensionDescriptor public members:
         uint16_t width = 0;                        //!< In pixels
         uint16_t height = 0;                       //!< In pixels
-        uint16_t frame_rate = 0;                   //!< In frames / 256 seconds
+        uint16_t FrameRate = 0;                   //!< In frames / 256 seconds
         uint16_t average_bitrate = 0;              //!< In kb/s
         uint16_t maximum_bitrate = 0;              //!< In kb/s
         uint8_t  dependency_id = 0;                //!< 3 bits

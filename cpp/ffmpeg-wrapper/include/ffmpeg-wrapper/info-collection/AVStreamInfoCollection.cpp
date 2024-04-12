@@ -64,7 +64,7 @@ AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamWrapper &strea
 	_width = stream.width();
 	_height = stream.height();
 	_pixel_format = stream.pixel_format();
-	_frame_rate = stream.frame_rate();
+	_frame_rate = stream.FrameRate();
 
 	return *this;
 }
@@ -155,7 +155,7 @@ void video::AVStreamInfoCollection::set_pixel_format(AVPixelFormat value)
 	_pixel_format = value;
 }
 
-AVRational video::AVStreamInfoCollection::frame_rate()
+AVRational video::AVStreamInfoCollection::FrameRate() const
 {
 	return _frame_rate;
 }

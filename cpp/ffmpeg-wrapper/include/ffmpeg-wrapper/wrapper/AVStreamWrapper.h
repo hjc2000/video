@@ -72,7 +72,7 @@ namespace video
 		void set_pixel_format(AVPixelFormat value) override;
 		AVRational time_base() override;
 		void set_time_base(AVRational value) override;
-		AVRational frame_rate() override;
+		AVRational FrameRate() const override;
 		void set_frame_rate(AVRational value) override;
 		#pragma endregion
 	};

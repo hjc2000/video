@@ -9,7 +9,7 @@ video::SwsFpsPipe::SwsFpsPipe(IVideoStreamInfoCollection &out_video_stream_infos
 	_fps_adjust_pipe = shared_ptr<FpsAdjustPipe>{
 		new FpsAdjustPipe {
 			out_video_stream_infos,
-			out_video_stream_infos.frame_rate()
+			out_video_stream_infos.FrameRate()
 		}
 	};
 	_sws_pipe = shared_ptr<SwsPipe>{ new SwsPipe {out_video_stream_infos} };

@@ -29,7 +29,7 @@ void VideoFilterGraph::init_buffer_filter()
 	av_opt_set_int(buffersrc_ctx, "height", _input_video_stream_infos.height(), AV_OPT_SEARCH_CHILDREN);
 	av_opt_set_pixel_fmt(buffersrc_ctx, "pix_fmt", _input_video_stream_infos.pixel_format(), AV_OPT_SEARCH_CHILDREN);
 	av_opt_set_q(buffersrc_ctx, "time_base", _input_video_stream_infos.time_base(), AV_OPT_SEARCH_CHILDREN);
-	av_opt_set_q(buffersrc_ctx, "frame_rate", _input_video_stream_infos.frame_rate(), AV_OPT_SEARCH_CHILDREN);
+	av_opt_set_q(buffersrc_ctx, "FrameRate", _input_video_stream_infos.FrameRate(), AV_OPT_SEARCH_CHILDREN);
 	if (avfilter_init_str(buffersrc_ctx, nullptr) < 0)
 	{
 		throw jc::Exception();
@@ -65,7 +65,7 @@ AVFilterContextWrapper &VideoFilterGraph::buffer_sink_filter()
 	return _buffer_sink_filter;
 }
 
-AVFilterContextWrapper VideoFilterGraph::alloc_fps_filter(AVRational frame_rate)
+AVFilterContextWrapper VideoFilterGraph::alloc_fps_filter(AVRational FrameRate)
 {
 	const AVFilter *fps_filter = avfilter_get_by_name("fps");
 	AVFilterContext *fps_ctx = avfilter_graph_alloc_filter(_wrapped_obj, fps_filter, "fps");
@@ -75,7 +75,7 @@ AVFilterContextWrapper VideoFilterGraph::alloc_fps_filter(AVRational frame_rate)
 	}
 
 	AVDictionaryWrapper options;
-	options.SetValueByKey("fps", ToString(frame_rate).c_str());
+	options.SetValueByKey("fps", ToString(FrameRate).c_str());
 	if (avfilter_init_dict(fps_ctx, options) < 0)
 	{
 		throw jc::Exception();
