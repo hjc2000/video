@@ -4,9 +4,9 @@
 
 using namespace video;
 
-List<shared_ptr<IFrameConsumer>> &SwsFpsPipe::ConsumerList()
+List<shared_ptr<IFrameConsumer>> &SwsFpsPipe::FrameConsumerList()
 {
-	return _fps_adjust_pipe->ConsumerList();
+	return _fps_adjust_pipe->FrameConsumerList();
 }
 
 video::SwsFpsPipe::SwsFpsPipe(IVideoStreamInfoCollection &out_video_stream_infos)
@@ -18,7 +18,7 @@ video::SwsFpsPipe::SwsFpsPipe(IVideoStreamInfoCollection &out_video_stream_infos
 		}
 	};
 	_sws_pipe = shared_ptr<SwsPipe>{ new SwsPipe {out_video_stream_infos} };
-	_sws_pipe->ConsumerList().Add(_fps_adjust_pipe);
+	_sws_pipe->FrameConsumerList().Add(_fps_adjust_pipe);
 }
 
 void video::SwsFpsPipe::SendFrame(AVFrameWrapper *frame)

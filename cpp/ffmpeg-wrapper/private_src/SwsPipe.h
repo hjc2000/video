@@ -68,7 +68,7 @@ namespace video
 		}
 
 	public:
-		List<shared_ptr<IFrameConsumer>> &ConsumerList() override
+		List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override
 		{
 			return _consumer_list;
 		}

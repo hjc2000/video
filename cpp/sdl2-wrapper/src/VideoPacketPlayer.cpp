@@ -22,7 +22,7 @@ VideoPacketPlayer::VideoPacketPlayer(int x, int y, AVStreamWrapper &stream)
 	};
 
 	_decoder_pipe = shared_ptr<DecoderPipe>{ new DecoderPipe{stream} };
-	_decoder_pipe->ConsumerList().Add(_player);
+	_decoder_pipe->FrameConsumerList().Add(_player);
 
 	// 包队列其实不算管道。它应该类似水池，需要一个泵将包送入管道。
 	_packet_queue = shared_ptr<HysteresisBlockingPacketQueue>{ new HysteresisBlockingPacketQueue{} };

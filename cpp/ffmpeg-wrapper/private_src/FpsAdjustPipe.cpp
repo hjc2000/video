@@ -67,7 +67,7 @@ void FpsAdjustPipe::read_and_send_frame()
 
 void FpsAdjustPipe::SendFrame(AVFrameWrapper *frame)
 {
-	if (ConsumerList().Count() == 0)
+	if (FrameConsumerList().Count() == 0)
 	{
 		return;
 	}

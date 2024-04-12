@@ -19,7 +19,7 @@ namespace video
 		shared_ptr<FpsAdjustPipe> _fps_adjust_pipe;
 
 	public:
-		List<shared_ptr<IFrameConsumer>> &ConsumerList() override;
+		List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override;
 		void SendFrame(AVFrameWrapper *frame) override;
 	};
 }

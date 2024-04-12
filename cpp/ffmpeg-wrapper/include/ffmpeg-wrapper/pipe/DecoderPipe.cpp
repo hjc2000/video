@@ -21,7 +21,7 @@ void DecoderPipe::Dispose()
 
 void DecoderPipe::SendPacket(AVPacketWrapper *packet)
 {
-	if (ConsumerList().Count() == 0)
+	if (FrameConsumerList().Count() == 0)
 	{
 		// 管道出口没有接收者。直接返回，节省性能。
 		return;

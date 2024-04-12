@@ -11,7 +11,7 @@ AudioPacketPlayer::AudioPacketPlayer(AVStreamWrapper &stream)
 
 	// 根据音频流创建解码器
 	_decoder_pipe = unique_ptr<DecoderPipe>{ new DecoderPipe{stream} };
-	_decoder_pipe->ConsumerList().Add(_player);
+	_decoder_pipe->FrameConsumerList().Add(_player);
 
 	_packet_queue = shared_ptr<HysteresisBlockingPacketQueue>{ new HysteresisBlockingPacketQueue{} };
 

@@ -10,7 +10,7 @@ namespace video
 		virtual ~IPipeFrameSource() = default;
 
 	public:
-		virtual List<shared_ptr<IFrameConsumer>> &ConsumerList() = 0;
+		virtual List<shared_ptr<IFrameConsumer>> &FrameConsumerList() = 0;
 
 		/// <summary>
 		///		向每个消费者送入帧。

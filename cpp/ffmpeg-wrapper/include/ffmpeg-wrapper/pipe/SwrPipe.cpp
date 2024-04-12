@@ -86,7 +86,7 @@ void video::SwrPipe::change_swr()
 
 void video::SwrPipe::SendFrame(AVFrameWrapper *frame)
 {
-	if (ConsumerList().Count() == 0)
+	if (FrameConsumerList().Count() == 0)
 	{
 		return;
 	}
