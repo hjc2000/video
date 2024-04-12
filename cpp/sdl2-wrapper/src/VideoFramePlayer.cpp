@@ -78,7 +78,7 @@ uint32_t video::VideoFramePlayer::SDL_TimerCallbackHandler(uint32_t interval_in_
 	int64_t e_t = video_time - ref_time;
 	cout << e_t << endl;
 
-	int64_t next_interval = _video_stream_infos.frame_interval_in_milliseconds<uint32_t>() + e_t;
+	int64_t next_interval = _video_stream_infos.FrameIntervalInMilliseconds() + e_t;
 	if (next_interval <= 0)
 	{
 		/*
@@ -105,7 +105,7 @@ void video::VideoFramePlayer::Pause(bool pause)
 	}
 
 	// 开始播放
-	uint32_t interval = _video_stream_infos.frame_interval_in_milliseconds<uint32_t>();
+	uint32_t interval = _video_stream_infos.FrameIntervalInMilliseconds();
 	cout << "开始播放，帧间隔为：" << interval << endl;
 	_timer.Start(interval);
 }
