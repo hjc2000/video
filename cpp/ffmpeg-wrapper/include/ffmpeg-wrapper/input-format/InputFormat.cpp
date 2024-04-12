@@ -1,10 +1,10 @@
 #include"ffmpeg-wrapper/input-format/InputFormat.h"
-#include<ffmpeg-wrapper/wrapper/AVDictionaryWrapper.h>
-#include<ffmpeg-wrapper/wrapper/AVPacketWrapper.h>
-#include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 #include<ffmpeg-wrapper/AVToString.h>
 #include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/base_include.h>
+#include<ffmpeg-wrapper/wrapper/AVDictionaryWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVPacketWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 
 using namespace video;
 
@@ -116,30 +116,6 @@ int InputFormat::ReadPacket(AVPacketWrapper &packet)
 	}
 
 	return ret;
-}
-
-std::string InputFormat::get_duration_as_formatted_time_string()
-{
-	std::stringstream sstream;
-
-	// 获取视频总的秒数
-	int64_t total_seconds = _wrapped_obj->duration / AV_TIME_BASE;
-
-	// 取出秒
-	int second = total_seconds % 60;
-
-	// 扣除秒位后总的分钟数
-	uint64_t total_minutes = total_seconds / 60;
-
-	// 取出分钟
-	int minute = total_minutes % 60;
-
-	// 扣除分钟后总的小时数
-	uint64_t total_hours = total_minutes / 60;
-	sstream << total_hours << "时" << minute << "分" << second << "秒" << std::endl;
-	std::string re_value;
-	sstream >> re_value;
-	return re_value;
 }
 
 int InputFormat::StreamCount()

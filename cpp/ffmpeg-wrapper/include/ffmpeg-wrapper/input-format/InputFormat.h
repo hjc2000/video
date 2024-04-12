@@ -61,11 +61,13 @@ namespace video
 		int ReadPacket(AVPacketWrapper &packet) override;
 
 		/// <summary>
-		///		获取视频时长。要先调用 FindStreamInfo 方法分析流信息后才能调用此方法，
-		///		否则得到的结果是错误的
+		///		获取本格式的播放时长
 		/// </summary>
-		/// <returns>返回结果是一个字符串，里面储存着格式化过的时间</returns>
-		std::string get_duration_as_formatted_time_string();
+		/// <returns></returns>
+		std::chrono::seconds DurationInSeconds()
+		{
+			return std::chrono::seconds{ _wrapped_obj->duration / AV_TIME_BASE };
+		}
 
 		/// <summary>
 		///		流的数量
