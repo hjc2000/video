@@ -113,3 +113,27 @@ void video::JoinedInputFormatDemuxDecoder::AddAudioFrameConsumer(shared_ptr<IFra
 {
 	_audio_frame_consumer_list.Add(consumer);
 }
+
+AVStreamInfoCollection video::JoinedInputFormatDemuxDecoder::GetVideoStreamInfos()
+{
+	OpenInputIfNull();
+	if (_current_intput_format == nullptr)
+	{
+		// 尝试打开输入后 _current_intput_format 仍然为空
+		throw jc::Exception("当前没有视频流信息可读");
+	}
+
+	return _video_stream_infos;
+}
+
+AVStreamInfoCollection video::JoinedInputFormatDemuxDecoder::GetAudioStreamInfos()
+{
+	OpenInputIfNull();
+	if (_current_intput_format == nullptr)
+	{
+		// 尝试打开输入后 _current_intput_format 仍然为空
+		throw jc::Exception("当前没有音频流信息可读");
+	}
+
+	return _audio_stream_infos;
+}

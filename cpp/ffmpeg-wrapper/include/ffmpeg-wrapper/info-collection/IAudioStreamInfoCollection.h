@@ -17,12 +17,6 @@ namespace video
 	public:
 		IAudioStreamInfoCollection &operator=(IAudioStreamInfoCollection const &value)
 		{
-			*this = (IAudioStreamInfoCollection &)value;
-			return *this;
-		}
-
-		IAudioStreamInfoCollection &operator=(IAudioStreamInfoCollection &value)
-		{
 			SetTimeBase(value.TimeBase());
 			set_sample_format(value.sample_format());
 			SetSampleRate(value.SampleRate());
@@ -48,7 +42,7 @@ namespace video
 		///		获取两个采样点之间的时间间隔。其实就是采样率的倒数。
 		/// </summary>
 		/// <returns></returns>
-		double sample_interval()
+		double sample_interval() const
 		{
 			return 1.0 / SampleRate();
 		}
@@ -62,7 +56,7 @@ namespace video
 		///		再乘 1000 的精度要高。
 		/// </summary>
 		/// <returns></returns>
-		double sample_interval_in_milliseconds()
+		double sample_interval_in_milliseconds() const
 		{
 			return 1.0 * 1000 / SampleRate();
 		}
@@ -71,7 +65,7 @@ namespace video
 		///		将 sample_format 属性转化为字符串。
 		/// </summary>
 		/// <returns>返回 sample_format 的名称。如果是未知类型，返回空字符串</returns>
-		string sample_format_string()
+		string sample_format_string() const
 		{
 			const char *name = av_get_sample_fmt_name(sample_format());
 			return name ? string(name) : "";
@@ -81,7 +75,7 @@ namespace video
 		///		获取声道布局的描述字符串
 		/// </summary>
 		/// <returns></returns>
-		string channel_layout_description()
+		string channel_layout_description() const
 		{
 			return AVChannelLayoutExtension::channel_layout_description(ChannelLayout());
 		}
@@ -90,7 +84,7 @@ namespace video
 		///		判断本音频帧是不是平面类型。当然，本帧首先得是音频帧。
 		/// </summary>
 		/// <returns></returns>
-		bool IsPlanar()
+		bool IsPlanar() const
 		{
 			return av_sample_fmt_is_planar(sample_format());
 		}
@@ -99,7 +93,7 @@ namespace video
 		///		获取每个采样点的字节数
 		/// </summary>
 		/// <returns>每个采样点的字节数</returns>
-		int BytesPerSample()
+		int BytesPerSample() const
 		{
 			return av_get_bytes_per_sample(sample_format());
 		}

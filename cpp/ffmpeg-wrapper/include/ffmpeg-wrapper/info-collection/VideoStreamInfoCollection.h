@@ -6,30 +6,19 @@ namespace video
 	class VideoStreamInfoCollection :public IVideoStreamInfoCollection
 	{
 	public:
-		VideoStreamInfoCollection() {}
+		VideoStreamInfoCollection() = default;
 
-		VideoStreamInfoCollection(shared_ptr<IVideoStreamInfoCollection> value)
+		VideoStreamInfoCollection(IVideoStreamInfoCollection const &another)
 		{
-			*this = value;
+			*this = another;
 		}
 
-		VideoStreamInfoCollection(IVideoStreamInfoCollection const &infos)
-		{
-			IVideoStreamInfoCollection::operator=(infos);
-		}
-
-	public:
 		VideoStreamInfoCollection &operator=(shared_ptr<IVideoStreamInfoCollection> value)
 		{
 			*this = *value;
 			return *this;
 		}
 
-		VideoStreamInfoCollection &operator=(IVideoStreamInfoCollection &value)
-		{
-			IVideoStreamInfoCollection::operator=(value);
-			return *this;
-		}
 		VideoStreamInfoCollection &operator=(IVideoStreamInfoCollection const &value)
 		{
 			IVideoStreamInfoCollection::operator=(value);

@@ -6,15 +6,14 @@ namespace video
 	class VideoFrameInfoCollection :public IVideoFrameInfoCollection
 	{
 	public:
-		VideoFrameInfoCollection() {}
+		VideoFrameInfoCollection() = default;
 
-		VideoFrameInfoCollection(IVideoFrameInfoCollection &another)
+		VideoFrameInfoCollection(IVideoFrameInfoCollection const &another)
 		{
 			IVideoFrameInfoCollection::operator=(another);
 		}
 
-	public:
-		VideoFrameInfoCollection &operator=(IVideoFrameInfoCollection &value)
+		VideoFrameInfoCollection &operator=(IVideoFrameInfoCollection const &value)
 		{
 			IVideoFrameInfoCollection::operator=(value);
 			return *this;

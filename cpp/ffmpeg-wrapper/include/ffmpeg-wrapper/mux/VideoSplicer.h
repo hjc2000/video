@@ -32,18 +32,14 @@ namespace video
 			_out_audio_stream_infos._sample_rate = 48000;
 			_out_audio_stream_infos._time_base = AVRational{ 1,90000 };
 
-			shared_ptr<SptsEncodeMux> spts_encode_mux
-			{
-				new SptsEncodeMux
-				{
-					out_fmt_ctx,
-					_out_video_stream_infos,
-					"hevc_amf",
-					-1,
-					_out_audio_stream_infos,
-					"aac"
-				}
-			};
+			shared_ptr<SptsEncodeMux> spts_encode_mux{ new SptsEncodeMux{
+				out_fmt_ctx,
+				_out_video_stream_infos,
+				"hevc_amf",
+				-1,
+				_out_audio_stream_infos,
+				"aac"
+			} };
 
 			Queue<std::string> file_queue;
 			file_queue.Enqueue("moon.mp4");
