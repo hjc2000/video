@@ -4,43 +4,43 @@ namespace PInvokeLib;
 
 public partial class CppStream
 {
-	[LibraryImport("PInvokeNativeHelper", EntryPoint = "GetFileStream")]
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "GetFileStream")]
 	private static unsafe partial nuint GetFileStream(nuint std_string);
 
-	[LibraryImport("PInvokeNativeHelper", EntryPoint = "FreeStream")]
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "FreeStream")]
 	private static unsafe partial void FreeStream(nuint stream);
 
-	[LibraryImport("PInvokeNativeHelper", EntryPoint = "Stream_CanRead")]
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_CanRead")]
 	private static unsafe partial byte Stream_CanRead(nuint stream);
 
-	[LibraryImport("PInvokeNativeHelper", EntryPoint = "Stream_CanWrite")]
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_CanWrite")]
 	private static unsafe partial byte Stream_CanWrite(nuint stream);
 
-	[LibraryImport("PInvokeNativeHelper", EntryPoint = "Stream_CanSeek")]
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_CanSeek")]
 	private static unsafe partial byte Stream_CanSeek(nuint stream);
 
-	[LibraryImport("PInvokeNativeHelper", EntryPoint = "Stream_Length")]
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_Length")]
 	private static unsafe partial long Stream_Length(nuint stream);
 
-	[LibraryImport("PInvokeNativeHelper", EntryPoint = "Stream_SetLength")]
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_SetLength")]
 	private static unsafe partial void Stream_SetLength(nuint stream, long value);
 
-	[LibraryImport("PInvokeNativeHelper", EntryPoint = "Stream_Read")]
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_Read")]
 	private static unsafe partial long Stream_Read(nuint stream, byte* dst_buffer, long offset, long count);
 
-	[LibraryImport("PInvokeNativeHelper", EntryPoint = "Stream_Write")]
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_Write")]
 	private static unsafe partial void Stream_Write(nuint stream, byte* dst_buffer, long offset, long count);
 
-	[LibraryImport("PInvokeNativeHelper", EntryPoint = "Stream_Flush")]
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_Flush")]
 	private static unsafe partial void Stream_Flush(nuint stream);
 
-	[LibraryImport("PInvokeNativeHelper", EntryPoint = "Stream_Close")]
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_Close")]
 	private static unsafe partial void Stream_Close(nuint stream);
 
-	[LibraryImport("PInvokeNativeHelper", EntryPoint = "Stream_Position")]
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_Position")]
 	private static unsafe partial long Stream_Position(nuint stream);
 
-	[LibraryImport("PInvokeNativeHelper", EntryPoint = "Stream_SetPosition")]
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_SetPosition")]
 	private static unsafe partial void Stream_SetPosition(nuint stream, long value);
 }
 

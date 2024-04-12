@@ -29,9 +29,9 @@ public:
 	/// <param name="error_message_size"></param>
 	/// <param name="error_message_buffer"></param>
 	DotNetStream(
-		bool (*can_read)(),
-		bool (*can_write)(),
-		bool (*can_seek)(),
+		uint8_t(*can_read)(),
+		uint8_t(*can_write)(),
+		uint8_t(*can_seek)(),
 		int64_t(*length)(),
 		void (*set_length)(int64_t value),
 		int64_t(*read)(uint8_t *buffer, int64_t offset, int64_t count),
@@ -40,15 +40,13 @@ public:
 		void (*close)(),
 		int64_t(*position)(),
 		void (*set_position)(int64_t value),
-		bool (*error)(),
-		int64_t(*error_message_size)(),
-		uint8_t *(*error_message_buffer)()
+		uint8_t(*error)()
 	);
 
 private:
-	bool (*_can_read)();
-	bool (*_can_write)();
-	bool (*_can_seek)();
+	uint8_t(*_can_read)();
+	uint8_t(*_can_write)();
+	uint8_t(*_can_seek)();
 	int64_t(*_length)();
 	void (*_set_length)(int64_t value);
 	int64_t(*_read)(uint8_t *buffer, int64_t offset, int64_t count);
@@ -57,9 +55,7 @@ private:
 	void (*_close)();
 	int64_t(*_position)();
 	void (*_set_position)(int64_t value);
-	bool (*_error)();
-	int64_t(*_error_message_size)();
-	uint8_t *(*_error_message_buffer)();
+	uint8_t(*_error)();
 
 	void CheckError();
 
@@ -99,9 +95,9 @@ extern "C"
 	/// <param name="error_message_buffer"></param>
 	/// <returns></returns>
 	DotNetStream *CreateDotNetStream(
-		bool (*can_read)(),
-		bool (*can_write)(),
-		bool (*can_seek)(),
+		uint8_t(*can_read)(),
+		uint8_t(*can_write)(),
+		uint8_t(*can_seek)(),
 		int64_t(*length)(),
 		void (*set_length)(int64_t value),
 		int64_t(*read)(uint8_t *buffer, int64_t offset, int64_t count),
@@ -110,9 +106,7 @@ extern "C"
 		void (*close)(),
 		int64_t(*position)(),
 		void (*set_position)(int64_t value),
-		bool (*error)(),
-		int64_t(*error_message_size)(),
-		uint8_t *(*error_message_buffer)()
+		uint8_t(*error)()
 	);
 
 	/// <summary>

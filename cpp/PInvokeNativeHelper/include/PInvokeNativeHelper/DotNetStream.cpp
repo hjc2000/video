@@ -1,9 +1,9 @@
 #include"DotNetStream.h"
 
 DotNetStream::DotNetStream(
-	bool (*can_read)(),
-	bool (*can_write)(),
-	bool (*can_seek)(),
+	uint8_t(*can_read)(),
+	uint8_t(*can_write)(),
+	uint8_t(*can_seek)(),
 	int64_t(*length)(),
 	void (*set_length)(int64_t value),
 	int64_t(*read)(uint8_t *buffer, int64_t offset, int64_t count),
@@ -12,9 +12,7 @@ DotNetStream::DotNetStream(
 	void (*close)(),
 	int64_t(*position)(),
 	void (*set_position)(int64_t value),
-	bool (*error)(),
-	int64_t(*error_message_size)(),
-	uint8_t *(*error_message_buffer)()
+	uint8_t(*error)()
 )
 {
 	_can_read = can_read;
@@ -29,20 +27,13 @@ DotNetStream::DotNetStream(
 	_position = position;
 	_set_position = set_position;
 	_error = error;
-	_error_message_size = error_message_size;
-	_error_message_buffer = error_message_buffer;
 }
 
 void DotNetStream::CheckError()
 {
 	if (_error())
 	{
-		std::string error_message{
-			(char const *)_error_message_buffer(),
-			(size_t)_error_message_size()
-		};
-
-		throw jc::Exception(error_message);
+		throw jc::Exception();
 	}
 }
 
@@ -119,9 +110,9 @@ void DotNetStream::SetPosition(int64_t value)
 }
 
 DotNetStream *CreateDotNetStream(
-	bool (*can_read)(),
-	bool (*can_write)(),
-	bool (*can_seek)(),
+	uint8_t(*can_read)(),
+	uint8_t(*can_write)(),
+	uint8_t(*can_seek)(),
 	int64_t(*length)(),
 	void (*set_length)(int64_t value),
 	int64_t(*read)(uint8_t *buffer, int64_t offset, int64_t count),
@@ -130,9 +121,7 @@ DotNetStream *CreateDotNetStream(
 	void (*close)(),
 	int64_t(*position)(),
 	void (*set_position)(int64_t value),
-	bool (*error)(),
-	int64_t(*error_message_size)(),
-	uint8_t *(*error_message_buffer)()
+	uint8_t(*error)()
 )
 {
 	return new DotNetStream{
@@ -148,8 +137,6 @@ DotNetStream *CreateDotNetStream(
 		position,
 		set_position,
 		error,
-		error_message_size,
-		error_message_buffer,
 	};
 }
 
