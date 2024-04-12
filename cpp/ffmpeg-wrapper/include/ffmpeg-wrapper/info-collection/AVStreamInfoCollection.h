@@ -42,7 +42,17 @@ namespace video
 		void SetIndex(int value);
 
 		AVMediaType _media_type{};
+
 		int64_t _bitrate = 0;
+		int64_t Bitrate() const
+		{
+			return _bitrate;
+		}
+		void SetBitrate(int64_t value)
+		{
+			_bitrate = value;
+		}
+
 		AVCodecParameters *_codec_params = avcodec_parameters_alloc();
 		AVCodec const *_codec = nullptr;
 

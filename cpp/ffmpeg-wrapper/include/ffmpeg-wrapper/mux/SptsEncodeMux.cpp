@@ -122,15 +122,16 @@ void test_SptsEncodeMux()
 		return nullptr;
 	};
 
-	VideoStreamInfoCollection out_video_stream_infos = joined_input_format_demux_decoder->GetVideoStreamInfos();
-	AudioStreamInfoCollection out_audio_stream_infos = joined_input_format_demux_decoder->GetAudioStreamInfos();
+	AVStreamInfoCollection out_video_stream_infos = joined_input_format_demux_decoder->GetVideoStreamInfos();
+	AVStreamInfoCollection out_audio_stream_infos = joined_input_format_demux_decoder->GetAudioStreamInfos();
+
 	shared_ptr<Stream> out_fs = FileStream::CreateNewAnyway("mux_out.ts");
 	shared_ptr<StreamOutputFormat> out_fmt_ctx{ new StreamOutputFormat{".ts",out_fs} };
 	shared_ptr<SptsEncodeMux> spts_encode_mux{ new SptsEncodeMux{
 		out_fmt_ctx,
 		out_video_stream_infos,
 		"hevc_amf",
-		-1,
+		out_video_stream_infos.Bitrate(),
 		out_audio_stream_infos,
 		"aac"
 	} };
