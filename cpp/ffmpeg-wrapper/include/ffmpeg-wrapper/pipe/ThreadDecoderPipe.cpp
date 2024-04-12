@@ -28,10 +28,16 @@ video::ThreadDecoderPipe::ThreadDecoderPipe(AVStreamInfoCollection stream)
 	_decode_thread_exit.Reset();
 }
 
+video::ThreadDecoderPipe::~ThreadDecoderPipe()
+{
+	Dispose();
+}
+
 void video::ThreadDecoderPipe::Dispose()
 {
 	_decoder_pipe->Dispose();
 	_packet_queue.Dispose();
+	_decode_thread_exit.Wait();
 }
 
 void video::ThreadDecoderPipe::DecodeThreadFunc()

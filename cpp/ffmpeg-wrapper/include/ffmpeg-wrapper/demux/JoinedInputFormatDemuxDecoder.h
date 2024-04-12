@@ -23,11 +23,11 @@ namespace video
 		shared_ptr<InputFormat> _current_intput_format;
 
 		AVStreamInfoCollection _video_stream_infos;
-		shared_ptr<DecoderPipe> _video_decode_pipe;
+		shared_ptr<ThreadDecoderPipe> _video_decode_pipe;
 		int _source_video_stream_index = -1;
 
 		AVStreamInfoCollection _audio_stream_infos;
-		shared_ptr<DecoderPipe> _audio_decode_pipe;
+		shared_ptr<ThreadDecoderPipe> _audio_decode_pipe;
 		int _source_audio_stream_index = -1;
 
 		shared_ptr<InfinitePacketPipe> _infinite_packet_pipe{ new InfinitePacketPipe{} };

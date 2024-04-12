@@ -7,6 +7,9 @@
 
 namespace video
 {
+	/// <summary>
+	///		内部包装了一个线程地解码管道。
+	/// </summary>
 	class ThreadDecoderPipe final :
 		public IPacketConsumer,
 		public IPipeFrameSource,
@@ -16,6 +19,7 @@ namespace video
 	{
 	public:
 		ThreadDecoderPipe(AVStreamInfoCollection stream);
+		~ThreadDecoderPipe();
 		void Dispose() override;
 
 	private:
@@ -27,6 +31,8 @@ namespace video
 		void DecodeThreadFunc();
 
 	public:
+		using IPipeFrameSource::AddFrameConsumer;
+
 		/// <summary>
 		///		将包送入队列后就会立即返回，队列满了才会受到阻塞。
 		///		另一个线程会负责从队列中取出包进行解码。
