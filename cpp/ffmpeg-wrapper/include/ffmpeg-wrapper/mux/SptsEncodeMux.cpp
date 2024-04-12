@@ -46,7 +46,7 @@ void video::SptsEncodeMux::InitVideoEncodePipe()
 	} };
 
 	_sws_fps_pipe = shared_ptr<SwsFpsPipe>{ new SwsFpsPipe{_video_stream_infos} };
-	_sws_fps_pipe->AddFrameConsumer(_video_encode_pipe);
+	_sws_fps_pipe->ConsumerList().Add(_video_encode_pipe);
 }
 
 void video::SptsEncodeMux::InitAudioEncodePipe()

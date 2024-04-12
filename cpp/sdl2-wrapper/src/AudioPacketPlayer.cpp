@@ -7,13 +7,11 @@ AudioPacketPlayer::AudioPacketPlayer(AVStreamWrapper &stream)
 {
 	#pragma region 安装管道
 	// 根据音频流构造音频帧播放器
-	_player = shared_ptr<AudioFramePlayer>{
-		new AudioFramePlayer{stream}
-	};
+	_player = shared_ptr<AudioFramePlayer>{ new AudioFramePlayer{stream} };
 
 	// 根据音频流创建解码器
 	_decoder_pipe = unique_ptr<DecoderPipe>{ new DecoderPipe{stream} };
-	_decoder_pipe->AddFrameConsumer(_player);
+	_decoder_pipe->ConsumerList().Add(_player);
 
 	_packet_queue = shared_ptr<HysteresisBlockingPacketQueue>{ new HysteresisBlockingPacketQueue{} };
 

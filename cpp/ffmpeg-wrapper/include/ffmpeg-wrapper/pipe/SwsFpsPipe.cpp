@@ -18,7 +18,7 @@ video::SwsFpsPipe::SwsFpsPipe(IVideoStreamInfoCollection &out_video_stream_infos
 		}
 	};
 	_sws_pipe = shared_ptr<SwsPipe>{ new SwsPipe {out_video_stream_infos} };
-	_sws_pipe->AddFrameConsumer(_fps_adjust_pipe);
+	_sws_pipe->ConsumerList().Add(_fps_adjust_pipe);
 }
 
 void video::SwsFpsPipe::SendFrame(AVFrameWrapper *frame)

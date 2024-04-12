@@ -18,7 +18,7 @@ AudioFramePlayer::AudioFramePlayer(IAudioStreamInfoCollection &infos)
 	};
 
 	_swr_pipe = shared_ptr<SwrPipe>{ new SwrPipe {*_device} };
-	_swr_pipe->AddFrameConsumer(_frame_queue);
+	_swr_pipe->ConsumerList().Add(_frame_queue);
 }
 
 AudioFramePlayer::~AudioFramePlayer()

@@ -10,6 +10,14 @@ public:
 	// 添加元素到列表的末尾
 	virtual void Add(const T &item) = 0;
 
+	void Add(IList<T> &another)
+	{
+		for (int i = 0; i < another.Count(); i++)
+		{
+			Add(another[i]);
+		}
+	}
+
 	// 在指定索引处插入一个元素
 	virtual void Insert(int index, const T &item) = 0;
 
@@ -29,7 +37,7 @@ public:
 	virtual void Clear() = 0;
 
 	// 获取列表的大小
-	virtual int Count() = 0;
+	virtual int Count() const = 0;
 
 	// 通过索引访问元素
 	virtual T &operator[](int index) = 0;

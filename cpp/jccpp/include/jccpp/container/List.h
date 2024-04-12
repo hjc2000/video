@@ -37,6 +37,7 @@ private:
 
 public:
 	// 添加元素到列表的末尾
+	using IList<T>::Add;
 	void Add(T const &item) override
 	{
 		_vector.push_back(item);
@@ -102,7 +103,7 @@ public:
 	}
 
 	// 获取列表的大小
-	int Count() override
+	int Count() const override
 	{
 		return (int)_vector.size();
 	}

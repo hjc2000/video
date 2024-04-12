@@ -26,5 +26,5 @@ video::SwrEncoderPipe::SwrEncoderPipe(
 		}
 	};
 
-	_swr_pipe->AddFrameConsumer(_encoder_pipe);
+	_swr_pipe->ConsumerList().Add(_encoder_pipe);
 }

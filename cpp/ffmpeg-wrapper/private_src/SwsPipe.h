@@ -24,12 +24,6 @@ namespace video
 			};
 		}
 
-	protected:
-		List<shared_ptr<IFrameConsumer>> &ConsumerList() override
-		{
-			return _consumer_list;
-		}
-
 	private:
 		List<shared_ptr<IFrameConsumer>> _consumer_list;
 		shared_ptr<SwsContextWrapper> _sws_context;
@@ -74,6 +68,11 @@ namespace video
 		}
 
 	public:
+		List<shared_ptr<IFrameConsumer>> &ConsumerList() override
+		{
+			return _consumer_list;
+		}
+
 		void SendFrame(AVFrameWrapper *frame) override;
 	};
 }
