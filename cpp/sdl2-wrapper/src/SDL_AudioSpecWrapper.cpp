@@ -7,7 +7,7 @@ AVRational video::SDL_AudioSpecWrapper::TimeBase() const
 	return AVRational{ 1,sample_rate() };
 }
 
-void video::SDL_AudioSpecWrapper::set_time_base(AVRational value)
+void video::SDL_AudioSpecWrapper::SetTimeBase(AVRational value)
 {
 	throw jc::NotSupportedException();
 }

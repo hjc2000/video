@@ -116,7 +116,7 @@ int video::SwrContextWrapper::ReadFrame(AVFrameWrapper &output_frame)
 
 	int64_t in_pts = _in_pts_when_send_frame - delay;
 	output_frame.set_pts(in_pts);
-	output_frame.set_time_base(_in_stream_infos.TimeBase());
+	output_frame.SetTimeBase(_in_stream_infos.TimeBase());
 	output_frame.ChangeTimeBase(_out_frame_infos.TimeBase());
 	return ret;
 }

@@ -64,7 +64,7 @@ namespace video
 		#pragma region 通过 IAudioStreamInfoCollection 继承
 	public:
 		AVRational TimeBase() const override;
-		void set_time_base(AVRational value) override;
+		void SetTimeBase(AVRational value) override;
 		AVSampleFormat sample_format() override;
 		void set_sample_format(AVSampleFormat value) override;
 		int sample_rate() const override;

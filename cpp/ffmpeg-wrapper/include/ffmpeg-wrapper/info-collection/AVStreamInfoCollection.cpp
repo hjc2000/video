@@ -90,7 +90,7 @@ AVRational video::AVStreamInfoCollection::TimeBase() const
 	return _timebase;
 }
 
-void video::AVStreamInfoCollection::set_time_base(AVRational value)
+void video::AVStreamInfoCollection::SetTimeBase(AVRational value)
 {
 	_timebase = value;
 }

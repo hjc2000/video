@@ -23,7 +23,7 @@ namespace video
 
 		IAudioStreamInfoCollection &operator=(IAudioStreamInfoCollection &value)
 		{
-			set_time_base(value.TimeBase());
+			SetTimeBase(value.TimeBase());
 			set_sample_format(value.sample_format());
 			set_sample_rate(value.sample_rate());
 			set_ch_layout(value.ch_layout());
@@ -32,7 +32,7 @@ namespace video
 
 	public:
 		virtual AVRational TimeBase() const = 0;
-		virtual void set_time_base(AVRational value) = 0;
+		virtual void SetTimeBase(AVRational value) = 0;
 
 		virtual AVSampleFormat sample_format() = 0;
 		virtual void set_sample_format(AVSampleFormat value) = 0;

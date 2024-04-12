@@ -124,7 +124,7 @@ AVRational video::DecoderPipe::TimeBase() const
 	return _stream_infos._timebase;
 }
 
-void video::DecoderPipe::set_time_base(AVRational value)
+void video::DecoderPipe::SetTimeBase(AVRational value)
 {
 	_stream_infos._timebase = value;
 }

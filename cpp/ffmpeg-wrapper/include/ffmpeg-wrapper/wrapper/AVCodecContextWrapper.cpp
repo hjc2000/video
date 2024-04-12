@@ -46,7 +46,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateDecoder(AVStreamI
 	}
 	};
 
-	ctx->set_time_base(stream.TimeBase());
+	ctx->SetTimeBase(stream.TimeBase());
 	ctx->SetFrameRate(stream.FrameRate());
 
 	ctx->Open();
@@ -188,7 +188,7 @@ int AVCodecContextWrapper::ReadPacket(AVPacketWrapper &packet)
 	int ret = ::avcodec_receive_packet(_wrapped_obj, packet);
 	if (!ret)
 	{
-		packet.set_time_base(TimeBase());
+		packet.SetTimeBase(TimeBase());
 	}
 
 	return ret;
@@ -226,7 +226,7 @@ int AVCodecContextWrapper::ReadFrame(AVFrameWrapper &frame)
 	if (!ret)
 	{
 		// 解码出来的帧会被设置时间戳，但是时间基不会被设置。这里补充设置。
-		frame.set_time_base(TimeBase());
+		frame.SetTimeBase(TimeBase());
 	}
 
 	return ret;
@@ -297,7 +297,7 @@ AVRational AVCodecContextWrapper::TimeBase() const
 	return _wrapped_obj->time_base;
 }
 
-void AVCodecContextWrapper::set_time_base(AVRational value)
+void AVCodecContextWrapper::SetTimeBase(AVRational value)
 {
 	_wrapped_obj->time_base = value;
 }

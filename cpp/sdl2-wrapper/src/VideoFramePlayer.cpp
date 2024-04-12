@@ -65,7 +65,7 @@ uint32_t video::VideoFramePlayer::SDL_TimerCallbackHandler(uint32_t interval_in_
 
 	_displayer->SendFrame(&frame);
 
-	frame.set_time_base(_video_stream_infos.TimeBase());
+	frame.SetTimeBase(_video_stream_infos.TimeBase());
 	int64_t video_time = frame.PtsToMilliseconds().count();
 	if (!_ref_timer)
 	{

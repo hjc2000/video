@@ -48,7 +48,7 @@ AVRational video::SDL_DefaultAudioDevice::TimeBase() const
 	return _abtained_spec.TimeBase();
 }
 
-void video::SDL_DefaultAudioDevice::set_time_base(AVRational value)
+void video::SDL_DefaultAudioDevice::SetTimeBase(AVRational value)
 {
 	throw jc::NotSupportedException();
 }

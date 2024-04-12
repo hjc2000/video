@@ -46,7 +46,7 @@ void FpsAdjustPipe::read_and_send_frame()
 
 				// 滤镜出来的 pts 与输入端的 pts 有误差，则本轮循环读取的每一个帧的 pts 都要加上 delta_pts。
 				frame.set_pts(frame.pts() + delta_pts);
-				frame.set_time_base(AVRational{ _desired_out_fps.den, _desired_out_fps.num });
+				frame.SetTimeBase(AVRational{ _desired_out_fps.den, _desired_out_fps.num });
 				SendFrameToEachConsumer(&frame);
 
 				// 下轮循环继续读取

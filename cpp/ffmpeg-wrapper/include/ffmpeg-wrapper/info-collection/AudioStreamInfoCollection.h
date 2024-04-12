@@ -44,7 +44,7 @@ namespace video
 			return _time_base;
 		}
 
-		void set_time_base(AVRational value) override
+		void SetTimeBase(AVRational value) override
 		{
 			_time_base = value;
 		}

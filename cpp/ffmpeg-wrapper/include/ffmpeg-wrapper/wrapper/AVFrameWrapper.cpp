@@ -272,7 +272,7 @@ AVRational video::AVFrameWrapper::TimeBase() const
 	return _wrapped_obj->time_base;
 }
 
-void video::AVFrameWrapper::set_time_base(AVRational value)
+void video::AVFrameWrapper::SetTimeBase(AVRational value)
 {
 	_wrapped_obj->time_base = value;
 }

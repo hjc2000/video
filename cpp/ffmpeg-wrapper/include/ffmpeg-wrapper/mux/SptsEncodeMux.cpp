@@ -28,8 +28,8 @@ video::SptsEncodeMux::SptsEncodeMux(
 	_audio_codec_name = audio_codec_name;
 
 	// ts 必须使用 1/90000 时间基
-	_video_stream_infos.set_time_base(AVRational{ 1, 90000 });
-	_audio_stream_infos.set_time_base(AVRational{ 1, 90000 });
+	_video_stream_infos.SetTimeBase(AVRational{ 1, 90000 });
+	_audio_stream_infos.SetTimeBase(AVRational{ 1, 90000 });
 
 	InitVideoEncodePipe();
 	InitAudioEncodePipe();

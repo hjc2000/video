@@ -99,7 +99,7 @@ AVRational AVPacketWrapper::TimeBase() const
 	return _wrapped_obj->time_base;
 }
 
-void AVPacketWrapper::set_time_base(AVRational value)
+void AVPacketWrapper::SetTimeBase(AVRational value)
 {
 	_wrapped_obj->time_base = value;
 }

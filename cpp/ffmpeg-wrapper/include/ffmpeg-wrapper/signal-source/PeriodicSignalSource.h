@@ -138,7 +138,7 @@ namespace video
 		///		不支持，调用将引发 NotSupportedException
 		/// </summary>
 		/// <param name="value"></param>
-		void set_time_base(AVRational value) override;
+		void SetTimeBase(AVRational value) override;
 
 		/// <summary>
 		///		永远只返回 AVSampleFormat::AV_SAMPLE_FMT_DBL

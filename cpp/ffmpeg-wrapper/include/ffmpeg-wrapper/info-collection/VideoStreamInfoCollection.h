@@ -82,7 +82,7 @@ namespace video
 		{
 			return _time_base;
 		}
-		virtual void set_time_base(AVRational value) override
+		virtual void SetTimeBase(AVRational value) override
 		{
 			_time_base = value;
 		}

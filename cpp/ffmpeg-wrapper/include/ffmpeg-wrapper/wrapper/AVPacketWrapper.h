@@ -47,6 +47,6 @@ namespace video
 		void set_dts(int64_t value);
 
 		AVRational TimeBase() const;
-		void set_time_base(AVRational value);
+		void SetTimeBase(AVRational value);
 	};
 }

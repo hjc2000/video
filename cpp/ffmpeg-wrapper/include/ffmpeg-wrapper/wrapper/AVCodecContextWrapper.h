@@ -155,7 +155,7 @@ namespace video
 		/// </summary>
 		/// <returns></returns>
 		AVRational TimeBase() const override;
-		void set_time_base(AVRational value) override;
+		void SetTimeBase(AVRational value) override;
 		AVRational FrameRate() const override;
 		void SetFrameRate(AVRational value) override;
 		#pragma endregion

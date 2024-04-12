@@ -32,7 +32,7 @@ AVRational video::PeriodicSignalSource::TimeBase() const
 	return AVRational{ 1,sample_rate() };
 }
 
-void video::PeriodicSignalSource::set_time_base(AVRational value)
+void video::PeriodicSignalSource::SetTimeBase(AVRational value)
 {
 	throw jc::NotSupportedException();
 }
