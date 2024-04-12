@@ -61,9 +61,9 @@ AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamWrapper &strea
 	_sample_format = stream.sample_format();
 	_sample_rate = stream.SampleRate();
 	_ch_layout = stream.ChannelLayout();
-	_width = stream.width();
-	_height = stream.height();
-	_pixel_format = stream.pixel_format();
+	_width = stream.Width();
+	_height = stream.Height();
+	_pixel_format = stream.PixelFormat();
 	_frame_rate = stream.FrameRate();
 
 	return *this;
@@ -125,7 +125,7 @@ void video::AVStreamInfoCollection::SetChannelLayout(AVChannelLayout value)
 	_ch_layout = value;
 }
 
-int video::AVStreamInfoCollection::width() const
+int video::AVStreamInfoCollection::Width() const
 {
 	return _width;
 }
@@ -135,7 +135,7 @@ void video::AVStreamInfoCollection::set_width(int value)
 	_width = value;
 }
 
-int video::AVStreamInfoCollection::height() const
+int video::AVStreamInfoCollection::Height() const
 {
 	return _height;
 }
@@ -145,7 +145,7 @@ void video::AVStreamInfoCollection::set_height(int value)
 	_height = value;
 }
 
-AVPixelFormat video::AVStreamInfoCollection::pixel_format() const
+AVPixelFormat video::AVStreamInfoCollection::PixelFormat() const
 {
 	return _pixel_format;
 }

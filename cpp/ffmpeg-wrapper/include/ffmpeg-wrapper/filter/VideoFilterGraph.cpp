@@ -25,9 +25,9 @@ void VideoFilterGraph::init_buffer_filter()
 		throw jc::Exception();
 	}
 
-	av_opt_set_int(buffersrc_ctx, "width", _input_video_stream_infos.width(), AV_OPT_SEARCH_CHILDREN);
-	av_opt_set_int(buffersrc_ctx, "height", _input_video_stream_infos.height(), AV_OPT_SEARCH_CHILDREN);
-	av_opt_set_pixel_fmt(buffersrc_ctx, "pix_fmt", _input_video_stream_infos.pixel_format(), AV_OPT_SEARCH_CHILDREN);
+	av_opt_set_int(buffersrc_ctx, "width", _input_video_stream_infos.Width(), AV_OPT_SEARCH_CHILDREN);
+	av_opt_set_int(buffersrc_ctx, "height", _input_video_stream_infos.Height(), AV_OPT_SEARCH_CHILDREN);
+	av_opt_set_pixel_fmt(buffersrc_ctx, "pix_fmt", _input_video_stream_infos.PixelFormat(), AV_OPT_SEARCH_CHILDREN);
 	av_opt_set_q(buffersrc_ctx, "time_base", _input_video_stream_infos.TimeBase(), AV_OPT_SEARCH_CHILDREN);
 	av_opt_set_q(buffersrc_ctx, "FrameRate", _input_video_stream_infos.FrameRate(), AV_OPT_SEARCH_CHILDREN);
 	if (avfilter_init_str(buffersrc_ctx, nullptr) < 0)

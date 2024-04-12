@@ -159,7 +159,7 @@ void video::DecoderPipe::SetChannelLayout(AVChannelLayout value)
 	_stream_infos._ch_layout = value;
 }
 
-int video::DecoderPipe::width() const
+int video::DecoderPipe::Width() const
 {
 	return _stream_infos._width;
 }
@@ -169,7 +169,7 @@ void video::DecoderPipe::set_width(int value)
 	_stream_infos._width = value;
 }
 
-int video::DecoderPipe::height() const
+int video::DecoderPipe::Height() const
 {
 	return _stream_infos._height;
 }
@@ -179,7 +179,7 @@ void video::DecoderPipe::set_height(int value)
 	_stream_infos._height = value;
 }
 
-AVPixelFormat video::DecoderPipe::pixel_format() const
+AVPixelFormat video::DecoderPipe::PixelFormat() const
 {
 	return _stream_infos._pixel_format;
 }

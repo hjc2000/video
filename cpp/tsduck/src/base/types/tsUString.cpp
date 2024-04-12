@@ -468,7 +468,7 @@ namespace {
 // Get the display width in characters.
 //----------------------------------------------------------------------------
 
-ts::UString::size_type ts::UString::width() const
+ts::UString::size_type ts::UString::Width() const
 {
     if (empty()) {
         return 0;
@@ -1039,7 +1039,7 @@ ts::UString ts::UString::toSplitLines(size_type maxWidth, const ts::UString& oth
 
 void ts::UString::justifyLeft(size_type wid, UChar pad, bool truncate, size_t spacesBeforePad)
 {
-    const size_type len = width();
+    const size_type len = Width();
     if (truncate && len > wid) {
         truncateWidth(wid);
     }
@@ -1064,7 +1064,7 @@ ts::UString ts::UString::toJustifiedLeft(size_type wid, UChar pad, bool truncate
 
 void ts::UString::justifyRight(size_type wid, UChar pad, bool truncate, size_t spacesAfterPad)
 {
-    const size_type len = width();
+    const size_type len = Width();
     if (truncate && len > wid) {
         truncateWidth(wid, RIGHT_TO_LEFT);
     }
@@ -1089,7 +1089,7 @@ ts::UString ts::UString::toJustifiedRight(size_type wid, UChar pad, bool truncat
 
 void ts::UString::justifyCentered(size_type wid, UChar pad, bool truncate, size_t spacesAroundPad)
 {
-    const size_type len = width();
+    const size_type len = Width();
     if (truncate && len > wid) {
         truncateWidth(wid);
     }
@@ -1119,7 +1119,7 @@ ts::UString ts::UString::toJustifiedCentered(size_type wid, UChar pad, bool trun
 
 void ts::UString::justify(const UString& right, size_type wid, UChar pad, size_t spacesAroundPad)
 {
-    const size_type len = this->width() + right.width();
+    const size_type len = this->Width() + right.Width();
     if (len < wid) {
         const size_t padWidth = wid - len;
         const size_t leftSpaces = std::min(spacesAroundPad, padWidth);
@@ -2149,7 +2149,7 @@ void ts::UString::ArgMixInContext::processArg()
             assert(false);
         }
         // Truncate the string.
-        size_t wid = value.width();
+        size_t wid = value.Width();
         if (maxWidth < wid) {
             value.truncateWidth(maxWidth, leftJustified ? LEFT_TO_RIGHT : RIGHT_TO_LEFT);
             wid = maxWidth;

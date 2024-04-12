@@ -624,10 +624,10 @@ namespace ts {
         //! Get the display width in characters.
         //! Any combining diacritical character is not counted in the width since it is combined with the preceding
         //! character. Similarly, any surrogate pair is considered as one single character. As a general rule,
-        //! width() is always lower than or equal to length(), the number of characters in the string.
+        //! Width() is always lower than or equal to length(), the number of characters in the string.
         //! @return The display width in characters.
         //!
-        size_type width() const;
+        size_type Width() const;
 
         //!
         //! Count displayed positions inside a string.

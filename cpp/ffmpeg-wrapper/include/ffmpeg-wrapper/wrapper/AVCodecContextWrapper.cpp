@@ -107,9 +107,9 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 	// 设置编码器参数
 	(*ctx)->codec_type = AVMediaType::AVMEDIA_TYPE_VIDEO;
 
-	(*ctx)->width = infos.width();
-	(*ctx)->height = infos.height();
-	(*ctx)->pix_fmt = infos.pixel_format();
+	(*ctx)->width = infos.Width();
+	(*ctx)->height = infos.Height();
+	(*ctx)->pix_fmt = infos.PixelFormat();
 
 	(*ctx)->time_base = infos.TimeBase();
 	(*ctx)->framerate = infos.FrameRate();
@@ -264,7 +264,7 @@ void AVCodecContextWrapper::SetSampleRate(int value)
 	_wrapped_obj->sample_rate = value;
 }
 
-int AVCodecContextWrapper::width() const
+int AVCodecContextWrapper::Width() const
 {
 	return _wrapped_obj->width;
 }
@@ -273,7 +273,7 @@ void AVCodecContextWrapper::set_width(int value)
 	_wrapped_obj->width = value;
 }
 
-int AVCodecContextWrapper::height() const
+int AVCodecContextWrapper::Height() const
 {
 	return _wrapped_obj->height;
 }
@@ -282,7 +282,7 @@ void AVCodecContextWrapper::set_height(int value)
 	_wrapped_obj->height = value;
 }
 
-AVPixelFormat AVCodecContextWrapper::pixel_format() const
+AVPixelFormat AVCodecContextWrapper::PixelFormat() const
 {
 	return _wrapped_obj->pix_fmt;
 }

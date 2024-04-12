@@ -11,9 +11,9 @@ namespace video
 	public:
 		IVideoFrameInfoCollection &operator=(IVideoFrameInfoCollection &another)
 		{
-			set_width(another.width());
-			set_height(another.height());
-			set_pixel_format(another.pixel_format());
+			set_width(another.Width());
+			set_height(another.Height());
+			set_pixel_format(another.PixelFormat());
 			return *this;
 		}
 
@@ -24,13 +24,13 @@ namespace video
 		}
 
 	public:
-		virtual int width() const = 0;
+		virtual int Width() const = 0;
 		virtual void set_width(int value) = 0;
 
-		virtual int height() const = 0;
+		virtual int Height() const = 0;
 		virtual void set_height(int value) = 0;
 
-		virtual AVPixelFormat pixel_format() const = 0;
+		virtual AVPixelFormat PixelFormat() const = 0;
 		virtual void set_pixel_format(AVPixelFormat value) = 0;
 	};
 }
@@ -43,9 +43,9 @@ namespace video
 */
 inline bool operator==(video::IVideoFrameInfoCollection &left, video::IVideoFrameInfoCollection &right)
 {
-	return left.width() == right.width() &&
-		left.height() == right.height() &&
-		left.pixel_format() == right.pixel_format();
+	return left.Width() == right.Width() &&
+		left.Height() == right.Height() &&
+		left.PixelFormat() == right.PixelFormat();
 }
 
 inline bool operator==(video::IVideoFrameInfoCollection const &left, video::IVideoFrameInfoCollection const &right)

@@ -16,9 +16,9 @@ video::VideoFramePlayer::VideoFramePlayer(
 		new VideoFrameDisplayer{
 			x,
 			y,
-			_video_stream_infos.width(),
-			_video_stream_infos.height(),
-			_video_stream_infos.pixel_format(),
+			_video_stream_infos.Width(),
+			_video_stream_infos.Height(),
+			_video_stream_infos.PixelFormat(),
 			window_title,
 			flags,
 		}

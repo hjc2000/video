@@ -1,6 +1,6 @@
 #include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>
 
-int video::VideoFrameInfoCollection::width() const
+int video::VideoFrameInfoCollection::Width() const
 {
 	return _width;
 }
@@ -10,7 +10,7 @@ void video::VideoFrameInfoCollection::set_width(int value)
 	_width = value;
 }
 
-int video::VideoFrameInfoCollection::height() const
+int video::VideoFrameInfoCollection::Height() const
 {
 	return _height;
 }
@@ -20,7 +20,7 @@ void video::VideoFrameInfoCollection::set_height(int value)
 	_height = value;
 }
 
-AVPixelFormat video::VideoFrameInfoCollection::pixel_format() const
+AVPixelFormat video::VideoFrameInfoCollection::PixelFormat() const
 {
 	return _pixel_format;
 }

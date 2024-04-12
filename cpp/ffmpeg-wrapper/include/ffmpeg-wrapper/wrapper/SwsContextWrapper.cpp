@@ -12,12 +12,12 @@ video::SwsContextWrapper::SwsContextWrapper(
 	_out_video_frame_infos = out_video_frame_infos;
 
 	_wrapped_obj = sws_getContext(
-		in_video_frame_infos.width(),
-		in_video_frame_infos.height(),
-		in_video_frame_infos.pixel_format(),
-		out_video_frame_infos.width(),
-		out_video_frame_infos.height(),
-		out_video_frame_infos.pixel_format(),
+		in_video_frame_infos.Width(),
+		in_video_frame_infos.Height(),
+		in_video_frame_infos.PixelFormat(),
+		out_video_frame_infos.Width(),
+		out_video_frame_infos.Height(),
+		out_video_frame_infos.PixelFormat(),
 		SWS_FAST_BILINEAR,// 使用双线性快速滤波算法
 		nullptr,
 		nullptr,

@@ -11,17 +11,11 @@ namespace video
 		virtual ~IVideoStreamInfoCollection() = default;
 
 	public:
-		IVideoStreamInfoCollection &operator=(IVideoStreamInfoCollection &value)
+		IVideoStreamInfoCollection &operator=(IVideoStreamInfoCollection const &value)
 		{
 			IVideoFrameInfoCollection::operator=(value);
 			SetTimeBase(value.TimeBase());
 			SetFrameRate(value.FrameRate());
-			return *this;
-		}
-
-		IVideoStreamInfoCollection &operator=(IVideoStreamInfoCollection const &value)
-		{
-			*this = (IVideoStreamInfoCollection &)value;
 			return *this;
 		}
 
@@ -40,20 +34,10 @@ namespace video
 	};
 }
 
-/**
- * @brief 比较两个 IVideoStreamInfoCollection 是否相等。
- * @param left
- * @param right
- * @return
-*/
-inline bool operator==(video::IVideoStreamInfoCollection &left, video::IVideoStreamInfoCollection &right)
-{
-	return (video::IVideoFrameInfoCollection &)left == (video::IVideoFrameInfoCollection &)right &&
-		left.TimeBase() == right.TimeBase() &&
-		left.FrameRate() == right.FrameRate();
-}
-
-inline bool operator==(video::IVideoStreamInfoCollection const &left, video::IVideoStreamInfoCollection const &right)
-{
-	return (video::IVideoStreamInfoCollection &)left == (video::IVideoStreamInfoCollection &)right;
-}
+/// <summary>
+///		比较两个 IVideoStreamInfoCollection 是否相等。
+/// </summary>
+/// <param name="left"></param>
+/// <param name="right"></param>
+/// <returns></returns>
+bool operator==(video::IVideoStreamInfoCollection const &left, video::IVideoStreamInfoCollection const &right);

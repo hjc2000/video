@@ -75,11 +75,11 @@ namespace video
 
 		#pragma region 通过 IVideoStreamInfoCollection 继承
 	public:
-		int width() const override;
+		int Width() const override;
 		void set_width(int value) override;
-		int height() const override;
+		int Height() const override;
 		void set_height(int value) override;
-		AVPixelFormat pixel_format() const override;
+		AVPixelFormat PixelFormat() const override;
 		void set_pixel_format(AVPixelFormat value) override;
 		AVRational FrameRate() const override;
 		void SetFrameRate(AVRational value) override;

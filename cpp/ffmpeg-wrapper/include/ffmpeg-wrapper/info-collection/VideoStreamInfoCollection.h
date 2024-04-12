@@ -38,7 +38,7 @@ namespace video
 
 	public:
 		int _width = 0;
-		int width() const override
+		int Width() const override
 		{
 			return _width;
 		}
@@ -48,7 +48,7 @@ namespace video
 		}
 
 		int _height = 0;
-		int height() const override
+		int Height() const override
 		{
 			return _height;
 		}
@@ -58,7 +58,7 @@ namespace video
 		}
 
 		AVPixelFormat _pixel_format = AVPixelFormat{};
-		AVPixelFormat pixel_format() const override
+		AVPixelFormat PixelFormat() const override
 		{
 			return _pixel_format;
 		}

@@ -301,18 +301,18 @@ std::ostream& ts::Service::Display(std::ostream& strm,
 
     // List fields which are present
     uint32_t fields = 0;
-    size_t name_width = h_name.width();
-    size_t provider_width = h_provider.width();
+    size_t name_width = h_name.Width();
+    size_t provider_width = h_provider.Width();
     size_t count = 0;
     for (ITERATOR it = begin; it != end; ++it) {
         count++;
         fields |= it->getFields();
         if (it->_name.has_value()) {
-            name_width = std::max(name_width, it->_name.value().width());
+            name_width = std::max(name_width, it->_name.value().Width());
             fields |= NAME;
         }
         if (it->_provider.has_value()) {
-            provider_width = std::max(provider_width, it->_provider.value().width());
+            provider_width = std::max(provider_width, it->_provider.value().Width());
             fields |= PROVIDER;
         }
     }

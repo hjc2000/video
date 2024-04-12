@@ -121,8 +121,8 @@ void ts::Grid::putMultiLine(const UString& text)
 
 void ts::Grid::putLine(const UString& left, const UString& right, bool oneLine)
 {
-    const size_t leftWidth = left.width();
-    const size_t rightWidth = right.width();
+    const size_t leftWidth = left.Width();
+    const size_t rightWidth = right.Width();
 
     if (leftWidth + _marginWidth + rightWidth <= _contentWidth) {
         // Display on one line, no truncation.
@@ -371,8 +371,8 @@ void ts::Grid::putLayout(const std::initializer_list<ColumnText> text)
                 // Two text, a left-justified one and a right-justified one.
                 // The layout is:  text1 one-space pad-characters one-space text2.
                 assert(iLayout._justif == ColumnLayout::BOTH);
-                size_t leftWidth = text1.width();
-                size_t rightWidth = text2.width();
+                size_t leftWidth = text1.Width();
+                size_t rightWidth = text2.Width();
                 // Check if both texts fit in the line (the 2 spaces are never removed).
                 const bool fits = leftWidth + 2 + rightWidth <= iLayout._width;
                 if (!fits) {
