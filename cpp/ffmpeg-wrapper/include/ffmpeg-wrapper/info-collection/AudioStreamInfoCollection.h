@@ -49,7 +49,7 @@ namespace video
 			_time_base = value;
 		}
 
-		AVSampleFormat sample_format() override
+		AVSampleFormat sample_format() const override
 		{
 			return _sample_format;
 		}

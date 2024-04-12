@@ -67,7 +67,7 @@ namespace video
 	public:
 		AVRational TimeBase() const override;
 		void SetTimeBase(AVRational value) override;
-		AVSampleFormat sample_format() override;
+		AVSampleFormat sample_format() const override;
 		void set_sample_format(AVSampleFormat value) override;
 		int sample_rate() const override;
 		void set_sample_rate(int value) override;

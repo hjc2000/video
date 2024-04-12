@@ -129,7 +129,7 @@ void video::DecoderPipe::SetTimeBase(AVRational value)
 	_stream_infos._timebase = value;
 }
 
-AVSampleFormat video::DecoderPipe::sample_format()
+AVSampleFormat video::DecoderPipe::sample_format() const
 {
 	return _stream_infos._sample_format;
 }

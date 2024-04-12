@@ -34,7 +34,7 @@ namespace video
 		virtual AVRational TimeBase() const = 0;
 		virtual void SetTimeBase(AVRational value) = 0;
 
-		virtual AVSampleFormat sample_format() = 0;
+		virtual AVSampleFormat sample_format() const = 0;
 		virtual void set_sample_format(AVSampleFormat value) = 0;
 
 		virtual int sample_rate() const = 0;

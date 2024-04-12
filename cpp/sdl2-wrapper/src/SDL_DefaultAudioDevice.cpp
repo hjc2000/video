@@ -53,7 +53,7 @@ void video::SDL_DefaultAudioDevice::SetTimeBase(AVRational value)
 	throw jc::NotSupportedException();
 }
 
-AVSampleFormat video::SDL_DefaultAudioDevice::sample_format()
+AVSampleFormat video::SDL_DefaultAudioDevice::sample_format() const
 {
 	return _abtained_spec.sample_format();
 }

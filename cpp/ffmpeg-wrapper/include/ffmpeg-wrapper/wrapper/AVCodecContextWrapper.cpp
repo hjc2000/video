@@ -244,7 +244,7 @@ void AVCodecContextWrapper::set_ch_layout(AVChannelLayout value)
 	_wrapped_obj->ch_layout = value;
 }
 
-AVSampleFormat AVCodecContextWrapper::sample_format()
+AVSampleFormat AVCodecContextWrapper::sample_format() const
 {
 	return _wrapped_obj->sample_fmt;
 }

@@ -95,7 +95,7 @@ void video::AVStreamInfoCollection::SetTimeBase(AVRational value)
 	_timebase = value;
 }
 
-AVSampleFormat video::AVStreamInfoCollection::sample_format()
+AVSampleFormat video::AVStreamInfoCollection::sample_format() const
 {
 	return _sample_format;
 }

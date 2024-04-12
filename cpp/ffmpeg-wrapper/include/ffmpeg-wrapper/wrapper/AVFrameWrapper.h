@@ -157,7 +157,7 @@ namespace video
 		std::string ToString();
 
 		#pragma region IAudioFrameInfoCollection
-		AVSampleFormat sample_format() override;
+		AVSampleFormat sample_format() const override;
 		void set_sample_format(AVSampleFormat value) override;
 
 		int nb_samples() override;

@@ -96,7 +96,7 @@ namespace video
 		///		如果 SDL_AudioSpec 的 format 字段内储存的 SDL 采样格式没有对应的 AVSampleFormat 值，
 		///		则会返回 AVSampleFormat::AV_SAMPLE_FMT_NONE
 		/// </returns>
-		AVSampleFormat sample_format() override;
+		AVSampleFormat sample_format() const override;
 
 		/// <summary>
 		///		设置采样格式

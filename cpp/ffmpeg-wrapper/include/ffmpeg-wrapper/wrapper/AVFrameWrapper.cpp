@@ -166,7 +166,7 @@ std::string AVFrameWrapper::ToString()
 	);
 }
 
-AVSampleFormat video::AVFrameWrapper::sample_format()
+AVSampleFormat video::AVFrameWrapper::sample_format() const
 {
 	return (AVSampleFormat)_wrapped_obj->format;
 }
