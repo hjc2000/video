@@ -19,7 +19,6 @@ namespace video
 		AVStreamInfoCollection(AVStreamInfoCollection const &stream);
 		AVStreamInfoCollection(AVStreamWrapper const &stream);
 		~AVStreamInfoCollection();
-
 		AVStreamInfoCollection &operator=(AVStreamInfoCollection const &stream);
 		AVStreamInfoCollection &operator=(AVStreamWrapper const &stream);
 
@@ -29,7 +28,7 @@ namespace video
 		/// </summary>
 		/// <param name="another"></param>
 		/// <returns></returns>
-		bool operator==(AVStreamInfoCollection const &another)
+		bool operator==(AVStreamInfoCollection const &another) const
 		{
 			return this == &another;
 		}
@@ -39,7 +38,7 @@ namespace video
 
 	public:
 		int _index = -1;
-		int Index();
+		int Index()  const;
 		void SetIndex(int value);
 
 		AVMediaType _media_type{};

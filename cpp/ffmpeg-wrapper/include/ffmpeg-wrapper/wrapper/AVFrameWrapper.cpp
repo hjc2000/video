@@ -11,20 +11,20 @@ AVFrameWrapper::AVFrameWrapper()
 	_wrapped_obj = av_frame_alloc();
 }
 
-AVFrameWrapper::AVFrameWrapper(IAudioStreamInfoCollection &infos, int nb_samples) :AVFrameWrapper()
+AVFrameWrapper::AVFrameWrapper(IAudioStreamInfoCollection const &infos, int nb_samples) :AVFrameWrapper()
 {
 	IAudioStreamInfoCollection::operator=(infos);
 	SetSampleCount(nb_samples);
 	get_buffer(0);
 }
 
-AVFrameWrapper::AVFrameWrapper(IAudioFrameInfoCollection &infos) :AVFrameWrapper()
+AVFrameWrapper::AVFrameWrapper(IAudioFrameInfoCollection const &infos) :AVFrameWrapper()
 {
 	IAudioFrameInfoCollection::operator=(infos);
 	get_buffer(0);
 }
 
-AVFrameWrapper::AVFrameWrapper(IVideoFrameInfoCollection &infos) :AVFrameWrapper()
+AVFrameWrapper::AVFrameWrapper(IVideoFrameInfoCollection const &infos) :AVFrameWrapper()
 {
 	IVideoFrameInfoCollection::operator=(infos);
 	get_buffer(0);

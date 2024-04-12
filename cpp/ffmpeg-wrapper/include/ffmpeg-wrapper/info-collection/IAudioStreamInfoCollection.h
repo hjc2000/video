@@ -13,8 +13,6 @@ namespace video
 	{
 	public:
 		virtual ~IAudioStreamInfoCollection() {}
-
-	public:
 		IAudioStreamInfoCollection &operator=(IAudioStreamInfoCollection const &value);
 
 	public:

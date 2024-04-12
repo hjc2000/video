@@ -7,8 +7,6 @@ namespace video
 	{
 	public:
 		virtual ~IVideoFrameInfoCollection() {}
-
-	public:
 		IVideoFrameInfoCollection &operator=(IVideoFrameInfoCollection const &another);
 
 	public:

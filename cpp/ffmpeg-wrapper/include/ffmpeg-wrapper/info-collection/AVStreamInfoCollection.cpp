@@ -63,7 +63,7 @@ void video::AVStreamInfoCollection::CopyCodecParamFrom(AVCodecParameters const *
 	avcodec_parameters_copy(_codec_params, src);
 }
 
-int video::AVStreamInfoCollection::Index()
+int video::AVStreamInfoCollection::Index() const
 {
 	return _index;
 }

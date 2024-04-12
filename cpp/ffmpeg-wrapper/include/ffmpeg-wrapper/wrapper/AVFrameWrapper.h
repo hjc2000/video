@@ -19,7 +19,6 @@ namespace video
 		public IAudioFrameInfoCollection,
 		public IVideoFrameInfoCollection
 	{
-		#pragma region 构造函数，析构函数
 	public:
 		AVFrameWrapper();
 
@@ -28,26 +27,24 @@ namespace video
 		/// </summary>
 		/// <param name="infos"></param>
 		/// <param name="nb_samples"></param>
-		AVFrameWrapper(IAudioStreamInfoCollection &infos, int nb_samples);
+		AVFrameWrapper(IAudioStreamInfoCollection const &infos, int nb_samples);
 
 		/// <summary>
 		///		构造音频帧。会分配缓冲区。
 		/// </summary>
 		/// <param name="infos"></param>
-		AVFrameWrapper(IAudioFrameInfoCollection &infos);
+		AVFrameWrapper(IAudioFrameInfoCollection const &infos);
 
 		/// <summary>
 		///		根据 infos 中的信息构造视频帧。会分配缓冲区。
 		/// </summary>
 		/// <param name="infos"></param>
-		AVFrameWrapper(IVideoFrameInfoCollection &infos);
+		AVFrameWrapper(IVideoFrameInfoCollection const &infos);
 
 		AVFrameWrapper(AVFrameWrapper const &another);
 
 		~AVFrameWrapper();
-		#pragma endregion
 
-	public:
 		AVFrameWrapper &operator=(AVFrameWrapper const &another);
 
 	private:

@@ -10,20 +10,20 @@ namespace video
 	{
 		#pragma region 生命周期
 	public:
-		AudioFrameInfoCollection() {}
+		AudioFrameInfoCollection() = default;
 
-		AudioFrameInfoCollection(IAudioStreamInfoCollection &infos, int nb_samples)
+		AudioFrameInfoCollection(IAudioStreamInfoCollection const &infos, int nb_samples)
 		{
 			IAudioStreamInfoCollection::operator=(infos);
 			_nb_samples = nb_samples;
 		}
 
-		AudioFrameInfoCollection(IAudioFrameInfoCollection &infos)
+		AudioFrameInfoCollection(IAudioFrameInfoCollection const &infos)
 		{
 			IAudioFrameInfoCollection::operator=(infos);
 		}
 
-		AudioFrameInfoCollection &operator=(IAudioFrameInfoCollection &value)
+		AudioFrameInfoCollection &operator=(IAudioFrameInfoCollection const &value)
 		{
 			IAudioFrameInfoCollection::operator=(value);
 			return *this;

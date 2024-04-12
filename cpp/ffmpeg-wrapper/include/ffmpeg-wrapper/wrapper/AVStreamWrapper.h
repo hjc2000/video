@@ -18,7 +18,6 @@ namespace video
 		AVStreamWrapper();
 		AVStreamWrapper(AVStream *p);
 		AVStreamWrapper(AVStreamWrapper const &other);
-
 		AVStreamWrapper &operator=(AVStreamWrapper const &other);
 
 	public:

@@ -8,7 +8,7 @@ namespace video
 	{
 		#pragma region 生命周期
 	public:
-		AudioStreamInfoCollection() {}
+		AudioStreamInfoCollection() = default;
 
 		AudioStreamInfoCollection(shared_ptr<IAudioStreamInfoCollection> value)
 		{
@@ -20,11 +20,6 @@ namespace video
 			*this = value;
 		}
 
-		AudioStreamInfoCollection &operator=(IAudioStreamInfoCollection &value)
-		{
-			IAudioStreamInfoCollection::operator=(value);
-			return *this;
-		}
 		AudioStreamInfoCollection &operator=(IAudioStreamInfoCollection const &value)
 		{
 			IAudioStreamInfoCollection::operator=(value);

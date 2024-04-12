@@ -9,8 +9,6 @@ namespace video
 	{
 	public:
 		virtual ~IVideoStreamInfoCollection() = default;
-
-	public:
 		IVideoStreamInfoCollection &operator=(IVideoStreamInfoCollection const &value);
 
 	public:
