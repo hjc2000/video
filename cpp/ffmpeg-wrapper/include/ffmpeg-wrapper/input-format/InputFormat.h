@@ -52,9 +52,6 @@ namespace video
 
 		/// <summary>
 		///		从封装中读取包。
-		///		* 在实际读取前，会先调用 packet 的 unref 方法。
-		///		* ffmpeg 原生的读取包不会将流的时间基赋值给 AVPacket 的 time_base 字段。
-		///		  本函数进行扩展，读取的包的 time_base 字段会被赋值。
 		/// </summary>
 		/// <param name="packet">读取到的包会写入这里。</param>
 		/// <returns>成功返回 0，失败返回错误代码</returns>
@@ -64,10 +61,7 @@ namespace video
 		///		获取本格式的播放时长
 		/// </summary>
 		/// <returns></returns>
-		std::chrono::seconds DurationInSeconds()
-		{
-			return std::chrono::seconds{ _wrapped_obj->duration / AV_TIME_BASE };
-		}
+		std::chrono::seconds DurationInSeconds();
 
 		/// <summary>
 		///		流的数量

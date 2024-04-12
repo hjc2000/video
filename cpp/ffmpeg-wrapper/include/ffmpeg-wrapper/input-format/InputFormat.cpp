@@ -38,6 +38,7 @@ video::InputFormat::InputFormat(std::string url, AVInputFormat const *fmt, AVDic
 
 video::InputFormat::InputFormat(shared_ptr<AVIOContextWrapper> io_context)
 {
+	_url = "costom io context";
 	_io_context = io_context;
 	_wrapped_obj = avformat_alloc_context();
 	_wrapped_obj->pb = *_io_context;
@@ -55,7 +56,7 @@ video::InputFormat::InputFormat(shared_ptr<AVIOContextWrapper> io_context)
 video::InputFormat::InputFormat(shared_ptr<Stream> input_stream) :
 	InputFormat(shared_ptr<AVIOContextWrapper>{ new AVIOContextWrapper{ false,input_stream } })
 {
-
+	_url = "costom stream";
 }
 
 InputFormat::~InputFormat()
@@ -116,6 +117,11 @@ int InputFormat::ReadPacket(AVPacketWrapper &packet)
 	}
 
 	return ret;
+}
+
+std::chrono::seconds video::InputFormat::DurationInSeconds()
+{
+	return std::chrono::seconds{ _wrapped_obj->duration / AV_TIME_BASE };
 }
 
 int InputFormat::StreamCount()
