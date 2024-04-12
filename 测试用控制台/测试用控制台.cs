@@ -1,7 +1,4 @@
 ﻿using PInvokeLib;
 
-CppString cpp_string = new()
-{
-	Value = "666"
-};
-Console.WriteLine(cpp_string);
+using MemoryStream memoryStream = new();
+using DotNetStreamHelper dotNetStreamHelper = new(memoryStream);

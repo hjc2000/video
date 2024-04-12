@@ -1,4 +1,7 @@
 #include"DotNetStream.h"
+#include<iostream>
+
+using namespace std;
 
 DotNetStream::DotNetStream(
 	uint8_t(*can_read)(),
@@ -124,6 +127,7 @@ DotNetStream *CreateDotNetStream(
 	uint8_t(*error)()
 )
 {
+	cout << "新建 DotNetStream" << endl;
 	return new DotNetStream{
 		can_read,
 		can_write,
@@ -142,5 +146,6 @@ DotNetStream *CreateDotNetStream(
 
 void FreeDotNetStream(DotNetStream *obj)
 {
+	cout << "删除 DotNetStream" << endl;
 	delete obj;
 }
