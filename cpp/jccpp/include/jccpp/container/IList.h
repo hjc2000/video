@@ -6,7 +6,6 @@ class IList
 public:
 	virtual ~IList() {}
 
-public:
 	// 添加元素到列表的末尾
 	virtual void Add(const T &item) = 0;
 
@@ -41,6 +40,49 @@ public:
 
 	// 通过索引访问元素
 	virtual T &operator[](int index) = 0;
+
+	#pragma region 迭代器
+	class IListIterator
+	{
+	private:
+		IList<T> *_list;
+		int _index;
+
+	public:
+		IListIterator(IList<T> *list, int index) :
+			_list(list),
+			_index(index)
+		{
+
+		}
+
+		T &operator*() const
+		{
+			return (*_list)[_index];
+		}
+
+		IListIterator &operator++()
+		{
+			++_index;
+			return *this;
+		}
+
+		bool operator!=(IListIterator const &other) const
+		{
+			return _index != other._index;
+		}
+	};
+
+	IListIterator begin()
+	{
+		return IListIterator(this, 0);
+	}
+
+	IListIterator end()
+	{
+		return IListIterator(this, Count());
+	}
+	#pragma endregion
 };
 
 /**

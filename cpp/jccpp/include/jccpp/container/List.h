@@ -7,8 +7,11 @@
 template<typename T>
 class List :public IList<T>
 {
+private:
+	std::vector<T> _vector;
+
 public:
-	List() {}
+	List() = default;
 
 	List(List const &another)
 	{
@@ -32,10 +35,6 @@ public:
 		return *this;
 	}
 
-private:
-	std::vector<T> _vector;
-
-public:
 	// 添加元素到列表的末尾
 	using IList<T>::Add;
 	void Add(T const &item) override
@@ -126,21 +125,4 @@ public:
 	{
 		return _vector;
 	}
-
-	#pragma region 迭代器
-	// 提供迭代器的类型定义
-	using iterator = typename std::vector<T>::iterator;
-
-	// 提供开始迭代器
-	iterator begin()
-	{
-		return _vector.begin();
-	}
-
-	// 提供结束迭代器
-	iterator end()
-	{
-		return _vector.end();
-	}
-	#pragma endregion
 };
