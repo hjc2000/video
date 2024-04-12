@@ -43,6 +43,9 @@ public partial class DotNetStreamHelper
 		ErrorDelegate error
 	);
 
+	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "FreeDotNetStream")]
+	private static unsafe partial void FreeDotNetStream(nuint cpp_obj);
+
 	#region 与委托兼容的方法
 	private byte CanRead()
 	{
@@ -226,9 +229,23 @@ public partial class DotNetStreamHelper : IDisposable
 		}
 	}
 
+	~DotNetStreamHelper()
+	{
+		Dispose();
+	}
+
+	private bool _disposed = false;
 	public void Dispose()
 	{
-		throw new NotImplementedException();
+		if (_disposed)
+		{
+			return;
+		}
+
+		_disposed = true;
+		GC.SuppressFinalize(this);
+
+		FreeDotNetStream(_cpp_obj);
 	}
 
 	private Stream _stream;
