@@ -1,9 +1,9 @@
 #pragma once
-#include<jccpp/Exception.h>
 #include<atomic>
 #include<chrono>
 #include<functional>
 #include<iostream>
+#include<jccpp/Exception.h>
 #include<map>
 #include<memory>
 #include<mutex>
@@ -32,7 +32,7 @@ public:
 	///		是否需要取消
 	/// </summary>
 	/// <returns></returns>
-	bool IsCancellationRequested();
+	bool IsCancellationRequested() const;
 
 	/// <summary>
 	///		注册一个委托，当令牌取消时会被调用。可以多次调用注册多个委托。
@@ -60,7 +60,7 @@ private:
 
 public:
 	bool IsCancellationRequested();
-	shared_ptr<CancellationToken> Token();
+	shared_ptr<CancellationToken> Token() const;
 	void Cancel();
 };
 

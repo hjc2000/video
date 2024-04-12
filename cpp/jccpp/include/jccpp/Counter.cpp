@@ -115,7 +115,7 @@ void Counter::Reset()
 	_count = 0;
 }
 
-uint64_t Counter::CurrentValue()
+uint64_t Counter::CurrentValue() const
 {
 	return _count;
 }

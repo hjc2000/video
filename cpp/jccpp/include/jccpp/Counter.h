@@ -36,7 +36,7 @@ namespace jc
 		///		获取计数器的当前值。
 		/// </summary>
 		/// <returns></returns>
-		uint64_t CurrentValue();
+		uint64_t CurrentValue() const;
 
 		/// <summary>
 		///		设置计数器的当前值。

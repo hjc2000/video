@@ -14,7 +14,7 @@ void CancellationToken::Cancel()
 	}
 }
 
-bool CancellationToken::IsCancellationRequested()
+bool CancellationToken::IsCancellationRequested() const
 {
 	return _is_cancellation_request;
 }
@@ -40,7 +40,7 @@ bool CancellationTokenSource::IsCancellationRequested()
 	return _is_cancellation_request;
 }
 
-shared_ptr<CancellationToken> CancellationTokenSource::Token()
+shared_ptr<CancellationToken> CancellationTokenSource::Token() const
 {
 	return _token;
 }
