@@ -23,7 +23,7 @@ namespace video
 
 		IAudioStreamInfoCollection &operator=(IAudioStreamInfoCollection &value)
 		{
-			set_time_base(value.time_base());
+			set_time_base(value.TimeBase());
 			set_sample_format(value.sample_format());
 			set_sample_rate(value.sample_rate());
 			set_ch_layout(value.ch_layout());
@@ -31,7 +31,7 @@ namespace video
 		}
 
 	public:
-		virtual AVRational time_base() = 0;
+		virtual AVRational TimeBase() = 0;
 		virtual void set_time_base(AVRational value) = 0;
 
 		virtual AVSampleFormat sample_format() = 0;
@@ -114,7 +114,7 @@ namespace video
 */
 inline bool operator==(video::IAudioStreamInfoCollection &left, video::IAudioStreamInfoCollection &right)
 {
-	return left.time_base() == right.time_base() &&
+	return left.TimeBase() == right.TimeBase() &&
 		left.sample_format() == right.sample_format() &&
 		left.sample_rate() == right.sample_rate() &&
 		left.ch_layout() == right.ch_layout();

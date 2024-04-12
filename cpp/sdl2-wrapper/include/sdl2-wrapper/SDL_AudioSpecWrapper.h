@@ -86,7 +86,7 @@ namespace video
 		}
 
 		// 通过 IAudioFrameInfoCollection 继承
-		AVRational time_base() override;
+		AVRational TimeBase() override;
 		void set_time_base(AVRational value) override;
 
 		/// <summary>

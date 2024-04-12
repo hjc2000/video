@@ -72,13 +72,13 @@ namespace video
 		{
 			return _frame_rate;
 		}
-		void set_frame_rate(AVRational value) override
+		void SetFrameRate(AVRational value) override
 		{
 			_frame_rate = value;
 		}
 
 		AVRational _time_base = AVRational{};
-		virtual AVRational time_base() override
+		virtual AVRational TimeBase() override
 		{
 			return _time_base;
 		}

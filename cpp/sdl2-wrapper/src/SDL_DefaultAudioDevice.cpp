@@ -43,9 +43,9 @@ void SDL_DefaultAudioDevice::Pause(bool pause)
 	SDL_PauseAudio(pause);
 }
 
-AVRational video::SDL_DefaultAudioDevice::time_base()
+AVRational video::SDL_DefaultAudioDevice::TimeBase()
 {
-	return _abtained_spec.time_base();
+	return _abtained_spec.TimeBase();
 }
 
 void video::SDL_DefaultAudioDevice::set_time_base(AVRational value)

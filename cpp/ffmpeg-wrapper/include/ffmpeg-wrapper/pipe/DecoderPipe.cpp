@@ -119,7 +119,7 @@ void DecoderPipe::FlushDecoderButNotFlushConsumers()
 }
 
 #pragma region IAudioStreamInfoCollection, IVideoStreamInfoCollection
-AVRational video::DecoderPipe::time_base()
+AVRational video::DecoderPipe::TimeBase()
 {
 	return _stream_infos._timebase;
 }
@@ -194,7 +194,7 @@ AVRational video::DecoderPipe::FrameRate() const
 	return _stream_infos._frame_rate;
 }
 
-void video::DecoderPipe::set_frame_rate(AVRational value)
+void video::DecoderPipe::SetFrameRate(AVRational value)
 {
 	_stream_infos._frame_rate = value;
 }

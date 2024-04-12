@@ -65,7 +65,7 @@ namespace video
 
 		#pragma region 通过 IAudioStreamInfoCollection 继承
 	public:
-		AVRational time_base() override;
+		AVRational TimeBase() override;
 		void set_time_base(AVRational value) override;
 		AVSampleFormat sample_format() override;
 		void set_sample_format(AVSampleFormat value) override;
@@ -84,7 +84,7 @@ namespace video
 		AVPixelFormat pixel_format() override;
 		void set_pixel_format(AVPixelFormat value) override;
 		AVRational FrameRate() const override;
-		void set_frame_rate(AVRational value) override;
+		void SetFrameRate(AVRational value) override;
 		#pragma endregion
 	};
 }

@@ -46,8 +46,8 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateDecoder(AVStreamI
 	}
 	};
 
-	ctx->set_time_base(stream.time_base());
-	ctx->set_frame_rate(stream.FrameRate());
+	ctx->set_time_base(stream.TimeBase());
+	ctx->SetFrameRate(stream.FrameRate());
 
 	ctx->Open();
 	return ctx;
@@ -74,7 +74,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 	(*ctx)->ch_layout = infos.ch_layout();
 	(*ctx)->sample_fmt = infos.sample_format();
 	(*ctx)->sample_rate = infos.sample_rate();
-	(*ctx)->time_base = infos.time_base();
+	(*ctx)->time_base = infos.TimeBase();
 	if (set_global_header)
 	{
 		ctx->SetGlobalHeader();
@@ -111,7 +111,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 	(*ctx)->height = infos.height();
 	(*ctx)->pix_fmt = infos.pixel_format();
 
-	(*ctx)->time_base = infos.time_base();
+	(*ctx)->time_base = infos.TimeBase();
 	(*ctx)->framerate = infos.FrameRate();
 
 	(*ctx)->gop_size = infos.FrameRate().num / infos.FrameRate().den;
@@ -156,9 +156,9 @@ void AVCodecContextWrapper::SendFrame(AVFrameWrapper *frame)
 	if (frame)
 	{
 		// 正常送入帧
-		if (frame->time_base() != time_base())
+		if (frame->TimeBase() != TimeBase())
 		{
-			frame->ChangeTimeBase(time_base());
+			frame->ChangeTimeBase(TimeBase());
 		}
 
 		frame->make_writable();
@@ -188,7 +188,7 @@ int AVCodecContextWrapper::ReadPacket(AVPacketWrapper &packet)
 	int ret = ::avcodec_receive_packet(_wrapped_obj, packet);
 	if (!ret)
 	{
-		packet.set_time_base(time_base());
+		packet.set_time_base(TimeBase());
 	}
 
 	return ret;
@@ -226,7 +226,7 @@ int AVCodecContextWrapper::ReadFrame(AVFrameWrapper &frame)
 	if (!ret)
 	{
 		// 解码出来的帧会被设置时间戳，但是时间基不会被设置。这里补充设置。
-		frame.set_time_base(time_base());
+		frame.set_time_base(TimeBase());
 	}
 
 	return ret;
@@ -292,7 +292,7 @@ void AVCodecContextWrapper::set_pixel_format(AVPixelFormat value)
 	_wrapped_obj->pix_fmt = value;
 }
 
-AVRational AVCodecContextWrapper::time_base()
+AVRational AVCodecContextWrapper::TimeBase()
 {
 	return _wrapped_obj->time_base;
 }
@@ -307,7 +307,7 @@ AVRational AVCodecContextWrapper::FrameRate() const
 	return _wrapped_obj->framerate;
 }
 
-void AVCodecContextWrapper::set_frame_rate(AVRational value)
+void AVCodecContextWrapper::SetFrameRate(AVRational value)
 {
 	_wrapped_obj->framerate = value;
 }

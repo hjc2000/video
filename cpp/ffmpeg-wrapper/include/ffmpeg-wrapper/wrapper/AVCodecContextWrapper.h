@@ -154,10 +154,10 @@ namespace video
 		///		无用的，无效的，不要试图从解码器中获取此参数。
 		/// </summary>
 		/// <returns></returns>
-		AVRational time_base() override;
+		AVRational TimeBase() override;
 		void set_time_base(AVRational value) override;
 		AVRational FrameRate() const override;
-		void set_frame_rate(AVRational value) override;
+		void SetFrameRate(AVRational value) override;
 		#pragma endregion
 	};
 }

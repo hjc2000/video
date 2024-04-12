@@ -2,7 +2,7 @@
 #include<ffmpeg-wrapper/AVChannelLayoutExtension.h>
 #include<jccpp/Exception.h>
 
-AVRational video::SDL_AudioSpecWrapper::time_base()
+AVRational video::SDL_AudioSpecWrapper::TimeBase()
 {
 	return AVRational{ 1,sample_rate() };
 }

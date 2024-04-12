@@ -57,7 +57,7 @@ AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamWrapper &strea
 	CopyCodecParamFrom(stream->codecpar);
 	_codec = stream.Codec();
 
-	_timebase = stream.time_base();
+	_timebase = stream.TimeBase();
 	_sample_format = stream.sample_format();
 	_sample_rate = stream.sample_rate();
 	_ch_layout = stream.ch_layout();
@@ -85,7 +85,7 @@ void video::AVStreamInfoCollection::SetIndex(int value)
 	_index = value;
 }
 
-AVRational video::AVStreamInfoCollection::time_base()
+AVRational video::AVStreamInfoCollection::TimeBase()
 {
 	return _timebase;
 }
@@ -160,7 +160,7 @@ AVRational video::AVStreamInfoCollection::FrameRate() const
 	return _frame_rate;
 }
 
-void video::AVStreamInfoCollection::set_frame_rate(AVRational value)
+void video::AVStreamInfoCollection::SetFrameRate(AVRational value)
 {
 	_frame_rate = value;
 }

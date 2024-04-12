@@ -174,7 +174,7 @@ namespace video
 		///		中输出的 AVFrameWrapper 的时间基属性就是无效值。
 		/// </summary>
 		/// <returns></returns>
-		AVRational time_base() override;
+		AVRational TimeBase() override;
 		void set_time_base(AVRational value) override;
 		#pragma endregion
 

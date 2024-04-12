@@ -70,10 +70,10 @@ namespace video
 		void set_height(int value) override;
 		AVPixelFormat pixel_format() override;
 		void set_pixel_format(AVPixelFormat value) override;
-		AVRational time_base() override;
+		AVRational TimeBase() override;
 		void set_time_base(AVRational value) override;
 		AVRational FrameRate() const override;
-		void set_frame_rate(AVRational value) override;
+		void SetFrameRate(AVRational value) override;
 		#pragma endregion
 	};
 }

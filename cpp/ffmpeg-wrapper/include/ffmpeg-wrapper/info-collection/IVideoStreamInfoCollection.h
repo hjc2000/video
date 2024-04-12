@@ -14,8 +14,8 @@ namespace video
 		IVideoStreamInfoCollection &operator=(IVideoStreamInfoCollection &value)
 		{
 			IVideoFrameInfoCollection::operator=(value);
-			set_time_base(value.time_base());
-			set_frame_rate(value.FrameRate());
+			set_time_base(value.TimeBase());
+			SetFrameRate(value.FrameRate());
 			return *this;
 		}
 
@@ -26,11 +26,11 @@ namespace video
 		}
 
 	public:
-		virtual AVRational time_base() = 0;
+		virtual AVRational TimeBase() = 0;
 		virtual void set_time_base(AVRational value) = 0;
 
 		virtual AVRational FrameRate() const = 0;
-		virtual void set_frame_rate(AVRational value) = 0;
+		virtual void SetFrameRate(AVRational value) = 0;
 
 	public:
 		uint32_t FrameIntervalInMilliseconds()
@@ -54,7 +54,7 @@ namespace video
 inline bool operator==(video::IVideoStreamInfoCollection &left, video::IVideoStreamInfoCollection &right)
 {
 	return (video::IVideoFrameInfoCollection &)left == (video::IVideoFrameInfoCollection &)right &&
-		left.time_base() == right.time_base() &&
+		left.TimeBase() == right.TimeBase() &&
 		left.FrameRate() == right.FrameRate();
 }
 

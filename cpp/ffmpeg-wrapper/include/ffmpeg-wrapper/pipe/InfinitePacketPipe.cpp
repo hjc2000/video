@@ -57,7 +57,7 @@ void InfinitePacketPipe::SendPacket(AVPacketWrapper *packet)
 	}
 
 	// packet 不为空指针
-	if (packet->time_base() != AVRational{ 1,90000 })
+	if (packet->TimeBase() != AVRational{ 1,90000 })
 	{
 		cout << CODE_POS_STR << "送进来的包的时间基必须是 " << AVRational{ 1,90000 } << endl;
 	}

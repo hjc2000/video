@@ -79,7 +79,7 @@ void FpsAdjustPipe::SendFrame(AVFrameWrapper *frame)
 	{
 		int64_t rescaled_current_frame_pts = ConvertTimeStamp(
 			frame->pts(),
-			frame->time_base(),
+			frame->TimeBase(),
 			AVRational{ _desired_out_fps.den, _desired_out_fps.num }
 		);
 

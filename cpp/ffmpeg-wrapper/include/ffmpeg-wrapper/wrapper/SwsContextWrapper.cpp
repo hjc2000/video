@@ -73,7 +73,7 @@ int video::SwsContextWrapper::ReadFrame(AVFrameWrapper &frame)
 	_out_frame_avaliable = false;
 
 	frame = AVFrameWrapper{ _out_video_frame_infos };
-	frame.set_time_base(_in_frame.time_base());
+	frame.set_time_base(_in_frame.TimeBase());
 	frame.set_pts(_in_frame.pts());
 
 	int ret = sws_scale(_wrapped_obj,

@@ -39,7 +39,7 @@ namespace video
 		AVChannelLayout _ch_layout{};
 
 	public:
-		AVRational time_base() override
+		AVRational TimeBase() override
 		{
 			return _time_base;
 		}

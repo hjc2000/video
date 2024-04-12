@@ -127,7 +127,7 @@ void video::AVStreamWrapper::set_pixel_format(AVPixelFormat value)
 	_wrapped_obj->codecpar->format = value;
 }
 
-AVRational video::AVStreamWrapper::time_base()
+AVRational video::AVStreamWrapper::TimeBase()
 {
 	return _wrapped_obj->time_base;
 }
@@ -141,7 +141,7 @@ AVRational video::AVStreamWrapper::FrameRate() const
 	return _wrapped_obj->avg_frame_rate;
 }
 
-void video::AVStreamWrapper::set_frame_rate(AVRational value)
+void video::AVStreamWrapper::SetFrameRate(AVRational value)
 {
 	_wrapped_obj->avg_frame_rate = value;
 }

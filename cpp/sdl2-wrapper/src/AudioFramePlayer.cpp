@@ -8,7 +8,7 @@ using namespace video;
 
 AudioFramePlayer::AudioFramePlayer(IAudioStreamInfoCollection &infos)
 {
-	_time_base = infos.time_base();
+	_time_base = infos.TimeBase();
 	_device = shared_ptr<SDL_DefaultAudioDevice>{ new SDL_DefaultAudioDevice{} };
 	cout << _device->ToString() << endl;
 

@@ -38,7 +38,7 @@ namespace video
 		int _nb_samples = 0;
 
 	public:
-		AVRational time_base() override
+		AVRational TimeBase() override
 		{
 			return _time_base;
 		}

@@ -62,7 +62,7 @@ namespace video
 		void Pause(bool pause);
 
 		#pragma region IAudioStreamInfoCollection
-		AVRational time_base() override;
+		AVRational TimeBase() override;
 		void set_time_base(AVRational value) override;
 		AVSampleFormat sample_format() override;
 		void set_sample_format(AVSampleFormat value) override;

@@ -127,8 +127,8 @@ void AVFrameWrapper::make_writable()
 
 std::chrono::milliseconds AVFrameWrapper::PtsToMilliseconds()
 {
-	int64_t num = pts() * 1000 * time_base().num;
-	int64_t den = time_base().den;
+	int64_t num = pts() * 1000 * TimeBase().num;
+	int64_t den = TimeBase().den;
 	std::chrono::milliseconds m{ num / den };
 	return m;
 }
@@ -267,7 +267,7 @@ void video::AVFrameWrapper::set_pixel_format(AVPixelFormat value)
 	_wrapped_obj->format = value;
 }
 
-AVRational video::AVFrameWrapper::time_base()
+AVRational video::AVFrameWrapper::TimeBase()
 {
 	return _wrapped_obj->time_base;
 }

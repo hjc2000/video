@@ -94,7 +94,7 @@ void AVPacketWrapper::set_dts(int64_t value)
 	_wrapped_obj->dts = value;
 }
 
-AVRational AVPacketWrapper::time_base() const
+AVRational AVPacketWrapper::TimeBase() const
 {
 	return _wrapped_obj->time_base;
 }

@@ -132,7 +132,7 @@ namespace video
 		/// <param name="value"></param>
 		void set_sample_rate(int value);
 
-		AVRational time_base() override;
+		AVRational TimeBase() override;
 
 		/// <summary>
 		///		不支持，调用将引发 NotSupportedException
