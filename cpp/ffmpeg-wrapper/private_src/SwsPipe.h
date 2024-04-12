@@ -1,7 +1,7 @@
 #pragma once
 #include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
-#include<ffmpeg-wrapper/pipe/interface/PipeFrameSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IPipeFrameSource.h>
 #include<ffmpeg-wrapper/wrapper/SwsContextWrapper.h>
 
 namespace video

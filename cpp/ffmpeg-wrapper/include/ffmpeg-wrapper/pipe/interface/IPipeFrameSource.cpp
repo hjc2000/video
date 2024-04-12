@@ -1,4 +1,4 @@
-#include"ffmpeg-wrapper/pipe/interface/PipeFrameSource.h"
+#include"ffmpeg-wrapper/pipe/interface/IPipeFrameSource.h"
 
 using namespace video;
 

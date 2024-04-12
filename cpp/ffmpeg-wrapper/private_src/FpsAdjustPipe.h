@@ -3,7 +3,7 @@
 #include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/filter/VideoFilterGraph.h>
-#include<ffmpeg-wrapper/pipe/interface/PipeFrameSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IPipeFrameSource.h>
 #include<jccpp/Wrapper.h>
 #include<jccpp/container/List.h>
 #include<jccpp/container/Queue.h>

@@ -1,5 +1,5 @@
 #pragma once
-#include<ffmpeg-wrapper/pipe/interface/PipeFrameSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IPipeFrameSource.h>
 #include<ffmpeg-wrapper/wrapper/SwrContextWrapper.h>
 
 namespace video

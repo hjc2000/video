@@ -1,6 +1,6 @@
 #pragma once
 #include<ffmpeg-wrapper/info-collection/IVideoStreamInfoCollection.h>
-#include<ffmpeg-wrapper/pipe/interface/PipeFrameSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IPipeFrameSource.h>
 
 namespace video
 {
