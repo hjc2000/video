@@ -33,14 +33,9 @@ namespace video
 		virtual void SetFrameRate(AVRational value) = 0;
 
 	public:
-		uint32_t FrameIntervalInMilliseconds()
+		uint32_t FrameIntervalInMilliseconds() const
 		{
 			return 1000 * FrameRate().den / FrameRate().num;
-		}
-
-		double db_frame_rate()
-		{
-			return av_q2d(FrameRate());
 		}
 	};
 }

@@ -264,7 +264,7 @@ void AVCodecContextWrapper::SetSampleRate(int value)
 	_wrapped_obj->sample_rate = value;
 }
 
-int AVCodecContextWrapper::width()
+int AVCodecContextWrapper::width() const
 {
 	return _wrapped_obj->width;
 }
@@ -273,7 +273,7 @@ void AVCodecContextWrapper::set_width(int value)
 	_wrapped_obj->width = value;
 }
 
-int AVCodecContextWrapper::height()
+int AVCodecContextWrapper::height() const
 {
 	return _wrapped_obj->height;
 }
@@ -282,7 +282,7 @@ void AVCodecContextWrapper::set_height(int value)
 	_wrapped_obj->height = value;
 }
 
-AVPixelFormat AVCodecContextWrapper::pixel_format()
+AVPixelFormat AVCodecContextWrapper::pixel_format() const
 {
 	return _wrapped_obj->pix_fmt;
 }

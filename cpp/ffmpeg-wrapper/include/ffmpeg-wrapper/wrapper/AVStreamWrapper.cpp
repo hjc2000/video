@@ -100,7 +100,7 @@ void video::AVStreamWrapper::SetSampleRate(int value)
 #pragma endregion
 
 #pragma region IVideoStreamInfoCollection
-int video::AVStreamWrapper::width()
+int video::AVStreamWrapper::width() const
 {
 	return _wrapped_obj->codecpar->width;
 }
@@ -109,7 +109,7 @@ void video::AVStreamWrapper::set_width(int value)
 	_wrapped_obj->codecpar->width = value;
 }
 
-int video::AVStreamWrapper::height()
+int video::AVStreamWrapper::height() const
 {
 	return _wrapped_obj->codecpar->height;
 }
@@ -118,7 +118,7 @@ void video::AVStreamWrapper::set_height(int value)
 	_wrapped_obj->codecpar->height = value;
 }
 
-AVPixelFormat video::AVStreamWrapper::pixel_format()
+AVPixelFormat video::AVStreamWrapper::pixel_format() const
 {
 	return (AVPixelFormat)_wrapped_obj->codecpar->format;
 }

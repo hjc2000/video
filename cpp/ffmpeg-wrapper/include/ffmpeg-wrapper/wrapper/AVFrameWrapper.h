@@ -179,13 +179,13 @@ namespace video
 		#pragma endregion
 
 		#pragma region IVideoFrameInfoCollection
-		int width() override;
+		int width() const override;
 		void set_width(int value) override;
 
-		int height() override;
+		int height() const override;
 		void set_height(int value) override;
 
-		AVPixelFormat pixel_format() override;
+		AVPixelFormat pixel_format() const override;
 		void set_pixel_format(AVPixelFormat value) override;
 		#pragma endregion
 	};

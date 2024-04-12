@@ -237,7 +237,7 @@ void video::AVFrameWrapper::CopyAudioFrameToStream(Stream &stream)
 	stream.Write(_wrapped_obj->extended_data[0], 0, buf_size);
 }
 
-int video::AVFrameWrapper::width()
+int video::AVFrameWrapper::width() const
 {
 	return _wrapped_obj->width;
 }
@@ -247,7 +247,7 @@ void video::AVFrameWrapper::set_width(int value)
 	_wrapped_obj->width = value;
 }
 
-int video::AVFrameWrapper::height()
+int video::AVFrameWrapper::height() const
 {
 	return _wrapped_obj->height;
 }
@@ -257,7 +257,7 @@ void video::AVFrameWrapper::set_height(int value)
 	_wrapped_obj->height = value;
 }
 
-AVPixelFormat video::AVFrameWrapper::pixel_format()
+AVPixelFormat video::AVFrameWrapper::pixel_format() const
 {
 	return AVPixelFormat(_wrapped_obj->format);
 }

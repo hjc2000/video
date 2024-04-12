@@ -125,7 +125,7 @@ void video::AVStreamInfoCollection::SetChannelLayout(AVChannelLayout value)
 	_ch_layout = value;
 }
 
-int video::AVStreamInfoCollection::width()
+int video::AVStreamInfoCollection::width() const
 {
 	return _width;
 }
@@ -135,7 +135,7 @@ void video::AVStreamInfoCollection::set_width(int value)
 	_width = value;
 }
 
-int video::AVStreamInfoCollection::height()
+int video::AVStreamInfoCollection::height() const
 {
 	return _height;
 }
@@ -145,7 +145,7 @@ void video::AVStreamInfoCollection::set_height(int value)
 	_height = value;
 }
 
-AVPixelFormat video::AVStreamInfoCollection::pixel_format()
+AVPixelFormat video::AVStreamInfoCollection::pixel_format() const
 {
 	return _pixel_format;
 }
