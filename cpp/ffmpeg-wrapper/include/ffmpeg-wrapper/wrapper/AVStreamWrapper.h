@@ -45,16 +45,16 @@ namespace video
 		///		获取此流对应的码器
 		/// </summary>
 		/// <returns></returns>
-		AVCodec const *Codec();
+		AVCodec const *Codec() const;
 
-		int64_t Bitrate();
-		AVMediaType MediaType();
+		int64_t Bitrate() const;
+		AVMediaType MediaType() const;
 
 		/// <summary>
 		///		获取本流在格式中的索引值
 		/// </summary>
 		/// <returns></returns>
-		int Index();
+		int Index() const;
 
 		#pragma region IAudioStreamInfoCollection,IVideoStreamInfoCollection
 		AVSampleFormat SampleFormat() const override;

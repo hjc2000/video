@@ -1,7 +1,7 @@
 #pragma once
-#include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 #include<ffmpeg-wrapper/info-collection/IAudioStreamInfoCollection.h>
 #include<ffmpeg-wrapper/info-collection/IVideoStreamInfoCollection.h>
+#include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 
 namespace video
 {
@@ -15,20 +15,15 @@ namespace video
 		public IVideoStreamInfoCollection
 	{
 	public:
-		AVStreamInfoCollection() {}
+		AVStreamInfoCollection() = default;
 		AVStreamInfoCollection(AVStreamInfoCollection const &stream);
 		AVStreamInfoCollection(AVStreamWrapper const &stream);
 		~AVStreamInfoCollection();
 
-		#pragma region 赋值运算符
-	public:
 		AVStreamInfoCollection &operator=(AVStreamInfoCollection const &stream);
-		AVStreamInfoCollection &operator=(AVStreamInfoCollection &stream);
-
 		AVStreamInfoCollection &operator=(AVStreamWrapper const &stream);
-		AVStreamInfoCollection &operator=(AVStreamWrapper &stream);
-		#pragma endregion
 
+	public:
 		/// <summary>
 		///		当且仅当两个对象的指针相等时才相等。
 		/// </summary>
@@ -40,7 +35,7 @@ namespace video
 		}
 
 	private:
-		void CopyCodecParamFrom(AVCodecParameters *src);
+		void CopyCodecParamFrom(AVCodecParameters const *src);
 
 	public:
 		int _index = -1;

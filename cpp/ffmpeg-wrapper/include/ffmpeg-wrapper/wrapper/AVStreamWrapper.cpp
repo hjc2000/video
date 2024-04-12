@@ -27,7 +27,7 @@ AVStreamWrapper &AVStreamWrapper::operator=(AVStreamWrapper const &other)
 	return *this;
 }
 
-AVCodec const *video::AVStreamWrapper::Codec()
+AVCodec const *video::AVStreamWrapper::Codec() const
 {
 	return AVCodecExtention::find_decoder_by_id(_wrapped_obj->codecpar->codec_id);
 }
@@ -52,17 +52,17 @@ int video::AVStreamWrapper::SetCodecParams(shared_ptr<AVCodecContextWrapper> cod
 	return avcodec_parameters_from_context(_wrapped_obj->codecpar, *codec_ctx);
 }
 
-int64_t AVStreamWrapper::Bitrate()
+int64_t AVStreamWrapper::Bitrate() const
 {
 	return _wrapped_obj->codecpar->bit_rate;
 }
 
-AVMediaType AVStreamWrapper::MediaType()
+AVMediaType AVStreamWrapper::MediaType() const
 {
 	return _wrapped_obj->codecpar->codec_type;
 }
 
-int AVStreamWrapper::Index()
+int AVStreamWrapper::Index() const
 {
 	return _wrapped_obj->index;
 }

@@ -15,8 +15,8 @@ private:
 	friend bool operator==(Wrapper<AnyType> const &left, Wrapper<AnyType> const &right);
 
 public:
-	Wrapper() {}
-	virtual ~Wrapper() {}
+	Wrapper() = default;
+	virtual ~Wrapper() = default;
 
 protected:
 	T *_wrapped_obj = nullptr;
@@ -30,7 +30,7 @@ public:
 	///		访问本类中储存的被包装类型对象的指针
 	/// </summary>
 	/// <returns></returns>
-	T *operator->()
+	T *operator->() const
 	{
 		return _wrapped_obj;
 	}
@@ -38,7 +38,7 @@ public:
 	/// <summary>
 	///		将本类对象强制转换为被包装类型的指针
 	/// </summary>
-	operator T *()
+	operator T *() const
 	{
 		return _wrapped_obj;
 	}
@@ -54,7 +54,7 @@ public:
 	/// <summary>
 	///		本类中储存的被包装类型对象的指针是否是空指针
 	/// </summary>
-	operator bool()
+	operator bool() const
 	{
 		return _wrapped_obj;
 	}

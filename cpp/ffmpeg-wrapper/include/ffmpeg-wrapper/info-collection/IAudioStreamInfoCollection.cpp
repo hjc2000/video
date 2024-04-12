@@ -10,3 +10,11 @@ IAudioStreamInfoCollection &video::IAudioStreamInfoCollection::operator=(IAudioS
 	SetChannelLayout(value.ChannelLayout());
 	return *this;
 }
+
+bool operator==(video::IAudioStreamInfoCollection const &left, video::IAudioStreamInfoCollection const &right)
+{
+	return left.TimeBase() == right.TimeBase() &&
+		left.SampleFormat() == right.SampleFormat() &&
+		left.SampleRate() == right.SampleRate() &&
+		left.ChannelLayout() == right.ChannelLayout();
+}

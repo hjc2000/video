@@ -19,12 +19,6 @@ AVStreamInfoCollection::~AVStreamInfoCollection()
 
 AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamInfoCollection const &stream)
 {
-	*this = (AVStreamInfoCollection &)stream;
-	return *this;
-}
-
-AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamInfoCollection &stream)
-{
 	_index = stream._index;
 	_media_type = stream._media_type;
 	_bitrate = stream._bitrate;
@@ -43,13 +37,7 @@ AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamInfoCollection
 	return *this;
 }
 
-AVStreamInfoCollection &AVStreamInfoCollection::operator = (AVStreamWrapper const &stream)
-{
-	*this = (AVStreamWrapper &)stream;
-	return *this;
-}
-
-AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamWrapper &stream)
+AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamWrapper const &stream)
 {
 	_index = stream.Index();
 	_media_type = stream.MediaType();
@@ -69,7 +57,7 @@ AVStreamInfoCollection &AVStreamInfoCollection::operator=(AVStreamWrapper &strea
 	return *this;
 }
 
-void video::AVStreamInfoCollection::CopyCodecParamFrom(AVCodecParameters *src)
+void video::AVStreamInfoCollection::CopyCodecParamFrom(AVCodecParameters const *src)
 {
 	// avcodec_parameters_copy 会先释放 dst，然后再将 src 的数据复制到 dst。
 	avcodec_parameters_copy(_codec_params, src);
