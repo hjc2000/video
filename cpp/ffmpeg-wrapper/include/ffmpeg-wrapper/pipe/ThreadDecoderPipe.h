@@ -10,20 +10,9 @@ namespace video
 	/// <summary>
 	///		内部包装了一个线程地解码管道。
 	/// </summary>
-	class ThreadDecoderPipe final :
-		public IPacketConsumer,
-		public IPipeFrameSource,
-		public IDisposable,
-		public IAudioStreamInfoCollection,
-		public IVideoStreamInfoCollection
+	class ThreadDecoderPipe final :public IDecoderPipe
 	{
-	public:
-		ThreadDecoderPipe(AVStreamInfoCollection stream);
-		~ThreadDecoderPipe();
-		void Dispose() override;
-
-	private:
-		shared_ptr<DecoderPipe> _decoder_pipe;
+		shared_ptr<IDecoderPipe> _decoder_pipe;
 		HysteresisBlockingPacketQueue _packet_queue{};
 		TaskCompletionSignal _decode_thread_exit{ true };
 		std::atomic_bool _do_not_flush_consumer = false;
@@ -31,6 +20,10 @@ namespace video
 		void DecodeThreadFunc();
 
 	public:
+		ThreadDecoderPipe(AVStreamInfoCollection stream);
+		~ThreadDecoderPipe();
+		void Dispose() override;
+
 		/// <summary>
 		///		将包送入队列后就会立即返回，队列满了才会受到阻塞。
 		///		另一个线程会负责从队列中取出包进行解码。
@@ -46,7 +39,6 @@ namespace video
 		void FlushDecoderButNotFlushConsumers();
 
 		#pragma region 通过 IAudioStreamInfoCollection 继承
-	public:
 		AVRational TimeBase() const override;
 		void SetTimeBase(AVRational value) override;
 
@@ -61,7 +53,6 @@ namespace video
 		#pragma endregion
 
 		#pragma region 通过 IVideoStreamInfoCollection 继承
-	public:
 		int Width() const override;
 		void SetWidth(int value) override;
 

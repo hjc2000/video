@@ -17,12 +17,14 @@ namespace video
 	public:
 		virtual ~IDecoderPipe() = default;
 
-	public:
 		/// <summary>
 		///		冲洗解码器，但是不冲洗消费者。
 		///		当需要把本解码器撤掉，换另一个解码器时就要调用本方法。这样既可以取出残留在解码器
 		///		中的帧，又不会把下级的消费者也一起冲洗了。
 		/// </summary>
 		virtual void FlushDecoderButNotFlushConsumers() = 0;
+
+		virtual AVRational TimeBase() const = 0;
+		virtual void SetTimeBase(AVRational value) = 0;
 	};
 }

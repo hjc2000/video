@@ -9,7 +9,6 @@ namespace video
 	public:
 		virtual ~IPipePacketSource() = default;
 
-	public:
 		virtual List<shared_ptr<IPacketConsumer>> &PacketConsumerList() = 0;
 
 		/// <summary>

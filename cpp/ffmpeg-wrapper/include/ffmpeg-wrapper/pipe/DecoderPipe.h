@@ -16,6 +16,14 @@ namespace video
 {
 	class DecoderPipe final :public IDecoderPipe
 	{
+		AVStreamInfoCollection _stream_infos;
+		std::atomic_bool _disposed = false;
+		shared_ptr<AVCodecContextWrapper> _decoder;
+		AVFrameWrapper _decoder_out_frame;
+		List<shared_ptr<IFrameConsumer>> _consumer_list;
+
+		void read_and_send_frame();
+
 	public:
 		DecoderPipe(AVStreamInfoCollection stream);
 		~DecoderPipe();
@@ -26,16 +34,6 @@ namespace video
 		/// </summary>
 		void Dispose() override;
 
-	private:
-		AVStreamInfoCollection _stream_infos;
-		std::atomic_bool _disposed = false;
-		shared_ptr<AVCodecContextWrapper> _decoder;
-		AVFrameWrapper _decoder_out_frame;
-		List<shared_ptr<IFrameConsumer>> _consumer_list;
-
-		void read_and_send_frame();
-
-	public:
 		List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override
 		{
 			return _consumer_list;
@@ -57,7 +55,6 @@ namespace video
 		void FlushDecoderButNotFlushConsumers();
 
 		#pragma region 通过 IAudioStreamInfoCollection 继承
-	public:
 		AVRational TimeBase() const override;
 		void SetTimeBase(AVRational value) override;
 		AVSampleFormat SampleFormat() const override;
@@ -69,7 +66,6 @@ namespace video
 		#pragma endregion
 
 		#pragma region 通过 IVideoStreamInfoCollection 继承
-	public:
 		int Width() const override;
 		void SetWidth(int value) override;
 		int Height() const override;
