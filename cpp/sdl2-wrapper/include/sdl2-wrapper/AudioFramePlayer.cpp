@@ -1,9 +1,8 @@
 #include "sdl2-wrapper/AudioFramePlayer.h"
+#include<ffmpeg-wrapper/input-format/InputFormat.h>
 #include<ffmpeg-wrapper/wrapper/AVCodecContextWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
-#include<ffmpeg-wrapper/input-format/InputFormat.h>
 
-using namespace video;
 using namespace video;
 
 AudioFramePlayer::AudioFramePlayer(IAudioStreamInfoCollection &infos)
