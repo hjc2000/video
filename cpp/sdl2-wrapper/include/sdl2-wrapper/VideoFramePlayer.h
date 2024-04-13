@@ -1,11 +1,11 @@
 #pragma once
+#include<atomic>
+#include<ffmpeg-wrapper/ErrorCode.h>
+#include<ffmpeg-wrapper/base_include.h>
+#include<ffmpeg-wrapper/info-collection/VideoStreamInfoCollection.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<ffmpeg-wrapper/wrapper/AVCodecContextWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
-#include<ffmpeg-wrapper/ErrorCode.h>
-#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
-#include<ffmpeg-wrapper/info-collection/VideoStreamInfoCollection.h>
-#include<atomic>
-#include<ffmpeg-wrapper/base_include.h>
 #include<jccpp/IDisposable.h>
 #include<jccpp/container/HysteresisBlockingQueue.h>
 #include<jccpp/container/SafeQueue.h>
@@ -21,6 +21,22 @@ namespace video
 		public IFrameConsumer,
 		public IDisposable
 	{
+		std::atomic_bool _disposed = false;
+		Timer _timer;
+		shared_ptr<VideoFrameDisplayer> _displayer;
+		VideoStreamInfoCollection _video_stream_infos{};
+		jc::HysteresisBlockingQueue<AVFrameWrapper> _frame_queue{ 10 };
+		std::mutex _ref_timer_lock;
+		shared_ptr<IRefTimer> _ref_timer;
+		#pragma endregion
+
+		/// <summary>
+		///		Timer 回调处理函数。
+		///		需要在这里向显示器送入帧。 
+		/// </summary>
+		/// <returns></returns>
+		uint32_t SDL_TimerCallbackHandler(uint32_t interval_in_milliseconds);
+
 	public:
 		VideoFramePlayer(
 			int x,
@@ -33,21 +49,6 @@ namespace video
 		~VideoFramePlayer();
 		void Dispose() override;
 
-	private:
-		std::atomic_bool _disposed = false;
-		Timer _timer;
-		shared_ptr<VideoFrameDisplayer> _displayer;
-		VideoStreamInfoCollection _video_stream_infos{};
-		jc::HysteresisBlockingQueue<AVFrameWrapper> _frame_queue{ 10 };
-
-		/// <summary>
-		///		Timer 回调处理函数。
-		///		需要在这里向显示器送入帧。 
-		/// </summary>
-		/// <returns></returns>
-		uint32_t SDL_TimerCallbackHandler(uint32_t interval_in_milliseconds);
-
-	public:
 		/// <summary>
 		///		暂停播放。
 		///		本方法不会阻塞，可以在回调函数中使用。
@@ -63,7 +64,6 @@ namespace video
 		void SendFrame(AVFrameWrapper *frame) override;
 
 		#pragma region 参考时钟
-	public:
 		shared_ptr<IRefTimer> RefTimer();
 
 		/// <summary>
@@ -80,10 +80,5 @@ namespace video
 		/// </summary>
 		/// <returns></returns>
 		int64_t RefTime();
-
-	private:
-		std::mutex _ref_timer_lock;
-		shared_ptr<IRefTimer> _ref_timer;
-		#pragma endregion
 	};
 }

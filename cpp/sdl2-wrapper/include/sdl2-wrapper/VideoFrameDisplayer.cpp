@@ -1,4 +1,4 @@
-#include "sdl2-wrapper/VideoFrameDisplayer.h"
+#include "VideoFrameDisplayer.h"
 
 using namespace video;
 

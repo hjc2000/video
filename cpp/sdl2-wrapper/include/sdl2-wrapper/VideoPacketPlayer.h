@@ -1,10 +1,10 @@
 #pragma once
-#include<ffmpeg-wrapper/pipe/DecoderPipe.h>
 #include<ffmpeg-wrapper/ErrorCode.h>
-#include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
-#include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
-#include<ffmpeg-wrapper/pipe/PacketPump.h>
 #include<ffmpeg-wrapper/base_include.h>
+#include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
+#include<ffmpeg-wrapper/pipe/DecoderPipe.h>
+#include<ffmpeg-wrapper/pipe/PacketPump.h>
+#include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
 #include<jccpp/IDisposable.h>
 #include<sdl2-wrapper/VideoFramePlayer.h>
 
@@ -14,18 +14,6 @@ namespace video
 		public IDisposable,
 		public IPacketConsumer
 	{
-	public:
-		/// <summary>
-		///		
-		/// </summary>
-		/// <param name="x">窗口的横坐标</param>
-		/// <param name="y">窗口的纵坐标</param>
-		/// <param name="stream">想要播放的流。必须是视频流。</param>
-		VideoPacketPlayer(int x, int y, AVStreamWrapper &stream);
-		~VideoPacketPlayer();
-		void Dispose() override;
-
-	private:
 		std::atomic_bool _disposed = false;
 		shared_ptr<HysteresisBlockingPacketQueue> _packet_queue;
 		CancellationTokenSource _cancel_pump_source;
@@ -50,6 +38,16 @@ namespace video
 		void DecodingThreadFunc();
 
 	public:
+		/// <summary>
+		///		
+		/// </summary>
+		/// <param name="x">窗口的横坐标</param>
+		/// <param name="y">窗口的纵坐标</param>
+		/// <param name="stream">想要播放的流。必须是视频流。</param>
+		VideoPacketPlayer(int x, int y, AVStreamWrapper &stream);
+		~VideoPacketPlayer();
+		void Dispose() override;
+
 		/// <summary>
 		///		向播放器送入包。可以送入空指针，用来冲洗播放器。
 		///		当内部的包队列满时，此函数会被阻塞。

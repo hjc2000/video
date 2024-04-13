@@ -1,8 +1,8 @@
 #pragma once
-#include<ffmpeg-wrapper/wrapper/AVFrameWrapper.h>
 #include<ffmpeg-wrapper/AVPixelFormatExtension.h>
 #include<ffmpeg-wrapper/info-collection/IVideoStreamInfoCollection.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
+#include<ffmpeg-wrapper/wrapper/AVFrameWrapper.h>
 #include<sdl2-wrapper/SDL_EventGetter.h>
 #include<sdl2-wrapper/SDL_RendererWrapper.h>
 #include<sdl2-wrapper/SDL_TextureWrapper.h>
@@ -15,6 +15,10 @@ namespace video
 	*/
 	class VideoFrameDisplayer :public IFrameConsumer
 	{
+		shared_ptr<SDL_WindowWrapper> _window;
+		shared_ptr<SDL_RendererWrapper> _renderer;
+		shared_ptr<SDL_TextureWrapper> _texture;
+
 	public:
 		VideoFrameDisplayer(
 			int x,
@@ -26,12 +30,6 @@ namespace video
 			SDL_WindowFlags flags
 		);
 
-	private:
-		shared_ptr<SDL_WindowWrapper> _window;
-		shared_ptr<SDL_RendererWrapper> _renderer;
-		shared_ptr<SDL_TextureWrapper> _texture;
-
-	public:
 		/// <summary>
 		///		显示视频帧。
 		/// </summary>

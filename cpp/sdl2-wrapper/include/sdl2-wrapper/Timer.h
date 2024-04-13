@@ -13,11 +13,6 @@ namespace video
 	/// </summary>
 	class Timer
 	{
-	public:
-		Timer();
-		~Timer();
-
-	private:
 		TaskCompletionSignal _callback_has_stopped{ true };
 		std::atomic_bool _callback_should_stop = false;
 		std::mutex _not_private_methods_lock;
@@ -25,6 +20,9 @@ namespace video
 		static uint32_t static_callback(uint32_t interval, void *param);
 
 	public:
+		Timer();
+		~Timer();
+
 		/// <summary>
 		///		启动定时器。本定时器可以反复停止和启动。
 		///		如果定时器已经处于启动状态，再次调用会直接返回。

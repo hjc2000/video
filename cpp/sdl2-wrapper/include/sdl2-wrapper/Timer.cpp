@@ -1,4 +1,4 @@
-#include "sdl2-wrapper/Timer.h"
+#include "Timer.h"
 #include<iostream>
 #include<jccpp/Exception.h>
 

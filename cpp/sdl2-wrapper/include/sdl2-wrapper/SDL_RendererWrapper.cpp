@@ -1,4 +1,4 @@
-#include "sdl2-wrapper/SDL_RendererWrapper.h"
+#include "SDL_RendererWrapper.h"
 #include<iostream>
 
 using namespace video;
