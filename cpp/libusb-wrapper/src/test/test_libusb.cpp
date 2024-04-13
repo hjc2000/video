@@ -1,3 +1,9 @@
+#include<format>
+#include<iostream>
+#include<libusb-1.0/libusb.h>
+#include<libusb-wrapper/UsbContextWrapper.h>
+#include<libusb-wrapper/UsbDeviceListWrapper.h>
+#include<libusb-wrapper/UsbDeviceWrapper.h>
 #include<test_libusb.h>
 
 void test_libusb()

@@ -17,4 +17,10 @@ target_compile_definitions(${ProjectName} PRIVATE Predefine_ResourceDir="${CMAKE
 target_import_src(${ProjectName})
 target_import_boost_asio(${ProjectName})
 target_import_qt_core(${ProjectName})
-target_link_libraries(${ProjectName} PUBLIC jccpp tsduck ffmpeg-wrapper sdl2-wrapper)
+target_link_libraries(${ProjectName} PUBLIC
+    jccpp 
+    tsduck 
+    ffmpeg-wrapper 
+    sdl2-wrapper 
+    libusb-wrapper
+)

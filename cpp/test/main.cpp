@@ -3,6 +3,7 @@
 #include<ffmpeg-wrapper/mux/SptsEncodeMux.h>
 #include<filesystem>
 #include<sdl2-wrapper/AVPacketPlayer.h>
+#include<test_libusb.h>
 #include<test_tsduck.h>
 
 using namespace video;
@@ -15,6 +16,7 @@ int main(void)
 		test_SptsEncodeMux();
 		//test_AVPacketPlayer();
 		//test_tsduck();
+		//test_libusb();
 		return 0;
 	}
 	catch (jc::Exception &e)
