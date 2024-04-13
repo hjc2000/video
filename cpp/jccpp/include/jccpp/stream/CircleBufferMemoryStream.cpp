@@ -1,4 +1,4 @@
-#include"jccpp/stream/CircleBufferMemoryStream.h"
+#include"CircleBufferMemoryStream.h"
 
 using namespace std;
 using namespace jc;

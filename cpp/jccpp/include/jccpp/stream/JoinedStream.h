@@ -9,7 +9,6 @@ using std::shared_ptr;
 
 class JoinedStream :public Stream
 {
-private:
 	/// <summary>
 	///		用来统计总共从 Read 函数中读取过多少字节。
 	/// </summary>

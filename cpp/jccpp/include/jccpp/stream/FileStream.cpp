@@ -1,4 +1,4 @@
-#include"jccpp/stream/FileStream.h"
+#include"FileStream.h"
 #include<fstream>
 
 using namespace std;

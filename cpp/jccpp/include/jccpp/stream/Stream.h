@@ -18,7 +18,6 @@ class Stream
 public:
 	virtual ~Stream() {}
 
-public:
 	virtual bool CanRead() = 0;
 	virtual bool CanWrite() = 0;
 	virtual bool CanSeek() = 0;

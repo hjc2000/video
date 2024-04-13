@@ -20,46 +20,9 @@ namespace jc
 	template<typename T>
 	class HysteresisBlockingQueue :public IQueue<T>, public IDisposable
 	{
-		#pragma region 生命周期
-	public:
-		HysteresisBlockingQueue(size_t max)
-		{
-			using namespace std;
-			if (max == 0)
-			{
-				cout << CODE_POS_STR << "最大值不能是 0" << endl;
-				throw jc::ArgumentException();
-			}
-
-			_max = max;
-			_threshold = _max / 2;
-		}
-
-		~HysteresisBlockingQueue()
-		{
-			Dispose();
-		}
-
 	private:
 		std::atomic_bool _disposed = false;
 
-	public:
-		/// <summary>
-		///		* 清空队列。
-		///		* 取消所有阻塞。
-		/// </summary>
-		void Dispose() override
-		{
-			if (_disposed) return;
-			_disposed = true;
-
-			_queue.Clear();
-			_queue_consumed_cv.notify_all();
-			_queue_avaliable_cv.notify_all();
-		}
-		#pragma endregion
-
-	private:
 		/// <summary>
 		///		* 被冲洗后入队会抛出异常。
 		///		* 被冲洗后出队不会再被阻塞。
@@ -79,21 +42,53 @@ namespace jc
 		SafeQueue<T> _queue;
 
 		/**
-		 * @brief 非私有方法需要加锁。
+		* @brief 非私有方法需要加锁。
 		*/
 		std::mutex _not_private_methods_lock;
 
 		/**
-		 * @brief 队列中元素数量小于阈值时条件成立。
+		* @brief 队列中元素数量小于阈值时条件成立。
 		*/
 		std::condition_variable _queue_consumed_cv;
 
 		/**
-		 * @brief 队列中元素数量大于阈值时条件成立。
+		* @brief 队列中元素数量大于阈值时条件成立。
 		*/
 		std::condition_variable _queue_avaliable_cv;
 
 	public:
+		HysteresisBlockingQueue(size_t max)
+		{
+			using namespace std;
+			if (max == 0)
+			{
+				cout << CODE_POS_STR << "最大值不能是 0" << endl;
+				throw jc::ArgumentException();
+			}
+
+			_max = max;
+			_threshold = _max / 2;
+		}
+
+		~HysteresisBlockingQueue()
+		{
+			Dispose();
+		}
+
+		/// <summary>
+		///		* 清空队列。
+		///		* 取消所有阻塞。
+		/// </summary>
+		void Dispose() override
+		{
+			if (_disposed) return;
+			_disposed = true;
+
+			_queue.Clear();
+			_queue_consumed_cv.notify_all();
+			_queue_avaliable_cv.notify_all();
+		}
+
 		/**
 		 * @brief 队列中当前元素个数
 		 * @return

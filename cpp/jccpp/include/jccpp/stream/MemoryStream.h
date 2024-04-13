@@ -5,19 +5,6 @@ namespace jc
 {
 	class MemoryStream :public Stream
 	{
-	public:
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="max_size">内部缓冲区的最大尺寸。小于等于 0 会抛出异常。</param>
-		MemoryStream(int64_t max_size);
-
-		~MemoryStream()
-		{
-			delete[] _buffer;
-		}
-
-	private:
 		int64_t _buffer_size;
 		uint8_t *_buffer;
 
@@ -36,6 +23,17 @@ namespace jc
 		int64_t _length = 0;
 
 	public:
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="max_size">内部缓冲区的最大尺寸。小于等于 0 会抛出异常。</param>
+		MemoryStream(int64_t max_size);
+
+		~MemoryStream()
+		{
+			delete[] _buffer;
+		}
+
 		uint8_t *Buffer()
 		{
 			return _buffer;
@@ -74,7 +72,6 @@ namespace jc
 			return _buffer_size - _position;
 		}
 
-	public:
 		bool CanRead() override;
 
 		bool CanWrite() override;
@@ -134,6 +131,5 @@ namespace jc
 		 * @exception ArgumentException：value 大于 Length 属性会抛出异常。
 		*/
 		void SetPosition(int64_t value) override;
-
 	};
 }
