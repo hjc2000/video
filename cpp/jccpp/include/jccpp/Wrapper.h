@@ -13,13 +13,17 @@ class Wrapper
 	Wrapper(Wrapper const &ref) = delete;
 	void operator=(Wrapper const &ref) = delete;
 
-protected:
-	//T *_wrapped_obj = nullptr;
-
 public:
 	Wrapper() = default;
 	virtual ~Wrapper() = default;
 
+	/// <summary>
+	///		被包装对象应该是通过指针指向的，因为这样允许运行时更换被包装对象。
+	///		所以这个指针是允许修改的。
+	/// 
+	///		不允许被修改记得在实现本函数时抛出异常 jc::NotSupportedException()。
+	/// </summary>
+	/// <returns></returns>
 	virtual T *&WrappedObj() = 0;
 	virtual T *WrappedObj() const = 0;
 
@@ -41,7 +45,7 @@ public:
 	}
 
 	/// <summary>
-	/// 将本类对象强制转换为被包装类型的指针的指针
+	///		将本类对象强制转换为被包装类型的指针的指针
 	/// </summary>
 	operator T **()
 	{
