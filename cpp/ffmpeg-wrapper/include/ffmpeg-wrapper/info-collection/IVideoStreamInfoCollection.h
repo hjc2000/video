@@ -18,13 +18,8 @@ namespace video
 		virtual void SetFrameRate(AVRational value) = 0;
 
 		uint32_t FrameIntervalInMilliseconds() const;
+
+		using IVideoFrameInfoCollection::operator==;
+		bool operator==(IVideoStreamInfoCollection const &another) const;
 	};
 }
-
-/// <summary>
-///		比较两个 IVideoStreamInfoCollection 是否相等。
-/// </summary>
-/// <param name="left"></param>
-/// <param name="right"></param>
-/// <returns></returns>
-bool operator==(video::IVideoStreamInfoCollection const &left, video::IVideoStreamInfoCollection const &right);

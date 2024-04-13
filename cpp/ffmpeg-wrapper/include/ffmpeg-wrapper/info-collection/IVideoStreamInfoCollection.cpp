@@ -15,9 +15,9 @@ uint32_t video::IVideoStreamInfoCollection::FrameIntervalInMilliseconds() const
 	return 1000 * FrameRate().den / FrameRate().num;
 }
 
-bool operator==(video::IVideoStreamInfoCollection const &left, video::IVideoStreamInfoCollection const &right)
+bool IVideoStreamInfoCollection::operator==(IVideoStreamInfoCollection const &another) const
 {
-	return (video::IVideoFrameInfoCollection &)left == (video::IVideoFrameInfoCollection &)right &&
-		left.TimeBase() == right.TimeBase() &&
-		left.FrameRate() == right.FrameRate();
+	return IVideoFrameInfoCollection::operator==(another) &&
+		TimeBase() == another.TimeBase() &&
+		FrameRate() == another.FrameRate();
 }

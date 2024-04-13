@@ -10,9 +10,9 @@ IVideoFrameInfoCollection &video::IVideoFrameInfoCollection::operator=(IVideoFra
 	return *this;
 }
 
-bool operator==(video::IVideoFrameInfoCollection const &left, video::IVideoFrameInfoCollection const &right)
+bool IVideoFrameInfoCollection::operator==(IVideoFrameInfoCollection const &another) const
 {
-	return left.Width() == right.Width() &&
-		left.Height() == right.Height() &&
-		left.PixelFormat() == right.PixelFormat();
+	return Width() == another.Width() &&
+		Height() == another.Height() &&
+		PixelFormat() == another.PixelFormat();
 }

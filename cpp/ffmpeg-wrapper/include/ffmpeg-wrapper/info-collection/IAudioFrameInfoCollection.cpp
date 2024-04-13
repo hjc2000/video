@@ -9,7 +9,8 @@ IAudioFrameInfoCollection &video::IAudioFrameInfoCollection::operator=(IAudioFra
 	return *this;
 }
 
-bool operator==(video::IAudioFrameInfoCollection const &left, video::IAudioFrameInfoCollection const &right)
+bool IAudioFrameInfoCollection::operator==(IAudioFrameInfoCollection const &another) const
 {
-	return left == right && left.SampleCount() == right.SampleCount();
+	return IAudioStreamInfoCollection::operator==(another) &&
+		SampleCount() == another.SampleCount();
 }

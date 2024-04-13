@@ -2,6 +2,35 @@
 #include<ffmpeg-wrapper/AVChannelLayoutExtension.h>
 #include<jccpp/Exception.h>
 
+video::SDL_AudioSpecWrapper::SDL_AudioSpecWrapper(IAudioFrameInfoCollection const &infos)
+{
+	IAudioFrameInfoCollection::operator=(infos);
+}
+
+video::SDL_AudioSpecWrapper::SDL_AudioSpecWrapper(IAudioStreamInfoCollection const &infos)
+{
+	IAudioStreamInfoCollection::operator=(infos);
+}
+
+video::SDL_AudioSpecWrapper::SDL_AudioSpecWrapper(SDL_AudioSpecWrapper &another)
+{
+	*this = another;
+}
+
+void video::SDL_AudioSpecWrapper::operator=(SDL_AudioSpecWrapper const &another)
+{
+	_spec = another._spec;
+}
+
+bool video::SDL_AudioSpecWrapper::operator==(SDL_AudioSpecWrapper &another) const
+{
+	return _wrapped_obj->freq == another->freq &&
+		_wrapped_obj->format == another->format &&
+		_wrapped_obj->channels == another->channels &&
+		_wrapped_obj->samples == another->samples &&
+		_wrapped_obj->size == another->size;
+}
+
 Json video::SDL_AudioSpecWrapper::ToJson()
 {
 	return Json{

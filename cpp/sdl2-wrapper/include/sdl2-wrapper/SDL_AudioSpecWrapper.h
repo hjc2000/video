@@ -24,31 +24,10 @@ namespace video
 
 	public:
 		SDL_AudioSpecWrapper() = default;
-
-		SDL_AudioSpecWrapper(IAudioFrameInfoCollection &infos)
-		{
-			SetSampleFormat(infos.SampleFormat());
-			SetSampleRate(infos.SampleRate());
-			SetSampleCount(infos.SampleCount());
-			SetChannelLayout(infos.ChannelLayout());
-		}
-
-		SDL_AudioSpecWrapper(IAudioStreamInfoCollection &infos)
-		{
-			SetSampleFormat(infos.SampleFormat());
-			SetSampleRate(infos.SampleRate());
-			SetChannelLayout(infos.ChannelLayout());
-		}
-
-		SDL_AudioSpecWrapper(SDL_AudioSpecWrapper &another)
-		{
-			*this = another;
-		}
-
-		void operator=(SDL_AudioSpecWrapper &another)
-		{
-			_spec = another._spec;
-		}
+		SDL_AudioSpecWrapper(IAudioFrameInfoCollection const &infos);
+		SDL_AudioSpecWrapper(IAudioStreamInfoCollection const &infos);
+		SDL_AudioSpecWrapper(SDL_AudioSpecWrapper &another);
+		void operator=(SDL_AudioSpecWrapper const &another);
 
 		SDL_AudioSpec *&WrappedObj() override
 		{
@@ -59,18 +38,11 @@ namespace video
 			return _wrapped_obj;
 		}
 
-		bool operator==(SDL_AudioSpecWrapper &another)
-		{
-			return _wrapped_obj->freq == another->freq &&
-				_wrapped_obj->format == another->format &&
-				_wrapped_obj->channels == another->channels &&
-				_wrapped_obj->samples == another->samples &&
-				_wrapped_obj->size == another->size;
-		}
+		bool operator==(SDL_AudioSpecWrapper &another) const;
 
 		Json ToJson() override;
 
-		// 通过 IAudioFrameInfoCollection 继承
+		#pragma region 通过 IAudioFrameInfoCollection 继承
 		AVRational TimeBase() const override;
 		void SetTimeBase(AVRational value) override;
 
@@ -100,5 +72,6 @@ namespace video
 
 		int SampleCount() const override;
 		void SetSampleCount(int value) override;
+		#pragma endregion
 	};
 }

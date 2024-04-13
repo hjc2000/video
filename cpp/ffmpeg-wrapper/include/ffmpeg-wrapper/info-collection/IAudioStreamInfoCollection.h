@@ -86,13 +86,7 @@ namespace video
 		{
 			return av_get_bytes_per_sample(SampleFormat());
 		}
+
+		bool operator==(IAudioStreamInfoCollection const &another) const;
 	};
 }
-
-/// <summary>
-///		比较两个 IAudioStreamInfoCollection 是否相等。
-/// </summary>
-/// <param name="left"></param>
-/// <param name="right"></param>
-/// <returns></returns>
-bool operator==(video::IAudioStreamInfoCollection const &left, video::IAudioStreamInfoCollection const &right);

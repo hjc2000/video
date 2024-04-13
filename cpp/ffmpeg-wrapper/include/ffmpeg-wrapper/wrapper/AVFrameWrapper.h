@@ -23,6 +23,7 @@ namespace video
 		AVFrame *_wrapped_obj = nullptr;
 
 	public:
+		#pragma region 生命周期
 		AVFrameWrapper();
 
 		/// <summary>
@@ -49,6 +50,21 @@ namespace video
 		~AVFrameWrapper();
 
 		AVFrameWrapper &operator=(AVFrameWrapper const &another);
+		#pragma endregion
+
+		#pragma region 相等运算符
+		using IAudioFrameInfoCollection::operator==;
+		using IVideoFrameInfoCollection::operator==;
+		/// <summary>
+		///		只有本对象的指针和另一个对象的指针相等时才认为相等。
+		/// </summary>
+		/// <param name="another"></param>
+		/// <returns></returns>
+		bool operator==(AVFrameWrapper const &another) const
+		{
+			return this == &another;
+		}
+		#pragma endregion
 
 		AVFrame *&WrappedObj() override
 		{

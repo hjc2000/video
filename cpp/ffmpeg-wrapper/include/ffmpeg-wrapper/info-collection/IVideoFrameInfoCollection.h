@@ -17,13 +17,7 @@ namespace video
 
 		virtual AVPixelFormat PixelFormat() const = 0;
 		virtual void SetPixelFormat(AVPixelFormat value) = 0;
+
+		bool operator==(IVideoFrameInfoCollection const &another) const;
 	};
 }
-
-/// <summary>
-///		比较两个 IVideoFrameInfoCollection 是否相等。
-/// </summary>
-/// <param name="left"></param>
-/// <param name="right"></param>
-/// <returns></returns>
-bool operator==(video::IVideoFrameInfoCollection const &left, video::IVideoFrameInfoCollection const &right);

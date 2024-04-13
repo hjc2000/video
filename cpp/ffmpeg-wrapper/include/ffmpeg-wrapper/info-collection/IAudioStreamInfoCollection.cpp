@@ -11,10 +11,10 @@ IAudioStreamInfoCollection &video::IAudioStreamInfoCollection::operator=(IAudioS
 	return *this;
 }
 
-bool operator==(video::IAudioStreamInfoCollection const &left, video::IAudioStreamInfoCollection const &right)
+bool IAudioStreamInfoCollection::operator==(IAudioStreamInfoCollection const &another) const
 {
-	return left.TimeBase() == right.TimeBase() &&
-		left.SampleFormat() == right.SampleFormat() &&
-		left.SampleRate() == right.SampleRate() &&
-		left.ChannelLayout() == right.ChannelLayout();
+	return TimeBase() == another.TimeBase() &&
+		SampleFormat() == another.SampleFormat() &&
+		SampleRate() == another.SampleRate() &&
+		ChannelLayout() == another.ChannelLayout();
 }

@@ -15,14 +15,9 @@ namespace video
 
 		virtual int SampleCount() const = 0;
 		virtual void SetSampleCount(int value) = 0;
+
+		using IAudioStreamInfoCollection::operator==;
+		bool operator==(IAudioFrameInfoCollection const &another) const;
 	};
 
 }
-
-/// <summary>
-///		比较两个 IAudioFrameInfoCollection 是否相等。
-/// </summary>
-/// <param name="left"></param>
-/// <param name="right"></param>
-/// <returns></returns>
-bool operator==(video::IAudioFrameInfoCollection const &left, video::IAudioFrameInfoCollection const &right);

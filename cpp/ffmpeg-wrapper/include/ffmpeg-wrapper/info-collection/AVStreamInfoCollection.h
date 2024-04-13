@@ -24,8 +24,14 @@ namespace video
 		AVStreamInfoCollection &operator=(AVStreamInfoCollection const &stream);
 		AVStreamInfoCollection &operator=(AVStreamWrapper const &stream);
 
+		#pragma region 相等运算符
+		using IAudioStreamInfoCollection::operator==;
+		using IVideoStreamInfoCollection::operator==;
 		/// <summary>
-		///		当且仅当两个对象的指针相等时才相等。
+		///		当且仅当两个对象的指针相等时才相等。不能认为本类对象作为
+		///		IAudioStreamInfoCollection 和 IVideoStreamInfoCollection
+		///		都判断相等时就相等了。因为本类中还有很多其他字段。而且判断这么多
+		///		字段会引起性能问题。
 		/// </summary>
 		/// <param name="another"></param>
 		/// <returns></returns>
@@ -33,6 +39,7 @@ namespace video
 		{
 			return this == &another;
 		}
+		#pragma endregion
 
 		int _index = -1;
 		int Index()  const;
