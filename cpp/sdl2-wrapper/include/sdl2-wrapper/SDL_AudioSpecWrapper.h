@@ -19,6 +19,7 @@ namespace video
 		public IJsonSerializable
 	{
 		SDL_AudioSpec _spec = SDL_AudioSpec{};
+		SDL_AudioSpec *_wrapped_obj = nullptr;
 
 	public:
 		SDL_AudioSpecWrapper()
@@ -26,29 +27,41 @@ namespace video
 			_wrapped_obj = &_spec;
 		}
 
-		SDL_AudioSpecWrapper(IAudioFrameInfoCollection &infos) :SDL_AudioSpecWrapper()
+		SDL_AudioSpecWrapper(IAudioFrameInfoCollection &infos)
 		{
+			_wrapped_obj = &_spec;
 			SetSampleFormat(infos.SampleFormat());
 			SetSampleRate(infos.SampleRate());
 			SetSampleCount(infos.SampleCount());
 			SetChannelLayout(infos.ChannelLayout());
 		}
 
-		SDL_AudioSpecWrapper(IAudioStreamInfoCollection &infos) :SDL_AudioSpecWrapper()
+		SDL_AudioSpecWrapper(IAudioStreamInfoCollection &infos)
 		{
+			_wrapped_obj = &_spec;
 			SetSampleFormat(infos.SampleFormat());
 			SetSampleRate(infos.SampleRate());
 			SetChannelLayout(infos.ChannelLayout());
 		}
 
-		SDL_AudioSpecWrapper(SDL_AudioSpecWrapper &other) :SDL_AudioSpecWrapper()
+		SDL_AudioSpecWrapper(SDL_AudioSpecWrapper &other)
 		{
-			_spec = other._spec;
+			*this = other;
 		}
 
 		void operator=(SDL_AudioSpecWrapper &other)
 		{
 			_spec = other._spec;
+			_wrapped_obj = &_spec;
+		}
+
+		SDL_AudioSpec *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		SDL_AudioSpec *WrappedObj() const override
+		{
+			return _wrapped_obj;
 		}
 
 		bool operator==(SDL_AudioSpecWrapper &other)

@@ -14,21 +14,14 @@ class Wrapper
 	void operator=(Wrapper const &ref) = delete;
 
 protected:
-	T *_wrapped_obj = nullptr;
+	//T *_wrapped_obj = nullptr;
 
 public:
 	Wrapper() = default;
 	virtual ~Wrapper() = default;
 
-	virtual T *&WrappedObj()
-	{
-		return _wrapped_obj;
-	}
-
-	virtual T *WrappedObj() const
-	{
-		return _wrapped_obj;
-	}
+	virtual T *&WrappedObj() = 0;
+	virtual T *WrappedObj() const = 0;
 
 	/// <summary>
 	///		访问本类中储存的被包装类型对象的指针

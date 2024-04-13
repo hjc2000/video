@@ -14,13 +14,23 @@ namespace video
 		public IAudioStreamInfoCollection,
 		public IVideoStreamInfoCollection
 	{
+		AVStream *_wrapped_obj = nullptr;
+
 	public:
 		AVStreamWrapper();
 		AVStreamWrapper(AVStream *p);
 		AVStreamWrapper(AVStreamWrapper const &other);
 		AVStreamWrapper &operator=(AVStreamWrapper const &other);
 
-	public:
+		AVStream *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		AVStream *WrappedObj() const override
+		{
+			return _wrapped_obj;
+		}
+
 		/// <summary>
 		///		获取本流的编解码器参数
 		/// </summary>

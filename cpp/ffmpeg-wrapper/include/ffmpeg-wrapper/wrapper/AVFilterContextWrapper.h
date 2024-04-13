@@ -1,20 +1,29 @@
 #pragma once
+#include<ffmpeg-wrapper/base_include.h>
 #include<jccpp/Exception.h>
 #include<jccpp/Wrapper.h>
-#include<ffmpeg-wrapper/base_include.h>
 
 namespace video
 {
 	class AVFilterContextWrapper :public Wrapper<AVFilterContext>
 	{
+		AVFilterContext *_wrapped_obj = nullptr;
+
 	public:
 		AVFilterContextWrapper();
 		AVFilterContextWrapper(AVFilterContext *filter_ctx);
 		AVFilterContextWrapper(AVFilterContextWrapper const &other);
-
 		AVFilterContextWrapper &operator=(AVFilterContextWrapper const &other);
 
-	public:
+		AVFilterContext *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		AVFilterContext *WrappedObj() const override
+		{
+			return _wrapped_obj;
+		}
+
 		/// <summary>
 		///		将下一个过滤器的输入端连接到本过滤器输出端。本过滤器的输出会作为下一个过滤器的输入。
 		/// </summary>

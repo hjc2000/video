@@ -62,6 +62,7 @@ namespace video
 	class AVDictionaryWrapper :public Wrapper<AVDictionary>, public ICanToString
 	{
 		bool _do_not_free_dic = false;
+		AVDictionary *_wrapped_obj = nullptr;
 
 	public:
 		AVDictionaryWrapper() {}
@@ -74,6 +75,15 @@ namespace video
 		~AVDictionaryWrapper()
 		{
 			FreeInnerDictionary();
+		}
+
+		AVDictionary *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		AVDictionary *WrappedObj() const override
+		{
+			return _wrapped_obj;
 		}
 
 		/**

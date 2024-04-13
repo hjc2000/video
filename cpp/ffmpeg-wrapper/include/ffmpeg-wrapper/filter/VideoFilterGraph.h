@@ -12,8 +12,8 @@ namespace video
 		public IFrameConsumer,
 		public IFrameSource
 	{
+		AVFilterGraph *_wrapped_obj = nullptr;
 		VideoStreamInfoCollection _input_video_stream_infos;
-
 		AVFilterContextWrapper _buffer_filter;
 		AVFilterContextWrapper _buffer_sink_filter;
 		void init_buffer_filter();
@@ -21,6 +21,15 @@ namespace video
 
 	public:
 		VideoFilterGraph(IVideoStreamInfoCollection &infos);
+
+		AVFilterGraph *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		AVFilterGraph *WrappedObj() const override
+		{
+			return _wrapped_obj;
+		}
 
 		/// <summary>
 		///		获取本滤镜图的起点 —— buffer_filter

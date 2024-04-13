@@ -6,11 +6,21 @@ namespace video
 {
 	class SDL_RendererWrapper : public Wrapper<SDL_Renderer>
 	{
+		SDL_Renderer *_wrapped_obj = nullptr;
+
 	public://生命周期
 		SDL_RendererWrapper(SDL_Renderer *pRenderer);
 		~SDL_RendererWrapper();
 
-	public:
+		SDL_Renderer *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		SDL_Renderer *WrappedObj() const override
+		{
+			return _wrapped_obj;
+		}
+
 		/// <summary>
 		///		设置用来绘制的颜色
 		/// </summary>

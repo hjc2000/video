@@ -1,7 +1,7 @@
 #pragma once
+#include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/wrapper/AVDictionaryWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
-#include<ffmpeg-wrapper/base_include.h>
 #include<jccpp/ToString.h>
 #include<jccpp/Wrapper.h>
 #include<jccpp/container/List.h>
@@ -17,14 +17,16 @@ namespace video
 	*/
 	class AVProgramWrapper :public Wrapper<AVProgram>, public ICanToString
 	{
-		#pragma region 生命周期
+		AVProgram *_wrapped_obj = nullptr;
+		shared_ptr<AVDictionaryWrapper> _dic;
+
 	public:
 		/**
-		 * @brief 构造一个空的 AVProgramWrapper 对象，没有包装任何的 AVProgram 对象。
-		 * 此时调用 AVProgramWrapper 的任何方法都会引发访问空指针的错误。
-		 *
-		 * 设置此构造函数只是为了能够将 AVProgramWrapper 变量的定义和初始化分开。通过此构造函数构造的
-		 * AVProgramWrapper 对象必须通过赋值运算符进行初始化。
+		* @brief 构造一个空的 AVProgramWrapper 对象，没有包装任何的 AVProgram 对象。
+		* 此时调用 AVProgramWrapper 的任何方法都会引发访问空指针的错误。
+		*
+		* 设置此构造函数只是为了能够将 AVProgramWrapper 变量的定义和初始化分开。通过此构造函数构造的
+		* AVProgramWrapper 对象必须通过赋值运算符进行初始化。
 		*/
 		AVProgramWrapper()
 		{
@@ -32,10 +34,10 @@ namespace video
 		}
 
 		/**
-		 * @brief 包装一个 AVProgram 对象，但不拥有它，不会释放 AVProgram 对象内的资源。
-		 * AVProgram 对象的主人是 AVFormatContext，avformat_free_context 函数会释放它的资源。
-		 *
-		 * @param program
+		* @brief 包装一个 AVProgram 对象，但不拥有它，不会释放 AVProgram 对象内的资源。
+		* AVProgram 对象的主人是 AVFormatContext，avformat_free_context 函数会释放它的资源。
+		*
+		* @param program
 		*/
 		AVProgramWrapper(AVProgram *program)
 		{
@@ -58,12 +60,16 @@ namespace video
 			_dic = other._dic;
 			return *this;
 		}
-		#pragma endregion
 
-	private:
-		shared_ptr<AVDictionaryWrapper> _dic;
+		AVProgram *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		AVProgram *WrappedObj() const override
+		{
+			return _wrapped_obj;
+		}
 
-	public:
 		int service_id()
 		{
 			return _wrapped_obj->id;
@@ -106,13 +112,11 @@ namespace video
 			return _wrapped_obj->stream_index[index];
 		}
 
-	public:
 		std::string ToString() override
 		{
 			return _dic->ToString();
 		}
 
-	public:
 		operator bool()
 		{
 			return _wrapped_obj;

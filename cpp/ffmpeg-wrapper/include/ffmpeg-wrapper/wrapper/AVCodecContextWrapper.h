@@ -44,11 +44,22 @@ namespace video
 		}
 		#pragma endregion
 
+		AVCodecContext *_wrapped_obj = nullptr;;
+
 		AVCodecContextWrapper(AVCodec const *codec);
 		AVCodecContextWrapper(AVCodec const *codec, AVCodecParameters *param);
 
 	public:
 		~AVCodecContextWrapper();
+
+		AVCodecContext *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		AVCodecContext *WrappedObj() const override
+		{
+			return _wrapped_obj;
+		}
 
 		#pragma region 工厂函数
 		/// <summary>

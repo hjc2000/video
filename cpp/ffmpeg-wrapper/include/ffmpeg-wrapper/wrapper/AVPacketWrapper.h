@@ -11,15 +11,23 @@ namespace video
 
 	class AVPacketWrapper : public Wrapper<AVPacket>
 	{
+		AVPacket *_wrapped_obj = nullptr;
+
 	public:
 		AVPacketWrapper();
 		AVPacketWrapper(AVPacketWrapper const &another);
 		~AVPacketWrapper();
-
-	public:
 		AVPacketWrapper &operator=(AVPacketWrapper const &another);
 
-	public:
+		AVPacket *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		AVPacket *WrappedObj() const override
+		{
+			return _wrapped_obj;
+		}
+
 		void ChangeTimeBase(AVRational new_time_base);
 
 		int StreamIndex() const;

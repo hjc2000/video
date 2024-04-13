@@ -6,11 +6,12 @@ namespace video
 {
 	class SDL_TextureWrapper :public Wrapper<SDL_Texture>
 	{
+		SDL_Texture *_wrapped_obj = nullptr;
+
 	public:
 		SDL_TextureWrapper(SDL_Texture *texture);
 		~SDL_TextureWrapper();
 
-	public:
 		/// <summary>
 		///		使用 YUV 数组更新纹理
 		/// </summary>
@@ -41,5 +42,14 @@ namespace video
 		/// <param name="frame">AVFrameWrapper 对象</param>
 		/// <returns>成功返回 0，失败返回错误代码</returns>
 		int UpdateYUVTexture(const SDL_Rect *rect, AVFrameWrapper &frame);
+
+		SDL_Texture *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		SDL_Texture *WrappedObj() const override
+		{
+			return _wrapped_obj;
+		}
 	};
 }

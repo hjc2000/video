@@ -17,6 +17,7 @@ namespace video
 		public Wrapper<AVFormatContext>,
 		public IPacketSource
 	{
+		AVFormatContext *_wrapped_obj = nullptr;
 		string _url;
 		shared_ptr<AVIOContextWrapper> _io_context;
 
@@ -32,6 +33,15 @@ namespace video
 		InputFormat(shared_ptr<AVIOContextWrapper> io_context);
 		InputFormat(shared_ptr<Stream> input_stream);
 		~InputFormat();
+
+		AVFormatContext *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		AVFormatContext *WrappedObj() const override
+		{
+			return _wrapped_obj;
+		}
 
 		/// <summary>
 		///		以官方格式打印流信息。

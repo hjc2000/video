@@ -9,7 +9,7 @@ void video::OutputFormat::SendPacket(AVPacketWrapper *packet)
 	if (!packet)
 	{
 		_flush_times++;
-		if (_flush_times == _wrapped_obj->nb_streams)
+		if (_flush_times == WrappedObj()->nb_streams)
 		{
 			cout << CODE_POS_STR << "所有流都被冲洗了。" << endl;
 			WriteTrailer();
@@ -25,7 +25,7 @@ void video::OutputFormat::SendPacket(AVPacketWrapper *packet)
 		return;
 	}
 
-	int ret = av_interleaved_write_frame(_wrapped_obj, *packet);
+	int ret = av_interleaved_write_frame(WrappedObj(), *packet);
 	if (ret < 0)
 	{
 		cout << CODE_POS_STR << "错误代码：" << ret << " -- " << ToString((ErrorCode)ret);
@@ -35,7 +35,7 @@ void video::OutputFormat::SendPacket(AVPacketWrapper *packet)
 void video::OutputFormat::WriteHeader(AVDictionary **dic)
 {
 	std::lock_guard l(_not_private_methods_lock);
-	int ret = ::avformat_write_header(_wrapped_obj, dic);
+	int ret = ::avformat_write_header(WrappedObj(), dic);
 	if (ret < 0)
 	{
 		cout << "write_header 方法异常：" << ToString((ErrorCode)ret) << endl;
@@ -45,7 +45,7 @@ void video::OutputFormat::WriteHeader(AVDictionary **dic)
 
 void video::OutputFormat::WriteTrailer()
 {
-	int ret = ::av_write_trailer(_wrapped_obj);
+	int ret = ::av_write_trailer(WrappedObj());
 	if (ret < 0)
 	{
 		cout << CODE_POS_STR << ToString((ErrorCode)ret) << endl;
@@ -56,7 +56,7 @@ void video::OutputFormat::WriteTrailer()
 bool video::OutputFormat::NeedGlobalHeader()
 {
 	std::lock_guard l(_not_private_methods_lock);
-	return _wrapped_obj->oformat->flags & AVFMT_GLOBALHEADER;
+	return WrappedObj()->oformat->flags & AVFMT_GLOBALHEADER;
 }
 
 void video::OutputFormat::DumpFormat(char const *url)
@@ -66,7 +66,7 @@ void video::OutputFormat::DumpFormat(char const *url)
 	cout << "------------------------------------------------------------" << endl;
 	cout << "▼ 格式信息" << endl;
 	cout << "------------------------------------------------------------" << endl;
-	av_dump_format(_wrapped_obj, 0, url, true);
+	av_dump_format(WrappedObj(), 0, url, true);
 	cout << "------------------------------------------------------------" << endl;
 	cout << endl;
 }
@@ -74,7 +74,7 @@ void video::OutputFormat::DumpFormat(char const *url)
 AVStreamWrapper video::OutputFormat::CreateNewStream()
 {
 	std::lock_guard l(_not_private_methods_lock);
-	::AVStream *ps = avformat_new_stream(_wrapped_obj, nullptr);
+	::AVStream *ps = avformat_new_stream(WrappedObj(), nullptr);
 	if (ps == nullptr)
 	{
 		cout << CODE_POS_STR << "创建流失败" << endl;
@@ -87,7 +87,7 @@ AVStreamWrapper video::OutputFormat::CreateNewStream()
 AVStreamWrapper video::OutputFormat::CreateNewStream(shared_ptr<AVCodecContextWrapper> codec_ctx)
 {
 	std::lock_guard l(_not_private_methods_lock);
-	AVStream *ps = avformat_new_stream(_wrapped_obj, nullptr);
+	AVStream *ps = avformat_new_stream(WrappedObj(), nullptr);
 	if (ps == nullptr)
 	{
 		cout << CODE_POS_STR << "创建流失败" << endl;

@@ -1,8 +1,8 @@
 #pragma once
 #include<jccpp/Exception.h>
-#include<sdl2-wrapper/SDL_RendererWrapper.h>
-#include<sdl2-wrapper/SDL_Initializer.h>
 #include<jccpp/Wrapper.h>
+#include<sdl2-wrapper/SDL_Initializer.h>
+#include<sdl2-wrapper/SDL_RendererWrapper.h>
 
 namespace video
 {
@@ -41,8 +41,10 @@ namespace video
 		RendererTargetTexture = ::SDL_RendererFlags::SDL_RENDERER_TARGETTEXTURE,
 	};
 
-	class SDL_WindowWrapper : public Wrapper<::SDL_Window>
+	class SDL_WindowWrapper : public Wrapper<SDL_Window>
 	{
+		SDL_Window *_wrapped_obj = nullptr;
+
 	public:
 		SDL_WindowWrapper(
 			char const *title,
@@ -53,7 +55,6 @@ namespace video
 
 		~SDL_WindowWrapper();
 
-	public:
 		int UpdateWindowSurface();
 		SDL_Surface *GetWindowSurface();
 
@@ -80,5 +81,14 @@ namespace video
 		/// </summary>
 		/// <returns></returns>
 		static SDL_Rect GetScreenSize();
+
+		SDL_Window *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		SDL_Window *WrappedObj() const override
+		{
+			return _wrapped_obj;
+		}
 	};
 }

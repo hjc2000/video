@@ -1,10 +1,10 @@
 #pragma once
-#include<libusb-wrapper/UsbContextWrapper.h>
 #include<jccpp/Wrapper.h>
+#include<libusb-wrapper/UsbContextWrapper.h>
 
 class UsbConfigDescriptorWrapper :public Wrapper<libusb_config_descriptor>
 {
-private:
+	libusb_config_descriptor *_wrapped_obj = nullptr;
 	UsbConfigDescriptorWrapper(UsbConfigDescriptorWrapper &value) = delete;
 	UsbConfigDescriptorWrapper(UsbConfigDescriptorWrapper &&value) = delete;
 
@@ -20,12 +20,20 @@ public:
 		_wrapped_obj = nullptr;
 	}
 
+	libusb_config_descriptor *&WrappedObj() override
+	{
+		return _wrapped_obj;
+	}
+	libusb_config_descriptor *WrappedObj() const override
+	{
+		return _wrapped_obj;
+	}
+
 	bool operator==(UsbConfigDescriptorWrapper const &another)
 	{
 		return this == &another;
 	}
 
-public:
 	uint8_t InterfaceCount()
 	{
 		return _wrapped_obj->bNumInterfaces;

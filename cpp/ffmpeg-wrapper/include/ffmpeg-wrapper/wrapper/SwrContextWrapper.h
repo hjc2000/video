@@ -1,13 +1,13 @@
 #pragma once
-#include<ffmpeg-wrapper/wrapper/AVFrameWrapper.h>
+#include<atomic>
+#include<ffmpeg-wrapper/ErrorCode.h>
+#include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/info-collection/AudioFrameInfoCollection.h>
 #include<ffmpeg-wrapper/info-collection/AudioStreamInfoCollection.h>
-#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/info-collection/IAudioStreamInfoCollection.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameSource.h>
-#include<atomic>
-#include<ffmpeg-wrapper/base_include.h>
+#include<ffmpeg-wrapper/wrapper/AVFrameWrapper.h>
 #include<mutex>
 #include<thread>
 
@@ -24,22 +24,8 @@ namespace video
 		public IFrameConsumer,
 		public IFrameSource
 	{
-	public:
-		/// <summary>
-		///		使用 IAudioStreamInfoCollection 接口初始化重采样器。
-		///		* 因为重采样器要为输入输出的帧打上时间戳，所以要求 in_stream_infos 和 out_frame_infos
-		///		  的时间基有效。
-		/// </summary>
-		/// <param name="in_stream_infos">设置重采样器输入流。</param>
-		/// <param name="out_frame_infos">设置重采样器输出流。</param>
-		SwrContextWrapper(
-			IAudioStreamInfoCollection &in_stream_infos,
-			IAudioFrameInfoCollection &out_frame_infos
-		);
+		SwrContext *_wrapped_obj = nullptr;
 
-		~SwrContextWrapper();
-
-	private:
 		/// <summary>
 		///		非私有的方法，即公共的和保护的，都要加锁。
 		///		* 为什么保护的要加锁？因为保护的有可能是继承了基类的，而基类可能用公共方法
@@ -81,7 +67,6 @@ namespace video
 		int64_t _in_pts_when_send_frame = 0;
 
 		#pragma region ReadFrame 方法专用
-	private:
 		/// <summary>
 		///		对 input_frame 缓冲区的音频帧进行重采样，输出到 output_frame 的缓冲区中。
 		/// </summary>
@@ -103,6 +88,29 @@ namespace video
 		#pragma endregion
 
 	public:
+		/// <summary>
+		///		使用 IAudioStreamInfoCollection 接口初始化重采样器。
+		///		* 因为重采样器要为输入输出的帧打上时间戳，所以要求 in_stream_infos 和 out_frame_infos
+		///		  的时间基有效。
+		/// </summary>
+		/// <param name="in_stream_infos">设置重采样器输入流。</param>
+		/// <param name="out_frame_infos">设置重采样器输出流。</param>
+		SwrContextWrapper(
+			IAudioStreamInfoCollection &in_stream_infos,
+			IAudioFrameInfoCollection &out_frame_infos
+		);
+
+		~SwrContextWrapper();
+
+		SwrContext *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		SwrContext *WrappedObj() const override
+		{
+			return _wrapped_obj;
+		}
+
 		/// <summary>
 		///		获取重采样器内部的延迟。
 		/// 

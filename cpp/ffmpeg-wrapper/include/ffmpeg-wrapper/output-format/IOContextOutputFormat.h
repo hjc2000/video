@@ -7,6 +7,7 @@ namespace video
 	class IOContextOutputFormat :public OutputFormat
 	{
 		shared_ptr<AVIOContextWrapper> _io_context;
+		AVFormatContext *_wrapped_obj = nullptr;;
 
 	public:
 		/// <summary>
@@ -17,5 +18,14 @@ namespace video
 		IOContextOutputFormat(std::string url, shared_ptr<AVIOContextWrapper> io_context);
 
 		~IOContextOutputFormat();
+
+		AVFormatContext *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		AVFormatContext *WrappedObj() const override
+		{
+			return _wrapped_obj;
+		}
 	};
 }

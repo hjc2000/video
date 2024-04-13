@@ -19,6 +19,9 @@ namespace video
 		public IAudioFrameInfoCollection,
 		public IVideoFrameInfoCollection
 	{
+		shared_ptr<ImageBuffer> _image_buf;
+		AVFrame *_wrapped_obj = nullptr;
+
 	public:
 		AVFrameWrapper();
 
@@ -47,10 +50,15 @@ namespace video
 
 		AVFrameWrapper &operator=(AVFrameWrapper const &another);
 
-	private:
-		shared_ptr<ImageBuffer> _image_buf;
+		AVFrame *&WrappedObj() override
+		{
+			return _wrapped_obj;
+		}
+		AVFrame *WrappedObj() const override
+		{
+			return _wrapped_obj;
+		}
 
-	public:
 		void ChangeTimeBase(AVRational new_time_base);
 
 		/// <summary>
@@ -100,7 +108,6 @@ namespace video
 		/// </summary>
 		void unref();
 
-	public:// 时间
 		int64_t pts()
 		{
 			return _wrapped_obj->pts;
@@ -126,7 +133,6 @@ namespace video
 		/// <returns></returns>
 		std::chrono::milliseconds PtsToMilliseconds();
 
-	public:// 复制数据到流，缓冲区
 		void copy_image_to_buffer(shared_ptr<ImageBuffer> buffer);
 
 		/// <summary>

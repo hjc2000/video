@@ -13,13 +13,7 @@ using std::function;
 */
 class UsbDeviceListWrapper :public Wrapper<libusb_device *>
 {
-public:
-	~UsbDeviceListWrapper()
-	{
-		FreeDeviceList();
-	}
-
-private:
+	libusb_device **_wrapped_obj = nullptr;
 	int64_t _count = 0;
 
 	void FreeDeviceList()
@@ -29,6 +23,20 @@ private:
 	}
 
 public:
+	~UsbDeviceListWrapper()
+	{
+		FreeDeviceList();
+	}
+
+	libusb_device **&WrappedObj() override
+	{
+		return _wrapped_obj;
+	}
+	libusb_device **WrappedObj() const override
+	{
+		return _wrapped_obj;
+	}
+
 	/**
 	 * @brief 查找设备，将找到的设备储存到本对象中。可反复调用，多次查找。
 	 * @param usb_ctx	查找设备依赖 LibusbContextWrapper。

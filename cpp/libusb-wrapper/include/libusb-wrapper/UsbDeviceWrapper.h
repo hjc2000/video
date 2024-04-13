@@ -14,6 +14,12 @@ using std::shared_ptr;
 
 class UsbDeviceWrapper :public Wrapper<libusb_device>
 {
+	libusb_device *_wrapped_obj = nullptr;
+	shared_ptr<libusb_device_handle> _device_handle = nullptr;
+
+	void Ref(libusb_device *device);
+	void Unref();
+
 public:
 	/// <summary>
 	///		默认构造函数。此时并没有实际指向任何一个 USB 设备，所以调用任何方法都将引发异常。
@@ -22,16 +28,17 @@ public:
 	UsbDeviceWrapper(libusb_device *device);
 	UsbDeviceWrapper(UsbDeviceWrapper const &other);
 	~UsbDeviceWrapper();
-
 	UsbDeviceWrapper &operator=(UsbDeviceWrapper const &other);
 
-private:
-	void Ref(libusb_device *device);
-	void Unref();
+	libusb_device *&WrappedObj() override
+	{
+		return _wrapped_obj;
+	}
+	libusb_device *WrappedObj() const override
+	{
+		return _wrapped_obj;
+	}
 
-	shared_ptr<libusb_device_handle> _device_handle = nullptr;
-
-public:
 	/// <summary>
 	///		获取设备的描述信息。不需要打开设备就可获取。
 	/// </summary>
