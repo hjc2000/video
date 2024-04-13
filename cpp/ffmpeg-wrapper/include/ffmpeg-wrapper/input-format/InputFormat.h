@@ -17,14 +17,6 @@ namespace video
 		public Wrapper<AVFormatContext>,
 		public IPacketSource
 	{
-	public:
-		InputFormat(std::string url);
-		InputFormat(std::string url, AVInputFormat const *fmt, AVDictionary **options);
-		InputFormat(shared_ptr<AVIOContextWrapper> io_context);
-		InputFormat(shared_ptr<Stream> input_stream);
-		~InputFormat();
-
-	private:
 		string _url;
 		shared_ptr<AVIOContextWrapper> _io_context;
 
@@ -35,6 +27,12 @@ namespace video
 		void FindStreamInfo(::AVDictionary **options = nullptr);
 
 	public:
+		InputFormat(std::string url);
+		InputFormat(std::string url, AVInputFormat const *fmt, AVDictionary **options);
+		InputFormat(shared_ptr<AVIOContextWrapper> io_context);
+		InputFormat(shared_ptr<Stream> input_stream);
+		~InputFormat();
+
 		/// <summary>
 		///		以官方格式打印流信息。
 		/// </summary>

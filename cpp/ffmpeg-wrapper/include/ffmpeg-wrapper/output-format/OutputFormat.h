@@ -19,10 +19,6 @@ namespace video
 		public Wrapper<AVFormatContext>,
 		public IPacketConsumer
 	{
-	public:
-		virtual ~OutputFormat() = default;
-
-	private:
 		std::mutex _not_private_methods_lock;
 		int _flush_times = 0;
 		List<int> _flushed_stream_index_list;
@@ -30,6 +26,8 @@ namespace video
 		void WriteTrailer();
 
 	public:
+		virtual ~OutputFormat() = default;
+
 		/// <summary>
 		///		封装的数据结束后会触发此回调。此回调会启动后台线程来执行，避免用户
 		///		在回调中调用本对象的加了互斥锁的方法，造成死锁。

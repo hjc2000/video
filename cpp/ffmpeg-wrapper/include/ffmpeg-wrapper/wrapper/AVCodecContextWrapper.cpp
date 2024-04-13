@@ -179,7 +179,7 @@ void AVCodecContextWrapper::SendFrame(AVFrameWrapper *frame)
 		);
 
 		cout << CODE_POS_STR << msg << endl;
-		throw video::SendFrameException(msg);
+		throw jc::Exception();
 	}
 }
 

@@ -62,7 +62,7 @@ void video::SwrContextWrapper::SendFrame(AVFrameWrapper *input_frame)
 		int ret = convert(nullptr, 0, nullptr, 0);
 		if (ret < 0)
 		{
-			throw SendFrameException();
+			throw jc::Exception();
 		}
 
 		return;
@@ -78,7 +78,7 @@ void video::SwrContextWrapper::SendFrame(AVFrameWrapper *input_frame)
 	int ret = convert(nullptr, 0, (*input_frame)->extended_data, input_frame->SampleCount());
 	if (ret < 0)
 	{
-		throw SendFrameException();
+		throw jc::Exception();
 	}
 }
 

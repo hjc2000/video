@@ -15,17 +15,15 @@ namespace video
 		public IPacketSource,
 		public IDisposable
 	{
+		jc::HysteresisBlockingQueue<AVPacketWrapper> _packet_queue{ 10 };
+		std::atomic_bool _disposed = false;
+
 	public:
 		/// <summary>
 		///		清空队列，取消所有阻塞
 		/// </summary>
 		void Dispose() override;
 
-	private:
-		jc::HysteresisBlockingQueue<AVPacketWrapper> _packet_queue{ 10 };
-		std::atomic_bool _disposed = false;
-
-	public:
 		/// <summary>
 		///		向队列送入包
 		/// </summary>

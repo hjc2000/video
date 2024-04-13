@@ -19,18 +19,16 @@ namespace video
 	/// </summary>
 	class JoinedInputFormatDemuxDecoder
 	{
-	private:
 		shared_ptr<InputFormat> _current_intput_format;
-
 		AVStreamInfoCollection _video_stream_infos;
 		shared_ptr<ThreadDecoderPipe> _video_decode_pipe;
 		int _source_video_stream_index = -1;
-
 		AVStreamInfoCollection _audio_stream_infos;
 		shared_ptr<ThreadDecoderPipe> _audio_decode_pipe;
 		int _source_audio_stream_index = -1;
-
 		shared_ptr<InfinitePacketPipe> _infinite_packet_pipe{ new InfinitePacketPipe{} };
+		List<shared_ptr<IFrameConsumer>> _video_frame_consumer_list;
+		List<shared_ptr<IFrameConsumer>> _audio_frame_consumer_list;
 
 		void OpenInputIfNull();
 
@@ -44,11 +42,6 @@ namespace video
 
 		void Pump(shared_ptr<CancellationToken> cancel_pump);
 
-	private:
-		List<shared_ptr<IFrameConsumer>> _video_frame_consumer_list;
-		List<shared_ptr<IFrameConsumer>> _audio_frame_consumer_list;
-
-	public:
 		void AddVideoFrameConsumer(shared_ptr<IFrameConsumer> consumer);
 		void AddAudioFrameConsumer(shared_ptr<IFrameConsumer> consumer);
 

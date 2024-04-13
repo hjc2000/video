@@ -15,6 +15,22 @@ namespace video
 	/// </summary>
 	class SptsEncodeMux
 	{
+		shared_ptr<OutputFormat> _out_format;
+
+		VideoStreamInfoCollection _video_stream_infos;
+		shared_ptr<SwsFpsPipe> _sws_fps_pipe;
+		shared_ptr<EncoderPipe> _video_encode_pipe;
+		std::string _video_codec_name;
+		int64_t _video_out_bitrate_in_bps = -1;
+
+		AudioStreamInfoCollection _audio_stream_infos;
+		shared_ptr<SwrEncoderPipe> _audio_encode_pipe;
+		std::string _audio_codec_name;
+
+		void InitVideoEncodePipe();
+		void InitAudioEncodePipe();
+		void WriteHeader();
+
 	public:
 		/// <summary>
 		///		
@@ -38,24 +54,6 @@ namespace video
 			std::string audio_codec_name
 		);
 
-	private:
-		shared_ptr<OutputFormat> _out_format;
-
-		VideoStreamInfoCollection _video_stream_infos;
-		shared_ptr<SwsFpsPipe> _sws_fps_pipe;
-		shared_ptr<EncoderPipe> _video_encode_pipe;
-		std::string _video_codec_name;
-		int64_t _video_out_bitrate_in_bps = -1;
-
-		AudioStreamInfoCollection _audio_stream_infos;
-		shared_ptr<SwrEncoderPipe> _audio_encode_pipe;
-		std::string _audio_codec_name;
-
-		void InitVideoEncodePipe();
-		void InitAudioEncodePipe();
-		void WriteHeader();
-
-	public:
 		shared_ptr<IFrameConsumer> VideoEncodePipe();
 		shared_ptr<IFrameConsumer> AudioEncodePipe();
 	};

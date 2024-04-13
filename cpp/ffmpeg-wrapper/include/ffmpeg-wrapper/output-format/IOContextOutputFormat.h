@@ -1,11 +1,13 @@
 #pragma once
-#include<ffmpeg-wrapper/wrapper/AVIOContextWrapper.h>
 #include<ffmpeg-wrapper/output-format/OutputFormat.h>
+#include<ffmpeg-wrapper/wrapper/AVIOContextWrapper.h>
 
 namespace video
 {
 	class IOContextOutputFormat :public OutputFormat
 	{
+		shared_ptr<AVIOContextWrapper> _io_context;
+
 	public:
 		/// <summary>
 		///		
@@ -15,8 +17,5 @@ namespace video
 		IOContextOutputFormat(std::string url, shared_ptr<AVIOContextWrapper> io_context);
 
 		~IOContextOutputFormat();
-
-	private:
-		shared_ptr<AVIOContextWrapper> _io_context;
 	};
 }

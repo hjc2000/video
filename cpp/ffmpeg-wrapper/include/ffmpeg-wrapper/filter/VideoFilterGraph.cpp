@@ -105,7 +105,7 @@ void VideoFilterGraph::SendFrame(AVFrameWrapper *frame)
 		// 冲洗模式
 		if (av_buffersrc_add_frame_flags(_buffer_filter, nullptr, AV_BUFFERSRC_FLAG_KEEP_REF) < 0)
 		{
-			throw SendFrameException();
+			throw jc::Exception();
 		}
 
 		return;
@@ -114,6 +114,6 @@ void VideoFilterGraph::SendFrame(AVFrameWrapper *frame)
 	// 非冲洗模式
 	if (av_buffersrc_add_frame_flags(_buffer_filter, *frame, AV_BUFFERSRC_FLAG_KEEP_REF) < 0)
 	{
-		throw SendFrameException();
+		throw jc::Exception();
 	}
 }

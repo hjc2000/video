@@ -12,10 +12,6 @@ namespace video
 		public IFrameConsumer,
 		public IFrameSource
 	{
-	public:
-		VideoFilterGraph(IVideoStreamInfoCollection &infos);
-
-	private:
 		VideoStreamInfoCollection _input_video_stream_infos;
 
 		AVFilterContextWrapper _buffer_filter;
@@ -24,6 +20,8 @@ namespace video
 		void init_buffer_sink_filter();
 
 	public:
+		VideoFilterGraph(IVideoStreamInfoCollection &infos);
+
 		/// <summary>
 		///		获取本滤镜图的起点 —— buffer_filter
 		/// </summary>
