@@ -10,29 +10,33 @@ using std::shared_ptr;
 template <class T>
 class Wrapper
 {
-private:
-	template<typename AnyType>
-	friend bool operator==(Wrapper<AnyType> const &left, Wrapper<AnyType> const &right);
+	Wrapper(Wrapper const &ref) = delete;
+	void operator=(Wrapper const &ref) = delete;
+
+protected:
+	T *_wrapped_obj = nullptr;
 
 public:
 	Wrapper() = default;
 	virtual ~Wrapper() = default;
 
-protected:
-	T *_wrapped_obj = nullptr;
+	virtual T *&WrappedObj()
+	{
+		return _wrapped_obj;
+	}
 
-private:
-	Wrapper(Wrapper const &ref) = delete;
-	void operator=(Wrapper const &ref) = delete;
+	virtual T *WrappedObj() const
+	{
+		return _wrapped_obj;
+	}
 
-public:
 	/// <summary>
 	///		访问本类中储存的被包装类型对象的指针
 	/// </summary>
 	/// <returns></returns>
 	T *operator->() const
 	{
-		return _wrapped_obj;
+		return WrappedObj();
 	}
 
 	/// <summary>
@@ -40,7 +44,7 @@ public:
 	/// </summary>
 	operator T *() const
 	{
-		return _wrapped_obj;
+		return WrappedObj();
 	}
 
 	/// <summary>
@@ -48,7 +52,7 @@ public:
 	/// </summary>
 	operator T **()
 	{
-		return &_wrapped_obj;
+		return &WrappedObj();
 	}
 
 	/// <summary>
@@ -56,19 +60,11 @@ public:
 	/// </summary>
 	operator bool() const
 	{
-		return _wrapped_obj;
+		return WrappedObj();
+	}
+
+	bool operator==(Wrapper<T> const &another) const
+	{
+		return WrappedObj() == another.WrappedObj();
 	}
 };
-
-/**
- * @brief 两个包装类的 _wrapped_obj 指针相等时认为两个包装类相等。
- * @tparam T
- * @param left
- * @param right
- * @return
-*/
-template<typename T>
-bool operator==(Wrapper<T> const &left, Wrapper<T> const &right)
-{
-	return left._wrapped_obj == right._wrapped_obj;
-}
