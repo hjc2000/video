@@ -19,7 +19,6 @@ namespace video
 			return *this;
 		}
 
-	public:
 		int Width() const override;
 		void SetWidth(int value) override;
 
@@ -29,7 +28,6 @@ namespace video
 		AVPixelFormat PixelFormat() const override;
 		void SetPixelFormat(AVPixelFormat value) override;
 
-	public:
 		int _width = 0;
 		int _height = 0;
 		AVPixelFormat _pixel_format{};

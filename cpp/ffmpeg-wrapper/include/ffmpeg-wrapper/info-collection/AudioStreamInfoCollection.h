@@ -6,7 +6,6 @@ namespace video
 	class AudioStreamInfoCollection :
 		public IAudioStreamInfoCollection
 	{
-		#pragma region 生命周期
 	public:
 		AudioStreamInfoCollection() = default;
 
@@ -25,15 +24,12 @@ namespace video
 			IAudioStreamInfoCollection::operator=(value);
 			return *this;
 		}
-		#pragma endregion
 
-	public:
 		AVRational _time_base{};
 		AVSampleFormat _sample_format{};
 		int _sample_rate = 0;
 		AVChannelLayout _ch_layout{};
 
-	public:
 		AVRational TimeBase() const override
 		{
 			return _time_base;

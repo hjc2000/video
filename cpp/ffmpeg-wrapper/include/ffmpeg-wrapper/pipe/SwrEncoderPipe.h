@@ -12,6 +12,9 @@ namespace video
 	/// </summary>
 	class SwrEncoderPipe :public IFrameConsumer
 	{
+		shared_ptr<EncoderPipe> _encoder_pipe;
+		shared_ptr<SwrPipe> _swr_pipe;
+
 	public:
 		/// <summary>
 		///		
@@ -28,11 +31,6 @@ namespace video
 			shared_ptr<OutputFormat> output_format
 		);
 
-	private:
-		shared_ptr<EncoderPipe> _encoder_pipe;
-		shared_ptr<SwrPipe> _swr_pipe;
-
-	public:
 		/// <summary>
 		///		送入帧。会先经过重采样管道然后编码，最后写入封装。
 		/// </summary>

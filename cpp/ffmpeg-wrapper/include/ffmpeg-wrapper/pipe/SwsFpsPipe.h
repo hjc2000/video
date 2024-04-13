@@ -11,14 +11,11 @@ namespace video
 		public IFrameConsumer,
 		public IPipeFrameSource
 	{
-	public:
-		SwsFpsPipe(IVideoStreamInfoCollection &out_video_stream_infos);
-
-	private:
 		shared_ptr<SwsPipe> _sws_pipe;
 		shared_ptr<FpsAdjustPipe> _fps_adjust_pipe;
 
 	public:
+		SwsFpsPipe(IVideoStreamInfoCollection &out_video_stream_infos);
 		List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override;
 		void SendFrame(AVFrameWrapper *frame) override;
 	};

@@ -61,38 +61,7 @@ namespace video
 	*/
 	class AVDictionaryWrapper :public Wrapper<AVDictionary>, public ICanToString
 	{
-	public:
-		#pragma region 迭代器
-		class AVDictionaryIterator
-		{
-		public:
-			AVDictionaryIterator(AVDictionary *dic, AVDictionaryEntry *current_entry)
-			{
-				_dic = dic;
-				_current_entry = current_entry;
-			}
-
-			AVDictionaryIterator &operator++()
-			{
-				_current_entry = av_dict_get(_dic, "", _current_entry, (int)AVDictionaryFlag::IgnoreSuffix);
-				return *this;
-			}
-
-			AVDictionaryEntry *operator*() const
-			{
-				return _current_entry;
-			}
-
-			bool operator!=(const AVDictionaryIterator &other) const
-			{
-				return _current_entry != other._current_entry;
-			}
-
-		private:
-			AVDictionary *_dic;
-			AVDictionaryEntry *_current_entry;
-		};
-		#pragma endregion
+		bool _do_not_free_dic = false;
 
 	public:
 		AVDictionaryWrapper() {}
@@ -107,10 +76,6 @@ namespace video
 			FreeInnerDictionary();
 		}
 
-	private:
-		bool _do_not_free_dic = false;
-
-	public:
 		/**
 		 * @brief 不要释放内部包装的字典，这是为了避免与 ffmpeg 中的某些 free 函数重复释放导致崩溃。
 		 * @param do_not 设置为 true 后，本对象的 av_dict_free 方法不会生效。
@@ -188,7 +153,37 @@ namespace video
 			return ::av_dict_get(_wrapped_obj, key, previous_entry, (int)flags);
 		}
 
-	public:
+		#pragma region 迭代器
+		class AVDictionaryIterator
+		{
+		public:
+			AVDictionaryIterator(AVDictionary *dic, AVDictionaryEntry *current_entry)
+			{
+				_dic = dic;
+				_current_entry = current_entry;
+			}
+
+			AVDictionaryIterator &operator++()
+			{
+				_current_entry = av_dict_get(_dic, "", _current_entry, (int)AVDictionaryFlag::IgnoreSuffix);
+				return *this;
+			}
+
+			AVDictionaryEntry *operator*() const
+			{
+				return _current_entry;
+			}
+
+			bool operator!=(const AVDictionaryIterator &other) const
+			{
+				return _current_entry != other._current_entry;
+			}
+
+		private:
+			AVDictionary *_dic;
+			AVDictionaryEntry *_current_entry;
+		};
+
 		AVDictionaryIterator begin() const
 		{
 			return AVDictionaryIterator(_wrapped_obj, av_dict_get(_wrapped_obj, "", nullptr, AV_DICT_IGNORE_SUFFIX));
@@ -198,8 +193,8 @@ namespace video
 		{
 			return AVDictionaryIterator(_wrapped_obj, nullptr);
 		}
+		#pragma endregion
 
-	public:
 		std::string ToString() override
 		{
 			std::stringstream sb;

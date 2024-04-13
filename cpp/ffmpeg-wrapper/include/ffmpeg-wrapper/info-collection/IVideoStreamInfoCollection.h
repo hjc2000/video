@@ -11,7 +11,6 @@ namespace video
 		virtual ~IVideoStreamInfoCollection() = default;
 		IVideoStreamInfoCollection &operator=(IVideoStreamInfoCollection const &value);
 
-	public:
 		virtual AVRational TimeBase() const = 0;
 		virtual void SetTimeBase(AVRational value) = 0;
 

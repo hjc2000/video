@@ -11,7 +11,6 @@ namespace video
 		public IPacketConsumer,
 		public IPipePacketSource
 	{
-	private:
 		int64_t _last_pts = 0;
 		int64_t _last_dts = 0;
 		int64_t _offset = 0;
@@ -23,7 +22,6 @@ namespace video
 		void UpdateLastDts(int64_t value);
 
 		#pragma region 校准起始时间戳
-	private:
 		bool _start_pts_dts_not_set = true;
 		int64_t _start_pts = 0;
 		int64_t _start_dts = 0;

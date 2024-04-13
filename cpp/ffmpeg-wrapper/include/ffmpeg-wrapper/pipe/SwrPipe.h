@@ -8,14 +8,6 @@ namespace video
 		public IPipeFrameSource,
 		public IFrameConsumer
 	{
-	public:
-		/// <summary>
-		///		重采样管道。
-		/// </summary>
-		/// <param name="desired_out_frame_infos">期望输出的音频帧是什么样的</param>
-		SwrPipe(IAudioFrameInfoCollection &desired_out_frame_infos);
-
-	private:
 		shared_ptr<SwrContextWrapper> _swr;
 		AudioStreamInfoCollection _in_stream_infos;
 		AudioFrameInfoCollection _desired_out_frame_infos;
@@ -40,6 +32,12 @@ namespace video
 		void change_swr();
 
 	public:
+		/// <summary>
+		///		重采样管道。
+		/// </summary>
+		/// <param name="desired_out_frame_infos">期望输出的音频帧是什么样的</param>
+		SwrPipe(IAudioFrameInfoCollection &desired_out_frame_infos);
+
 		List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override
 		{
 			return _consumer_list;

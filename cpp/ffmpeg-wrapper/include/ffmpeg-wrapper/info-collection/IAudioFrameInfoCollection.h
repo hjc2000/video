@@ -13,7 +13,6 @@ namespace video
 		virtual ~IAudioFrameInfoCollection() {}
 		IAudioFrameInfoCollection &operator=(IAudioFrameInfoCollection const &value);
 
-	public:
 		virtual int SampleCount() const = 0;
 		virtual void SetSampleCount(int value) = 0;
 	};

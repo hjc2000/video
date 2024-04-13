@@ -27,17 +27,30 @@ namespace video
 		public IFrameSource,
 		public IPacketConsumer
 	{
-		#pragma region 构造，析构
-	private:
+		#pragma region AVCodec
+		/// <summary>
+		///		与本类绑定的 AVCodec
+		/// </summary>
+		AVCodec *_codec = nullptr;
+
+		AVCodec const *Codec() const
+		{
+			return _codec;
+		}
+
+		void SetCodec(AVCodec const *codec)
+		{
+			_codec = (AVCodec *)codec;
+		}
+		#pragma endregion
+
 		AVCodecContextWrapper(AVCodec const *codec);
 		AVCodecContextWrapper(AVCodec const *codec, AVCodecParameters *param);
 
 	public:
 		~AVCodecContextWrapper();
-		#pragma endregion
 
 		#pragma region 工厂函数
-	public:
 		/// <summary>
 		///		创建解码器。此函数创建的解码器是通用的，音频流和视频流的解码器都是用这个函数创建。
 		///		* 会将流的 AVCodecParameters 复制到解码器上下文中
@@ -89,23 +102,6 @@ namespace video
 		);
 		#pragma endregion
 
-	private:
-		#pragma region AVCodec
-		/// <summary>
-		///		与本类绑定的 AVCodec
-		/// </summary>
-		AVCodec *_codec = nullptr;
-		AVCodec const *Codec() const
-		{
-			return _codec;
-		}
-		void SetCodec(AVCodec const *codec)
-		{
-			_codec = (AVCodec *)codec;
-		}
-		#pragma endregion
-
-	public:
 		/// <summary>
 		///		打开编解码器。
 		///		- 打开前一定要先设置编解码器的参数。

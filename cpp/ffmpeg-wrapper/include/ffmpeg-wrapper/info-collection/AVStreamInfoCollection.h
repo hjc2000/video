@@ -14,6 +14,8 @@ namespace video
 		public IAudioStreamInfoCollection,
 		public IVideoStreamInfoCollection
 	{
+		void CopyCodecParamFrom(AVCodecParameters const *src);
+
 	public:
 		AVStreamInfoCollection() = default;
 		AVStreamInfoCollection(AVStreamInfoCollection const &stream);
@@ -22,7 +24,6 @@ namespace video
 		AVStreamInfoCollection &operator=(AVStreamInfoCollection const &stream);
 		AVStreamInfoCollection &operator=(AVStreamWrapper const &stream);
 
-	public:
 		/// <summary>
 		///		当且仅当两个对象的指针相等时才相等。
 		/// </summary>
@@ -33,10 +34,6 @@ namespace video
 			return this == &another;
 		}
 
-	private:
-		void CopyCodecParamFrom(AVCodecParameters const *src);
-
-	public:
 		int _index = -1;
 		int Index()  const;
 		void SetIndex(int value);
@@ -66,7 +63,6 @@ namespace video
 		AVRational _frame_rate{};
 
 		#pragma region 通过 IAudioStreamInfoCollection 继承
-	public:
 		AVRational TimeBase() const override;
 		void SetTimeBase(AVRational value) override;
 		AVSampleFormat SampleFormat() const override;
@@ -78,7 +74,6 @@ namespace video
 		#pragma endregion
 
 		#pragma region 通过 IVideoStreamInfoCollection 继承
-	public:
 		int Width() const override;
 		void SetWidth(int value) override;
 		int Height() const override;

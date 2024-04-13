@@ -15,7 +15,6 @@ namespace video
 		virtual ~IAudioStreamInfoCollection() {}
 		IAudioStreamInfoCollection &operator=(IAudioStreamInfoCollection const &value);
 
-	public:
 		virtual AVRational TimeBase() const = 0;
 		virtual void SetTimeBase(AVRational value) = 0;
 
@@ -28,7 +27,6 @@ namespace video
 		virtual AVChannelLayout ChannelLayout() const = 0;
 		virtual void SetChannelLayout(AVChannelLayout value) = 0;
 
-	public: // 接口扩展
 		/// <summary>
 		///		获取两个采样点之间的时间间隔。其实就是采样率的倒数。
 		/// </summary>

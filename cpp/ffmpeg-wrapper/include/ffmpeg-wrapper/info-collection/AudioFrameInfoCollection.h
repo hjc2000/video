@@ -8,7 +8,6 @@ namespace video
 	/// </summary>
 	class AudioFrameInfoCollection :public IAudioFrameInfoCollection
 	{
-		#pragma region 生命周期
 	public:
 		AudioFrameInfoCollection() = default;
 
@@ -28,21 +27,18 @@ namespace video
 			IAudioFrameInfoCollection::operator=(value);
 			return *this;
 		}
-		#pragma endregion
 
-	public:
 		AVRational _time_base{};
 		AVSampleFormat _sample_format{};
 		int _sample_rate = 0;
 		AVChannelLayout _ch_layout{};
 		int _nb_samples = 0;
 
-	public:
+		#pragma region IAudioFrameInfoCollection
 		AVRational TimeBase() const override
 		{
 			return _time_base;
 		}
-
 		void SetTimeBase(AVRational value) override
 		{
 			_time_base = value;
@@ -52,7 +48,6 @@ namespace video
 		{
 			return _sample_format;
 		}
-
 		void SetSampleFormat(AVSampleFormat value) override
 		{
 			_sample_format = value;
@@ -62,7 +57,6 @@ namespace video
 		{
 			return _sample_rate;
 		}
-
 		void SetSampleRate(int value) override
 		{
 			_sample_rate = value;
@@ -72,7 +66,6 @@ namespace video
 		{
 			return _ch_layout;
 		}
-
 		void SetChannelLayout(AVChannelLayout value) override
 		{
 			_ch_layout = value;
@@ -82,10 +75,11 @@ namespace video
 		{
 			return _nb_samples;
 		}
-
 		void SetSampleCount(int value) override
 		{
 			_nb_samples = value;
 		}
+		#pragma endregion
+
 	};
 }

@@ -9,7 +9,6 @@ namespace video
 		virtual ~IVideoFrameInfoCollection() {}
 		IVideoFrameInfoCollection &operator=(IVideoFrameInfoCollection const &another);
 
-	public:
 		virtual int Width() const = 0;
 		virtual void SetWidth(int value) = 0;
 

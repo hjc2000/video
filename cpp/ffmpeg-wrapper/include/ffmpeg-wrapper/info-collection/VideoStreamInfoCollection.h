@@ -25,7 +25,6 @@ namespace video
 			return *this;
 		}
 
-	public:
 		int _width = 0;
 		int Width() const override
 		{

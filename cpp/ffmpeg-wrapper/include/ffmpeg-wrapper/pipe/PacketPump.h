@@ -8,14 +8,17 @@
 
 namespace video
 {
-	/**
-	 * @brief 从 IPacketSource 中读取包，送入 IPacketConsumer
-	*/
+	/// <summary>
+	///		从 IPacketSource 中读取包，送入 IPacketConsumer
+	/// </summary>
 	class PacketPump :
 		public IPipePacketSource,
 		public IDisposable
 	{
-		#pragma region 生命周期
+		std::atomic_bool _disposed = false;
+		shared_ptr<IPacketSource> _packet_source;
+		List<shared_ptr<IPacketConsumer>> _consumer_list;
+
 	public:
 		PacketPump(shared_ptr<IPacketSource> packet_source) :
 			_packet_source(packet_source)
@@ -28,18 +31,12 @@ namespace video
 			Dispose();
 		}
 
-	private:
-		std::atomic_bool _disposed = false;
-
-	public:
 		void Dispose() override
 		{
 			if (_disposed) return;
 			_disposed = true;
 		}
-		#pragma endregion
 
-	public:
 		List<shared_ptr<IPacketConsumer>> &PacketConsumerList() override
 		{
 			return _consumer_list;
@@ -50,14 +47,6 @@ namespace video
 		/// </summary>
 		std::function<void(AVPacketWrapper *packet)> _on_before_send_packet_to_consumer;
 
-		/**
-		 * @brief 泵送。
-		 * 将包从源中读出来，送给每一个消费者。要求包源在包结束时返回 ErrorCode::eof，
-		 * 在读取成功时返回 0. 在其他错误时返回其他错误代码。但是返回其他错误代码会导致本函数
-		 * 抛出异常。
-		 *
-		 * @param cancellation_token 用于取消泵送的令牌
-		*/
 		void Pump(shared_ptr<CancellationToken> cancellation_token)
 		{
 			AVPacketWrapper packet;
@@ -100,9 +89,5 @@ namespace video
 				}
 			}
 		}
-
-	private:
-		shared_ptr<IPacketSource> _packet_source;
-		List<shared_ptr<IPacketConsumer>> _consumer_list;
 	};
 }
