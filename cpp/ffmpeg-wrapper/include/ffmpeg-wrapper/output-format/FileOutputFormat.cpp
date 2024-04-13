@@ -1,7 +1,7 @@
 #include"FileOutputFormat.h"
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/wrapper/AVPacketWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
-#include<ffmpeg-wrapper/ErrorCode.h>
 
 using namespace video;
 

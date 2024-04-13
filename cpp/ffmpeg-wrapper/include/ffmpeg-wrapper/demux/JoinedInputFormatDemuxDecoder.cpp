@@ -83,7 +83,7 @@ void video::JoinedInputFormatDemuxDecoder::Pump(shared_ptr<CancellationToken> ca
 		OpenInputIfNull();
 		if (_current_intput_format == nullptr)
 		{
-			// 尝试打开输入后 _current_intput_format 仍然为空
+			cout << CODE_POS_STR << "尝试打开输入后 _current_intput_format 仍然为空" << endl;
 			_infinite_packet_pipe->FlushConsumer();
 			return;
 		}

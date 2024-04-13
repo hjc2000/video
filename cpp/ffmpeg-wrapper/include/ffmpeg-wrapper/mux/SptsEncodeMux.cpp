@@ -92,8 +92,8 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 void test_SptsEncodeMux()
 {
 	Queue<std::string> file_queue;
-	file_queue.Enqueue("moon.mp4");
 	file_queue.Enqueue("周杰伦、潘儿 - 夜的第七章.mkv");
+	file_queue.Enqueue("moon.mp4");
 	file_queue.Enqueue("越权访问.mkv");
 	file_queue.Enqueue("fallen-down.ts");
 	shared_ptr<JoinedInputFormatDemuxDecoder> joined_input_format_demux_decoder{ new JoinedInputFormatDemuxDecoder{} };

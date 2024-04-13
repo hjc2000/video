@@ -35,8 +35,8 @@ video::ThreadDecoderPipe::~ThreadDecoderPipe()
 
 void video::ThreadDecoderPipe::Dispose()
 {
-	_decoder_pipe->Dispose();
 	_packet_queue.Dispose();
+	_decoder_pipe->Dispose();
 	_decode_thread_exit.Wait();
 }
 

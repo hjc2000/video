@@ -21,7 +21,6 @@ namespace video
 	{
 		std::mutex _not_private_methods_lock;
 		int _flush_times = 0;
-		List<int> _flushed_stream_index_list;
 
 		void WriteTrailer();
 
