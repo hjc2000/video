@@ -38,8 +38,6 @@ namespace video
 			return _wrapped_obj;
 		}
 
-		bool operator==(SDL_AudioSpecWrapper &another) const;
-
 		Json ToJson() override;
 
 		#pragma region 通过 IAudioFrameInfoCollection 继承

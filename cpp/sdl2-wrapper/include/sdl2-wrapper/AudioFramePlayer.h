@@ -15,9 +15,6 @@
 
 namespace video
 {
-	/**
-	 * @brief 本类线程安全。
-	*/
 	class AudioFramePlayer :
 		public IDisposable,
 		public IRefTimer,

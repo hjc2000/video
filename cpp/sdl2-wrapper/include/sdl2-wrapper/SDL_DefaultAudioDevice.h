@@ -23,6 +23,13 @@ namespace video
 		public IJsonSerializable,
 		public IDisposable
 	{
+		std::atomic_bool _disposed = false;
+		SDL_AudioSpecWrapper _desired_spec;
+		SDL_AudioSpecWrapper _abtained_spec;
+		std::mutex _not_private_methods_lock;
+
+		static void static_audio_callback(void *userdata, uint8_t *stream, int len);
+
 	public:
 		/// <summary>
 		///		构造函数。会调用 SDL 打开音频设备。打开失败会抛出异常。
@@ -36,15 +43,6 @@ namespace video
 		/// </summary>
 		void Dispose() override;
 
-	private:
-		std::atomic_bool _disposed = false;
-		SDL_AudioSpecWrapper _desired_spec;
-		SDL_AudioSpecWrapper _abtained_spec;
-		std::mutex _not_private_methods_lock;
-
-		static void static_audio_callback(void *userdata, uint8_t *stream, int len);
-
-	public:
 		/// <summary>
 		///		音频回调委托。
 		///		本委托函数一旦返回，就认为成功向 stream 中写入音频数据了。
