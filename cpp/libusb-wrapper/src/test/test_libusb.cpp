@@ -6,6 +6,8 @@
 #include<libusb-wrapper/UsbDeviceWrapper.h>
 #include<test_libusb.h>
 
+using namespace libusb;
+
 void test_libusb()
 {
 	try

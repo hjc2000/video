@@ -1,12 +1,13 @@
 #include"UsbA3Device.h"
-#include<jccpp/Exception.h>
 #include<functional>
+#include<jccpp/Exception.h>
 #include<memory>
 #include<memory>
 #include<stdio.h>
 #include<vector>
 
 using namespace std;
+using namespace libusb;
 using std::shared_ptr;
 using std::unique_ptr;
 

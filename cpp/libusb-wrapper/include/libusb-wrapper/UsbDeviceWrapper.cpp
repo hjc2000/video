@@ -1,5 +1,7 @@
 #include<libusb-wrapper/UsbDeviceWrapper.h>
 
+using namespace libusb;
+
 UsbDeviceWrapper::UsbDeviceWrapper(libusb_device *device)
 {
 	Ref(device);

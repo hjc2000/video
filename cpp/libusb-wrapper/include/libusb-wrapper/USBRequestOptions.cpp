@@ -1,4 +1,6 @@
-#include"libusb-wrapper/USBRequestOptions.h"
+#include"USBRequestOptions.h"
+
+using namespace libusb;
 
 USBRequestOptions::USBRequestOptions(DataDirection dir, RequestType type, RecipientType recipient)
 {

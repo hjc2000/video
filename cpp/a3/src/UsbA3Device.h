@@ -34,7 +34,7 @@ public:
 	/// <param name="type"></param>
 	/// <param name="hlist"></param>
 	/// <returns>找到的设备的数量</returns>
-	static vector<shared_ptr<UsbA3Device>> FindDevices(usbdevice_type type, UsbDeviceListWrapper &usb_list);
+	static vector<shared_ptr<UsbA3Device>> FindDevices(usbdevice_type type, libusb::UsbDeviceListWrapper &usb_list);
 
 private:
 	UsbA3Device() {}
@@ -53,7 +53,7 @@ private:
 
 public:
 	char _name[32]{};
-	UsbDeviceWrapper _usb_device{};
+	libusb::UsbDeviceWrapper _usb_device{};
 	int32_t _ref = 0;
 	int32_t _is_dma = 0;
 	int32_t _epsize = 0;
@@ -222,10 +222,10 @@ public:// 方法
 		}
 
 		uint32_t length_read = _usb_device.ControlTransfer(
-			USBRequestOptions{
-				USBRequestOptions::DataDirection::DeviceToHost,
-				USBRequestOptions::RequestType::Vendor,
-				USBRequestOptions::RecipientType::Device,
+			libusb::USBRequestOptions{
+				libusb::USBRequestOptions::DataDirection::DeviceToHost,
+				libusb::USBRequestOptions::RequestType::Vendor,
+				libusb::USBRequestOptions::RecipientType::Device,
 			},
 			cmd,
 			wval,
@@ -265,10 +265,10 @@ public:// 方法
 		 * 使用自定义命令必须将请求类型设置为 USBRequestOptions::RequestType::Vendor。
 		 */
 		uint32_t length_read = _usb_device.ControlTransfer(
-			USBRequestOptions{
-				USBRequestOptions::DataDirection::HostToDevice,
-				USBRequestOptions::RequestType::Vendor,
-				USBRequestOptions::RecipientType::Device,
+			libusb::USBRequestOptions{
+				libusb::USBRequestOptions::DataDirection::HostToDevice,
+				libusb::USBRequestOptions::RequestType::Vendor,
+				libusb::USBRequestOptions::RecipientType::Device,
 			},
 			cmd,
 			wval,

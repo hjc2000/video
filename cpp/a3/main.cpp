@@ -13,6 +13,7 @@
 #include<memory>
 #include<semaphore>
 
+using namespace libusb;
 using namespace std::chrono;
 using namespace std::this_thread;
 
