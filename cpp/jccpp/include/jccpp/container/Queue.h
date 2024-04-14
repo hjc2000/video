@@ -17,7 +17,7 @@ public:
 	///		当前队列中元素的数量。
 	/// </summary>
 	/// <returns></returns>
-	uint64_t Count() override
+	uint64_t Count() const override
 	{
 		return _queue.size();
 	}

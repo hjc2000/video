@@ -93,7 +93,7 @@ namespace jc
 		 * @brief 队列中当前元素个数
 		 * @return
 		*/
-		uint64_t Count() override
+		uint64_t Count() const override
 		{
 			// _queue 线程安全，这里不需要加锁。
 			return _queue.Count();

@@ -13,7 +13,7 @@ public:
 	virtual ~IQueue() {}
 
 public:
-	virtual uint64_t Count() = 0;
+	virtual uint64_t Count() const = 0;
 	virtual T Dequeue() = 0;
 	virtual bool TryDequeue(T &out) = 0;
 	virtual void Enqueue(T obj) = 0;

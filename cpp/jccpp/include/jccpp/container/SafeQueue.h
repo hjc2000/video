@@ -1,4 +1,5 @@
 #pragma once
+#include<atomic>
 #include<jccpp/container/IQueue.h>
 #include<mutex>
 
@@ -11,16 +12,16 @@ class SafeQueue :public IQueue<T>
 private:
 	std::queue<T> _queue;
 	std::mutex _lock;
+	std::atomic<uint64_t> _count = 0;
 
 public:
 	/**
 	 * @brief 队列中元素的数量。
-	 * @return 
+	 * @return
 	*/
-	uint64_t Count() override
+	uint64_t Count() const override
 	{
-		std::lock_guard l(_lock);
-		return _queue.size();
+		return _count;
 	}
 
 	/**
@@ -39,6 +40,7 @@ public:
 
 		T ret = _queue.front();
 		_queue.pop();
+		_count--;
 		return ret;
 	}
 
@@ -57,6 +59,7 @@ public:
 
 		out = _queue.front();
 		_queue.pop();
+		_count--;
 		return true;
 	}
 
@@ -68,6 +71,7 @@ public:
 	{
 		std::lock_guard l(_lock);
 		_queue.push(obj);
+		_count++;
 	}
 
 	/**
@@ -84,7 +88,7 @@ public:
 	{
 		std::lock_guard l(_lock);
 
-		/* 
+		/*
 		* 构造一个空的队列，然后让 _queue 与空队列交换。退出作用域后，empty_queue
 		* 被销毁，所有元素都丢失。
 		*
@@ -92,5 +96,6 @@ public:
 		*/
 		std::queue<T> empty_queue;
 		_queue.swap(empty_queue);
+		_count = 0;
 	}
 };
