@@ -125,4 +125,14 @@ public:
 	{
 		return _vector;
 	}
+
+	/// <summary>
+	///		转发到 std::vector 的相等判断逻辑。
+	/// </summary>
+	/// <param name="another"></param>
+	/// <returns></returns>
+	bool operator==(List const &another) const
+	{
+		return _vector == another._vector;
+	}
 };

@@ -4,7 +4,7 @@ template<typename T>
 class IList
 {
 public:
-	virtual ~IList() {}
+	virtual ~IList() = default;
 
 	// 添加元素到列表的末尾
 	virtual void Add(const T &item) = 0;
@@ -83,17 +83,14 @@ public:
 		return IListIterator(this, Count());
 	}
 	#pragma endregion
-};
 
-/**
- * @brief 只有两个 IList 接口对象的指针相等的时候才认为对象相等。
- * @tparam T
- * @param list1
- * @param list2
- * @return
-*/
-template<typename T>
-bool operator==(IList<T> const &list1, IList<T> const &list2)
-{
-	return &list1 == &list2;
-}
+	/// <summary>
+	///		两个 IList 对象的指针相等时才认为相等。
+	/// </summary>
+	/// <param name="another"></param>
+	/// <returns></returns>
+	bool operator==(IList const &another) const
+	{
+		return this == &another;
+	}
+};
