@@ -80,7 +80,7 @@ public:
 		_vector.erase(_vector.begin() + index);
 	}
 
-	int IndexOf(T const &item) override
+	int IndexOf(T const &item) const override
 	{
 		auto it = std::find(_vector.begin(), _vector.end(), item);
 		if (it != _vector.end())
@@ -91,7 +91,7 @@ public:
 		return -1; // 如果没有找到元素，返回 -1
 	}
 
-	bool Contains(T const &item) override
+	bool Contains(T const &item) const override
 	{
 		return std::find(_vector.begin(), _vector.end(), item) != _vector.end();
 	}

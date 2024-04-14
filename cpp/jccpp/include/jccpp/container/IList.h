@@ -9,8 +9,8 @@ public:
 	virtual void Insert(int index, const T &item) = 0;
 	virtual bool Remove(const T &item) = 0;
 	virtual void RemoveAt(int index) = 0;
-	virtual int IndexOf(const T &item) = 0;
-	virtual bool Contains(const T &item) = 0;
+	virtual int IndexOf(const T &item) const = 0;
+	virtual bool Contains(const T &item) const = 0;
 	virtual void Clear() = 0;
 	virtual int Count() const = 0;
 	virtual T &operator[](int index) = 0;
