@@ -35,7 +35,6 @@ public:
 		return *this;
 	}
 
-	// 添加元素到列表的末尾
 	void Add(T const &item) override
 	{
 		_vector.push_back(item);
@@ -49,7 +48,6 @@ public:
 		}
 	}
 
-	// 在指定索引处插入一个元素
 	void Insert(int const index, T const &item) override
 	{
 		if (index<0 || index > _vector.size())
@@ -60,7 +58,6 @@ public:
 		_vector.insert(_vector.begin() + index, item);
 	}
 
-	// 删除与给定对象相等的第一个元素
 	bool Remove(T const &item) override
 	{
 		auto it = std::find(_vector.begin(), _vector.end(), item);
@@ -73,7 +70,6 @@ public:
 		return false; // 如果没有找到元素，返回 false
 	}
 
-	// 移除索引为 index 的元素
 	void RemoveAt(int const index) override
 	{
 		if (index < 0 || index >= _vector.size())
@@ -84,7 +80,6 @@ public:
 		_vector.erase(_vector.begin() + index);
 	}
 
-	// 返回与给定对象相等的第一个元素的索引
 	int IndexOf(T const &item) override
 	{
 		auto it = std::find(_vector.begin(), _vector.end(), item);
@@ -96,25 +91,21 @@ public:
 		return -1; // 如果没有找到元素，返回 -1
 	}
 
-	// 检查列表中是否包含给定的元素
 	bool Contains(T const &item) override
 	{
 		return std::find(_vector.begin(), _vector.end(), item) != _vector.end();
 	}
 
-	// 清除列表中的所有元素
 	void Clear() override
 	{
 		_vector.clear();
 	}
 
-	// 获取列表的大小
 	int Count() const override
 	{
 		return (int)_vector.size();
 	}
 
-	// 通过索引访问元素
 	T &operator[](int const index) override
 	{
 		if (index < 0 || index >= _vector.size())
