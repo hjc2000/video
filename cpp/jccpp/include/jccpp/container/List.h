@@ -36,10 +36,17 @@ public:
 	}
 
 	// 添加元素到列表的末尾
-	using IList<T>::Add;
 	void Add(T const &item) override
 	{
 		_vector.push_back(item);
+	}
+
+	void Add(List<T> const &another)
+	{
+		for (int i = 0; i < another.Count(); i++)
+		{
+			Add(another[i]);
+		}
 	}
 
 	// 在指定索引处插入一个元素
@@ -109,6 +116,16 @@ public:
 
 	// 通过索引访问元素
 	T &operator[](int const index) override
+	{
+		if (index < 0 || index >= _vector.size())
+		{
+			throw jc::OutOfRangeException();
+		}
+
+		return _vector[index];
+	}
+
+	T const &operator[](int const index) const override
 	{
 		if (index < 0 || index >= _vector.size())
 		{
