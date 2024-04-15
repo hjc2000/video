@@ -244,24 +244,6 @@ namespace ts
 	TSDUCKDLL UString SearchExecutableFile(const UString &fileName, const UString &pathName);
 
 	//!
-	//! Search a configuration file.
-	//! @param [in] fileName Name of the file to search.
-	//! If @a fileName is not found and does not contain any directory part, search this file
-	//! in the following places:
-	//! - All directories in @c TSPLUGINS_PATH environment variable.
-	//! - Directory of the current executable.
-	//! - Directory ../etc/tsduck from current executable (UNIX only).
-	//! - Directory ../../etc/tsduck from current executable (UNIX only).
-	//! - Directory ../lib64/tsduck from current executable (64-bit UNIX only).
-	//! - Directory ../lib/tsduck from current executable (UNIX only).
-	//! - Directory ../share/tsduck from current executable (UNIX only).
-	//! - All directories in @c LD_LIBRARY_PATH environment variable (UNIX only).
-	//! - All directories in @c PATH (UNIX) or @c Path (Windows) environment variable.
-	//! @return The path to an existing file or an empty string if not found.
-	//!
-	TSDUCKDLL UString SearchConfigurationFile(const UString &fileName);
-
-	//!
 	//! Build the name of a user-specific configuration file.
 	//! @param [in] fileName Base name of the configuration file.
 	//! @param [in] winFileName Alternative base name on Windows. If empty, @a fileName is used.
