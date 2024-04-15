@@ -24,6 +24,13 @@ namespace video
 		/// </summary>
 		virtual void FlushDecoderButNotFlushConsumers() = 0;
 
+		/// <summary>
+		///		因为 IAudioStreamInfoCollection 和 IVideoStreamInfoCollection
+		///		都有 TimeBase 和 SetTimeBase，所以这里重复一下，否则会报错，说不明确。
+		///		这里重复后，就可以同时重写 IAudioStreamInfoCollection 和 IVideoStreamInfoCollection
+		///		中的 TimeBase 和 SetTimeBase。
+		/// </summary>
+		/// <returns></returns>
 		virtual AVRational TimeBase() const = 0;
 		virtual void SetTimeBase(AVRational value) = 0;
 	};
