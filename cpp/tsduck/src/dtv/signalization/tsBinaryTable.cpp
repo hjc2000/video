@@ -491,16 +491,3 @@ bool ts::BinaryTable::isShortSection() const
 {
 	return _sections.size() == 1 && !_sections[0].isNull() && _sections[0]->isShortSection();
 }
-
-
-//----------------------------------------------------------------------------
-// Options to convert a binary table into XML.
-//----------------------------------------------------------------------------
-
-ts::BinaryTable::XMLOptions::XMLOptions() :
-	forceGeneric(false),
-	setPID(false),
-	setLocalTime(false),
-	setPackets(false)
-{
-}

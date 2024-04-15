@@ -267,19 +267,6 @@ namespace ts
 		//!
 		bool isShortSection() const;
 
-		//!
-		//! Options to convert a binary table into XML.
-		//!
-		class TSDUCKDLL XMLOptions
-		{
-		public:
-			XMLOptions();       //!< Constructor.
-			bool forceGeneric;  //!< Force a generic table node even if the table can be specialized.
-			bool setPID;        //!< Add a metadata element with the source PID, when available.
-			bool setLocalTime;  //!< Add a metadata element with the current local time.
-			bool setPackets;    //!< Add a metadata element with the index of the first and last TS packets of the table.
-		};
-
 		// Implementation of AbstractDefinedByStandards
 		virtual Standards definingStandards() const override;
 
