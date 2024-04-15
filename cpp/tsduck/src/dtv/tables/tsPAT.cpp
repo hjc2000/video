@@ -11,7 +11,6 @@
 #include "tsPAT.h"
 #include "tsPSIBuffer.h"
 #include "tsPSIRepository.h"
-#include "tsxmlElement.h"
 
 #define MY_XML_NAME u"PAT"
 #define MY_CLASS ts::PAT
@@ -118,55 +117,4 @@ void ts::PAT::serializePayload(BinaryTable &table, PSIBuffer &buf) const
 		buf.putUInt16(it.first);  // service_id
 		buf.putPID(it.second);    // pmt pid
 	}
-}
-
-//----------------------------------------------------------------------------
-// XML serialization
-//----------------------------------------------------------------------------
-
-void ts::PAT::buildXML(DuckContext &duck, xml::Element *root) const
-{
-	root->setIntAttribute(u"version", version);
-	root->setBoolAttribute(u"current", is_current);
-	root->setIntAttribute(u"transport_stream_id", ts_id, true);
-	if (nit_pid != PID_NULL)
-	{
-		root->setIntAttribute(u"network_PID", nit_pid, true);
-	}
-	for (auto &it : pmts)
-	{
-		xml::Element *e = root->addElement(u"service");
-		e->setIntAttribute(u"service_id", it.first, true);
-		e->setIntAttribute(u"program_map_PID", it.second, true);
-	}
-}
-
-
-//----------------------------------------------------------------------------
-// XML deserialization
-//----------------------------------------------------------------------------
-
-bool ts::PAT::analyzeXML(DuckContext &duck, const xml::Element *element)
-{
-	xml::ElementVector xservice;
-	bool ok =
-		element->getIntAttribute(version, u"version", false, 0, 0, 31) &&
-		element->getBoolAttribute(is_current, u"current", false, true) &&
-		element->getIntAttribute(ts_id, u"transport_stream_id", true, 0, 0x0000, 0xFFFF) &&
-		element->getIntAttribute<PID>(nit_pid, u"network_PID", false, PID_NULL, 0x0000, 0x1FFF) &&
-		element->getChildren(xservice, u"service", 0, 0x10000);
-
-	for (auto it : xservice)
-	{
-		uint16_t id = 0;
-		PID pid = PID_NULL;
-		ok = it->getIntAttribute(id, u"service_id", true, 0, 0x0000, 0xFFFF) &&
-			it->getIntAttribute<PID>(pid, u"program_map_PID", true, 0, 0x0000, 0x1FFF);
-		if (ok)
-		{
-			pmts[id] = pid;
-		}
-	}
-
-	return ok;
 }

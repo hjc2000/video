@@ -74,8 +74,6 @@ namespace ts
 		virtual void clearContent() override;
 		virtual void serializePayload(BinaryTable &, PSIBuffer &) const override;
 		virtual void deserializePayload(PSIBuffer &, const Section &) override;
-		virtual void buildXML(DuckContext &, xml::Element *) const override;
-		virtual bool analyzeXML(DuckContext &, const xml::Element *) override;
 
 	private:
 		AbstractDescriptorsTable() = delete;

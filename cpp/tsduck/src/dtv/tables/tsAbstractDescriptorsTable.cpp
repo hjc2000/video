@@ -10,7 +10,6 @@
 #include "tsBinaryTable.h"
 #include "tsPSIBuffer.h"
 #include "tsSection.h"
-#include "tsxmlElement.h"
 
 
 //----------------------------------------------------------------------------
@@ -84,27 +83,4 @@ void ts::AbstractDescriptorsTable::serializePayload(BinaryTable &table, PSIBuffe
 		start = buf.putPartialDescriptorList(descs, start);
 		addOneSection(table, buf);
 	}
-}
-
-//----------------------------------------------------------------------------
-// XML serialization
-//----------------------------------------------------------------------------
-
-void ts::AbstractDescriptorsTable::buildXML(DuckContext &duck, xml::Element *root) const
-{
-	root->setIntAttribute(u"version", version);
-	root->setBoolAttribute(u"current", is_current);
-	descs.toXML(duck, root);
-}
-
-
-//----------------------------------------------------------------------------
-// XML deserialization
-//----------------------------------------------------------------------------
-
-bool ts::AbstractDescriptorsTable::analyzeXML(DuckContext &duck, const xml::Element *element)
-{
-	return element->getIntAttribute(version, u"version", false, 0, 0, 31) &&
-		element->getBoolAttribute(is_current, u"current", false, true) &&
-		descs.fromXML(duck, element);
 }

@@ -11,7 +11,6 @@
 #include "tsPSIBuffer.h"
 #include "tsPSIRepository.h"
 #include "tsRST.h"
-#include "tsxmlElement.h"
 
 #define MY_XML_NAME u"RST"
 #define MY_CLASS ts::RST
@@ -105,47 +104,4 @@ void ts::RST::serializePayload(BinaryTable &table, PSIBuffer &buf) const
 		buf.putBits(0xFF, 5);
 		buf.putBits(it.running_status, 3);
 	}
-}
-
-//----------------------------------------------------------------------------
-// XML serialization
-//----------------------------------------------------------------------------
-
-void ts::RST::buildXML(DuckContext &duck, xml::Element *root) const
-{
-	for (auto &it : events)
-	{
-		xml::Element *e = root->addElement(u"event");
-		e->setIntAttribute(u"transport_stream_id", it.transport_stream_id, true);
-		e->setIntAttribute(u"original_network_id", it.original_network_id, true);
-		e->setIntAttribute(u"service_id", it.service_id, true);
-		e->setIntAttribute(u"event_id", it.event_id, true);
-		e->setEnumAttribute(RunningStatusNames, u"running_status", it.running_status);
-	}
-}
-
-
-//----------------------------------------------------------------------------
-// XML deserialization
-//----------------------------------------------------------------------------
-
-bool ts::RST::analyzeXML(DuckContext &duck, const xml::Element *element)
-{
-	xml::ElementVector children;
-	bool ok = element->getChildren(children, u"event");
-
-	for (size_t index = 0; ok && index < children.size(); ++index)
-	{
-		Event event;
-		ok = children[index]->getIntAttribute(event.transport_stream_id, u"transport_stream_id", true, 0, 0x0000, 0xFFFF) &&
-			children[index]->getIntAttribute(event.original_network_id, u"original_network_id", true, 0, 0x0000, 0xFFFF) &&
-			children[index]->getIntAttribute(event.service_id, u"service_id", true, 0, 0x0000, 0xFFFF) &&
-			children[index]->getIntAttribute(event.event_id, u"event_id", true, 0, 0x0000, 0xFFFF) &&
-			children[index]->getIntEnumAttribute(event.running_status, RunningStatusNames, u"running_status", true);
-		if (ok)
-		{
-			events.push_back(event);
-		}
-	}
-	return ok;
 }

@@ -9,7 +9,6 @@
 #include "tsATSCMultipleString.h"
 #include "tsAlgorithm.h"
 #include "tsDuckContext.h"
-#include "tsxmlElement.h"
 
 // Set of encoding modes which directly encode Unicode points.
 const std::set<uint8_t> ts::ATSCMultipleString::_unicode_modes({
@@ -137,72 +136,6 @@ bool ts::ATSCMultipleString::append(size_t index, const UString &text)
 		return false;
 	}
 }
-
-
-//----------------------------------------------------------------------------
-// Convert to an XML structure.
-//----------------------------------------------------------------------------
-
-ts::xml::Element *ts::ATSCMultipleString::toXML(DuckContext &duck, xml::Element *parent, const UString &name, bool ignore_empty) const
-{
-	if (parent == nullptr || (empty() && ignore_empty))
-	{
-		return nullptr;
-	}
-	else
-	{
-		xml::Element *e = parent->addElement(name);
-		for (size_t i = 0; i < _strings.size(); ++i)
-		{
-			xml::Element *seg = e->addElement(u"string");
-			seg->setAttribute(u"language", _strings[i].language);
-			seg->setAttribute(u"text", _strings[i].text);
-		}
-		return e;
-	}
-}
-
-
-//----------------------------------------------------------------------------
-// Decode an XML structure and assign the result to this isntance.
-//----------------------------------------------------------------------------
-
-bool ts::ATSCMultipleString::fromXML(DuckContext &duck, const xml::Element *elem)
-{
-	clear();
-	if (elem == nullptr)
-	{
-		return false;
-	}
-	else
-	{
-		xml::ElementVector children;
-		bool ok = elem->getChildren(children, u"string", 0, 255);
-		for (size_t i = 0; i < children.size(); ++i)
-		{
-			StringElement s;
-			if (children[i]->getAttribute(s.language, u"language", true, UString(), 3, 3) && children[i]->getAttribute(s.text, u"text", true))
-			{
-				_strings.push_back(s);
-			}
-			else
-			{
-				ok = false;
-			}
-		}
-		return ok;
-	}
-}
-
-bool ts::ATSCMultipleString::fromXML(DuckContext &duck, const xml::Element *parent, const UString &name, bool required)
-{
-	clear();
-	xml::ElementVector children;
-	return parent != nullptr &&
-		parent->getChildren(children, name, required ? 1 : 0, 1) &&
-		(children.empty() || fromXML(duck, children[0]));
-}
-
 
 //----------------------------------------------------------------------------
 // Get the encoding mode for a string.

@@ -14,7 +14,6 @@
 #pragma once
 #include "tsAbstractDefinedByStandards.h"
 #include "tsNamesFile.h"
-#include "tsxml.h"
 
 namespace ts
 {
@@ -60,32 +59,6 @@ namespace ts
 		//! @return The XML node name.
 		//!
 		UString xmlName() const;
-
-		//!
-		//! This method converts this object to XML.
-		//!
-		//! When this object is valid, this method creates a root node with the default XML
-		//! name and then invokes buildXML() in the subclass to populate the XML node.
-		//!
-		//! @param [in,out] duck TSDuck execution context.
-		//! @param [in,out] parent The parent node for the new XML tree.
-		//! @return The new XML element.
-		//!
-		xml::Element *toXML(DuckContext &duck, xml::Element *parent) const;
-
-		//!
-		//! This method converts an XML structure to a table or descriptor in this object.
-		//!
-		//! In case of success, this object is replaced with the interpreted content of the XML structure.
-		//! In case of error, this object is invalidated.
-		//!
-		//! This method checks the name of the XML node and then invokes analyzeXML() in the subclass.
-		//! Depending on the returned values of analyzeXML(), this object is either validated or invalidated.
-		//!
-		//! @param [in,out] duck TSDuck execution context.
-		//! @param [in] element XML element to convert.
-		//!
-		void fromXML(DuckContext &duck, const xml::Element *element);
 
 		// Implementation of AbstractDefinedByStandards
 		virtual Standards definingStandards() const override;
@@ -192,45 +165,11 @@ namespace ts
 		//!
 		virtual void clearContent() = 0;
 
-		//!
-		//! Helper method to convert this object to XML.
-		//!
-		//! It is called by toXML() only when the object is valid. The @a root element
-		//! is already built with the appropriate XML node name. In buildXML(), the
-		//! subclass shall simply populate the XML node.
-		//!
-		//! @param [in,out] root The root node for the new XML tree.
-		//! @param [in,out] duck TSDuck execution context.
-		//!
-		virtual void buildXML(DuckContext &duck, xml::Element *root) const
-		{
-		}
-
-		//!
-		//! Helper method to convert this object from XML.
-		//!
-		//! It is called by fromXML() after checking the validity of the XML
-		//! node name. In analyzeXML(), the subclass shall populate the C++
-		//! object from the content of the XML node. If analyzeXML() returns false,
-		//! this table or descriptor object is then invalidated and cleared.
-		//!
-		//! @param [in,out] duck TSDuck execution context.
-		//! @param [in] element XML element to convert.
-		//! @return True if the analysis is correct, false otherwise.
-		//!
-		virtual bool analyzeXML(DuckContext &duck, const xml::Element *element)
-		{
-			return false;
-		}
-
 	private:
 		bool               _is_valid = true;  // This object is valid.
 		const UChar *const _xml_name;         // XML table or descriptor name.
 		const UChar *const _xml_legacy_name;  // Optional XML table or descriptor legacy name. Ignored if null pointer.
 		const Standards    _standards;        // Defining standards (usually only one).
-
-		// Check that an XML element has the right name for this table or descriptor.
-		bool checkXMLName(const xml::Element *element) const;
 
 		// Unreachable constructors and operators.
 		AbstractSignalization() = delete;

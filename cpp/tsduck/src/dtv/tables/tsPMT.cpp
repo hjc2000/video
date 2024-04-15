@@ -12,7 +12,6 @@
 #include "tsPMT.h"
 #include "tsPSIBuffer.h"
 #include "tsPSIRepository.h"
-#include "tsxmlElement.h"
 
 #define MY_XML_NAME u"PMT"
 #define MY_CLASS ts::PMT
@@ -517,69 +516,4 @@ uint32_t ts::PMT::registrationId(PID pid) const
 
 	// Not found.
 	return REGID_NULL;
-}
-
-//----------------------------------------------------------------------------
-// XML serialization
-//----------------------------------------------------------------------------
-
-void ts::PMT::buildXML(DuckContext &duck, xml::Element *root) const
-{
-	root->setIntAttribute(u"version", version);
-	root->setBoolAttribute(u"current", is_current);
-	root->setIntAttribute(u"service_id", service_id, true);
-	if (pcr_pid != PID_NULL)
-	{
-		root->setIntAttribute(u"PCR_PID", pcr_pid, true);
-	}
-	descs.toXML(duck, root);
-
-	// Order of serialization.
-	std::vector<PID> pids;
-	streams.getOrder(pids);
-
-	// Add description of all elementary streams.
-	for (PID pid : pids)
-	{
-		const auto &stream(streams[pid]);
-		xml::Element *e = root->addElement(u"component");
-		e->setIntAttribute(u"elementary_PID", pid, true);
-		e->setIntAttribute(u"stream_type", stream.stream_type, true);
-		stream.descs.toXML(duck, e);
-	}
-}
-
-
-//----------------------------------------------------------------------------
-// XML deserialization
-//----------------------------------------------------------------------------
-
-bool ts::PMT::analyzeXML(DuckContext &duck, const xml::Element *element)
-{
-	xml::ElementVector children;
-	bool ok =
-		element->getIntAttribute(version, u"version", false, 0, 0, 31) &&
-		element->getBoolAttribute(is_current, u"current", false, true) &&
-		element->getIntAttribute(service_id, u"service_id", true, 0, 0x0000, 0xFFFF) &&
-		element->getIntAttribute<PID>(pcr_pid, u"PCR_PID", false, PID_NULL, 0x0000, 0x1FFF) &&
-		descs.fromXML(duck, children, element, u"component");
-
-	for (auto e : children)
-	{
-		PID pid = PID_NULL;
-		ok = e->getIntAttribute<PID>(pid, u"elementary_PID", true, 0, 0x0000, 0x1FFF);
-		if (ok)
-		{
-			if (Contains(streams, pid))
-			{
-				element->report().error(u"line %d: in <%s>, duplicated <%s> for PID 0x%X (%<d)", { e->lineNumber(), element->name(), e->name(), pid });
-				ok = false;
-			}
-			else
-			{
-				ok = e->getIntAttribute(streams[pid].stream_type, u"stream_type", true) && streams[pid].descs.fromXML(duck, e);
-			}
-		}
-	}
-	return ok;
 }

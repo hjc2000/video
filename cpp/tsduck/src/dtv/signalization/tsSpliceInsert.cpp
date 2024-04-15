@@ -9,7 +9,6 @@
 #include "tsDuckContext.h"
 #include "tsSpliceInsert.h"
 #include "tsTS.h"
-#include "tsxmlElement.h"
 
 #define MY_XML_NAME u"splice_insert"
 #define MY_STD ts::Standards::SCTE
@@ -280,94 +279,4 @@ void ts::SpliceInsert::serialize(ByteBlock &data) const
 		data.appendUInt8(avail_num);
 		data.appendUInt8(avails_expected);
 	}
-}
-
-
-//----------------------------------------------------------------------------
-// XML serialization
-//----------------------------------------------------------------------------
-
-void ts::SpliceInsert::buildXML(DuckContext &duck, xml::Element *root) const
-{
-	root->setIntAttribute(u"splice_event_id", event_id, true);
-	root->setBoolAttribute(u"splice_event_cancel", canceled);
-	if (!canceled)
-	{
-		root->setBoolAttribute(u"out_of_network", splice_out);
-		root->setBoolAttribute(u"splice_immediate", immediate);
-		root->setIntAttribute(u"unique_program_id", program_id, true);
-		root->setIntAttribute(u"avail_num", avail_num);
-		root->setIntAttribute(u"avails_expected", avails_expected);
-		if (program_splice && !immediate && program_pts.has_value())
-		{
-			root->setIntAttribute(u"pts_time", program_pts.value());
-		}
-		if (use_duration)
-		{
-			xml::Element *e = root->addElement(u"break_duration");
-			e->setBoolAttribute(u"auto_return", auto_return);
-			e->setIntAttribute(u"duration", duration_pts);
-		}
-		if (!program_splice)
-		{
-			for (auto &it : components_pts)
-			{
-				xml::Element *e = root->addElement(u"component");
-				e->setIntAttribute(u"component_tag", it.first);
-				if (!immediate && it.second.has_value())
-				{
-					e->setIntAttribute(u"pts_time", it.second.value());
-				}
-			}
-		}
-	}
-}
-
-
-//----------------------------------------------------------------------------
-// XML deserialization
-//----------------------------------------------------------------------------
-
-bool ts::SpliceInsert::analyzeXML(DuckContext &duck, const xml::Element *element)
-{
-	bool ok =
-		element->getIntAttribute<uint32_t>(event_id, u"splice_event_id", true) &&
-		element->getBoolAttribute(canceled, u"splice_event_cancel", false, false);
-
-	if (ok && !canceled)
-	{
-		xml::ElementVector breakDuration;
-		xml::ElementVector components;
-		ok = element->getBoolAttribute(splice_out, u"out_of_network", true) &&
-			element->getBoolAttribute(immediate, u"splice_immediate", false, false) &&
-			element->getIntAttribute<uint16_t>(program_id, u"unique_program_id", true) &&
-			element->getIntAttribute<uint8_t>(avail_num, u"avail_num", false, 0) &&
-			element->getIntAttribute<uint8_t>(avails_expected, u"avails_expected", false, 0) &&
-			element->getChildren(breakDuration, u"break_duration", 0, 1) &&
-			element->getChildren(components, u"component", 0, 255);
-		use_duration = !breakDuration.empty();
-		program_splice = element->hasAttribute(u"pts_time") || (immediate && components.empty());
-		if (ok && use_duration)
-		{
-			assert(breakDuration.size() == 1);
-			ok = breakDuration[0]->getBoolAttribute(auto_return, u"auto_return", true) &&
-				breakDuration[0]->getIntAttribute<uint64_t>(duration_pts, u"duration", true);
-		}
-		if (ok && program_splice && !immediate)
-		{
-			ok = element->getOptionalIntAttribute<uint64_t>(program_pts, u"pts_time", 0, PTS_DTS_MASK);
-		}
-		if (ok && !program_splice)
-		{
-			for (size_t i = 0; ok && i < components.size(); ++i)
-			{
-				uint8_t tag = 0;
-				SpliceTime pts;
-				ok = components[i]->getIntAttribute<uint8_t>(tag, u"component_tag", true) &&
-					components[i]->getOptionalIntAttribute<uint64_t>(pts, u"pts_time", 0, PTS_DTS_MASK);
-				components_pts[tag] = pts;
-			}
-		}
-	}
-	return ok;
 }

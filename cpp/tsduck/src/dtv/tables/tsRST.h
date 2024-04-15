@@ -70,7 +70,5 @@ namespace ts
 		virtual size_t maxPayloadSize() const override;
 		virtual void serializePayload(BinaryTable &, PSIBuffer &) const override;
 		virtual void deserializePayload(PSIBuffer &, const Section &) override;
-		virtual void buildXML(DuckContext &, xml::Element *) const override;
-		virtual bool analyzeXML(DuckContext &, const xml::Element *) override;
 	};
 }
