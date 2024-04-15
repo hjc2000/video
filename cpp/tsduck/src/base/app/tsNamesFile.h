@@ -12,10 +12,9 @@
 //----------------------------------------------------------------------------
 
 #pragma once
-#include "tsUString.h"
 #include "tsEnumUtils.h"
 #include "tsReport.h"
-#include "tsVersionInfo.h"
+#include "tsUString.h"
 
 namespace ts
 {
