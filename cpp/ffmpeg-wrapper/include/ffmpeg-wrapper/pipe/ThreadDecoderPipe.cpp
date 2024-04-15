@@ -4,9 +4,35 @@
 using namespace std;
 using namespace video;
 
+video::ThreadDecoderPipe::ThreadDecoderPipe(shared_ptr<IDecoderPipe> decoder_pipe)
+{
+	_decoder_pipe = decoder_pipe;
+	InitDecodeThread();
+}
+
 video::ThreadDecoderPipe::ThreadDecoderPipe(AVStreamInfoCollection stream)
 {
 	_decoder_pipe = shared_ptr<DecoderPipe>{ new DecoderPipe{stream} };
+	InitDecodeThread();
+}
+
+video::ThreadDecoderPipe::~ThreadDecoderPipe()
+{
+	if (_disposed) return;
+	_disposed = true;
+
+	Dispose();
+}
+
+void video::ThreadDecoderPipe::Dispose()
+{
+	_packet_queue.Dispose();
+	_decoder_pipe->Dispose();
+	_decode_thread_exit.Wait();
+}
+
+void video::ThreadDecoderPipe::InitDecodeThread()
+{
 	std::thread([this]()
 	{
 		try
@@ -26,21 +52,6 @@ video::ThreadDecoderPipe::ThreadDecoderPipe(AVStreamInfoCollection stream)
 		cout << CODE_POS_STR << "解码线程退出" << endl;
 	}).detach();
 	_decode_thread_exit.Reset();
-}
-
-video::ThreadDecoderPipe::~ThreadDecoderPipe()
-{
-	if (_disposed) return;
-	_disposed = true;
-
-	Dispose();
-}
-
-void video::ThreadDecoderPipe::Dispose()
-{
-	_packet_queue.Dispose();
-	_decoder_pipe->Dispose();
-	_decode_thread_exit.Wait();
 }
 
 void video::ThreadDecoderPipe::DecodeThreadFunc()

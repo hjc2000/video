@@ -18,9 +18,11 @@ namespace video
 		std::atomic_bool _do_not_flush_consumer = false;
 		std::atomic_bool _disposed = false;
 
+		void InitDecodeThread();
 		void DecodeThreadFunc();
 
 	public:
+		ThreadDecoderPipe(shared_ptr<IDecoderPipe> decoder_pipe);
 		ThreadDecoderPipe(AVStreamInfoCollection stream);
 		~ThreadDecoderPipe();
 		void Dispose() override;
