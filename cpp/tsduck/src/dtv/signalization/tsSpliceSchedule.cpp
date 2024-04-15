@@ -33,16 +33,6 @@ void ts::SpliceSchedule::clearContent()
 	events.clear();
 }
 
-
-//----------------------------------------------------------------------------
-// Full dump of utc_splice_time.
-//----------------------------------------------------------------------------
-
-ts::UString ts::SpliceSchedule::DumpSpliceTime(const DuckContext &duck, uint32_t value)
-{
-	return UString::Format(u"0x%X (%s, leap seconds %s)", { value, ToUTCTime(duck, value).format(Time::DATETIME), duck.useLeapSeconds() ? u"included" : u"ignored" });
-}
-
 //----------------------------------------------------------------------------
 // Deserialize a SpliceSchedule command from binary data.
 //----------------------------------------------------------------------------
@@ -190,32 +180,4 @@ void ts::SpliceSchedule::serialize(ByteBlock &data) const
 			data.appendUInt8(ev.avails_expected);
 		}
 	}
-}
-
-//----------------------------------------------------------------------------
-// Convert between actual UTC time and 32-bit SCTE 35 utc_splice_time.
-//----------------------------------------------------------------------------
-
-ts::Time ts::SpliceSchedule::ToUTCTime(const DuckContext &duck, uint32_t value)
-{
-	Time utc(Time::GPSEpoch + Second(value) * MilliSecPerSec);
-	if (duck.useLeapSeconds())
-	{
-		utc -= Time::GPSEpoch.leapSecondsTo(utc) * MilliSecPerSec;
-	}
-	return utc;
-}
-
-uint32_t ts::SpliceSchedule::FromUTCTime(const DuckContext &duck, const Time &value)
-{
-	if (value < Time::GPSEpoch)
-	{
-		return 0;
-	}
-	Second utc = (value - Time::GPSEpoch) / MilliSecPerSec;
-	if (duck.useLeapSeconds())
-	{
-		utc += Time::GPSEpoch.leapSecondsTo(value);
-	}
-	return uint32_t(utc);
 }

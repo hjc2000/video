@@ -80,28 +80,8 @@ namespace ts
 		//!
 		void serialize(ByteBlock &data) const;
 
-		//!
-		//! Convert a 32-bit SCTE 35 @e utc_splice_time to an actual UTC time.
-		//! @param [in] duck TSDuck execution context.
-		//! @param [in] value A 32-bit SCTE 35 @e utc_splice_time.
-		//! @return The corresponding UTC time.
-		//!
-		static Time ToUTCTime(const DuckContext &duck, uint32_t value);
-
-		//!
-		//! Convert a UTC time into a 32-bit SCTE 35 @e utc_splice_time.
-		//! @param [in] duck TSDuck execution context.
-		//! @param [in] value A UTC time.
-		//! @return The corresponding 32-bit SCTE 35 @e utc_splice_time.
-		//!
-		static uint32_t FromUTCTime(const DuckContext &duck, const Time &value);
-
 	protected:
 		// Inherited methods
 		virtual void clearContent() override;
-
-	private:
-		// Full dump of utc_splice_time.
-		static UString DumpSpliceTime(const DuckContext &duck, uint32_t value);
 	};
 }
