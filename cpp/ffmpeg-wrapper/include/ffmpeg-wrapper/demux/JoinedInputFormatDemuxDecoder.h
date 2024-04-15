@@ -1,7 +1,6 @@
 #pragma once
 #include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
 #include<ffmpeg-wrapper/input-format/InputFormat.h>
-#include<ffmpeg-wrapper/pipe/DecoderPipe.h>
 #include<ffmpeg-wrapper/pipe/InfinitePacketPipe.h>
 #include<ffmpeg-wrapper/pipe/ThreadDecoderPipe.h>
 #include<functional>

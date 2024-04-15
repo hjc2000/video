@@ -11,17 +11,15 @@ VideoPacketPlayer::VideoPacketPlayer(int x, int y, AVStreamWrapper &stream)
 	*/
 
 	// 播放器，管道最下游
-	_player = shared_ptr<VideoFramePlayer>{
-		new VideoFramePlayer{
+	_player = shared_ptr<VideoFramePlayer>{ new VideoFramePlayer{
 			x,
 			y,
 			stream,
 			"VideoPacketPlayer",
 			SDL_WindowFlags::SDL_WINDOW_SHOWN,
-		}
-	};
+	} };
 
-	_decoder_pipe = shared_ptr<DecoderPipe>{ new DecoderPipe{stream} };
+	_decoder_pipe = shared_ptr<ThreadDecoderPipe>{ new ThreadDecoderPipe{stream} };
 	_decoder_pipe->FrameConsumerList().Add(_player);
 
 	// 包队列其实不算管道。它应该类似水池，需要一个泵将包送入管道。
@@ -35,7 +33,16 @@ VideoPacketPlayer::VideoPacketPlayer(int x, int y, AVStreamWrapper &stream)
 	// 创建后台解码线程。
 	thread([&]()
 	{
-		DecodingThreadFunc();
+		try
+		{
+			DecodingThreadFunc();
+		}
+		catch (std::exception &e)
+		{
+			cout << CODE_POS_STR << e.what() << endl;
+		}
+
+		_thread_has_exited.SetResult();
 	}).detach();
 }
 
@@ -63,7 +70,6 @@ void VideoPacketPlayer::DecodingThreadFunc()
 	_decoding_thread_can_start.Wait();
 	auto token = _cancel_pump_source.Token();
 	_packet_pump->Pump(token);
-	_thread_has_exited.SetResult();
 }
 
 void VideoPacketPlayer::SendPacket(AVPacketWrapper *packet)

@@ -1,4 +1,4 @@
-#include "ffmpeg-wrapper/pipe/DecoderPipe.h"
+#include "DecoderPipe.h"
 
 using namespace video;
 

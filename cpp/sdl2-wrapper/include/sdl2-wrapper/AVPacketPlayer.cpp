@@ -61,7 +61,7 @@ void AVPacketPlayer::SendPacket(AVPacketWrapper *packet)
 
 void video::test_AVPacketPlayer()
 {
-	auto fs = FileStream::Open("14_[杜比视界]Dolby Vision全景声NASA_4K.mp4");
+	auto fs = FileStream::Open("idol.mp4");
 	shared_ptr<AVIOContextWrapper> io_context{ new AVIOContextWrapper{ false, fs } };
 	shared_ptr<InputFormat> in_fmt_ctx{ new InputFormat{ io_context } };
 	in_fmt_ctx->DumpFormat();
@@ -81,7 +81,15 @@ void video::test_AVPacketPlayer()
 	thread([&]()
 	{
 		// 将包从封装泵送到播放器。
-		packet_pump.Pump(cancellation_token);
+		try
+		{
+			packet_pump.Pump(cancellation_token);
+		}
+		catch (std::exception &e)
+		{
+			cout << CODE_POS_STR << e.what() << endl;
+		}
+
 		thread_has_exited.SetResult();
 	}).detach();
 

@@ -10,7 +10,7 @@ AudioPacketPlayer::AudioPacketPlayer(AVStreamWrapper &stream)
 	_player = shared_ptr<AudioFramePlayer>{ new AudioFramePlayer{stream} };
 
 	// 根据音频流创建解码器
-	_decoder_pipe = unique_ptr<DecoderPipe>{ new DecoderPipe{stream} };
+	_decoder_pipe = unique_ptr<ThreadDecoderPipe>{ new ThreadDecoderPipe{stream} };
 	_decoder_pipe->FrameConsumerList().Add(_player);
 
 	_packet_queue = shared_ptr<HysteresisBlockingPacketQueue>{ new HysteresisBlockingPacketQueue{} };
@@ -23,7 +23,16 @@ AudioPacketPlayer::AudioPacketPlayer(AVStreamWrapper &stream)
 	// 解码线程
 	thread([&]()
 	{
-		DecodingThreadFunc();
+		try
+		{
+			DecodingThreadFunc();
+		}
+		catch (std::exception &e)
+		{
+			cout << CODE_POS_STR << e.what() << endl;
+		}
+
+		_decoding_thread_has_exited.SetResult();
 	}).detach();
 }
 
@@ -50,7 +59,6 @@ void AudioPacketPlayer::DecodingThreadFunc()
 {
 	_decoding_thread_can_start.Wait();
 	_packet_pump->Pump(_cancel_pump_source.Token());
-	_decoding_thread_has_exited.SetResult();
 }
 
 int64_t AudioPacketPlayer::RefTime()

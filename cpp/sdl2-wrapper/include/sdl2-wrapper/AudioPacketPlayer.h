@@ -1,10 +1,10 @@
 #pragma once
-#include<ffmpeg-wrapper/wrapper/AVCodecContextWrapper.h>
-#include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 #include<atomic>
 #include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
-#include<ffmpeg-wrapper/pipe/DecoderPipe.h>
 #include<ffmpeg-wrapper/pipe/PacketPump.h>
+#include<ffmpeg-wrapper/pipe/ThreadDecoderPipe.h>
+#include<ffmpeg-wrapper/wrapper/AVCodecContextWrapper.h>
+#include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 #include<jccpp/CancellationTokenSource.h>
 #include<jccpp/TaskCompletionSignal.h>
 #include<jccpp/container/HysteresisBlockingQueue.h>
@@ -33,7 +33,7 @@ namespace video
 	private:
 		atomic_bool _disposed = false;
 		shared_ptr<AudioFramePlayer> _player;
-		shared_ptr<DecoderPipe> _decoder_pipe;
+		shared_ptr<IDecoderPipe> _decoder_pipe;
 		shared_ptr<HysteresisBlockingPacketQueue> _packet_queue;
 		CancellationTokenSource _cancel_pump_source;
 		shared_ptr<PacketPump> _packet_pump;

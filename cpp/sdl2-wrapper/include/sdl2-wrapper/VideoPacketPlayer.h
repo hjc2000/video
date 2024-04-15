@@ -2,8 +2,8 @@
 #include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
-#include<ffmpeg-wrapper/pipe/DecoderPipe.h>
 #include<ffmpeg-wrapper/pipe/PacketPump.h>
+#include<ffmpeg-wrapper/pipe/ThreadDecoderPipe.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
 #include<jccpp/IDisposable.h>
 #include<sdl2-wrapper/VideoFramePlayer.h>
@@ -18,7 +18,7 @@ namespace video
 		shared_ptr<HysteresisBlockingPacketQueue> _packet_queue;
 		CancellationTokenSource _cancel_pump_source;
 		shared_ptr<PacketPump> _packet_pump;
-		shared_ptr<DecoderPipe> _decoder_pipe;
+		shared_ptr<IDecoderPipe> _decoder_pipe;
 		shared_ptr<VideoFramePlayer> _player;
 
 		/// <summary>
