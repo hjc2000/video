@@ -18,7 +18,6 @@
 
 namespace ts
 {
-
 	class DuckContext;
 
 	//!
