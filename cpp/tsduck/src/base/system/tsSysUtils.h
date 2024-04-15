@@ -88,13 +88,6 @@ namespace ts
 	TSDUCKDLL bool IsPrivilegedUser();
 
 	//!
-	//! Get the CPU time of the process in milliseconds.
-	//! @return The CPU time of the process in milliseconds.
-	//! @throw ts::Exception on error.
-	//!
-	TSDUCKDLL MilliSecond GetProcessCpuTime();
-
-	//!
 	//! Ensure that writing to a broken pipe does not kill the current process.
 	//!
 	//! On UNIX systems, writing to a <i>broken pipe</i>, i.e. a pipe with

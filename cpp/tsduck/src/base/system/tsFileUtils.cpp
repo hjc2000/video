@@ -10,7 +10,6 @@
 #include "tsFileUtils.h"
 #include "tsMemory.h"
 #include "tsSysUtils.h"
-#include "tsUID.h"
 
 #if defined(TS_WINDOWS)
 #include "tsBeforeStandardHeaders.h"
@@ -296,74 +295,6 @@ ts::UString ts::BaseName(const UString &path, const UString &suffix)
 	return suffixFound ? base.substr(0, base.size() - suffix.size()) : base;
 }
 
-
-//----------------------------------------------------------------------------
-// Get the current user's home directory.
-//----------------------------------------------------------------------------
-
-fs::path ts::UserHomeDirectory()
-{
-	#if defined(TS_WINDOWS)
-
-	::HANDLE process = 0;
-	if (::OpenProcessToken(::GetCurrentProcess(), TOKEN_QUERY, &process) == 0)
-	{
-		throw ts::Exception(u"cannot open current process", ::GetLastError());
-	}
-	std::array<::WCHAR, 2048> name;
-	::DWORD length = ::DWORD(name.size());
-	const ::BOOL status = ::GetUserProfileDirectoryW(process, name.data(), &length);
-	const ::DWORD error = ::GetLastError();
-	::CloseHandle(process);
-	if (status == 0)
-	{
-		throw ts::Exception(u"error getting user profile directory", ::GetLastError());
-	}
-	return UString(name, length);
-
-	#else
-
-	return GetEnvironment(u"HOME");
-
-	#endif
-}
-
-
-//----------------------------------------------------------------------------
-// Return the name of a unique temporary file name.
-//----------------------------------------------------------------------------
-
-fs::path ts::TempFile(const UString &suffix)
-{
-	fs::path name(fs::temp_directory_path());
-	name /= UString::Format(u"tstmp-%X%s", { UID::Instance().newUID(), suffix });
-	return name;
-}
-
-
-//----------------------------------------------------------------------------
-// Get the time of last modification of a file.
-// Return Time::Epoch in case of error.
-//----------------------------------------------------------------------------
-
-ts::Time ts::GetFileModificationTimeUTC(const UString &path)
-{
-	#if defined(TS_WINDOWS)
-	::WIN32_FILE_ATTRIBUTE_DATA info;
-	return ::GetFileAttributesExW(path.wc_str(), ::GetFileExInfoStandard, &info) == 0 ? Time::Epoch : Time::Win32FileTimeToUTC(info.ftLastWriteTime);
-	#else
-	struct stat st;
-	return ::stat(path.toUTF8().c_str(), &st) < 0 ? Time::Epoch : Time::UnixTimeToUTC(st.st_mtime);
-	#endif
-}
-
-ts::Time ts::GetFileModificationTimeLocal(const UString &path)
-{
-	const Time time(GetFileModificationTimeUTC(path));
-	return time == Time::Epoch ? time : time.UTCToLocal();
-}
-
-
 //----------------------------------------------------------------------------
 // Search an executable file.
 //----------------------------------------------------------------------------
@@ -406,26 +337,4 @@ ts::UString ts::SearchExecutableFile(const UString &fileName, const UString &pat
 
 	// Not found.
 	return UString();
-}
-
-//----------------------------------------------------------------------------
-// Build the name of a user-specific configuration file.
-//----------------------------------------------------------------------------
-
-ts::UString ts::UserConfigurationFileName(const UString &fileName, const UString &winFileName)
-{
-	#if defined(TS_WINDOWS)
-	UString root;
-	if (root.empty())
-	{
-		root = UserHomeDirectory();
-	}
-	else
-	{
-		root.append(u"\\tsduck");
-	}
-	return root + u"\\" + (winFileName.empty() ? fileName : winFileName);
-	#else
-	return UserHomeDirectory() + u"/" + fileName;
-	#endif
 }

@@ -14,7 +14,6 @@
 
 #pragma once
 #include "tsErrCodeReport.h"
-#include "tsTime.h"
 #include "tsUString.h"
 
 namespace ts
@@ -134,36 +133,6 @@ namespace ts
 	TSDUCKDLL UString BaseName(const UString &path, const UString &suffix = UString());
 
 	//!
-	//! Get the current user's home directory.
-	//!
-	//! @return The full path of the current user's home directory.
-	//! @throw ts::Exception In case of operating system error.
-	//!
-	TSDUCKDLL fs::path UserHomeDirectory();
-
-	//!
-	//! Return the name of a unique temporary file.
-	//! @param [in] suffix An optional suffix to add to the file name.
-	//! @return A unique temporary file name.
-	//!
-	TSDUCKDLL fs::path TempFile(const UString &suffix = u".tmp");
-
-	//!
-	//! Get the local time of the last modification of a file.
-	//!
-	//! @param [in] path A file path.
-	//! @return Last modification time or Time::Epoch in case of error.
-	//!
-	TSDUCKDLL Time GetFileModificationTimeLocal(const UString &path);
-
-	//!
-	//! Get the UTC time of the last modification of a file.
-	//! @param [in] path A file path.
-	//! @return Last modification time or Time::Epoch in case of error.
-	//!
-	TSDUCKDLL Time GetFileModificationTimeUTC(const UString &path);
-
-	//!
 	//! Get all files matching a specified wildcard pattern and append them into a container.
 	//!
 	//! @tparam CONTAINER A container class of @c UString as defined by the
@@ -242,17 +211,6 @@ namespace ts
 	//! @return The path to an existing file or an empty path if not found.
 	//!
 	TSDUCKDLL UString SearchExecutableFile(const UString &fileName, const UString &pathName);
-
-	//!
-	//! Build the name of a user-specific configuration file.
-	//! @param [in] fileName Base name of the configuration file.
-	//! @param [in] winFileName Alternative base name on Windows. If empty, @a fileName is used.
-	//! @return The path to the user-specific configuration file. The file may exist or not.
-	//! The default file location depends on the operating system:
-	//! - Windows: @c \%APPDATA%\\tsduck
-	//! - Unix: @c $HOME
-	//!
-	TSDUCKDLL UString UserConfigurationFileName(const UString &fileName, const UString &winFileName = UString());
 }
 
 

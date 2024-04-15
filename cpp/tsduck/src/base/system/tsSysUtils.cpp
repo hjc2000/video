@@ -8,7 +8,6 @@
 
 #include "tsFileUtils.h"
 #include "tsSysUtils.h"
-#include "tsTime.h"
 
 #if defined(TS_WINDOWS)
 #include "tsBeforeStandardHeaders.h"
@@ -75,39 +74,6 @@ bool ts::IsPrivilegedUser()
 	return ::geteuid() == 0;
 	#endif
 }
-
-
-//----------------------------------------------------------------------------
-// Get the CPU time of the process in milliseconds.
-//----------------------------------------------------------------------------
-
-ts::MilliSecond ts::GetProcessCpuTime()
-{
-	#if defined(TS_WINDOWS)
-
-	::FILETIME creation_time, exit_time, kernel_time, user_time;
-	if (::GetProcessTimes(::GetCurrentProcess(), &creation_time, &exit_time, &kernel_time, &user_time) == 0)
-	{
-		throw ts::Exception(u"GetProcessTimes error", ::GetLastError());
-	}
-	return ts::Time::Win32FileTimeToMilliSecond(kernel_time) + ts::Time::Win32FileTimeToMilliSecond(user_time);
-
-	#else
-
-	::rusage usage;
-	TS_ZERO(usage);
-	if (::getrusage(RUSAGE_SELF, &usage) < 0)
-	{
-		throw ts::Exception(u"getrusage error", errno);
-	}
-	return MilliSecond(usage.ru_stime.tv_sec) * MilliSecPerSec +
-		MilliSecond(usage.ru_stime.tv_usec) / MicroSecPerMilliSec +
-		MilliSecond(usage.ru_utime.tv_sec) * MilliSecPerSec +
-		MilliSecond(usage.ru_utime.tv_usec) / MicroSecPerMilliSec;
-
-	#endif
-}
-
 
 //----------------------------------------------------------------------------
 // Ignore SIGPIPE. On UNIX systems: writing to a broken pipe returns an

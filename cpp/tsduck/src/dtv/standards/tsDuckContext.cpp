@@ -11,7 +11,6 @@
 #include "tsDVBCharTableSingleByte.h"
 #include "tsDVBCharTableUTF8.h"
 #include "tsDuckContext.h"
-#include "tsTime.h"
 
 
 //----------------------------------------------------------------------------
@@ -189,83 +188,6 @@ void ts::DuckContext::setDefaultHFRegion(const UString &region)
 {
 	_hfDefaultRegion = region;
 }
-
-//----------------------------------------------------------------------------
-// Set a non-standard time reference offset using a name.
-//----------------------------------------------------------------------------
-
-bool ts::DuckContext::setTimeReference(const UString &name)
-{
-	// Convert to uppercase without space.
-	UString str(name);
-	str.convertToUpper();
-	str.remove(SPACE);
-
-	if (str == u"UTC")
-	{
-		_timeReference = 0;
-		return true;
-	}
-	else if (str == u"JST")
-	{
-		_timeReference = Time::JSTOffset;
-		return true;
-	}
-
-	size_t count = 0;
-	size_t last = 0;
-	UChar sign = CHAR_NULL;
-	SubSecond hours = 0;
-	SubSecond minutes = 0;
-
-	str.scan(count, last, u"UTC%c%d:%d", { &sign, &hours, &minutes });
-	if ((count == 2 || count == 3) &&
-		last == str.size() &&
-		(sign == u'+' || sign == u'-') &&
-		hours >= 0 && hours <= 12 &&
-		minutes >= 0 && minutes <= 59)
-	{
-		_timeReference = (sign == u'+' ? +1 : -1) * (hours * MilliSecPerHour + minutes * MilliSecPerMin);
-		return true;
-	}
-	else
-	{
-		// Incorrect name.
-		return false;
-	}
-}
-
-
-//----------------------------------------------------------------------------
-// Get the non-standard time reference offset as a string.
-//----------------------------------------------------------------------------
-
-ts::UString ts::DuckContext::timeReferenceName() const
-{
-	if (_timeReference == 0)
-	{
-		return u"UTC";  // no offset
-	}
-	else if (_timeReference == Time::JSTOffset)
-	{
-		return u"JST";
-	}
-	else
-	{
-		const UChar sign = _timeReference < 0 ? u'-' : u'+';
-		const SubSecond hours = std::abs(_timeReference) / MilliSecPerHour;
-		const SubSecond minutes = (std::abs(_timeReference) / MilliSecPerMin) % 60;
-		if (minutes == 0)
-		{
-			return UString::Format(u"UTC%c%d", { sign, hours });
-		}
-		else
-		{
-			return UString::Format(u"UTC%c%d:%02d", { sign, hours, minutes });
-		}
-	}
-}
-
 
 //----------------------------------------------------------------------------
 // Flush the text output.

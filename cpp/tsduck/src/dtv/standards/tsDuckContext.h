@@ -341,37 +341,6 @@ namespace ts
 		void setDefaultHFRegion(const UString &region);
 
 		//!
-		//! Set a non-standard time reference offset.
-		//! In DVB SI, reference times are UTC. These SI can be reused in non-standard ways
-		//! where the stored times use another reference. This is the case with ARIB and ABNT
-		//! variants of ISDB which reuse TOT, TDT and EIT but with another local time reference.
-		//! @param [in] offset Offset from UTC in milli-seconds. Can be positive or negative.
-		//! The default offset is zero, meaning plain UTC time.
-		//!
-		void setTimeReferenceOffset(MilliSecond offset) { _timeReference = offset; }
-
-		//!
-		//! Set a non-standard time reference offset using a name.
-		//! @param [in] name Time reference name. The non-standard time reference offset is computed
-		//! from this name which can be "JST" or "UTC[[+|-]hh[:mm]]".
-		//! @return True on success, false if @a name is invalid.
-		//! @see setTimeReferenceOffset()
-		//!
-		bool setTimeReference(const UString &name);
-
-		//!
-		//! Get the non-standard time reference offset.
-		//! @return The offset from UTC in milli-seconds. Can be positive or negative.
-		//!
-		MilliSecond timeReferenceOffset() const { return _timeReference; }
-
-		//!
-		//! Get the non-standard time reference offset as a string.
-		//! @return The offset from UTC as a string.
-		//!
-		UString timeReferenceName() const;
-
-		//!
 		//! Set the explicit inclusion of leap seconds where it is needed.
 		//! Currently, this applies to SCTE 35 splice_schedule() commands only.
 		//! @param [in] on True if leap seconds shall be explicitly included (the default), false to ignore leap seconds.
