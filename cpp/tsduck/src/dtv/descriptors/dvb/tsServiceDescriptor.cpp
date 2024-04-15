@@ -68,21 +68,3 @@ void ts::ServiceDescriptor::deserializePayload(PSIBuffer &buf)
 	buf.getStringWithByteLength(provider_name);
 	buf.getStringWithByteLength(service_name);
 }
-
-//----------------------------------------------------------------------------
-// XML
-//----------------------------------------------------------------------------
-
-void ts::ServiceDescriptor::buildXML(DuckContext &duck, xml::Element *root) const
-{
-	root->setIntAttribute(u"service_type", service_type, true);
-	root->setAttribute(u"service_provider_name", provider_name);
-	root->setAttribute(u"service_name", service_name);
-}
-
-bool ts::ServiceDescriptor::analyzeXML(DuckContext &duck, const xml::Element *element)
-{
-	return element->getIntAttribute(service_type, u"service_type", true) &&
-		element->getAttribute(provider_name, u"service_provider_name", true) &&
-		element->getAttribute(service_name, u"service_name", true);
-}

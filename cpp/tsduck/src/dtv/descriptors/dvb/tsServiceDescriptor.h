@@ -51,7 +51,5 @@ namespace ts
 		virtual void clearContent() override;
 		virtual void serializePayload(PSIBuffer &buf) const override;
 		virtual void deserializePayload(PSIBuffer &buf) override;
-		virtual void buildXML(DuckContext &, xml::Element *) const override;
-		virtual bool analyzeXML(DuckContext &, const xml::Element *) override;
 	};
 }
