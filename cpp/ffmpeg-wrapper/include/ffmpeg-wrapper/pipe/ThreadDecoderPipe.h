@@ -22,10 +22,21 @@ namespace video
 		void DecodeThreadFunc();
 
 	public:
+		#pragma region 生命周期
+		/// <summary>
+		///		通过此构造函数，可以自定义解码器，仅仅使用本类的多线程功能。
+		/// </summary>
+		/// <param name="decoder_pipe"></param>
 		ThreadDecoderPipe(shared_ptr<IDecoderPipe> decoder_pipe);
+
+		/// <summary>
+		///		将根据 stream 的信息构造一个解码管道。
+		/// </summary>
+		/// <param name="stream"></param>
 		ThreadDecoderPipe(AVStreamInfoCollection stream);
 		~ThreadDecoderPipe();
 		void Dispose() override;
+		#pragma endregion
 
 		/// <summary>
 		///		将包送入队列后就会立即返回，队列满了才会受到阻塞。
