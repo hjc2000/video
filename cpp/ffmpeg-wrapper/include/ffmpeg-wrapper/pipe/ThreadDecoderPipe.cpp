@@ -30,6 +30,9 @@ video::ThreadDecoderPipe::ThreadDecoderPipe(AVStreamInfoCollection stream)
 
 video::ThreadDecoderPipe::~ThreadDecoderPipe()
 {
+	if (_disposed) return;
+	_disposed = true;
+
 	Dispose();
 }
 

@@ -16,6 +16,7 @@ namespace video
 		HysteresisBlockingPacketQueue _packet_queue{};
 		TaskCompletionSignal _decode_thread_exit{ true };
 		std::atomic_bool _do_not_flush_consumer = false;
+		std::atomic_bool _disposed = false;
 
 		void DecodeThreadFunc();
 
