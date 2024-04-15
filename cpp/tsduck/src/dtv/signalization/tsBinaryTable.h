@@ -101,20 +101,19 @@ namespace ts
 		//! @return True if the two tables are identical. False otherwise.
 		//!
 		bool operator==(const BinaryTable &table) const;
-		TS_UNEQUAL_OPERATOR(BinaryTable)
 
-			//!
-			//! Add a section to a table.
-			//! @param [in] section A smart pointers to section.
-			//! @param [in] replace If true, duplicated sections may be replaced.
-			//! Otherwise, sections which are already present (based on section number)
-			//! are not replaced.
-			//! @param [in] grow If true, the "last_section_number" of @a section
-			//! may be greater than the current "last_section_number" of the table.
-			//! In this case, all sections which were previously added in the table are modified.
-			//! @return True on succes, false if @a section could not be added (inconsistent property).
-			//!
-			bool addSection(const SectionPtr &section, bool replace = true, bool grow = true);
+		//!
+		//! Add a section to a table.
+		//! @param [in] section A smart pointers to section.
+		//! @param [in] replace If true, duplicated sections may be replaced.
+		//! Otherwise, sections which are already present (based on section number)
+		//! are not replaced.
+		//! @param [in] grow If true, the "last_section_number" of @a section
+		//! may be greater than the current "last_section_number" of the table.
+		//! In this case, all sections which were previously added in the table are modified.
+		//! @return True on succes, false if @a section could not be added (inconsistent property).
+		//!
+		bool addSection(const SectionPtr &section, bool replace = true, bool grow = true);
 
 		//!
 		//! Add several sections to a table.
