@@ -76,13 +76,6 @@ namespace ts {
         uint64_t lowestPTS() const;
 
         //!
-        //! Display the splice insert command.
-        //! @param [in,out] display Display engine.
-        //! @param [in] margin Left margin content.
-        //!
-        void display(TablesDisplay& display, const UString& margin) const;
-
-        //!
         //! Deserialize a SpliceInsert command from binary data.
         //! @param [in] data Address of data to deserialize.
         //! @param [in] size Size of data buffer, possibly larger than the SpliceInsert command.

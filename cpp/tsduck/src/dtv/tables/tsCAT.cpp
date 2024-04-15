@@ -10,7 +10,6 @@
 #include "tsCAT.h"
 #include "tsDuckContext.h"
 #include "tsPSIRepository.h"
-#include "tsTablesDisplay.h"
 
 #define MY_XML_NAME u"CAT"
 #define MY_CLASS ts::CAT

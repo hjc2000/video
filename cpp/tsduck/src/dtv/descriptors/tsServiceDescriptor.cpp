@@ -12,7 +12,6 @@
 #include "tsPSIBuffer.h"
 #include "tsPSIRepository.h"
 #include "tsServiceDescriptor.h"
-#include "tsTablesDisplay.h"
 #include "tsxmlElement.h"
 
 #define MY_XML_NAME u"service_descriptor"

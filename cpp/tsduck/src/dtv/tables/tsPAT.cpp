@@ -11,7 +11,6 @@
 #include "tsPAT.h"
 #include "tsPSIBuffer.h"
 #include "tsPSIRepository.h"
-#include "tsTablesDisplay.h"
 #include "tsxmlElement.h"
 
 #define MY_XML_NAME u"PAT"
@@ -120,22 +119,6 @@ void ts::PAT::serializePayload(BinaryTable &table, PSIBuffer &buf) const
 		buf.putPID(it.second);    // pmt pid
 	}
 }
-
-
-//----------------------------------------------------------------------------
-// A static method to display a PAT section.
-//----------------------------------------------------------------------------
-
-void ts::PAT::DisplaySection(TablesDisplay &disp, const ts::Section &section, PSIBuffer &buf, const UString &margin)
-{
-	disp << margin << UString::Format(u"TS id:   %5d (0x%<04X)", { section.tableIdExtension() }) << std::endl;
-	while (buf.canReadBytes(4))
-	{
-		const uint16_t id = buf.getUInt16();
-		disp << margin << UString::Format(u"%s %5d (0x%<04X)  PID: %4d (0x%<04X)", { id == 0 ? u"NIT:    " : u"Program:", id, buf.getPID() }) << std::endl;
-	}
-}
-
 
 //----------------------------------------------------------------------------
 // XML serialization

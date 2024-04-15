@@ -56,7 +56,6 @@ namespace ts {
         // Inherited methods
         virtual bool isPrivate() const override;
         virtual uint16_t tableIdExtension() const override;
-        DeclareDisplaySection();
 
     protected:
         // Inherited methods

@@ -14,7 +14,6 @@
 #include "tsPSIRepository.h"
 #include "tsRST.h"
 #include "tsSDT.h"
-#include "tsTablesDisplay.h"
 #include "tsxmlElement.h"
 
 #define MY_XML_NAME u"SDT"

@@ -12,7 +12,6 @@
 #include "tsPMT.h"
 #include "tsPSIBuffer.h"
 #include "tsPSIRepository.h"
-#include "tsTablesDisplay.h"
 #include "tsxmlElement.h"
 
 #define MY_XML_NAME u"PMT"
@@ -519,34 +518,6 @@ uint32_t ts::PMT::registrationId(PID pid) const
 	// Not found.
 	return REGID_NULL;
 }
-
-
-//----------------------------------------------------------------------------
-// A static method to display a PMT section.
-//----------------------------------------------------------------------------
-
-void ts::PMT::DisplaySection(TablesDisplay &disp, const ts::Section &section, PSIBuffer &buf, const UString &margin)
-{
-	const PID pcr_pid = buf.getPID();
-	disp << margin << UString::Format(u"Program: %d (0x%<X), PCR PID: ", { section.tableIdExtension() })
-		<< (pcr_pid == PID_NULL ? u"none" : UString::Format(u"%d (0x%<X)", { pcr_pid }))
-		<< std::endl;
-
-	// Process and display "program info" descriptors. Get registration id.
-	disp.duck().resetRegistrationIds();
-	disp.displayDescriptorListWithLength(section, buf, margin, u"Program information:");
-
-	// Get elementary streams description
-	while (buf.canRead())
-	{
-		const uint8_t type = buf.getUInt8();
-		const PID pid = buf.getPID();
-		disp << margin << "Elementary stream: type " << names::StreamType(type, NamesFlags::FIRST, disp.duck().lastRegistrationId())
-			<< UString::Format(u", PID: %d (0x%<X)", { pid }) << std::endl;
-		disp.displayDescriptorListWithLength(section, buf, margin);
-	}
-}
-
 
 //----------------------------------------------------------------------------
 // XML serialization
