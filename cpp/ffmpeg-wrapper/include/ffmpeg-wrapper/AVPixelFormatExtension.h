@@ -26,9 +26,13 @@ namespace video
 				{
 					return SDL_PixelFormatEnum::SDL_PIXELFORMAT_RGB888;
 				}
+			case AVPixelFormat::AV_PIX_FMT_YUV420P10LE:
+				{
+					throw jc::NotImplementedException(CODE_POS_STR + std::string("暂不支持"));
+				}
 			default:
 				{
-					throw jc::NotImplementedException("暂不支持");
+					throw jc::NotImplementedException(CODE_POS_STR + std::string("暂不支持"));
 				}
 			}
 		}
@@ -51,7 +55,7 @@ namespace video
 				}
 			default:
 				{
-					throw jc::NotImplementedException("暂不支持");
+					throw jc::NotImplementedException(CODE_POS_STR + std::string("暂不支持"));
 				}
 			}
 		}
