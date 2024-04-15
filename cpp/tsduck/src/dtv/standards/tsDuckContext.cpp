@@ -10,7 +10,6 @@
 #include "tsCerrReport.h"
 #include "tsDVBCharTableSingleByte.h"
 #include "tsDVBCharTableUTF8.h"
-#include "tsDuckConfigFile.h"
 #include "tsDuckContext.h"
 #include "tsTime.h"
 
@@ -25,7 +24,6 @@ ts::DuckContext::DuckContext(Report *report, std::ostream *output) :
 	_out(_initial_out),
 	_charsetIn(&DVBCharTableSingleByte::DVB_ISO_6937),  // default DVB charset
 	_charsetOut(&DVBCharTableSingleByte::DVB_ISO_6937),
-	_timeRefConfig(DuckConfigFile::Instance().value(u"default.time")),
 	_predefined_cas{ {CASID_CONAX_MIN,      u"conax"},
 					{CASID_IRDETO_MIN,     u"irdeto"},
 					{CASID_MEDIAGUARD_MIN, u"mediaguard"},
@@ -35,19 +33,6 @@ ts::DuckContext::DuckContext(Report *report, std::ostream *output) :
 					{CASID_VIACCESS_MIN,   u"viaccess"},
 					{CASID_WIDEVINE_MIN,   u"widevine"} }
 {
-	// Initialize time reference from configuration file. Ignore errors.
-	if (!_timeRefConfig.empty() && !setTimeReference(_timeRefConfig))
-	{
-		CERR.verbose(u"invalid default.time '%s' in %s", { _timeRefConfig, DuckConfigFile::Instance().fileName() });
-	}
-
-	// Get leap.seconds initial value from configuration file. Default value is true.
-	const UString ls(DuckConfigFile::Instance().value(u"leap.seconds"));
-	if (!ls.empty() && !ls.toBool(_useLeapSeconds))
-	{
-		_useLeapSeconds = true;
-		CERR.verbose(u"invalid leap.seconds '%s' in %s", { ls, DuckConfigFile::Instance().fileName() });
-	}
 }
 
 
@@ -203,19 +188,6 @@ void ts::DuckContext::resetRegistrationIds()
 void ts::DuckContext::setDefaultHFRegion(const UString &region)
 {
 	_hfDefaultRegion = region;
-}
-
-ts::UString ts::DuckContext::defaultHFRegion() const
-{
-	// If the region is empty, get the one for the TSDuck configuration file.
-	if (!_hfDefaultRegion.empty())
-	{
-		return _hfDefaultRegion;
-	}
-	else
-	{
-		return DuckConfigFile::Instance().value(u"default.region", u"europe");
-	}
 }
 
 //----------------------------------------------------------------------------

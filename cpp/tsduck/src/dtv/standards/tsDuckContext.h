@@ -341,12 +341,6 @@ namespace ts
 		void setDefaultHFRegion(const UString &region);
 
 		//!
-		//! Get the name of the default region for UVH and VHF band frequency layout.
-		//! @return Name of the default region.
-		//!
-		UString defaultHFRegion() const;
-
-		//!
 		//! Set a non-standard time reference offset.
 		//! In DVB SI, reference times are UTC. These SI can be reused in non-standard ways
 		//! where the stored times use another reference. This is the case with ARIB and ABNT
