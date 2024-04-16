@@ -115,6 +115,4 @@ extern "C"
 	/// </summary>
 	/// <param name="obj"></param>
 	void FreeDotNetStream(DotNetStream *obj);
-
-	void TestDotNetStream(DotNetStream *obj);
 }
