@@ -32,8 +32,7 @@ void ReencodeDotNetVideoStream(DotNetStream *dotnet_video_stream)
 	} };
 
 	// 输入格式
-	shared_ptr<DotNetStream> dotnet_video_stream_sp{ dotnet_video_stream, [](DotNetStream *p) {} };
-	shared_ptr<InputFormat> input_format{ new InputFormat{dotnet_video_stream_sp} };
+	shared_ptr<InputFormat> input_format{ new InputFormat{dotnet_video_stream->ToSharePtr()} };
 	AVStreamInfoCollection input_video_stream_infos = input_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_VIDEO);
 	AVStreamInfoCollection input_audio_stream_infos = input_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_AUDIO);
 

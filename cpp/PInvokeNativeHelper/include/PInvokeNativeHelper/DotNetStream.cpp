@@ -3,6 +3,18 @@
 
 using namespace std;
 
+void DotNetStream::CheckError()
+{
+	if (_error())
+	{
+		/* DotNetStream 内部发生了错误。具体是什么错，可以由 C# 打印出来。
+		* 反正此 DotNetStream 对象已经无法使用了。没有必要将详细的错误信息
+		* 从 C# 传递到 C++。C# 的错误就在 C# 中处理。
+		*/
+		throw jc::Exception();
+	}
+}
+
 DotNetStream::DotNetStream(
 	uint8_t(*can_read)(),
 	uint8_t(*can_write)(),
@@ -30,18 +42,6 @@ DotNetStream::DotNetStream(
 	_position = position;
 	_set_position = set_position;
 	_error = error;
-}
-
-void DotNetStream::CheckError()
-{
-	if (_error())
-	{
-		/* DotNetStream 内部发生了错误。具体是什么错，可以由 C# 打印出来。
-		* 反正此 DotNetStream 对象已经无法使用了。没有必要将详细的错误信息
-		* 从 C# 传递到 C++。C# 的错误就在 C# 中处理。
-		*/
-		throw jc::Exception();
-	}
 }
 
 bool DotNetStream::CanRead()

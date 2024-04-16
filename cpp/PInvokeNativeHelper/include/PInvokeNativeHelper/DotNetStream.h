@@ -9,6 +9,24 @@
 /// </summary>
 class DotNetStream :public Stream
 {
+private:
+	#pragma region 用来接收 .NET 委托的函数指针
+	uint8_t(*_can_read)();
+	uint8_t(*_can_write)();
+	uint8_t(*_can_seek)();
+	int64_t(*_length)();
+	void (*_set_length)(int64_t value);
+	int64_t(*_read)(uint8_t *buffer, int64_t offset, int64_t count);
+	void (*_write)(uint8_t *buffer, int64_t offset, int64_t count);
+	void (*_flush)();
+	void (*_close)();
+	int64_t(*_position)();
+	void (*_set_position)(int64_t value);
+	uint8_t(*_error)();
+	#pragma endregion
+
+	void CheckError();
+
 public:
 	/// <summary>
 	///		.NET 需要提供这些委托供 C++ 调用。此外，在使用本类对象期间，
@@ -43,23 +61,6 @@ public:
 		uint8_t(*error)()
 	);
 
-private:
-	uint8_t(*_can_read)();
-	uint8_t(*_can_write)();
-	uint8_t(*_can_seek)();
-	int64_t(*_length)();
-	void (*_set_length)(int64_t value);
-	int64_t(*_read)(uint8_t *buffer, int64_t offset, int64_t count);
-	void (*_write)(uint8_t *buffer, int64_t offset, int64_t count);
-	void (*_flush)();
-	void (*_close)();
-	int64_t(*_position)();
-	void (*_set_position)(int64_t value);
-	uint8_t(*_error)();
-
-	void CheckError();
-
-public:
 	bool CanRead() override;
 	bool CanWrite() override;
 	bool CanSeek() override;
@@ -71,6 +72,17 @@ public:
 	void Close() override;
 	int64_t Position() override;
 	void SetPosition(int64_t value) override;
+
+	/// <summary>
+	///		转换成共享指针。
+	///		- 返回的共享指针的删除器是个什么都不做的 lambda，因为 DotNetStream
+	///		  对象的生命周期是由 .NET 管理的。
+	/// </summary>
+	/// <returns></returns>
+	shared_ptr<DotNetStream> ToSharePtr()
+	{
+		return 	shared_ptr<DotNetStream>{ this, [](DotNetStream *p) {} };
+	}
 };
 
 extern "C"
