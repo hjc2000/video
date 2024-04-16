@@ -105,13 +105,17 @@ void test_SptsEncodeMux()
 			in_fmt_ctx->DumpFormat();
 			return in_fmt_ctx;
 		}
+		catch (jc::InvalidOperationException &e)
+		{
+
+		}
 		catch (std::exception &e)
 		{
-			cerr << e.what() << endl;
+			cerr << CODE_POS_STR << e.what() << endl;
 		}
 		catch (...)
 		{
-			cerr << "发生未知异常" << endl;
+			cerr << CODE_POS_STR << "发生未知异常" << endl;
 		}
 
 		return nullptr;
