@@ -3,6 +3,7 @@
 #include<ffmpeg-wrapper/input-format/InputFormat.h>
 #include<ffmpeg-wrapper/pipe/InfinitePacketPipe.h>
 #include<ffmpeg-wrapper/pipe/ThreadDecoderPipe.h>
+#include<ffmpeg-wrapper/pipe/interface/IPump.h>
 #include<functional>
 #include<jccpp/CancellationTokenSource.h>
 #include<memory>
@@ -16,8 +17,9 @@ namespace video
 	///		这些视频帧、音频帧的时间戳是连续的，但是因为来自不同文件，分辨率、像素格式、采样率、
 	///		采样格式等信息可能会变。编码侧要能够自适应，必要时进行重采样。
 	/// </summary>
-	class JoinedInputFormatDemuxDecoder
+	class JoinedInputFormatDemuxDecoder :public IPump
 	{
+	private:
 		shared_ptr<InputFormat> _current_intput_format;
 		AVStreamInfoCollection _video_stream_infos;
 		shared_ptr<ThreadDecoderPipe> _video_decode_pipe;
@@ -39,7 +41,7 @@ namespace video
 		/// </summary>
 		std::function<shared_ptr<InputFormat>()> _get_format_callback;
 
-		void Pump(shared_ptr<CancellationToken> cancel_pump);
+		void Pump(shared_ptr<CancellationToken> cancel_pump) override;
 
 		void AddVideoFrameConsumer(shared_ptr<IFrameConsumer> consumer);
 		void AddAudioFrameConsumer(shared_ptr<IFrameConsumer> consumer);

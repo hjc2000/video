@@ -17,6 +17,7 @@ namespace video
 		public Wrapper<AVFormatContext>,
 		public IPacketSource
 	{
+	private:
 		AVFormatContext *_wrapped_obj = nullptr;
 		string _url;
 		shared_ptr<AVIOContextWrapper> _io_context;
