@@ -7,7 +7,7 @@ namespace PInvokeLib;
 /// </summary>
 public partial class DotNetStreamHelper
 {
-	#region 对应C++中的函数的委托
+	#region 对应 C++ 中的函数的委托，与 C++ 兼容，供 C++ 调用
 	public unsafe delegate byte CanReadDelegate();
 	public unsafe delegate byte CanWriteDelegate();
 	public unsafe delegate byte CanSeekDelegate();
@@ -69,7 +69,7 @@ public partial class DotNetStreamHelper
 	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "TestDotNetStream")]
 	public static unsafe partial void TestDotNetStream(nuint cpp_obj);
 
-	#region 与委托兼容的方法
+	#region 将对 Stream 的操作函数包装成与供 C++ 调用的委托兼容的形式。
 	private byte CanRead()
 	{
 		try
