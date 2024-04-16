@@ -28,7 +28,6 @@ void video::PacketPump::Pump(shared_ptr<CancellationToken> cancellation_token)
 			}
 		case (int)ErrorCode::eof:
 			{
-				cout << CODE_POS_STR << "遇到文件尾" << endl;
 				if (_on_before_send_packet_to_consumer)
 				{
 					_on_before_send_packet_to_consumer(nullptr);

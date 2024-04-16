@@ -43,7 +43,6 @@ void video::SwsContextWrapper::SendFrame(AVFrameWrapper *frame)
 	if (!frame)
 	{
 		_flushed = true;
-		cout << CODE_POS_STR << "sws 已被冲洗" << endl;
 		return;
 	}
 

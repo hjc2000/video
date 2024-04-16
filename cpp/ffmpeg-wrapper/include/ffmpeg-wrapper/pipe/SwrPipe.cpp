@@ -74,7 +74,7 @@ void video::SwrPipe::read_and_send_frame_without_flushing_consumer()
 
 void video::SwrPipe::change_swr()
 {
-	cout << CODE_POS_STR << "重新构造重采样器" << endl;
+	cout << CODE_POS_STR << "重新构造 swr" << endl;
 
 	// 冲洗旧的重采样器
 	_swr->SendFrame(nullptr);

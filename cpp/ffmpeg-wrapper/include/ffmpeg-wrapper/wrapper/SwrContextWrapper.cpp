@@ -39,7 +39,6 @@ SwrContextWrapper::SwrContextWrapper(
 
 SwrContextWrapper::~SwrContextWrapper()
 {
-	cout << "SwrContextWrapper 析构函数" << endl;
 	swr_free(&_wrapped_obj);
 }
 
@@ -151,14 +150,12 @@ int SwrContextWrapper::convert(AVFrameWrapper *input_frame, AVFrameWrapper *outp
 int SwrContextWrapper::read_frame_in_flushing_mode(AVFrameWrapper &output_frame)
 {
 	int count = convert(nullptr, &output_frame);
-	cout << "冲洗缓冲区冲洗出了" << count << "个采样点" << endl;
 
 	// 如果有填充（即 count > 0）且填充了不完整的帧
 	if (count > 0 && count < output_frame.SampleCount())
 	{
 		// 将后面没被填充的采样点设置为静音
 		output_frame.mute(count);
-		cout << "填充了不完整的帧，已将后面未填充的采样点设置为静音" << endl;
 	}
 
 	if (count > 0)

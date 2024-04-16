@@ -31,7 +31,6 @@ AVCodecContextWrapper::AVCodecContextWrapper(const AVCodec *codec, AVCodecParame
 
 AVCodecContextWrapper::~AVCodecContextWrapper()
 {
-	cout << __func__ << endl;
 	avcodec_free_context(&_wrapped_obj);
 }
 #pragma endregion

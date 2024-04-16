@@ -40,17 +40,12 @@ void video::ThreadDecoderPipe::InitDecodeThread()
 		{
 			DecodeThreadFunc();
 		}
-		catch (std::exception &e)
-		{
-			cout << CODE_POS_STR << "解码线程遇到异常：" << e.what() << endl;
-		}
 		catch (...)
 		{
-			cout << CODE_POS_STR << "解码线程遇到未知异常" << endl;
+
 		}
 
 		_decode_thread_exit.SetResult();
-		cout << CODE_POS_STR << "解码线程退出" << endl;
 	}).detach();
 	_decode_thread_exit.Reset();
 }
@@ -79,7 +74,6 @@ void video::ThreadDecoderPipe::DecodeThreadFunc()
 					_decoder_pipe->SendPacket(nullptr);
 				}
 
-				cout << CODE_POS_STR << "解码线程从队列中读取包时遇到 ErrorCode::eof";
 				return;
 			}
 		default:
