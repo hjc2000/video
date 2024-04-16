@@ -36,6 +36,10 @@ void DotNetStream::CheckError()
 {
 	if (_error())
 	{
+		/* DotNetStream 内部发生了错误。具体是什么错，可以由 C# 打印出来。
+		* 反正此 DotNetStream 对象已经无法使用了。没有必要将详细的错误信息
+		* 从 C# 传递到 C++。C# 的错误就在 C# 中处理。
+		*/
 		throw jc::Exception();
 	}
 }
@@ -127,7 +131,6 @@ DotNetStream *CreateDotNetStream(
 	uint8_t(*error)()
 )
 {
-	cout << "新建 DotNetStream" << endl;
 	return new DotNetStream{
 		can_read,
 		can_write,
@@ -146,6 +149,5 @@ DotNetStream *CreateDotNetStream(
 
 void FreeDotNetStream(DotNetStream *obj)
 {
-	cout << "删除 DotNetStream" << endl;
 	delete obj;
 }
