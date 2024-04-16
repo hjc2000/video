@@ -31,6 +31,8 @@ namespace video
 		List<shared_ptr<IFrameConsumer>> _video_frame_consumer_list;
 		List<shared_ptr<IFrameConsumer>> _audio_frame_consumer_list;
 
+		void InitializeVideoDecoderPipe();
+		void InitializeAudioDecoderPipe();
 		void OpenInputIfNull();
 
 	public:
