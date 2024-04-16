@@ -30,7 +30,14 @@ AVIOContextWrapper::~AVIOContextWrapper()
 	* 时会释放这个缓冲区。所以这里如果 av_free(_buffer); 会重复释放。
 	*/
 
-	_stream->Close();
+
+
+	/* 因为 Stream 有自己的析构函数，且是用共享指针来引用的，所以这里不执行析构。
+	* 这还有一个好处是：此 Stream 如果不止是要给本 AVIOContextWrapper 使用，
+	* 还要到别的地方使用，不需要额外的逻辑来防止本 AVIOContextWrapper 
+	* 对象把 Stream 关闭了。
+	*/
+	//_stream->Close();
 }
 
 int AVIOContextWrapper::StaticReadPacket(void *opaque, uint8_t *buf, int buf_size)

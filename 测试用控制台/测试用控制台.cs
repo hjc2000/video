@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 
 using FileStream video_file = File.Open(
-	"D:/repos/video/cpp/test/资源/idol.mp4",
+	"F:/repos/video/cpp/test/资源/idol.mp4",
 	FileMode.Open,
 	FileAccess.Read,
 	FileShare.Read
