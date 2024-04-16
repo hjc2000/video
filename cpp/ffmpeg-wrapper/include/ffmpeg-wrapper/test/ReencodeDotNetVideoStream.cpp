@@ -32,26 +32,32 @@ void ReencodeDotNetVideoStream(DotNetStream *dotnet_video_stream)
 	} };
 
 	// 输入格式
-	shared_ptr<InputFormat> input_format{ new InputFormat{dotnet_video_stream->ToSharePtr()} };
-	AVStreamInfoCollection input_video_stream_infos = input_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_VIDEO);
-	AVStreamInfoCollection input_audio_stream_infos = input_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_AUDIO);
+	shared_ptr<JoinedInputFormatDemuxDecoder> joined_input_format_demux_decoder{ new JoinedInputFormatDemuxDecoder{} };
+	joined_input_format_demux_decoder->AddVideoFrameConsumer(spts_encode_mux->VideoEncodePipe());
+	joined_input_format_demux_decoder->AddAudioFrameConsumer(spts_encode_mux->AudioEncodePipe());
+
+	int loop_times = 0;
+	joined_input_format_demux_decoder->_get_format_callback = [&]()->shared_ptr<InputFormat>
+	{
+		if (loop_times > 2)
+		{
+			return nullptr;
+		}
+
+		dotnet_video_stream->SetPosition(0);
+		shared_ptr<InputFormat> in_fmt_ctx{ new InputFormat{ dotnet_video_stream->ToSharePtr()} };
+		loop_times++;
+		return in_fmt_ctx;
+	};
 
 	// 解码管道
-	shared_ptr<ThreadDecoderPipe> video_decode_pipe{ new ThreadDecoderPipe{input_video_stream_infos} };
-	shared_ptr<ThreadDecoderPipe> audio_decode_pipe{ new ThreadDecoderPipe{input_audio_stream_infos} };
-	video_decode_pipe->FrameConsumerList().Add(spts_encode_mux->VideoEncodePipe());
-	audio_decode_pipe->FrameConsumerList().Add(spts_encode_mux->AudioEncodePipe());
-
-	PacketPump pump{ input_format };
-	pump.PacketConsumerList().Add(video_decode_pipe);
-	pump.PacketConsumerList().Add(audio_decode_pipe);
 	CancellationTokenSource cancel_pump_source;
 	TaskCompletionSignal pump_thread_exit{ false };
 	std::thread([&]()
 	{
 		try
 		{
-			pump.Pump(cancel_pump_source.Token());
+			joined_input_format_demux_decoder->Pump(cancel_pump_source.Token());
 		}
 		catch (std::exception &e)
 		{
