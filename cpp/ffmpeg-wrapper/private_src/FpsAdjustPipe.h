@@ -11,10 +11,10 @@
 
 namespace video
 {
-	/**
-	 * @brief 用来调整帧率的管道。帧从这里输入后再输出，帧率就变了。这里会插帧或删帧。
-	 * 需要注意：改变帧率并不会提升视频质量，反而会降低。
-	*/
+	/// <summary>
+	///		用来调整帧率的管道。
+	///		- 帧从这里输入后再输出，帧率就变了。这里会插帧或删帧。
+	/// </summary>
 	class FpsAdjustPipe :
 		public IFrameConsumer,
 		public IPipeFrameSource
@@ -34,7 +34,7 @@ namespace video
 		AVRational _desired_out_fps;
 		jc::Trigger<int64_t> _trigger;
 
-		void read_and_send_frame();
+		void ReadAndSendFrame();
 
 	public:
 		List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override

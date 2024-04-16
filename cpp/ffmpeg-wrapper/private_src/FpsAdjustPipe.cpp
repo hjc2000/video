@@ -17,7 +17,7 @@ FpsAdjustPipe::FpsAdjustPipe(IVideoStreamInfoCollection &input_video_stream_info
 	_graph.config_graph();
 }
 
-void FpsAdjustPipe::read_and_send_frame()
+void FpsAdjustPipe::ReadAndSendFrame()
 {
 	AVFrameWrapper frame;
 	bool have_synced = false;
@@ -72,7 +72,7 @@ void FpsAdjustPipe::SendFrame(AVFrameWrapper *frame)
 		return;
 	}
 
-	read_and_send_frame();
+	ReadAndSendFrame();
 	if (frame != nullptr)
 	{
 		frame->ChangeTimeBase(_input_video_stream_infos.TimeBase());
@@ -96,5 +96,5 @@ void FpsAdjustPipe::SendFrame(AVFrameWrapper *frame)
 		}
 	}
 
-	read_and_send_frame();
+	ReadAndSendFrame();
 }
