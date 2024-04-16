@@ -38,7 +38,7 @@ public partial class MpegTSPlayer : IJSObjectProjection, IAsyncDisposable
 		}
 
 		_jsop = new JSOp(JSRuntime);
-		await _jsop.AddScriptAsync("./_content/JCRazor/mpegts.min.js");
+		await _jsop.AddScriptAsync("./_content/JCRazor/mpegts.js");
 		_jsm = new JSModule(JSRuntime, "./_content/JCRazor/mpegts_player/MpegTSPlayer.razor.js");
 		_init_tcs.TrySetResult();
 	}
