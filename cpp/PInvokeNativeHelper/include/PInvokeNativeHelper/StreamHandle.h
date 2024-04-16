@@ -3,6 +3,11 @@
 #include<memory>
 #include<stdint.h>
 
+/// <summary>
+///		因为 C++ 这边的 Stream 一般都是用 shared_ptr 来管理的，所以需要一个 StreamHandle
+///		类来包装 shared_ptr，否则将堆上的 shared_ptr 对象的指针 shared_ptr* 传给 C# 会
+///		造成逻辑混乱。shared_ptr 意义就是指针了，又搞出一个 shared_ptr*，所以就定义了本类。
+/// </summary>
 class StreamHandle
 {
 public:
