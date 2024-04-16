@@ -19,14 +19,6 @@ namespace video
 		public IFrameConsumer,
 		public IPipeFrameSource
 	{
-	public:
-		/// <summary>
-		///		
-		/// </summary>
-		/// <param name="input_video_stream_infos">输入的视频流信息</param>
-		/// <param name="desired_out_fps">期望的输出帧率</param>
-		FpsAdjustPipe(IVideoStreamInfoCollection &input_video_stream_infos, AVRational desired_out_fps);
-
 	private:
 		List<shared_ptr<IFrameConsumer>> _consumer_list;
 		VideoStreamInfoCollection _input_video_stream_infos;
@@ -37,6 +29,13 @@ namespace video
 		void ReadAndSendFrame();
 
 	public:
+		/// <summary>
+		///		
+		/// </summary>
+		/// <param name="input_video_stream_infos">输入的视频流信息</param>
+		/// <param name="desired_out_fps">期望的输出帧率</param>
+		FpsAdjustPipe(IVideoStreamInfoCollection &input_video_stream_infos, AVRational desired_out_fps);
+
 		List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override
 		{
 			return _consumer_list;

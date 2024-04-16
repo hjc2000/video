@@ -3,20 +3,6 @@
 using namespace video;
 using namespace std;
 
-FpsAdjustPipe::FpsAdjustPipe(IVideoStreamInfoCollection &input_video_stream_infos, AVRational desired_out_fps) :
-	_input_video_stream_infos(input_video_stream_infos),
-	_graph(input_video_stream_infos),
-	_desired_out_fps(desired_out_fps)
-{
-	auto fps_filter = _graph.alloc_fps_filter(desired_out_fps);
-
-	// 连接滤镜
-	_graph.buffer_filter() << fps_filter << _graph.buffer_sink_filter();
-
-	// 配置滤镜图
-	_graph.config_graph();
-}
-
 void FpsAdjustPipe::ReadAndSendFrame()
 {
 	AVFrameWrapper frame;
@@ -63,6 +49,20 @@ void FpsAdjustPipe::ReadAndSendFrame()
 			}
 		}
 	}
+}
+
+FpsAdjustPipe::FpsAdjustPipe(IVideoStreamInfoCollection &input_video_stream_infos, AVRational desired_out_fps) :
+	_input_video_stream_infos(input_video_stream_infos),
+	_graph(input_video_stream_infos),
+	_desired_out_fps(desired_out_fps)
+{
+	auto fps_filter = _graph.alloc_fps_filter(desired_out_fps);
+
+	// 连接滤镜
+	_graph.buffer_filter() << fps_filter << _graph.buffer_sink_filter();
+
+	// 配置滤镜图
+	_graph.config_graph();
 }
 
 void FpsAdjustPipe::SendFrame(AVFrameWrapper *frame)
