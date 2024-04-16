@@ -1,8 +1,12 @@
 ﻿using PInvokeLib;
+using System.Runtime.InteropServices;
 
-using MemoryStream memoryStream = new();
-byte[] buffer = [1, 2, 3, 4, 5];
-memoryStream.Write(buffer);
-memoryStream.Position = 0;
-using DotNetStreamHelper dotNetStreamHelper = new(memoryStream);
-DotNetStreamHelper.TestDotNetStream(dotNetStreamHelper.CppObjRawPtr);
+using FileStream video_file = File.Open("D:/repos/video/cpp/test/资源/等你下课.mp4", FileMode.Open, FileAccess.Read, FileShare.Read);
+using DotNetStreamHelper dotnet_stream_helper = new(video_file);
+Test.ReencodeDotNetVideoStream(dotnet_stream_helper.CppObjRawPtr);
+
+internal partial class Test
+{
+	[LibraryImport("libffmpeg-wrapper", EntryPoint = "ReencodeDotNetVideoStream")]
+	public static unsafe partial void ReencodeDotNetVideoStream(nuint dotnet_stream);
+}
