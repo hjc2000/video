@@ -4,6 +4,7 @@
 #include<ffmpeg-wrapper/input-format/InputFormat.h>
 #include<ffmpeg-wrapper/mux/SptsEncodeMux.h>
 #include<ffmpeg-wrapper/output-format/StreamOutputFormat.h>
+#include<ffmpeg-wrapper/pipe/PacketPump.h>
 #include<iostream>
 #include<jccpp/container/List.h>
 #include<jccpp/container/Queue.h>
