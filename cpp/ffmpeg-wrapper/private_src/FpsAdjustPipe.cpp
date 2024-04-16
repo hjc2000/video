@@ -73,6 +73,11 @@ void FpsAdjustPipe::SendFrame(AVFrameWrapper *frame)
 	}
 
 	read_and_send_frame();
+	if (frame != nullptr)
+	{
+		frame->ChangeTimeBase(_input_video_stream_infos.TimeBase());
+	}
+
 	_graph.SendFrame(frame);
 
 	if (frame)
