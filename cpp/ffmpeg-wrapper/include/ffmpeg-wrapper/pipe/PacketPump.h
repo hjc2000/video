@@ -3,6 +3,7 @@
 #include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketSource.h>
 #include<ffmpeg-wrapper/pipe/interface/IPipePacketSource.h>
+#include<ffmpeg-wrapper/pipe/interface/IPump.h>
 #include<jccpp/CancellationTokenSource.h>
 #include<jccpp/IDisposable.h>
 
@@ -13,6 +14,7 @@ namespace video
 	/// </summary>
 	class PacketPump :
 		public IPipePacketSource,
+		public IPump,
 		public IDisposable
 	{
 		std::atomic_bool _disposed = false;
@@ -46,6 +48,6 @@ namespace video
 		/// </summary>
 		std::function<void(AVPacketWrapper *packet)> _on_before_send_packet_to_consumer;
 
-		void Pump(shared_ptr<CancellationToken> cancellation_token);
+		void Pump(shared_ptr<CancellationToken> cancellation_token) override;
 	};
 }
