@@ -2,16 +2,6 @@
 
 using namespace std;
 
-void PrintVector(std::vector<uint8_t> vec)
-{
-	for (uint8_t value : vec)
-	{
-		cout << (int)value << ", ";
-	}
-
-	cout << endl;
-}
-
 int main(void)
 {
 	try
