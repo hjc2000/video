@@ -1,5 +1,8 @@
 #pragma once
-#include<ffmpeg-wrapper/info-collection/AudioStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/IAudioStreamInfoCollection.h>
+#include<ffmpeg-wrapper/info-collection/IVideoStreamInfoCollection.h>
+#include<ffmpeg-wrapper/output-format/OutputFormat.h>
+#include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 
 namespace video
 {
@@ -15,5 +18,11 @@ namespace video
 		static shared_ptr<EncoderPipeFactory> _custom_factory;
 		#pragma endregion
 
+		virtual shared_ptr<IFrameConsumer> CreateEncoderPipe(
+			std::string codec_name,
+			IVideoStreamInfoCollection &in_stream_infos,
+			shared_ptr<OutputFormat> output_format,
+			int64_t out_bit_rate_in_bps = -1
+		);
 	};
 }
