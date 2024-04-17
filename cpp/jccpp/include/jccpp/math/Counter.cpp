@@ -1,4 +1,4 @@
-#include"jccpp/Counter.h"
+#include"Counter.h"
 
 using namespace std;
 using namespace jc;

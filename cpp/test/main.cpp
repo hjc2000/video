@@ -3,7 +3,7 @@
 #include<algorithm>
 #include<ffmpeg-wrapper/mux/SptsEncodeMux.h>
 #include<filesystem>
-#include<jccpp/BaseConverter.h>
+#include<jccpp/math/BaseConverter.h>
 #include<sdl2-wrapper/AVPacketPlayer.h>
 #include<test_libusb.h>
 #include<test_tsduck.h>

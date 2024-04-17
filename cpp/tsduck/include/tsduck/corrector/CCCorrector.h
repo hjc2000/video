@@ -1,10 +1,10 @@
 #pragma once
-#include<tsduck/interface/ITSPacketConsumer.h>
-#include<tsduck/PipeTsPacketSource.h>
-#include<jccpp/Counter.h>
+#include<jccpp/math/Counter.h>
 #include<map>
 #include<memory>
 #include<tsTSPacket.h>
+#include<tsduck/PipeTsPacketSource.h>
+#include<tsduck/interface/ITSPacketConsumer.h>
 
 using std::shared_ptr;
 
