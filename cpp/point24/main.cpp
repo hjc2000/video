@@ -16,7 +16,7 @@ int main(void)
 {
 	try
 	{
-		std::array<uint8_t, 4> nums{ 12,6,4,6 };
+		std::array<uint8_t, 4> nums{ 11,5,4,3 };
 		cout << Point24Solver::Solve(nums) << endl;
 		return 0;
 	}
