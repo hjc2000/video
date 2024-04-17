@@ -54,6 +54,7 @@ namespace jc
 			_max_value = max_value;
 		}
 
+		#pragma region 运算符重载
 		/// <summary>
 		///		前缀递增
 		/// </summary>
@@ -122,6 +123,7 @@ namespace jc
 			_count %= _max_value + 1;
 			return _count;
 		}
+		#pragma endregion
 
 		/// <summary>
 		///		重置计数值。计数值归 0.
