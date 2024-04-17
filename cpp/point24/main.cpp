@@ -1,4 +1,4 @@
-﻿#include<calculate_point24.h>
+﻿#include<Point24Solver.h>
 
 using namespace std;
 
@@ -16,18 +16,8 @@ int main(void)
 {
 	try
 	{
-		std::vector<uint8_t> nums{ 12,6,4,6 };
-		std::vector<uint8_t> out_successful_nums_permutations;
-		std::vector<uint8_t> out_successfull_operator_combinations;
-		if (TryAllPermutations(nums,
-			out_successful_nums_permutations,
-			out_successfull_operator_combinations
-		))
-		{
-			PrintVector(out_successful_nums_permutations);
-			PrintVector(out_successfull_operator_combinations);
-		}
-
+		std::array<uint8_t, 4> nums{ 12,6,4,6 };
+		cout << Point24Solver::Solve(nums) << endl;
 		return 0;
 	}
 	catch (jc::Exception &e)
