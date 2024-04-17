@@ -4,11 +4,13 @@
 #include<ffmpeg-wrapper/mux/SptsEncodeMux.h>
 #include<filesystem>
 #include<jccpp/math/BaseConverter.h>
+#include<jccpp/math/Counter.h>
 #include<sdl2-wrapper/AVPacketPlayer.h>
 #include<test_libusb.h>
 #include<test_tsduck.h>
 
 using namespace video;
+using namespace jc;
 
 int main(void)
 {
@@ -19,9 +21,10 @@ int main(void)
 		//test_AVPacketPlayer();
 		//test_tsduck();
 		//test_libusb();
-		std::vector<uint8_t> num{ 1,0,0 };
-		std::reverse(num.begin(), num.end());
-		cout << jc::BaseConverter::ToNumber(num, 10) << endl;
+		//std::vector<uint8_t> num{ 1,0,0,9 };
+		//std::reverse(num.begin(), num.end());
+		//cout << jc::BaseConverter::ToNumber(num, 10) << endl;
+		jc::TestCounter();
 		return 0;
 	}
 	catch (jc::Exception &e)

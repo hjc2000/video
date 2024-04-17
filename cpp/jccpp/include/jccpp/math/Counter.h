@@ -154,4 +154,6 @@ namespace jc
 			_count = value % (_max_value + 1);
 		}
 	};
+
+	void TestCounter();
 }
