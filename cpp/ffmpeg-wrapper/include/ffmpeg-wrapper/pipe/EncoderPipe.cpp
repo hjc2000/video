@@ -1,7 +1,42 @@
-#include"ffmpeg-wrapper/pipe/EncoderPipe.h"
+#include"EncoderPipe.h"
 #include<ffmpeg-wrapper/ErrorCode.h>
 
 using namespace video;
+
+void EncoderPipe::ReadAndSendPacketToOutputFormat()
+{
+	AVPacketWrapper packet;
+	while (1)
+	{
+		int ret = _encoder_ctx->ReadPacket(packet);
+		switch (ret)
+		{
+		case 0:
+			{
+				packet.SetStreamIndex(_new_stream.Index());
+				_output_format->SendPacket(&packet);
+
+				// 下一轮循环继续读取包
+				break;
+			}
+		case (int)ErrorCode::output_is_temporarily_unavailable:
+			{
+				return;
+			}
+		case (int)ErrorCode::eof:
+			{
+				_output_format->SendPacket(nullptr);
+				return;
+			}
+		default:
+			{
+				// 未知错误
+				cout << CODE_POS_STR << "read_packet 返回了未知的错误代码" << endl;
+				throw jc::Exception();
+			}
+		}
+	}
+}
 
 EncoderPipe::EncoderPipe(
 	std::string codec_name,
@@ -51,41 +86,6 @@ EncoderPipe::EncoderPipe(
 	);
 
 	_new_stream = _output_format->CreateNewStream(_encoder_ctx);
-}
-
-void EncoderPipe::ReadAndSendPacketToOutputFormat()
-{
-	AVPacketWrapper packet;
-	while (1)
-	{
-		int ret = _encoder_ctx->ReadPacket(packet);
-		switch (ret)
-		{
-		case 0:
-			{
-				packet.SetStreamIndex(_new_stream.Index());
-				_output_format->SendPacket(&packet);
-
-				// 下一轮循环继续读取包
-				break;
-			}
-		case (int)ErrorCode::output_is_temporarily_unavailable:
-			{
-				return;
-			}
-		case (int)ErrorCode::eof:
-			{
-				_output_format->SendPacket(nullptr);
-				return;
-			}
-		default:
-			{
-				// 未知错误
-				cout << CODE_POS_STR << "read_packet 返回了未知的错误代码" << endl;
-				throw jc::Exception();
-			}
-		}
-	}
 }
 
 void EncoderPipe::SendFrame(AVFrameWrapper *frame)

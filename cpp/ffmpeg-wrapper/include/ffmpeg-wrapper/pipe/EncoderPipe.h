@@ -20,6 +20,16 @@ namespace video
 	/// </summary>
 	class EncoderPipe :public IFrameConsumer
 	{
+	private:
+		shared_ptr<AVCodecContextWrapper> _encoder_ctx;
+		AVStreamWrapper _new_stream;
+		shared_ptr<OutputFormat> _output_format;
+
+		/// <summary>
+		///		读取包并写入封装
+		/// </summary>
+		void ReadAndSendPacketToOutputFormat();
+
 	public:
 		/// <summary>
 		///		
@@ -49,17 +59,6 @@ namespace video
 			shared_ptr<OutputFormat> output_format
 		);
 
-	private:
-		shared_ptr<AVCodecContextWrapper> _encoder_ctx;
-		AVStreamWrapper _new_stream;
-		shared_ptr<OutputFormat> _output_format;
-
-		/// <summary>
-		///		读取包并写入封装
-		/// </summary>
-		void ReadAndSendPacketToOutputFormat();
-
-	public:
 		/// <summary>
 		///		送入帧进行编码，然后将包送给消费者。
 		/// </summary>
