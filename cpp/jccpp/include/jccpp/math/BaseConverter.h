@@ -39,4 +39,6 @@ namespace jc
 		/// <returns></returns>
 		static std::vector<uint8_t> To8421BCD(uint64_t num);
 	};
+
+	void TestBaseConverter();
 }

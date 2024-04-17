@@ -1,6 +1,8 @@
 #include "BaseConverter.h"
 #include<math.h>
 
+using namespace std;
+
 std::vector<uint8_t> jc::BaseConverter::ConvertBase(uint64_t num, uint8_t base)
 {
 	std::vector<uint8_t> result;
@@ -27,4 +29,19 @@ uint64_t jc::BaseConverter::ToNumber(std::vector<uint8_t> num, uint8_t base)
 std::vector<uint8_t> jc::BaseConverter::To8421BCD(uint64_t num)
 {
 	return ConvertBase(num, 10);
+}
+
+
+
+
+
+
+#include<algorithm>
+#include<iostream>
+
+void jc::TestBaseConverter()
+{
+	std::vector<uint8_t> num{ 1,0,0,9 };
+	std::reverse(num.begin(), num.end());
+	cout << jc::BaseConverter::ToNumber(num, 10) << endl;
 }
