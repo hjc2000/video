@@ -17,11 +17,10 @@ int main(void)
 	try
 	{
 		std::filesystem::current_path(Predefine_ResourceDir);
-		//test_SptsEncodeMux();
+		test_SptsEncodeMux();
 		//test_AVPacketPlayer();
 		//test_tsduck();
 		//test_libusb();
-		jc::TestBaseConverter();
 		return 0;
 	}
 	catch (jc::Exception &e)
