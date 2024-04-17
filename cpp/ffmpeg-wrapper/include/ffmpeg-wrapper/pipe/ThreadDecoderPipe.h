@@ -1,5 +1,6 @@
 #pragma once
 #include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
+#include<ffmpeg-wrapper/factory/DecoderPipeFactory.h>
 #include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
 #include<ffmpeg-wrapper/pipe/interface/IDecoderPipe.h>
 #include<jccpp/Exception.h>
@@ -10,6 +11,7 @@ namespace video
 {
 	/// <summary>
 	///		内部包装了一个线程地解码管道。
+	///		本类依赖 DecoderPipeFactory 来创建内部的解码管道。
 	/// </summary>
 	class ThreadDecoderPipe final :public IDecoderPipe
 	{
@@ -24,12 +26,6 @@ namespace video
 
 	public:
 		#pragma region 生命周期
-		/// <summary>
-		///		通过此构造函数，可以自定义解码器，仅仅使用本类的多线程功能。
-		/// </summary>
-		/// <param name="decoder_pipe"></param>
-		ThreadDecoderPipe(shared_ptr<IDecoderPipe> decoder_pipe);
-
 		/// <summary>
 		///		将根据 stream 的信息构造一个解码管道。
 		/// </summary>

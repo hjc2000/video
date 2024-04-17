@@ -1,5 +1,5 @@
 #include"DecoderPipeFactory.h"
-#include<ffmpeg-wrapper/pipe/ThreadDecoderPipe.h>
+#include<DecoderPipe.h>
 
 using namespace std;
 using namespace video;
@@ -19,5 +19,5 @@ shared_ptr<DecoderPipeFactory> DecoderPipeFactory::_custom_factory = nullptr;
 
 shared_ptr<IDecoderPipe> DecoderPipeFactory::CreateDecoderPipe(AVStreamInfoCollection const &infos)
 {
-	return shared_ptr<IDecoderPipe>{new ThreadDecoderPipe{ infos }};
+	return shared_ptr<IDecoderPipe>{new DecoderPipe{ infos }};
 }

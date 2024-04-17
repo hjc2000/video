@@ -5,15 +5,9 @@
 using namespace std;
 using namespace video;
 
-video::ThreadDecoderPipe::ThreadDecoderPipe(shared_ptr<IDecoderPipe> decoder_pipe)
-{
-	_decoder_pipe = decoder_pipe;
-	InitDecodeThread();
-}
-
 video::ThreadDecoderPipe::ThreadDecoderPipe(AVStreamInfoCollection stream)
 {
-	_decoder_pipe = shared_ptr<DecoderPipe>{ new DecoderPipe{stream} };
+	_decoder_pipe = DecoderPipeFactory::Instance().CreateDecoderPipe(stream);
 	InitDecodeThread();
 }
 
