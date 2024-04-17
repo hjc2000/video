@@ -18,6 +18,14 @@ namespace video
 		static shared_ptr<EncoderPipeFactory> _custom_factory;
 		#pragma endregion
 
+		/// <summary>
+		///		构造视频编码管道
+		/// </summary>
+		/// <param name="codec_name"></param>
+		/// <param name="in_stream_infos"></param>
+		/// <param name="output_format"></param>
+		/// <param name="out_bit_rate_in_bps"></param>
+		/// <returns></returns>
 		virtual shared_ptr<IFrameConsumer> CreateEncoderPipe(
 			std::string codec_name,
 			IVideoStreamInfoCollection &in_stream_infos,
@@ -25,6 +33,13 @@ namespace video
 			int64_t out_bit_rate_in_bps = -1
 		);
 
+		/// <summary>
+		///		构造音频编码管道
+		/// </summary>
+		/// <param name="codec_name"></param>
+		/// <param name="in_stream_infos"></param>
+		/// <param name="output_format"></param>
+		/// <returns></returns>
 		virtual shared_ptr<IFrameConsumer> CreateEncoderPipe(
 			std::string codec_name,
 			IAudioStreamInfoCollection &in_stream_infos,
