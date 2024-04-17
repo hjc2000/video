@@ -1,7 +1,9 @@
 ﻿#include<QtCore/QCoreApplication>
 #include<QtCore/QDebug>
+#include<algorithm>
 #include<ffmpeg-wrapper/mux/SptsEncodeMux.h>
 #include<filesystem>
+#include<jccpp/BaseConverter.h>
 #include<sdl2-wrapper/AVPacketPlayer.h>
 #include<test_libusb.h>
 #include<test_tsduck.h>
@@ -13,10 +15,13 @@ int main(void)
 	try
 	{
 		std::filesystem::current_path(Predefine_ResourceDir);
-		test_SptsEncodeMux();
+		//test_SptsEncodeMux();
 		//test_AVPacketPlayer();
 		//test_tsduck();
 		//test_libusb();
+		std::vector<uint8_t> num{ 1,0,0 };
+		std::reverse(num.begin(), num.end());
+		cout << jc::BaseConverter::ToNumber(num, 10) << endl;
 		return 0;
 	}
 	catch (jc::Exception &e)

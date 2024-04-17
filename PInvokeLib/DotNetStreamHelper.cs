@@ -66,9 +66,6 @@ public partial class DotNetStreamHelper
 	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "FreeDotNetStream")]
 	private static unsafe partial void FreeDotNetStream(nuint cpp_obj);
 
-	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "TestDotNetStream")]
-	public static unsafe partial void TestDotNetStream(nuint cpp_obj);
-
 	#region 将对 Stream 的操作函数包装成与供 C++ 调用的委托兼容的形式。
 	private byte CanRead()
 	{
