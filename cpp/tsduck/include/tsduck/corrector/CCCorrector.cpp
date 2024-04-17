@@ -6,13 +6,13 @@ void video::CCCorrector::CorrectCC(ts::TSPacket &packet)
 	if (_counter_map[pid] == nullptr)
 	{
 		// 此 PID 第一次送入包
-		_counter_map[pid] = shared_ptr<jc::Counter>{ new jc::Counter{15} };
+		_counter_map[pid] = shared_ptr<jc::Counter<uint8_t>>{ new jc::Counter<uint8_t>{15} };
 		_counter_map[pid]->SetCurrentValue(packet.getCC());
 		return;
 	}
 
 	// 不是第一次送入包
-	jc::Counter &counter = *_counter_map[pid];
+	jc::Counter<uint8_t> &counter = *_counter_map[pid];
 	if (packet.getDiscontinuityIndicator())
 	{
 		// 存在不连续指示

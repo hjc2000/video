@@ -21,7 +21,7 @@ namespace video
 		/// <summary>
 		///		键=PID，值=Counter。因为每个 PID 各自维护连续性计数，毫不相干。
 		/// </summary>
-		std::map<uint16_t, shared_ptr<jc::Counter>> _counter_map;
+		std::map<uint16_t, shared_ptr<jc::Counter<uint8_t>>> _counter_map;
 
 		/// <summary>
 		///		更正连续性计数。
