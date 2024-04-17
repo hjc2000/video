@@ -1,6 +1,6 @@
-﻿using FileStream fs = File.OpenRead("./re.ts");
+﻿using FileStream fs = File.OpenRead("74669624_nb2-1-30080.m4s");
 using BinaryReader binaryReader = new(fs);
-using FileStream outputTxt = File.Open("./hex.txt", FileMode.Create);
+using FileStream outputTxt = File.Open("hex.txt", FileMode.Create);
 using StreamWriter streamWriter = new(outputTxt);
 
 int startPos = 0;
