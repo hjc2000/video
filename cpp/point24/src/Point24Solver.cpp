@@ -81,3 +81,19 @@ double Point24Solver::CalculateExpression(std::string const &expr)
 
 	return result;
 }
+
+std::string Point24Solver::Solve(std::array<uint8_t, 4> const &nums)
+{
+	std::array<uint8_t, 4> copyed_nums = nums;
+	std::sort(copyed_nums.begin(), copyed_nums.end());
+
+	do
+	{
+		std::string expr = TryAllOperatorCombinations(copyed_nums);
+		if (expr != "")
+		{
+			return expr;
+		}
+	} while (std::next_permutation(copyed_nums.begin(), copyed_nums.end()));
+	return std::string("找不到解");
+}
