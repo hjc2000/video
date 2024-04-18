@@ -5,8 +5,6 @@ Option<string> start_position_option = new("-start", "从文件的哪里开始�
 Option<string> end_position_option = new("-end", "查看到文件的哪里");
 
 RootCommand root_command = new("将文件的字节用 16 进制数显示");
-
-#region 添加用来处理命令行参数的回调
 root_command.AddOption(file_info_option);
 root_command.AddOption(start_position_option);
 root_command.AddOption(end_position_option);
@@ -16,9 +14,6 @@ root_command.SetHandler(
 	start_position_option,
 	end_position_option
 );
-
-#endregion
-
 await root_command.InvokeAsync(args);
 
 static async Task HandleAsync(string file_path, string start, string end)
