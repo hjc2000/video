@@ -1,5 +1,6 @@
 #include"ThreadDecoderPipe.h"
 #include<DecoderPipe.h>
+#include<ffmpeg-wrapper/factory/DecoderPipeFactory.h>
 #include<iostream>
 
 using namespace std;

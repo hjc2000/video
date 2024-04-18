@@ -1,6 +1,5 @@
 #pragma once
 #include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
-#include<ffmpeg-wrapper/factory/DecoderPipeFactory.h>
 #include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
 #include<ffmpeg-wrapper/pipe/interface/IDecoderPipe.h>
 #include<jccpp/Exception.h>
