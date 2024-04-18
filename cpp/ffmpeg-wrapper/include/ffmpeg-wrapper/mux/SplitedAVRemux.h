@@ -1,4 +1,6 @@
 #pragma once
+#include<ffmpeg-wrapper/input-format/InputFormat.h>
+#include<ffmpeg-wrapper/output-format/OutputFormat.h>
 
 namespace video
 {
@@ -9,6 +11,10 @@ namespace video
 	class SplitedAVRemux
 	{
 	public:
-
+		SplitedAVRemux(
+			shared_ptr<InputFormat> input_video_format,
+			shared_ptr<InputFormat> input_audio_format,
+			shared_ptr<OutputFormat> out_format
+		);
 	};
 }
