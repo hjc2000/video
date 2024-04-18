@@ -1,5 +1,4 @@
 ﻿using JCRazor.mpegts_player;
-using PInvokeLib;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,7 +9,12 @@ public partial class Player : ITSStreamSource
 	public async Task<Stream?> GetTSStreamAsync(CancellationToken cancellationToken)
 	{
 		await Task.CompletedTask;
-		CppStream stream = CppStream.GetFileStream("");
-		return stream;
+		FileStream fs = File.Open(
+		   "D:/repos/video/cpp/test/资源/mux_out.ts",
+		   FileMode.Open,
+		   FileAccess.Read,
+		   FileShare.ReadWrite
+		);
+		return fs;
 	}
 }
