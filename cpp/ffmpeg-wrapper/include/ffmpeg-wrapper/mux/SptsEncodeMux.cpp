@@ -118,14 +118,27 @@ void test_SptsEncodeMux()
 		return nullptr;
 	};
 
+	// 想要输出的视频信息
+	VideoStreamInfoCollection output_video_stream_infos;
+	output_video_stream_infos._frame_rate = AVRational{ 30,1 };
+	output_video_stream_infos._width = 1920;
+	output_video_stream_infos._height = 1080;
+	output_video_stream_infos._pixel_format = AVPixelFormat::AV_PIX_FMT_YUV420P;
+
+	// 想要输出的音频信息
+	AudioStreamInfoCollection output_audio_stream_infos;
+	output_audio_stream_infos._ch_layout = AVChannelLayoutExtension::GetDefaultChannelLayout(2);
+	output_audio_stream_infos._sample_format = AVSampleFormat::AV_SAMPLE_FMT_FLTP;
+	output_audio_stream_infos._sample_rate = 48000;
+
 	shared_ptr<Stream> out_fs = FileStream::CreateNewAnyway("mux_out.ts");
 	shared_ptr<StreamOutputFormat> out_fmt_ctx{ new StreamOutputFormat{".ts",out_fs} };
 	shared_ptr<SptsEncodeMux> spts_encode_mux{ new SptsEncodeMux{
 		out_fmt_ctx,
-		joined_input_format_demux_decoder->GetVideoStreamInfos(),
+		output_video_stream_infos,
 		"hevc_amf",
-		joined_input_format_demux_decoder->GetVideoStreamInfos().Bitrate(),
-		joined_input_format_demux_decoder->GetAudioStreamInfos(),
+		-1,
+		output_audio_stream_infos,
 		"aac"
 	} };
 

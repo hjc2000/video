@@ -7,7 +7,7 @@ using namespace std;
 void video::JoinedInputFormatDemuxDecoder::InitializeVideoDecoderPipe()
 {
 	// 如果有视频流，初始化视频解码管道
-	AVStreamWrapper stream = _current_intput_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_VIDEO);
+	AVStreamWrapper stream = _current_input_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_VIDEO);
 	if (stream)
 	{
 		_video_stream_infos = stream;
@@ -33,7 +33,7 @@ void video::JoinedInputFormatDemuxDecoder::InitializeVideoDecoderPipe()
 void video::JoinedInputFormatDemuxDecoder::InitializeAudioDecoderPipe()
 {
 	// 如果有音频流，初始化音频解码管道
-	AVStreamWrapper stream = _current_intput_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_AUDIO);
+	AVStreamWrapper stream = _current_input_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_AUDIO);
 	if (stream)
 	{
 		_audio_stream_infos = stream;
@@ -58,12 +58,12 @@ void video::JoinedInputFormatDemuxDecoder::InitializeAudioDecoderPipe()
 
 void video::JoinedInputFormatDemuxDecoder::OpenInputIfNull()
 {
-	if (_current_intput_format == nullptr && _get_format_callback != nullptr)
+	if (_current_input_format == nullptr && _get_format_callback != nullptr)
 	{
-		_current_intput_format = _get_format_callback();
+		_current_input_format = _get_format_callback();
 	}
 
-	if (_current_intput_format == nullptr)
+	if (_current_input_format == nullptr)
 	{
 		return;
 	}
@@ -89,13 +89,13 @@ void video::JoinedInputFormatDemuxDecoder::Pump(shared_ptr<CancellationToken> ca
 	while (!cancel_pump->IsCancellationRequested())
 	{
 		OpenInputIfNull();
-		if (_current_intput_format == nullptr)
+		if (_current_input_format == nullptr)
 		{
 			_infinite_packet_pipe->FlushConsumer();
 			return;
 		}
 
-		shared_ptr<PacketPump> packet_pump{ new PacketPump{_current_intput_format} };
+		shared_ptr<PacketPump> packet_pump{ new PacketPump{_current_input_format} };
 		packet_pump->PacketConsumerList().Add(_infinite_packet_pipe);
 		packet_pump->_on_before_send_packet_to_consumer = [&](AVPacketWrapper *packet)
 		{
@@ -117,7 +117,7 @@ void video::JoinedInputFormatDemuxDecoder::Pump(shared_ptr<CancellationToken> ca
 			}
 		};
 		packet_pump->Pump(cancel_pump);
-		_current_intput_format = nullptr;
+		_current_input_format = nullptr;
 	}
 }
 
@@ -129,28 +129,4 @@ void video::JoinedInputFormatDemuxDecoder::AddVideoFrameConsumer(shared_ptr<IFra
 void video::JoinedInputFormatDemuxDecoder::AddAudioFrameConsumer(shared_ptr<IFrameConsumer> consumer)
 {
 	_audio_frame_consumer_list.Add(consumer);
-}
-
-AVStreamInfoCollection const &video::JoinedInputFormatDemuxDecoder::GetVideoStreamInfos()
-{
-	OpenInputIfNull();
-	if (_current_intput_format == nullptr)
-	{
-		// 尝试打开输入后 _current_intput_format 仍然为空
-		throw jc::Exception("当前没有视频流信息可读");
-	}
-
-	return _video_stream_infos;
-}
-
-AVStreamInfoCollection const &video::JoinedInputFormatDemuxDecoder::GetAudioStreamInfos()
-{
-	OpenInputIfNull();
-	if (_current_intput_format == nullptr)
-	{
-		// 尝试打开输入后 _current_intput_format 仍然为空
-		throw jc::Exception("当前没有音频流信息可读");
-	}
-
-	return _audio_stream_infos;
 }

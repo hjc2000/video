@@ -20,7 +20,7 @@ namespace video
 	class JoinedInputFormatDemuxDecoder :public IPump
 	{
 	private:
-		shared_ptr<InputFormat> _current_intput_format;
+		shared_ptr<InputFormat> _current_input_format;
 		AVStreamInfoCollection _video_stream_infos;
 		shared_ptr<IDecoderPipe> _video_decode_pipe;
 		int _source_video_stream_index = -1;
@@ -47,8 +47,5 @@ namespace video
 
 		void AddVideoFrameConsumer(shared_ptr<IFrameConsumer> consumer);
 		void AddAudioFrameConsumer(shared_ptr<IFrameConsumer> consumer);
-
-		AVStreamInfoCollection const &GetVideoStreamInfos();
-		AVStreamInfoCollection const &GetAudioStreamInfos();
 	};
 }
