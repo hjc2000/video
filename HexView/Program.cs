@@ -1,4 +1,5 @@
-﻿using System.CommandLine;
+﻿using JCNET;
+using System.CommandLine;
 
 Option<string> input_file_path_option = new("-i", "选择输入文件");
 Option<string?> output_file_path_option = new("-o", "要将结果输出到哪个文件。一般是指定一个 txt 文件。不指定则输出到控制台。");
@@ -26,7 +27,7 @@ static async Task HandleAsync(string input_file_path, string? output_file_path, 
 	using FileStream input_file = File.Open(input_file_path, FileMode.Open);
 	using BinaryReader binary_reader = new(input_file);
 
-	await using OutputPort port = new(output_file_path);
+	await using LogOutputPort port = new(output_file_path);
 	input_file.Seek(start_pos, SeekOrigin.Begin);
 	for (long i = 0; i < end_pos - start_pos; i++)
 	{
@@ -42,81 +43,6 @@ static async Task HandleAsync(string input_file_path, string? output_file_path, 
 		catch
 		{
 			break;
-		}
-	}
-}
-
-internal class OutputPort : IAsyncDisposable
-{
-	public OutputPort(string? output_file_path)
-	{
-		_output_file_path = output_file_path;
-		if (_output_file_path is not null)
-		{
-			_output_file = File.Open(_output_file_path, FileMode.Create);
-			_output_writer = new(_output_file);
-		}
-	}
-
-	private bool _disposed = false;
-	public async ValueTask DisposeAsync()
-	{
-		if (_disposed)
-		{
-			return;
-		}
-
-		_disposed = true;
-		GC.SuppressFinalize(this);
-
-		if (_output_writer is not null)
-		{
-			await _output_writer.DisposeAsync();
-		}
-
-		if (_output_file is not null)
-		{
-			await _output_file.DisposeAsync();
-		}
-	}
-
-	private string? _output_file_path;
-	private FileStream? _output_file = null;
-	private StreamWriter? _output_writer = null;
-
-	public void Write(string value)
-	{
-		if (_output_writer is not null)
-		{
-			_output_writer.Write(value);
-		}
-		else
-		{
-			Console.Write(value);
-		}
-	}
-
-	public void WriteLine(string value)
-	{
-		if (_output_writer is not null)
-		{
-			_output_writer.WriteLine(value);
-		}
-		else
-		{
-			Console.WriteLine(value);
-		}
-	}
-
-	public void WriteLine()
-	{
-		if (_output_writer is not null)
-		{
-			_output_writer.WriteLine();
-		}
-		else
-		{
-			Console.WriteLine();
 		}
 	}
 }
