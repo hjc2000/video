@@ -12,6 +12,7 @@ namespace video
 	/// </summary>
 	class SwrEncoderPipe :public IFrameConsumer
 	{
+	private:
 		shared_ptr<IFrameConsumer> _encoder_pipe;
 		shared_ptr<SwrPipe> _swr_pipe;
 
@@ -20,14 +21,14 @@ namespace video
 		///		
 		/// </summary>
 		/// <param name="codec_name">编码器名称。全部小写。</param>
-		/// <param name="desire_encode_out_stream_infos">
+		/// <param name="infos">
 		///		期望编码输出成什么样的音频流。如果输入的音频帧与期望不符会重采样。
 		///		输入帧的参数会变化也没关系，重采样器会重新构造。
 		/// </param>
 		/// <param name="output_format">编码后要将包写入的封装。</param>
 		SwrEncoderPipe(
 			std::string codec_name,
-			IAudioStreamInfoCollection &desire_encode_out_stream_infos,
+			IAudioStreamInfoCollection &infos,
 			shared_ptr<OutputFormat> output_format
 		);
 
