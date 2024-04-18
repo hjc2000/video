@@ -21,7 +21,8 @@ root_command.SetHandler(
 );
 await root_command.InvokeAsync(args);
 
-static async Task HandleAsync(string input_file_path, string? output_file_path, string? start, string? end)
+static async Task HandleAsync(string input_file_path, string? output_file_path,
+	string? start, string? end)
 {
 	long start_pos = long.Parse(start ?? "0");
 	long end_pos = long.Parse(end ?? "188");
