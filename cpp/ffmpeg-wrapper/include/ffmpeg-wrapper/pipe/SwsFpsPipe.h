@@ -15,7 +15,7 @@ namespace video
 		shared_ptr<FpsAdjustPipe> _fps_adjust_pipe;
 
 	public:
-		SwsFpsPipe(IVideoStreamInfoCollection &out_video_stream_infos);
+		SwsFpsPipe(IVideoStreamInfoCollection const &out_video_stream_infos);
 		List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override;
 		void SendFrame(AVFrameWrapper *frame) override;
 	};

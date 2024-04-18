@@ -34,7 +34,7 @@ void video::SwsPipe::change_sws()
 	} };
 }
 
-video::SwsPipe::SwsPipe(IVideoFrameInfoCollection &desire_out_video_frame_infos)
+video::SwsPipe::SwsPipe(IVideoFrameInfoCollection const &desire_out_video_frame_infos)
 {
 	_in_video_frame_infos = desire_out_video_frame_infos;
 	_desire_out_video_frame_infos = desire_out_video_frame_infos;

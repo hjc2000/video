@@ -89,7 +89,7 @@ namespace video
 		/// <returns></returns>
 		static shared_ptr<AVCodecContextWrapper> CreateEncoder(
 			const char *encoder_name,
-			IAudioStreamInfoCollection &infos,
+			IAudioStreamInfoCollection const &infos,
 			bool set_global_header,
 			bool auto_open = true
 		);
@@ -107,7 +107,7 @@ namespace video
 		*/
 		static shared_ptr<AVCodecContextWrapper> CreateEncoder(
 			const char *encoder_name,
-			IVideoStreamInfoCollection &infos,
+			IVideoStreamInfoCollection const &infos,
 			bool set_global_header,
 			bool auto_open = true
 		);

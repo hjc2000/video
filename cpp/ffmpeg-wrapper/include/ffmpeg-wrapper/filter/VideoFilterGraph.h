@@ -20,7 +20,7 @@ namespace video
 		void init_buffer_sink_filter();
 
 	public:
-		VideoFilterGraph(IVideoStreamInfoCollection &infos);
+		VideoFilterGraph(IVideoStreamInfoCollection const &infos);
 
 		AVFilterGraph *&WrappedObj() override
 		{

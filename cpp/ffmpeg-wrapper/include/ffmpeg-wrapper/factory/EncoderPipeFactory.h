@@ -33,7 +33,7 @@ namespace video
 		/// <returns></returns>
 		virtual shared_ptr<IFrameConsumer> CreateEncoderPipe(
 			std::string codec_name,
-			IVideoStreamInfoCollection &in_stream_infos,
+			IVideoStreamInfoCollection const &in_stream_infos,
 			shared_ptr<OutputFormat> output_format,
 			int64_t out_bit_rate_in_bps = -1
 		);
@@ -47,7 +47,7 @@ namespace video
 		/// <returns></returns>
 		virtual shared_ptr<IFrameConsumer> CreateEncoderPipe(
 			std::string codec_name,
-			IAudioStreamInfoCollection &in_stream_infos,
+			IAudioStreamInfoCollection const &in_stream_infos,
 			shared_ptr<OutputFormat> output_format
 		);
 	};

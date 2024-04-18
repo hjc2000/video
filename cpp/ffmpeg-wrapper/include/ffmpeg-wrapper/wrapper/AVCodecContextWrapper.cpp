@@ -54,7 +54,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateDecoder(AVStreamI
 
 shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 	const char *encoder_name,
-	IAudioStreamInfoCollection &infos,
+	IAudioStreamInfoCollection const &infos,
 	bool set_global_header,
 	bool auto_open
 )
@@ -89,7 +89,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 
 shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 	const char *encoder_name,
-	IVideoStreamInfoCollection &infos,
+	IVideoStreamInfoCollection const &infos,
 	bool set_global_header,
 	bool auto_open
 )

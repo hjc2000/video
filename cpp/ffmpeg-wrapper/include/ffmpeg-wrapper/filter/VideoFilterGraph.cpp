@@ -3,7 +3,7 @@
 using namespace video;
 using namespace std;
 
-VideoFilterGraph::VideoFilterGraph(IVideoStreamInfoCollection &infos) :
+VideoFilterGraph::VideoFilterGraph(IVideoStreamInfoCollection const &infos) :
 	_input_video_stream_infos(infos)
 {
 	_wrapped_obj = avfilter_graph_alloc();

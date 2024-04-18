@@ -21,7 +21,7 @@ namespace video
 		void change_sws();
 
 	public:
-		SwsPipe(IVideoFrameInfoCollection &desire_out_video_frame_infos);
+		SwsPipe(IVideoFrameInfoCollection const &desire_out_video_frame_infos);
 
 		List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override
 		{
