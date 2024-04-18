@@ -5,7 +5,6 @@ using namespace video;
 
 video::SwsFpsEncoderPipe::SwsFpsEncoderPipe(
 	shared_ptr<OutputFormat> out_format,
-	// 视频相关参数
 	IVideoStreamInfoCollection const &video_stream_infos,
 	std::string video_codec_name,
 	int64_t video_out_bitrate_in_bps
@@ -19,4 +18,9 @@ video::SwsFpsEncoderPipe::SwsFpsEncoderPipe(
 	);
 	_sws_fps_pipe = shared_ptr<SwsFpsPipe>{ new SwsFpsPipe{video_stream_infos} };
 	_sws_fps_pipe->FrameConsumerList().Add(_video_encode_pipe);
+}
+
+void video::SwsFpsEncoderPipe::SendFrame(AVFrameWrapper *frame)
+{
+	_sws_fps_pipe->SendFrame(frame);
 }

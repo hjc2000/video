@@ -31,7 +31,7 @@ void EncoderPipe::ReadAndSendPacketToOutputFormat()
 		default:
 			{
 				// 未知错误
-				cout << CODE_POS_STR << "read_packet 返回了未知的错误代码" << endl;
+				cout << CODE_POS_STR << "ReadPacket 返回了未知的错误代码" << endl;
 				throw jc::Exception();
 			}
 		}

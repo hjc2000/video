@@ -4,7 +4,7 @@
 
 namespace video
 {
-	class SwsFpsEncoderPipe
+	class SwsFpsEncoderPipe :public IFrameConsumer
 	{
 		shared_ptr<SwsFpsPipe> _sws_fps_pipe;
 		shared_ptr<IFrameConsumer> _video_encode_pipe;
@@ -12,10 +12,12 @@ namespace video
 	public:
 		SwsFpsEncoderPipe(
 			shared_ptr<OutputFormat> out_format,
-			// 视频相关参数
 			IVideoStreamInfoCollection const &video_stream_infos,
 			std::string video_codec_name,
 			int64_t video_out_bitrate_in_bps
 		);
+
+		// 通过 IFrameConsumer 继承
+		void SendFrame(AVFrameWrapper *frame) override;
 	};
 }
