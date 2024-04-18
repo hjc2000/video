@@ -6,6 +6,9 @@ void IPipePacketSource::SendPacketToEachConsumer(AVPacketWrapper *packet)
 {
 	for (shared_ptr<IPacketConsumer> &consumer : PacketConsumerList())
 	{
-		consumer->SendPacket(packet);
+		if (consumer)
+		{
+			consumer->SendPacket(packet);
+		}
 	}
 }

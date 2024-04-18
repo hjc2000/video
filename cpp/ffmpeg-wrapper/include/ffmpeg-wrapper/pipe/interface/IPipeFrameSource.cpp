@@ -6,6 +6,9 @@ void IPipeFrameSource::SendFrameToEachConsumer(AVFrameWrapper *frame)
 {
 	for (shared_ptr<IFrameConsumer> &consumer : FrameConsumerList())
 	{
-		consumer->SendFrame(frame);
+		if (consumer)
+		{
+			consumer->SendFrame(frame);
+		}
 	}
 }
