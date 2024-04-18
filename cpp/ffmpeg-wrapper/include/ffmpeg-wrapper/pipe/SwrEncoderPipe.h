@@ -1,6 +1,6 @@
 #pragma once
 #include<ffmpeg-wrapper/base_include.h>
-#include<ffmpeg-wrapper/pipe/EncoderPipe.h>
+#include<ffmpeg-wrapper/output-format/OutputFormat.h>
 #include<ffmpeg-wrapper/pipe/SwrPipe.h>
 #include<string>
 
