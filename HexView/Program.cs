@@ -7,6 +7,7 @@ Option<string?> end_position_option = new("-end", "查看到文件的哪里");
 
 RootCommand root_command = new("将文件的字节用 16 进制数显示");
 root_command.AddOption(input_file_path_option);
+root_command.AddOption(output_file_path_option);
 root_command.AddOption(start_position_option);
 root_command.AddOption(end_position_option);
 root_command.SetHandler(
@@ -21,7 +22,7 @@ await root_command.InvokeAsync(args);
 static async Task HandleAsync(string input_file_path, string? output_file_path, string? start, string? end)
 {
 	long start_pos = long.Parse(start ?? "0");
-	long end_pos = long.Parse(end ?? "100");
+	long end_pos = long.Parse(end ?? "188");
 	using FileStream input_file = File.Open(input_file_path, FileMode.Open);
 	using BinaryReader binary_reader = new(input_file);
 
