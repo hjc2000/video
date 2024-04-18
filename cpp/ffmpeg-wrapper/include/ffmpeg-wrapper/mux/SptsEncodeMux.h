@@ -3,7 +3,7 @@
 #include<ffmpeg-wrapper/info-collection/VideoStreamInfoCollection.h>
 #include<ffmpeg-wrapper/output-format/OutputFormat.h>
 #include<ffmpeg-wrapper/pipe/SwrEncoderPipe.h>
-#include<ffmpeg-wrapper/pipe/SwsFpsPipe.h>
+#include<ffmpeg-wrapper/pipe/SwsFpsEncoderPipe.h>
 
 namespace video
 {
@@ -18,8 +18,7 @@ namespace video
 		shared_ptr<OutputFormat> _out_format;
 
 		VideoStreamInfoCollection _video_stream_infos;
-		shared_ptr<SwsFpsPipe> _sws_fps_pipe;
-		shared_ptr<EncoderPipe> _video_encode_pipe;
+		shared_ptr<SwsFpsEncoderPipe> _video_encoder_pipe;
 		std::string _video_codec_name;
 		int64_t _video_out_bitrate_in_bps = -1;
 

@@ -17,7 +17,6 @@ namespace video
 			int64_t video_out_bitrate_in_bps
 		);
 
-		// 通过 IFrameConsumer 继承
 		void SendFrame(AVFrameWrapper *frame) override;
 	};
 }

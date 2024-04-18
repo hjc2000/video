@@ -38,23 +38,20 @@ video::SptsEncodeMux::SptsEncodeMux(
 
 void video::SptsEncodeMux::InitVideoEncodePipe()
 {
-	_video_encode_pipe = shared_ptr<EncoderPipe>{ new EncoderPipe{
-		_video_codec_name,
-		_video_stream_infos,
+	_video_encoder_pipe = shared_ptr<SwsFpsEncoderPipe>{ new SwsFpsEncoderPipe{
 		_out_format,
-		_video_out_bitrate_in_bps
+		_video_stream_infos,
+		_video_codec_name,
+		_video_out_bitrate_in_bps,
 	} };
-
-	_sws_fps_pipe = shared_ptr<SwsFpsPipe>{ new SwsFpsPipe{_video_stream_infos} };
-	_sws_fps_pipe->FrameConsumerList().Add(_video_encode_pipe);
 }
 
 void video::SptsEncodeMux::InitAudioEncodePipe()
 {
 	_audio_encode_pipe = shared_ptr<SwrEncoderPipe>{ new SwrEncoderPipe{
-			_audio_codec_name.c_str(),
-			_audio_stream_infos,
-			_out_format,
+		_audio_codec_name,
+		_audio_stream_infos,
+		_out_format,
 	} };
 }
 
@@ -71,7 +68,7 @@ void video::SptsEncodeMux::WriteHeader()
 
 shared_ptr<IFrameConsumer> video::SptsEncodeMux::VideoEncodePipe()
 {
-	return _sws_fps_pipe;
+	return _video_encoder_pipe;
 }
 
 shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
