@@ -3,6 +3,18 @@
 using namespace std;
 using namespace video;
 
+void video::BestStreamDemuxDecoder::InitializeVideoDecoderPipe()
+{
+}
+
+void video::BestStreamDemuxDecoder::InitializeAudioDecoderPipe()
+{
+}
+
+video::BestStreamDemuxDecoder::BestStreamDemuxDecoder(shared_ptr<InputFormat> input_format)
+{
+}
+
 void video::BestStreamDemuxDecoder::AddVideoFrameConsumer(shared_ptr<IFrameConsumer> consumer)
 {
 }
