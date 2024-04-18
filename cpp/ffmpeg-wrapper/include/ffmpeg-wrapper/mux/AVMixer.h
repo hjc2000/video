@@ -12,6 +12,10 @@ namespace video
 	/// </summary>
 	class AVMixer
 	{
+		shared_ptr<InputFormat> _input_video_format;
+		shared_ptr<InputFormat> _input_audio_format;
+		shared_ptr<OutputFormat> _out_format;
+
 	public:
 		AVMixer(
 			shared_ptr<InputFormat> input_video_format,
