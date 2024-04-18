@@ -13,9 +13,4 @@
 		<ProjectReference Include="..\PInvokeLib\PInvokeLib.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Update="ts1.ts">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
 </Project>
