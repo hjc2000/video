@@ -12,7 +12,7 @@ namespace video
 	/// </summary>
 	class SwrEncoderPipe :public IFrameConsumer
 	{
-		shared_ptr<EncoderPipe> _encoder_pipe;
+		shared_ptr<IFrameConsumer> _encoder_pipe;
 		shared_ptr<SwrPipe> _swr_pipe;
 
 	public:

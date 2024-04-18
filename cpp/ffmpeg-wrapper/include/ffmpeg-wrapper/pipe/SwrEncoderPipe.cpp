@@ -1,5 +1,6 @@
 #include "ffmpeg-wrapper/pipe/SwrEncoderPipe.h"
 #include<ffmpeg-wrapper/AVSampleFormatExtention.h>
+#include<ffmpeg-wrapper/factory/EncoderPipeFactory.h>
 
 void video::SwrEncoderPipe::SendFrame(AVFrameWrapper *frame)
 {
@@ -17,14 +18,10 @@ video::SwrEncoderPipe::SwrEncoderPipe(
 		AVSampleFormatExtention::ParseRequiredSampleCount(codec_name)
 	};
 	_swr_pipe = shared_ptr<SwrPipe>{ new SwrPipe{swr_out_frame_infos} };
-
-	_encoder_pipe = shared_ptr<EncoderPipe>{
-		new EncoderPipe{
-			codec_name,
-			desire_encode_out_stream_infos,
-			output_format
-		}
-	};
-
+	_encoder_pipe = EncoderPipeFactory::Instance().CreateEncoderPipe(
+		codec_name,
+		desire_encode_out_stream_infos,
+		output_format
+	);
 	_swr_pipe->FrameConsumerList().Add(_encoder_pipe);
 }

@@ -6,6 +6,11 @@
 
 namespace video
 {
+	/// <summary>
+	///		编码管道工厂。
+	///		编码管道应该自己连接着输出格式，在构造函数中就要求传入输出格式，初始化后应该
+	///		自动在输出格式中创建新的流，输入帧，编码后自动将包写入输出格式。
+	/// </summary>
 	class EncoderPipeFactory
 	{
 	public:
