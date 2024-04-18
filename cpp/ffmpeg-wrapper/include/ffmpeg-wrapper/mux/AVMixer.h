@@ -16,6 +16,17 @@ namespace video
 		shared_ptr<InputFormat> _input_audio_format;
 		shared_ptr<OutputFormat> _out_format;
 
+		/* 音视频的起始时间戳可能不对齐，需要都调整到 0。在收到第一个包的时候就要将时间戳记录下来，
+		* 之后的每个包都要减去记录的时间戳。
+		*
+		* 包的时间戳有 2 个，即 pts 和 dts。要选择这两个中的最小值作为偏移量，如果选择最大值作为
+		* 偏移量，会导致其中一个时间戳为负数。
+		*/
+		int64_t _video_time_stamp_offset = 0;
+		int64_t _audio_time_stamp_offset = 0;
+		bool _is_first_video_packet = true;
+		bool _is_first_audio_packet = true;
+
 	public:
 		AVMixer(
 			shared_ptr<InputFormat> input_video_format,
