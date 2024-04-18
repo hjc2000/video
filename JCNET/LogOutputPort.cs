@@ -5,6 +5,10 @@
 /// </summary>
 public class LogOutputPort : IAsyncDisposable
 {
+	/// <summary>
+	///		传入 null 则使用控制台作为输出，否则使用文件作为输出。
+	/// </summary>
+	/// <param name="output_file_path"></param>
 	public LogOutputPort(string? output_file_path)
 	{
 		_output_file_path = output_file_path;
