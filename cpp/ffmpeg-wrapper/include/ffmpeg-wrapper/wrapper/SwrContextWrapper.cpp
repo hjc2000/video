@@ -67,13 +67,18 @@ void video::SwrContextWrapper::SendFrame(AVFrameWrapper *input_frame)
 		return;
 	}
 
+	_in_pts_when_send_frame = ConvertTimeStamp(
+		input_frame->pts(),
+		input_frame->TimeBase(),
+		AVRational{ 1,90000 }
+	);
+
 	// 非冲洗模式
 	if (input_frame->TimeBase() != _in_stream_infos.TimeBase())
 	{
 		input_frame->ChangeTimeBase(_in_stream_infos.TimeBase());
 	}
 
-	_in_pts_when_send_frame = input_frame->pts();
 	int ret = convert(nullptr, 0, (*input_frame)->extended_data, input_frame->SampleCount());
 	if (ret < 0)
 	{
@@ -104,7 +109,7 @@ int video::SwrContextWrapper::ReadFrame(AVFrameWrapper &output_frame)
 	*
 	* 但是，in_pts 是输入侧的时间戳，我们需要转换为在输出侧的时间戳，然后赋值给 output_frame。
 	*/
-	int64_t delay = get_delay(_in_stream_infos.TimeBase().den / _in_stream_infos.TimeBase().num);
+	int64_t delay = get_delay(90000);
 	if (ret == (int)ErrorCode::eof)
 	{
 		/* 不清楚冲洗完后重采样器内会不会仍然延迟不为 0，所以冲洗后，并且返回 eof，此时表示重采样器空了。
@@ -113,10 +118,13 @@ int video::SwrContextWrapper::ReadFrame(AVFrameWrapper &output_frame)
 		delay = 0;
 	}
 
-	int64_t in_pts = _in_pts_when_send_frame - delay;
-	output_frame.set_pts(in_pts);
-	output_frame.SetTimeBase(_in_stream_infos.TimeBase());
-	output_frame.ChangeTimeBase(_out_frame_infos.TimeBase());
+	int64_t out_pts = ConvertTimeStamp(
+		_in_pts_when_send_frame - delay,
+		AVRational{ 1,90000 },
+		_out_frame_infos.TimeBase()
+	);
+	output_frame.set_pts(out_pts);
+	output_frame.SetTimeBase(_out_frame_infos.TimeBase());
 	return ret;
 }
 
