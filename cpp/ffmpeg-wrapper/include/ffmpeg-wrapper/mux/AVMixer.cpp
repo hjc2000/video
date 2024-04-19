@@ -11,6 +11,7 @@ void video::AVMixer::CreateNewVideoStream()
 	AVStreamWrapper new_stream = _out_format->CreateNewStream();
 	new_stream.SetCodecParams(stream.CodecParams());
 	new_stream.SetIndex(0);
+	new_stream.SetTimeBase(AVRational{ 1,90000 });
 }
 
 void video::AVMixer::CreateNewAudioStream()
@@ -21,15 +22,11 @@ void video::AVMixer::CreateNewAudioStream()
 	AVStreamWrapper new_stream = _out_format->CreateNewStream();
 	new_stream.SetCodecParams(stream.CodecParams());
 	new_stream.SetIndex(1);
+	new_stream.SetTimeBase(AVRational{ 1,90000 });
 }
 
 bool video::AVMixer::ReadVideoPacketOnce(shared_ptr<CancellationToken> cancel_pump)
 {
-	if (_video_stream_end)
-	{
-		return false;
-	}
-
 	while (!cancel_pump->IsCancellationRequested())
 	{
 		int result = _input_video_format->ReadPacket(_temp_packet);
@@ -43,7 +40,8 @@ bool video::AVMixer::ReadVideoPacketOnce(shared_ptr<CancellationToken> cancel_pu
 				}
 
 				_temp_packet.SetStreamIndex(0);
-				_video_time = _temp_packet.pts() * 1000 * _temp_packet.TimeBase();
+				_temp_packet.ChangeTimeBase(AVRational{ 1,90000 });
+				_video_time = _temp_packet.dts();
 				_out_format->SendPacket(&_temp_packet);
 				if (_video_time < _audio_time)
 				{
@@ -54,7 +52,6 @@ bool video::AVMixer::ReadVideoPacketOnce(shared_ptr<CancellationToken> cancel_pu
 			}
 		default:
 			{
-				_video_stream_end = true;
 				return false;
 			}
 		}
@@ -65,11 +62,6 @@ bool video::AVMixer::ReadVideoPacketOnce(shared_ptr<CancellationToken> cancel_pu
 
 bool video::AVMixer::ReadAudioPacketOnce(shared_ptr<CancellationToken> cancel_pump)
 {
-	if (_audio_stream_end)
-	{
-		return false;
-	}
-
 	while (!cancel_pump->IsCancellationRequested())
 	{
 		int result = _input_audio_format->ReadPacket(_temp_packet);
@@ -83,7 +75,8 @@ bool video::AVMixer::ReadAudioPacketOnce(shared_ptr<CancellationToken> cancel_pu
 				}
 
 				_temp_packet.SetStreamIndex(1);
-				_audio_time = _temp_packet.pts() * 1000 * _temp_packet.TimeBase();
+				_temp_packet.ChangeTimeBase(AVRational{ 1,90000 });
+				_audio_time = _temp_packet.dts();
 				_out_format->SendPacket(&_temp_packet);
 				if (_audio_time < _video_time)
 				{
@@ -94,7 +87,6 @@ bool video::AVMixer::ReadAudioPacketOnce(shared_ptr<CancellationToken> cancel_pu
 			}
 		default:
 			{
-				_audio_stream_end = true;
 				return false;
 			}
 		}
@@ -140,7 +132,7 @@ void video::TestAVMixer()
 {
 	shared_ptr<InputFormat> input_video_format{ new InputFormat{"渡尘.mp4"} };
 	shared_ptr<InputFormat> input_audio_format{ new InputFormat{"idol.mp4"} };
-	shared_ptr<FileOutputFormat> output_format{ new FileOutputFormat{"out.mp4"} };
+	shared_ptr<FileOutputFormat> output_format{ new FileOutputFormat{"out.ts"} };
 	AVMixer mix{ input_video_format,input_audio_format,output_format };
 	CancellationTokenSource cancel_pump_source;
 	mix.Pump(cancel_pump_source.Token());

@@ -21,8 +21,6 @@ namespace video
 		AVPacketWrapper _temp_packet;
 		int _src_video_stream_index = 0;
 		int _src_audio_stream_index = 0;
-		bool _video_stream_end = false;
-		bool _audio_stream_end = false;
 		int64_t _audio_time = 0;
 		int64_t _video_time = 0;
 
