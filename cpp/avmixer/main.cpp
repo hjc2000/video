@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 		app.add_option(
 			"--output_file_path",
 			output_file_path,
-			"输出文件的路径"
+			"输出文件的路径。输出文件推荐使用 ts，除非你能确保音频流和视频流的持续时间相同且起始时间相同。"
 		)
 			->required();
 
