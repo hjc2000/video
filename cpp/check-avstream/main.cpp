@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 			}
 			else
 			{
-				cout << "true 含有视频流" << endl;
+				cout << "true" << endl;
 			}
 
 			return 0;
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 			}
 			else
 			{
-				cout << "true 含有音频流" << endl;
+				cout << "true" << endl;
 			}
 
 			return 0;
