@@ -7,6 +7,12 @@ void video::AVMixer::CreateNewVideoStream()
 {
 	_input_video_format->DumpFormat();
 	AVStreamWrapper stream = _input_video_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_VIDEO);
+	if (!stream)
+	{
+		cout << "没有视频流" << endl;
+		throw jc::Exception();
+	}
+
 	_src_video_stream_index = stream.Index();
 	AVStreamWrapper new_stream = _out_format->CreateNewStream();
 	new_stream.SetCodecParams(stream.CodecParams());
@@ -18,6 +24,12 @@ void video::AVMixer::CreateNewAudioStream()
 {
 	_input_audio_format->DumpFormat();
 	AVStreamWrapper stream = _input_audio_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_AUDIO);
+	if (!stream)
+	{
+		cout << "没有音频流" << endl;
+		throw jc::Exception();
+	}
+
 	_src_audio_stream_index = stream.Index();
 	AVStreamWrapper new_stream = _out_format->CreateNewStream();
 	new_stream.SetCodecParams(stream.CodecParams());
