@@ -39,7 +39,7 @@ AVCodecParameters &AVStreamWrapper::CodecParams() const
 
 void video::AVStreamWrapper::SetCodecParams(AVCodecParameters const &params)
 {
-	*_wrapped_obj->codecpar = params;
+	avcodec_parameters_copy(_wrapped_obj->codecpar, &params);
 }
 
 int video::AVStreamWrapper::SetCodecParams(shared_ptr<AVCodecContextWrapper> codec_ctx)

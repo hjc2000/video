@@ -1,6 +1,7 @@
 ﻿#include<QtCore/QCoreApplication>
 #include<QtCore/QDebug>
 #include<algorithm>
+#include<ffmpeg-wrapper/mux/AVMixer.h>
 #include<ffmpeg-wrapper/mux/SptsEncodeMux.h>
 #include<filesystem>
 #include<jccpp/math/BaseConverter.h>
@@ -17,7 +18,8 @@ int main(void)
 	try
 	{
 		std::filesystem::current_path(Predefine_ResourceDir);
-		test_SptsEncodeMux();
+		//test_SptsEncodeMux();
+		TestAVMixer();
 		//test_AVPacketPlayer();
 		//test_tsduck();
 		//test_libusb();

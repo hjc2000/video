@@ -18,13 +18,18 @@ namespace video
 		shared_ptr<InputFormat> _input_video_format;
 		shared_ptr<InputFormat> _input_audio_format;
 		shared_ptr<OutputFormat> _out_format;
-		shared_ptr<InfinitePacketPipe> _infinite_packet_pipe{ new InfinitePacketPipe{} };
 		AVPacketWrapper _temp_packet;
+		int _src_video_stream_index = 0;
+		int _src_audio_stream_index = 0;
+		bool _video_stream_end = false;
+		bool _audio_stream_end = false;
+		int64_t _audio_time = 0;
+		int64_t _video_time = 0;
 
 		void CreateNewVideoStream();
 		void CreateNewAudioStream();
-		bool ReadVideoPacketOnce();
-		bool ReadAudioPacketOnce();
+		bool ReadVideoPacketOnce(shared_ptr<CancellationToken> cancel_pump);
+		bool ReadAudioPacketOnce(shared_ptr<CancellationToken> cancel_pump);
 
 	public:
 		AVMixer(
@@ -35,4 +40,6 @@ namespace video
 
 		void Pump(shared_ptr<CancellationToken> cancel_pump) override;
 	};
+
+	void TestAVMixer();
 }

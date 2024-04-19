@@ -5,8 +5,11 @@
 #include<ffmpeg-wrapper/wrapper/AVDictionaryWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVPacketWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
+#include<iostream>
+#include<string>
 
 using namespace video;
+using namespace std;
 
 video::InputFormat::InputFormat(std::string url)
 {
