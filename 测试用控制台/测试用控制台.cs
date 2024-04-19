@@ -19,7 +19,8 @@
 using System.Management.Automation;
 
 PowerShell pwsh = PowerShell.Create();
-PSDataCollection<PSObject> results = await pwsh.AddScript("Get-Location").InvokeAsync();
+PSDataCollection<PSObject> results = await pwsh.AddScript("Get-Location")
+	.InvokeAsync();
 if (pwsh.Streams.Error.Count > 0)
 {
 	Console.WriteLine("出错了");
@@ -32,9 +33,6 @@ else
 {
 	foreach (PSObject result in results)
 	{
-		foreach (PSPropertyInfo property in result.Properties)
-		{
-			Console.WriteLine($"{property.Name}: {property.Value}");
-		}
+		Console.WriteLine(result.ToString());
 	}
 }
