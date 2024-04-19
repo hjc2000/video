@@ -8,7 +8,7 @@ void video::JoinedInputFormatDemuxDecoder::InitializeVideoDecoderPipe()
 {
 	// 如果有视频流，初始化视频解码管道
 	AVStreamWrapper stream = _current_input_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_VIDEO);
-	if (stream)
+	if (!stream.IsNull())
 	{
 		_video_stream_infos = stream;
 		_source_video_stream_index = stream.Index();
@@ -34,7 +34,7 @@ void video::JoinedInputFormatDemuxDecoder::InitializeAudioDecoderPipe()
 {
 	// 如果有音频流，初始化音频解码管道
 	AVStreamWrapper stream = _current_input_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_AUDIO);
-	if (stream)
+	if (!stream.IsNull())
 	{
 		_audio_stream_infos = stream;
 		_source_audio_stream_index = stream.Index();

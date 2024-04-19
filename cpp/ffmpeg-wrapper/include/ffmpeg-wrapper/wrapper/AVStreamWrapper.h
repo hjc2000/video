@@ -41,6 +41,7 @@ namespace video
 		/// </summary>
 		/// <returns></returns>
 		AVCodecParameters &CodecParams() const;
+
 		/// <summary>
 		///		设置本流的编解码器参数。
 		/// </summary>

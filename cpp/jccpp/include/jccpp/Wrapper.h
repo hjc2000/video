@@ -12,6 +12,7 @@ class Wrapper
 {
 	Wrapper(Wrapper const &ref) = delete;
 	void operator=(Wrapper const &ref) = delete;
+	operator bool() = delete;
 
 public:
 	Wrapper() = default;
@@ -25,6 +26,15 @@ public:
 	/// <returns></returns>
 	virtual T *&WrappedObj() = 0;
 	virtual T *WrappedObj() const = 0;
+
+	/// <summary>
+	///		如果被包装对象是空指针，则返回 true。
+	/// </summary>
+	/// <returns></returns>
+	bool IsNull() const
+	{
+		return WrappedObj() == nullptr;
+	}
 
 	/// <summary>
 	///		访问本类中储存的被包装类型对象的指针
@@ -50,14 +60,6 @@ public:
 	operator T **()
 	{
 		return &WrappedObj();
-	}
-
-	/// <summary>
-	///		本类中储存的被包装类型对象的指针是否是空指针
-	/// </summary>
-	operator bool() const
-	{
-		return WrappedObj();
 	}
 
 	bool operator==(Wrapper<T> const &another) const

@@ -4,6 +4,7 @@
 
 using namespace video;
 using namespace jc;
+using namespace std;
 
 int main(int argc, char **argv)
 {
@@ -33,7 +34,10 @@ int main(int argc, char **argv)
 		{
 			if (option_video->count() + option_audio->count() != 1)
 			{
-				throw CLI::ParseError("必须且只能指定一个 --video 或 --audio 选项。", CLI::ExitCodes::ExtrasError);
+				throw CLI::ParseError(
+					"必须且只能指定一个 --video 或 --audio 选项。",
+					CLI::ExitCodes::ExtrasError
+				);
 			}
 		});
 
@@ -44,13 +48,13 @@ int main(int argc, char **argv)
 		if (option_video->count())
 		{
 			AVStreamWrapper stream = input_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_VIDEO);
-			if (stream)
+			if (stream.IsNull())
 			{
-				cout << "true" << endl;
+				cout << "false" << endl;
 			}
 			else
 			{
-				cout << "false" << endl;
+				cout << "true 含有视频流" << endl;
 			}
 
 			return 0;
@@ -59,13 +63,13 @@ int main(int argc, char **argv)
 		if (option_audio->count())
 		{
 			AVStreamWrapper stream = input_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_AUDIO);
-			if (stream)
+			if (stream.IsNull())
 			{
-				cout << "true" << endl;
+				cout << "false" << endl;
 			}
 			else
 			{
-				cout << "false" << endl;
+				cout << "true 含有音频流" << endl;
 			}
 
 			return 0;
@@ -75,7 +79,7 @@ int main(int argc, char **argv)
 	}
 	catch (jc::Exception &e)
 	{
-		cout << e.what() << endl;
+		cerr << e.what() << endl;
 		throw;
 	}
 }

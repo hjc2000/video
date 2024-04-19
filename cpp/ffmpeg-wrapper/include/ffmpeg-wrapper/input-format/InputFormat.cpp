@@ -85,7 +85,7 @@ void InputFormat::FindStreamInfo(::AVDictionary **options)
 	int ret = ::avformat_find_stream_info(_wrapped_obj, options);
 	if (ret < 0)
 	{
-		cout << CODE_POS_STR << "查找流信息失败" << endl;
+		cerr << CODE_POS_STR << "查找流信息失败" << endl;
 		throw jc::Exception();
 	}
 }
@@ -103,11 +103,11 @@ AVStreamWrapper InputFormat::FindBestStream(AVMediaType type)
 
 	if (ret < 0)
 	{
-		cout << CODE_POS_STR << "找不到最好的 " << ToString(type) << " 流" << endl;
-		return nullptr;
+		cerr << CODE_POS_STR << "找不到最好的 " << ToString(type) << " 流" << endl;
+		return AVStreamWrapper{ nullptr };
 	}
 
-	return _wrapped_obj->streams[ret];
+	return AVStreamWrapper{ _wrapped_obj->streams[ret] };
 }
 
 int InputFormat::ReadPacket(AVPacketWrapper &packet)
@@ -137,7 +137,7 @@ AVStreamWrapper InputFormat::GetStream(int stream_index)
 	// 强制转换为无符号类型就不用判断 stream_index >= 0 了
 	if ((uint32_t)stream_index >= _wrapped_obj->nb_streams)
 	{
-		cout << CODE_POS_STR << "流索引号超出范围" << endl;
+		cerr << CODE_POS_STR << "流索引号超出范围" << endl;
 		throw jc::Exception();
 	}
 
