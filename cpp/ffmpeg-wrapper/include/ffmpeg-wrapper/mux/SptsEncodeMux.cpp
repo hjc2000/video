@@ -130,7 +130,7 @@ void test_SptsEncodeMux()
 	AudioStreamInfoCollection output_audio_stream_infos;
 	output_audio_stream_infos._ch_layout = AVChannelLayoutExtension::GetDefaultChannelLayout(2);
 	output_audio_stream_infos._sample_format = AVSampleFormat::AV_SAMPLE_FMT_FLTP;
-	output_audio_stream_infos._sample_rate = 44100;
+	output_audio_stream_infos._sample_rate = 48000;
 
 	shared_ptr<Stream> out_fs = FileStream::CreateNewAnyway("mux_out.ts");
 	shared_ptr<StreamOutputFormat> out_fmt_ctx{ new StreamOutputFormat{".ts",out_fs} };
@@ -140,7 +140,7 @@ void test_SptsEncodeMux()
 		"hevc_amf",
 		-1,
 		output_audio_stream_infos,
-		"aac"
+		"eac3"
 	} };
 
 	joined_input_format_demux_decoder->AddVideoFrameConsumer(spts_encode_mux->VideoEncodePipe());
