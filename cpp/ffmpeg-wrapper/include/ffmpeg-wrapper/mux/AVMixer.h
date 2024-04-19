@@ -38,6 +38,4 @@ namespace video
 
 		void Pump(shared_ptr<CancellationToken> cancel_pump) override;
 	};
-
-	void TestAVMixer();
 }
