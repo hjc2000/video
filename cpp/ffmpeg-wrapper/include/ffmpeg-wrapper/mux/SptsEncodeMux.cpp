@@ -89,7 +89,8 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 void test_SptsEncodeMux()
 {
 	Queue<std::string> file_queue;
-	file_queue.Enqueue("不老梦.ts");
+	file_queue.Enqueue("予你成歌.ts");
+	file_queue.Enqueue("越权访问.mkv");
 	file_queue.Enqueue("moon.mp4");
 	file_queue.Enqueue("fallen-down.ts");
 	shared_ptr<JoinedInputFormatDemuxDecoder> joined_input_format_demux_decoder{ new JoinedInputFormatDemuxDecoder{} };
@@ -129,7 +130,7 @@ void test_SptsEncodeMux()
 	AudioStreamInfoCollection output_audio_stream_infos;
 	output_audio_stream_infos._ch_layout = AVChannelLayoutExtension::GetDefaultChannelLayout(2);
 	output_audio_stream_infos._sample_format = AVSampleFormat::AV_SAMPLE_FMT_FLTP;
-	output_audio_stream_infos._sample_rate = 48000;
+	output_audio_stream_infos._sample_rate = 44100;
 
 	shared_ptr<Stream> out_fs = FileStream::CreateNewAnyway("mux_out.ts");
 	shared_ptr<StreamOutputFormat> out_fmt_ctx{ new StreamOutputFormat{".ts",out_fs} };
