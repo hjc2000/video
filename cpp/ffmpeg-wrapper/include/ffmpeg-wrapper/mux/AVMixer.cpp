@@ -130,10 +130,16 @@ void video::AVMixer::Pump(shared_ptr<CancellationToken> cancel_pump)
 
 void video::TestAVMixer()
 {
+	auto start = std::chrono::high_resolution_clock::now();
+
 	shared_ptr<InputFormat> input_video_format{ new InputFormat{"渡尘.mp4"} };
 	shared_ptr<InputFormat> input_audio_format{ new InputFormat{"idol.mp4"} };
 	shared_ptr<FileOutputFormat> output_format{ new FileOutputFormat{"out.ts"} };
 	AVMixer mix{ input_video_format,input_audio_format,output_format };
 	CancellationTokenSource cancel_pump_source;
 	mix.Pump(cancel_pump_source.Token());
+
+	auto end = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+	std::cout << "花费的时间: " << duration.count() << "ms" << std::endl;
 }
