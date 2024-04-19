@@ -144,8 +144,8 @@ void video::TestAVMixer()
 {
 	auto start = std::chrono::high_resolution_clock::now();
 
-	shared_ptr<InputFormat> input_video_format{ new InputFormat{"渡尘.mp4"} };
-	shared_ptr<InputFormat> input_audio_format{ new InputFormat{"idol.mp4"} };
+	shared_ptr<InputFormat> input_video_format{ new InputFormat{"等你下课.mp4"} };
+	shared_ptr<InputFormat> input_audio_format{ new InputFormat{"永远的奥特曼.mkv"} };
 	shared_ptr<FileOutputFormat> output_format{ new FileOutputFormat{"out.ts"} };
 	AVMixer mix{ input_video_format,input_audio_format,output_format };
 	CancellationTokenSource cancel_pump_source;
