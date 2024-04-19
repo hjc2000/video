@@ -28,6 +28,8 @@ namespace video
 		bool _is_first_video_packet = true;
 		bool _is_first_audio_packet = true;
 
+		void CreateNewVideoStream();
+
 	public:
 		AVMixer(
 			shared_ptr<InputFormat> input_video_format,

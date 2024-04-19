@@ -9,6 +9,11 @@ namespace video
 	class AVCodecWrapper;
 	class AVCodecContextWrapper;
 
+	/// <summary>
+	///		AVStream 的生命周期是 AVFormat 管理的，所以本类指示包装它，不拥有它，
+	///		析构时不会释放被包装的 AVStream 对象。拷贝构造时不会深度拷贝，仅仅是
+	///		将被包装对象的指针拷贝。
+	/// </summary>
 	class AVStreamWrapper :
 		public Wrapper<AVStream>,
 		public IAudioStreamInfoCollection,
@@ -64,6 +69,7 @@ namespace video
 		/// </summary>
 		/// <returns></returns>
 		int Index() const;
+		void SetIndex(int value);
 
 		#pragma region IAudioStreamInfoCollection,IVideoStreamInfoCollection
 		AVSampleFormat SampleFormat() const override;

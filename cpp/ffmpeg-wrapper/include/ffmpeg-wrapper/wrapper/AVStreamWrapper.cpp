@@ -67,6 +67,11 @@ int AVStreamWrapper::Index() const
 	return _wrapped_obj->index;
 }
 
+void video::AVStreamWrapper::SetIndex(int value)
+{
+	_wrapped_obj->index = value;
+}
+
 #pragma region IAudioFrameInfoCollection
 AVSampleFormat video::AVStreamWrapper::SampleFormat() const
 {
