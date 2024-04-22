@@ -75,7 +75,7 @@ int video::SwsContextWrapper::ReadFrame(AVFrameWrapper &frame)
 	frame.SetTimeBase(_in_frame.TimeBase());
 	frame.set_pts(_in_frame.pts());
 
-	int ret = sws_scale(_wrapped_obj,
+	sws_scale(_wrapped_obj,
 		_in_frame->data,
 		_in_frame->linesize,
 		0,
