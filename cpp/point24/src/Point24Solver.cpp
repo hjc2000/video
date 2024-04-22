@@ -85,13 +85,18 @@ std::string Point24Solver::Solve(std::array<uint8_t, 4> const &nums)
 	std::array<uint8_t, 4> copyed_nums = nums;
 	std::sort(copyed_nums.begin(), copyed_nums.end());
 
-	do
+	while (true)
 	{
 		std::string expr = TryAllOperatorCombinations(copyed_nums);
 		if (expr != "")
 		{
 			return expr;
 		}
-	} while (std::next_permutation(copyed_nums.begin(), copyed_nums.end()));
-	return std::string("找不到解");
+
+		bool have_next = std::next_permutation(copyed_nums.begin(), copyed_nums.end());
+		if (!have_next)
+		{
+			return std::string("找不到解");
+		}
+	}
 }
