@@ -8,7 +8,7 @@ void CancellationToken::Cancel()
 	_is_cancellation_request = true;
 
 	// 执行列表中的每一个委托
-	for (std::pair<uint64_t, std::function<void(void)>> const &pair : _delegates)
+	for (auto const &pair : _delegates)
 	{
 		pair.second();
 	}

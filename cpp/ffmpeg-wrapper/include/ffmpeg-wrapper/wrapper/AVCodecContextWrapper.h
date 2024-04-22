@@ -44,7 +44,7 @@ namespace video
 		}
 		#pragma endregion
 
-		AVCodecContext *_wrapped_obj = nullptr;;
+		AVCodecContext *_wrapped_obj = nullptr;
 
 		AVCodecContextWrapper(AVCodec const *codec);
 		AVCodecContextWrapper(AVCodec const *codec, AVCodecParameters *param);

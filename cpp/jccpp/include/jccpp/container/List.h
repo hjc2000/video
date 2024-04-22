@@ -50,7 +50,7 @@ public:
 
 	void Insert(int const index, T const &item) override
 	{
-		if (index<0 || index > _vector.size())
+		if (index<0 || index>(int)_vector.size())
 		{
 			throw jc::OutOfRangeException();
 		}
@@ -72,7 +72,7 @@ public:
 
 	void RemoveAt(int const index) override
 	{
-		if (index < 0 || index >= _vector.size())
+		if (index < 0 || index >= (int)_vector.size())
 		{
 			throw jc::OutOfRangeException();
 		}
@@ -108,7 +108,7 @@ public:
 
 	T &operator[](int const index) override
 	{
-		if (index < 0 || index >= _vector.size())
+		if (index < 0 || index >= (int)_vector.size())
 		{
 			throw jc::OutOfRangeException();
 		}
@@ -118,7 +118,7 @@ public:
 
 	T const &operator[](int const index) const override
 	{
-		if (index < 0 || index >= _vector.size())
+		if (index < 0 || index >= (int)_vector.size())
 		{
 			throw jc::OutOfRangeException();
 		}

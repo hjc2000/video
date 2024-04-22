@@ -7,7 +7,7 @@ namespace video
 	class IOContextOutputFormat :public OutputFormat
 	{
 		shared_ptr<AVIOContextWrapper> _io_context;
-		AVFormatContext *_wrapped_obj = nullptr;;
+		AVFormatContext *_wrapped_obj = nullptr;
 
 	public:
 		/// <summary>

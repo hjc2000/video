@@ -12,7 +12,7 @@
 
 using namespace video;
 
-#pragma region 构造，析构
+#pragma region 构造,析构
 AVCodecContextWrapper::AVCodecContextWrapper(AVCodec const *codec)
 {
 	SetCodec(codec);

@@ -20,7 +20,7 @@ namespace video
 		public IPacketConsumer
 	{
 		std::mutex _not_private_methods_lock;
-		int _flush_times = 0;
+		uint32_t _flush_times = 0;
 
 		void WriteTrailer();
 

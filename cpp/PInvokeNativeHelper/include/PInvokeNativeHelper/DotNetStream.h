@@ -81,7 +81,7 @@ public:
 	/// <returns></returns>
 	shared_ptr<DotNetStream> ToSharePtr()
 	{
-		return 	shared_ptr<DotNetStream>{ this, [](DotNetStream *p) {} };
+		return shared_ptr<DotNetStream>{ this, [](DotNetStream *p) {} };
 	}
 };
 

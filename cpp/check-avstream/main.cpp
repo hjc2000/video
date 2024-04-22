@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 			"检查是否有音频流。"
 		);
 
-		CLI::Option *option_input_url = app.add_option(
+		app.add_option(
 			"-i",
 			input_url,
 			"输入的媒体格式的 url。"
