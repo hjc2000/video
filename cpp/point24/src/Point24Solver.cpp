@@ -44,8 +44,6 @@ std::string Point24Solver::GetExpression(std::array<uint8_t, 4> const &nums, std
 
 std::string Point24Solver::TryAllOperatorCombinations(std::array<uint8_t, 4> const &nums)
 {
-	std::array<uint8_t, 4> copyed_nums = nums;
-
 	// 遍历运算符的全部组合
 	// 4 则运算符就像是 4 进制数。3 个运算符就像是 3 位 4 进制数
 	for (uint8_t i = 0; i < std::pow(4, 3); i++)
