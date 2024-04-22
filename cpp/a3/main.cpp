@@ -37,8 +37,6 @@ int main()
 	chip_info pinfo = a3device->GetChipInfo();
 	printf_chip_info(&pinfo);
 
-	int nres = vatek_success;
-
 	// 设置调制器
 	ModulatorParamCollection modulator_param;
 	modulator_param.modulator_param_reset(modulator_type::modulator_dvb_t2);

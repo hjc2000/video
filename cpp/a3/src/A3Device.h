@@ -640,9 +640,7 @@ public:
 		val = ReadMemory(HALREG_SYS_STATUS_0);
 		chip_status chipstatus = chip_status_fail_hw;
 
-		int32_t i = 0;
 		val &= SYS_STATUS_TAG | 0xFF;
-
 		switch (val)
 		{
 		case SYS_STATUS_BADSTATUS:
