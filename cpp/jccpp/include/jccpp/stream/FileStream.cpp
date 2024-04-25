@@ -25,12 +25,10 @@ shared_ptr<FileStream> FileStream::CreateNewAnyway(std::string url)
 	/* 加上 ios_base::trunc，这样打开文件流后，如果原本存在此文件，就会将其截断，
 	* 让其初始长度变成 0，相当于一个新文件。
 	*/
-	fs->_fs = shared_ptr<fstream>{
-		new fstream{
-			url,
-			ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary
-		},
-	};
+	fs->_fs = shared_ptr<fstream>{ new fstream{
+		url,
+		ios_base::out | ios_base::in | ios_base::trunc | ios_base::binary
+	} };
 
 	if (fs->_fs->fail())
 	{
@@ -57,12 +55,10 @@ shared_ptr<FileStream> FileStream::Open(std::string url)
 	}
 
 	shared_ptr<FileStream> fs{ new FileStream{url} };
-	fs->_fs = shared_ptr<fstream>{
-		new fstream{
-			url,
-			ios_base::in | ios_base::out | ios_base::binary
-		},
-	};
+	fs->_fs = shared_ptr<fstream>{ new fstream{
+		url,
+		ios_base::in | ios_base::out | ios_base::binary
+	} };
 
 	if (fs->_fs->fail())
 	{
@@ -119,7 +115,7 @@ void FileStream::SetPosition(int64_t value)
 int32_t FileStream::Read(uint8_t *buffer, int32_t offset, int32_t count)
 {
 	_fs->read((char *)(buffer + offset), count);
-	int64_t have_read = _fs->gcount();
+	int32_t have_read = _fs->gcount();
 	SetPosition(_fs->tellg());
 	return have_read;
 }

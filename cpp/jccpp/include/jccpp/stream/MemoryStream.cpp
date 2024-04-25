@@ -1,7 +1,7 @@
 #include "jccpp/stream/MemoryStream.h"
 #include<jccpp/Exception.h>
 
-jc::MemoryStream::MemoryStream(int64_t max_size)
+jc::MemoryStream::MemoryStream(int32_t max_size)
 {
 	if (max_size <= 0)
 	{
@@ -58,7 +58,7 @@ int32_t jc::MemoryStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
 		return 0;
 	}
 
-	int64_t have_read;
+	int32_t have_read;
 	if (AvaliableToRead() <= count)
 	{
 		have_read = AvaliableToRead();
@@ -68,7 +68,12 @@ int32_t jc::MemoryStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
 		have_read = count;
 	}
 
-	std::copy<uint8_t *, uint8_t *>(_buffer + _position, _buffer + _position + have_read, dst_buf + offset);
+	std::copy<uint8_t *, uint8_t *>(
+		_buffer + _position,
+		_buffer + _position + have_read,
+		dst_buf + offset
+	);
+
 	return have_read;
 }
 
@@ -84,7 +89,12 @@ void jc::MemoryStream::Write(uint8_t *src_buf, int32_t offset, int32_t count)
 		throw jc::BufferOverflowException();
 	}
 
-	std::copy<uint8_t *, uint8_t *>(src_buf + offset, src_buf + offset + count, _buffer + _position);
+	std::copy<uint8_t *, uint8_t *>(
+		src_buf + offset,
+		src_buf + offset + count,
+		_buffer + _position
+	);
+
 	_position += count;
 	if (_position > _length)
 	{

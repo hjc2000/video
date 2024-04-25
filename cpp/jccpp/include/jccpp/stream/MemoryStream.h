@@ -5,13 +5,13 @@ namespace jc
 {
 	class MemoryStream :public Stream
 	{
-		int64_t _buffer_size;
+		int32_t _buffer_size;
 		uint8_t *_buffer;
 
 		/// <summary>
 		///		指向当前要读或写的位置。Read 和 Write 会操作的第一个字节就是 _position 指向的字节。
 		/// </summary>
-		int64_t _position = 0;
+		int32_t _position = 0;
 
 		/// <summary>
 		///		流的长度。
@@ -20,14 +20,14 @@ namespace jc
 		///		* 缓冲区中，第 _length 字节是无效的数据。当 _length = 0 时，_buffer[0] 是无效数据，流中没有数据。
 		///		  _length 不为 0 时，[0 , _length - 1] 闭区间上是有效数据。
 		/// </summary>
-		int64_t _length = 0;
+		int32_t _length = 0;
 
 	public:
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="max_size">内部缓冲区的最大尺寸。小于等于 0 会抛出异常。</param>
-		MemoryStream(int64_t max_size);
+		MemoryStream(int32_t max_size);
 
 		~MemoryStream()
 		{
@@ -43,7 +43,7 @@ namespace jc
 		 * @brief 获取内部缓冲区大小。这就是本流能够储存的最大的字节数。
 		 * @return
 		*/
-		int64_t BufferSize() const
+		int32_t BufferSize() const
 		{
 			return _buffer_size;
 		}
@@ -56,7 +56,7 @@ namespace jc
 		 *
 		 * @return
 		*/
-		int64_t AvaliableToRead() const
+		int32_t AvaliableToRead() const
 		{
 			return _length - _position;
 		}
@@ -67,7 +67,7 @@ namespace jc
 		 *
 		 * @return
 		*/
-		int64_t AvaliableToWrite() const
+		int32_t AvaliableToWrite() const
 		{
 			return _buffer_size - _position;
 		}

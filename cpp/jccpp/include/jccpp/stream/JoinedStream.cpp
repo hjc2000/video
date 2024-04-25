@@ -66,7 +66,7 @@ int32_t JoinedStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
 		}
 
 		// 执行到这里说明 _current_stream 不为空
-		int64_t have_read = _current_stream->Read(dst_buf, offset, count);
+		int32_t have_read = _current_stream->Read(dst_buf, offset, count);
 		if (have_read == 0)
 		{
 			// 此流结束了，应该尝试获取下一个流继续读取
