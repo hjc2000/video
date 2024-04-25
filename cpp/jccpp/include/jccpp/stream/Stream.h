@@ -16,7 +16,7 @@ using std::shared_ptr;
 class Stream
 {
 public:
-	virtual ~Stream() {}
+	virtual ~Stream() = default;
 
 	virtual bool CanRead() = 0;
 	virtual bool CanWrite() = 0;
