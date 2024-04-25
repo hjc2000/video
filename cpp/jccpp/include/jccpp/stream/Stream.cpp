@@ -1,11 +1,11 @@
 #include<jccpp/stream/Stream.h>
 
-int64_t Stream::ReadAtLeast(uint8_t *buffer, int64_t offset, int64_t minimum_bytes)
+int32_t Stream::ReadAtLeast(uint8_t *buffer, int32_t offset, int32_t minimum_bytes)
 {
 	return ReadExactly(buffer, offset, minimum_bytes);
 }
 
-int64_t Stream::ReadExactly(uint8_t *buffer, int64_t offset, int64_t count)
+int32_t Stream::ReadExactly(uint8_t *buffer, int32_t offset, int32_t count)
 {
 	int64_t total_read = 0;
 	while (true)
@@ -38,7 +38,7 @@ void Stream::CopyTo(Stream *dst_stream, std::shared_ptr<CancellationToken> cance
 			throw TaskCanceledException();
 		}
 
-		int64_t have_read = Read(temp_buf, 0, sizeof(temp_buf));
+		int32_t have_read = Read(temp_buf, 0, sizeof(temp_buf));
 		if (have_read == 0)
 		{
 			return;

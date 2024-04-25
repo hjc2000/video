@@ -46,7 +46,7 @@ void jc::MemoryStream::SetLength(int64_t value)
 	}
 }
 
-int64_t jc::MemoryStream::Read(uint8_t *dst_buf, int64_t offset, int64_t count)
+int32_t jc::MemoryStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
 {
 	if (!dst_buf)
 	{
@@ -72,7 +72,7 @@ int64_t jc::MemoryStream::Read(uint8_t *dst_buf, int64_t offset, int64_t count)
 	return have_read;
 }
 
-void jc::MemoryStream::Write(uint8_t *src_buf, int64_t offset, int64_t count)
+void jc::MemoryStream::Write(uint8_t *src_buf, int32_t offset, int32_t count)
 {
 	if (!src_buf)
 	{

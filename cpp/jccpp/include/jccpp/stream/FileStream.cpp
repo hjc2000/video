@@ -116,7 +116,7 @@ void FileStream::SetPosition(int64_t value)
 	_fs->seekp(value);
 }
 
-int64_t FileStream::Read(uint8_t *buffer, int64_t offset, int64_t count)
+int32_t FileStream::Read(uint8_t *buffer, int32_t offset, int32_t count)
 {
 	_fs->read((char *)(buffer + offset), count);
 	int64_t have_read = _fs->gcount();
@@ -124,7 +124,7 @@ int64_t FileStream::Read(uint8_t *buffer, int64_t offset, int64_t count)
 	return have_read;
 }
 
-void FileStream::Write(uint8_t *buffer, int64_t offset, int64_t count)
+void FileStream::Write(uint8_t *buffer, int32_t offset, int32_t count)
 {
 	_fs->write((char *)(buffer + offset), count);
 	SetPosition(_fs->tellp());

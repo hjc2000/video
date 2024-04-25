@@ -95,7 +95,7 @@ namespace jc
 		 * @return
 		 * @exception ArgumentNullException dst_buf 为空指针会抛出异常。
 		*/
-		int64_t Read(uint8_t *dst_buf, int64_t offset, int64_t count) override;
+		int32_t Read(uint8_t *dst_buf, int32_t offset, int32_t count) override;
 
 		/**
 		 * @brief
@@ -105,7 +105,7 @@ namespace jc
 		 * @exception ArgumentNullException：data_buf 为空指针会抛出异常。
 		 * @exception BufferOverflowException：count 大于 AvaliableToWrite 时会抛出异常。
 		*/
-		void Write(uint8_t *src_buf, int64_t offset, int64_t count) override;
+		void Write(uint8_t *src_buf, int32_t offset, int32_t count) override;
 
 		void Flush() override;
 

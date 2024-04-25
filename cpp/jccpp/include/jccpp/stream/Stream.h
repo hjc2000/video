@@ -32,7 +32,7 @@ public:
 	/// <param name="offset">将读取到的数据写入 dst_buf 时的起始位置。</param>
 	/// <param name="count">要读取的字节数。</param>
 	/// <returns>实际读取的字节数。如果返回 0，说明此流结束。</returns>
-	virtual int64_t Read(uint8_t *buffer, int64_t offset, int64_t count) = 0;
+	virtual int32_t Read(uint8_t *buffer, int32_t offset, int32_t count) = 0;
 
 	/// <summary>
 	///		读取数据，并且要求至少要读出 minimum_bytes 个字节。除非到达流末尾了。
@@ -46,7 +46,7 @@ public:
 	///		一般会大于等于 minimum_bytes，除非到达流结尾了。如果到达流结尾，返回值会小于 minimum_bytes，
 	///		此时实际读取到的字节数就是小于 minimum_bytes。
 	/// </returns>
-	virtual int64_t ReadAtLeast(uint8_t *buffer, int64_t offset, int64_t minimum_bytes);
+	virtual int32_t ReadAtLeast(uint8_t *buffer, int32_t offset, int32_t minimum_bytes);
 
 	/// <summary>
 	///		从流中读取精确数量的字节数写入 buffer 中。
@@ -59,7 +59,7 @@ public:
 	///		返回读取到的字节数。一般等于 count，除非到达流末尾，无法满足要求了。
 	///		调用者应该检查返回值，判断是否满足要求。
 	/// </returns>
-	virtual int64_t ReadExactly(uint8_t *buffer, int64_t offset, int64_t count);
+	virtual int32_t ReadExactly(uint8_t *buffer, int32_t offset, int32_t count);
 
 	/// <summary>
 	///		将 buffer 中的数据写入流中。
@@ -67,7 +67,7 @@ public:
 	/// <param name="buffer">数据源缓冲区。</param>
 	/// <param name="offset">从 buffer 中取数据的起始位置。</param>
 	/// <param name="count">从 buffer 中取多少个字节。</param>
-	virtual void Write(uint8_t *buffer, int64_t offset, int64_t count) = 0;
+	virtual void Write(uint8_t *buffer, int32_t offset, int32_t count) = 0;
 
 	/// <summary>
 	///		* 对于写入的数据，作用是将其从内部缓冲区转移到底层。

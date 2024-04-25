@@ -16,8 +16,8 @@ private:
 	uint8_t(*_can_seek)();
 	int64_t(*_length)();
 	void (*_set_length)(int64_t value);
-	int64_t(*_read)(uint8_t *buffer, int64_t offset, int64_t count);
-	void (*_write)(uint8_t *buffer, int64_t offset, int64_t count);
+	int32_t(*_read)(uint8_t *buffer, int32_t offset, int32_t count);
+	void (*_write)(uint8_t *buffer, int32_t offset, int32_t count);
 	void (*_flush)();
 	void (*_close)();
 	int64_t(*_position)();
@@ -52,8 +52,8 @@ public:
 		uint8_t(*can_seek)(),
 		int64_t(*length)(),
 		void (*set_length)(int64_t value),
-		int64_t(*read)(uint8_t *buffer, int64_t offset, int64_t count),
-		void (*write)(uint8_t *buffer, int64_t offset, int64_t count),
+		int32_t(*read)(uint8_t *buffer, int32_t offset, int32_t count),
+		void (*write)(uint8_t *buffer, int32_t offset, int32_t count),
 		void (*flush)(),
 		void (*close)(),
 		int64_t(*position)(),
@@ -66,8 +66,8 @@ public:
 	bool CanSeek() override;
 	int64_t Length() override;
 	void SetLength(int64_t value) override;
-	int64_t Read(uint8_t *buffer, int64_t offset, int64_t count) override;
-	void Write(uint8_t *buffer, int64_t offset, int64_t count) override;
+	int32_t Read(uint8_t *buffer, int32_t offset, int32_t count) override;
+	void Write(uint8_t *buffer, int32_t offset, int32_t count) override;
 	void Flush() override;
 	void Close() override;
 	int64_t Position() override;
@@ -112,8 +112,8 @@ extern "C"
 		uint8_t(*can_seek)(),
 		int64_t(*length)(),
 		void (*set_length)(int64_t value),
-		int64_t(*read)(uint8_t *buffer, int64_t offset, int64_t count),
-		void (*write)(uint8_t *buffer, int64_t offset, int64_t count),
+		int32_t(*read)(uint8_t *buffer, int32_t offset, int32_t count),
+		void (*write)(uint8_t *buffer, int32_t offset, int32_t count),
 		void (*flush)(),
 		void (*close)(),
 		int64_t(*position)(),

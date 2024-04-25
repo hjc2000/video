@@ -39,8 +39,8 @@ public:
 	int64_t Length() override;
 	void SetLength(int64_t value) override;
 
-	int64_t Read(uint8_t *dst_buf, int64_t offset, int64_t count) override;
-	void Write(uint8_t *src_buf, int64_t offset, int64_t count) override;
+	int32_t Read(uint8_t *dst_buf, int32_t offset, int32_t count) override;
+	void Write(uint8_t *src_buf, int32_t offset, int32_t count) override;
 
 	void Flush() override;
 	void Close() override;

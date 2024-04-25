@@ -21,8 +21,8 @@ DotNetStream::DotNetStream(
 	uint8_t(*can_seek)(),
 	int64_t(*length)(),
 	void (*set_length)(int64_t value),
-	int64_t(*read)(uint8_t *buffer, int64_t offset, int64_t count),
-	void (*write)(uint8_t *buffer, int64_t offset, int64_t count),
+	int32_t(*read)(uint8_t *buffer, int32_t offset, int32_t count),
+	void (*write)(uint8_t *buffer, int32_t offset, int32_t count),
 	void (*flush)(),
 	void (*close)(),
 	int64_t(*position)(),
@@ -78,14 +78,14 @@ void DotNetStream::SetLength(int64_t value)
 	CheckError();
 }
 
-int64_t DotNetStream::Read(uint8_t *buffer, int64_t offset, int64_t count)
+int32_t DotNetStream::Read(uint8_t *buffer, int32_t offset, int32_t count)
 {
-	int64_t ret = _read(buffer, offset, count);
+	int32_t ret = _read(buffer, offset, count);
 	CheckError();
 	return ret;
 }
 
-void DotNetStream::Write(uint8_t *buffer, int64_t offset, int64_t count)
+void DotNetStream::Write(uint8_t *buffer, int32_t offset, int32_t count)
 {
 	_write(buffer, offset, count);
 	CheckError();
@@ -122,8 +122,8 @@ DotNetStream *CreateDotNetStream(
 	uint8_t(*can_seek)(),
 	int64_t(*length)(),
 	void (*set_length)(int64_t value),
-	int64_t(*read)(uint8_t *buffer, int64_t offset, int64_t count),
-	void (*write)(uint8_t *buffer, int64_t offset, int64_t count),
+	int32_t(*read)(uint8_t *buffer, int32_t offset, int32_t count),
+	void (*write)(uint8_t *buffer, int32_t offset, int32_t count),
 	void (*flush)(),
 	void (*close)(),
 	int64_t(*position)(),

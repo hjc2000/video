@@ -15,8 +15,8 @@ public partial class DotNetStreamHelper
 	public unsafe delegate long LengthDelegate();
 	public unsafe delegate void SetLengthDelegate(long value);
 
-	public unsafe delegate long ReadDelegate(byte* buffer, long offset, long count);
-	public unsafe delegate void WriteDelegate(byte* buffer, long offset, long count);
+	public unsafe delegate int ReadDelegate(byte* buffer, int offset, int count);
+	public unsafe delegate void WriteDelegate(byte* buffer, int offset, int count);
 
 	public unsafe delegate void FlushDelegate();
 	public unsafe delegate void CloseDelegate();
@@ -136,11 +136,11 @@ public partial class DotNetStreamHelper
 		}
 	}
 
-	private unsafe long Read(byte* buffer, long offset, long count)
+	private unsafe int Read(byte* buffer, int offset, int count)
 	{
 		try
 		{
-			Span<byte> span = new(buffer + offset, (int)count);
+			Span<byte> span = new(buffer + offset, count);
 			return _stream.Read(span);
 		}
 		catch (Exception ex)
@@ -151,11 +151,11 @@ public partial class DotNetStreamHelper
 		}
 	}
 
-	private unsafe void Write(byte* buffer, long offset, long count)
+	private unsafe void Write(byte* buffer, int offset, int count)
 	{
 		try
 		{
-			Span<byte> span = new(buffer + offset, (int)count);
+			Span<byte> span = new(buffer + offset, count);
 			_stream.Write(span);
 		}
 		catch (Exception ex)

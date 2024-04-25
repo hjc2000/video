@@ -26,10 +26,10 @@ public partial class CppStream
 	private static unsafe partial void Stream_SetLength(nuint stream, long value);
 
 	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_Read")]
-	private static unsafe partial long Stream_Read(nuint stream, byte* dst_buffer, long offset, long count);
+	private static unsafe partial int Stream_Read(nuint stream, byte* dst_buffer, int offset, int count);
 
 	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_Write")]
-	private static unsafe partial void Stream_Write(nuint stream, byte* dst_buffer, long offset, long count);
+	private static unsafe partial void Stream_Write(nuint stream, byte* dst_buffer, int offset, int count);
 
 	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "Stream_Flush")]
 	private static unsafe partial void Stream_Flush(nuint stream);
@@ -91,7 +91,7 @@ public partial class CppStream(nuint stream) : Stream
 		{
 			fixed (byte* ptr = buffer)
 			{
-				return (int)Stream_Read(stream, ptr, offset, count);
+				return Stream_Read(stream, ptr, offset, count);
 			}
 		}
 	}

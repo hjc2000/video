@@ -3,7 +3,7 @@
 using namespace std;
 using namespace jc;
 
-CircleBufferMemoryStream::CircleBufferMemoryStream(int64_t size)
+CircleBufferMemoryStream::CircleBufferMemoryStream(int32_t size)
 {
 	_buffer_size = size;
 	_head = 0;
@@ -21,7 +21,7 @@ CircleBufferMemoryStream::~CircleBufferMemoryStream()
 ///		递增头指针
 /// </summary>
 /// <param name="value"></param>
-void CircleBufferMemoryStream::AddHead(int64_t value)
+void CircleBufferMemoryStream::AddHead(int32_t value)
 {
 	_head = (_head + value) % _buffer_size;
 }
@@ -30,7 +30,7 @@ void CircleBufferMemoryStream::AddHead(int64_t value)
 ///		递增尾指针
 /// </summary>
 /// <param name="value"></param>
-void CircleBufferMemoryStream::AddTail(int64_t value)
+void CircleBufferMemoryStream::AddTail(int32_t value)
 {
 	_tail = (_tail + value) % _buffer_size;
 }
@@ -43,7 +43,7 @@ void CircleBufferMemoryStream::AddTail(int64_t value)
 /// <param name="offset"></param>
 /// <param name="count"></param>
 /// <returns></returns>
-int64_t CircleBufferMemoryStream::ReadNonCircular(uint8_t *dst_buf, int64_t offset, int64_t count)
+int32_t CircleBufferMemoryStream::ReadNonCircular(uint8_t *dst_buf, int32_t offset, int32_t count)
 {
 	std::copy<uint8_t *, uint8_t *>(_buffer + _head, _buffer + _head + count, dst_buf + offset);
 	AddHead(count);
@@ -58,14 +58,14 @@ int64_t CircleBufferMemoryStream::ReadNonCircular(uint8_t *dst_buf, int64_t offs
 /// <param name="src_buf"></param>
 /// <param name="offset"></param>
 /// <param name="count"></param>
-void CircleBufferMemoryStream::WriteNonCircular(uint8_t *src_buf, int64_t offset, int64_t count)
+void CircleBufferMemoryStream::WriteNonCircular(uint8_t *src_buf, int32_t offset, int32_t count)
 {
 	std::copy<uint8_t *, uint8_t *>(src_buf + offset, src_buf + offset + count, _buffer + _tail);
 	AddTail(count);
 	_is_full = _head == _tail;
 }
 
-int64_t CircleBufferMemoryStream::BufferAvailableSpace() const
+int32_t CircleBufferMemoryStream::BufferAvailableSpace() const
 {
 	if (_is_full)
 	{
@@ -137,7 +137,7 @@ void CircleBufferMemoryStream::SetLength(int64_t value)
 	throw jc::NotSupportedException();
 }
 
-int64_t CircleBufferMemoryStream::Read(uint8_t *dst_buf, int64_t offset, int64_t count)
+int32_t CircleBufferMemoryStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
 {
 	if (BufferEmpty())
 	{
@@ -170,7 +170,7 @@ int64_t CircleBufferMemoryStream::Read(uint8_t *dst_buf, int64_t offset, int64_t
 	return have_read;
 }
 
-void CircleBufferMemoryStream::Write(uint8_t *src_buf, int64_t offset, int64_t count)
+void CircleBufferMemoryStream::Write(uint8_t *src_buf, int32_t offset, int32_t count)
 {
 	if (BufferAvailableSpace() < count)
 	{

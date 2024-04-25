@@ -40,12 +40,12 @@ void Stream_SetLength(StreamHandle *handle, int64_t value)
 	handle->_stream->SetLength(value);
 }
 
-int64_t Stream_Read(StreamHandle *handle, uint8_t *dst_buf, int64_t offset, int64_t count)
+int32_t Stream_Read(StreamHandle *handle, uint8_t *dst_buf, int32_t offset, int32_t count)
 {
 	return handle->_stream->Read(dst_buf, offset, count);
 }
 
-void Stream_Write(StreamHandle *handle, uint8_t *src_buf, int64_t offset, int64_t count)
+void Stream_Write(StreamHandle *handle, uint8_t *src_buf, int32_t offset, int32_t count)
 {
 	handle->_stream->Write(src_buf, offset, count);
 }

@@ -25,7 +25,7 @@ void TsPusher::SetLength(int64_t value)
 	throw jc::NotSupportedException();
 }
 
-int64_t TsPusher::Read(uint8_t *dst_buf, int64_t offset, int64_t count)
+int32_t TsPusher::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
 {
 	throw jc::NotSupportedException();
 }
