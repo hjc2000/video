@@ -120,7 +120,7 @@ int32_t FileStream::Read(uint8_t *buffer, int32_t offset, int32_t count)
 	return have_read;
 }
 
-void FileStream::Write(uint8_t *buffer, int32_t offset, int32_t count)
+void FileStream::Write(uint8_t const *buffer, int32_t offset, int32_t count)
 {
 	_fs->write((char *)(buffer + offset), count);
 	SetPosition(_fs->tellp());

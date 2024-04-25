@@ -17,7 +17,7 @@ private:
 	int64_t(*_length)();
 	void (*_set_length)(int64_t value);
 	int32_t(*_read)(uint8_t *buffer, int32_t offset, int32_t count);
-	void (*_write)(uint8_t *buffer, int32_t offset, int32_t count);
+	void (*_write)(uint8_t const *buffer, int32_t offset, int32_t count);
 	void (*_flush)();
 	void (*_close)();
 	int64_t(*_position)();
@@ -53,7 +53,7 @@ public:
 		int64_t(*length)(),
 		void (*set_length)(int64_t value),
 		int32_t(*read)(uint8_t *buffer, int32_t offset, int32_t count),
-		void (*write)(uint8_t *buffer, int32_t offset, int32_t count),
+		void (*write)(uint8_t const *buffer, int32_t offset, int32_t count),
 		void (*flush)(),
 		void (*close)(),
 		int64_t(*position)(),
@@ -67,7 +67,7 @@ public:
 	int64_t Length() override;
 	void SetLength(int64_t value) override;
 	int32_t Read(uint8_t *buffer, int32_t offset, int32_t count) override;
-	void Write(uint8_t *buffer, int32_t offset, int32_t count) override;
+	void Write(uint8_t const *buffer, int32_t offset, int32_t count) override;
 	void Flush() override;
 	void Close() override;
 	int64_t Position() override;
@@ -113,7 +113,7 @@ extern "C"
 		int64_t(*length)(),
 		void (*set_length)(int64_t value),
 		int32_t(*read)(uint8_t *buffer, int32_t offset, int32_t count),
-		void (*write)(uint8_t *buffer, int32_t offset, int32_t count),
+		void (*write)(uint8_t const *buffer, int32_t offset, int32_t count),
 		void (*flush)(),
 		void (*close)(),
 		int64_t(*position)(),

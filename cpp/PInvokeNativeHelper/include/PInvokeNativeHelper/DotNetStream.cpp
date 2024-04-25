@@ -22,7 +22,7 @@ DotNetStream::DotNetStream(
 	int64_t(*length)(),
 	void (*set_length)(int64_t value),
 	int32_t(*read)(uint8_t *buffer, int32_t offset, int32_t count),
-	void (*write)(uint8_t *buffer, int32_t offset, int32_t count),
+	void (*write)(uint8_t const *buffer, int32_t offset, int32_t count),
 	void (*flush)(),
 	void (*close)(),
 	int64_t(*position)(),
@@ -85,7 +85,7 @@ int32_t DotNetStream::Read(uint8_t *buffer, int32_t offset, int32_t count)
 	return ret;
 }
 
-void DotNetStream::Write(uint8_t *buffer, int32_t offset, int32_t count)
+void DotNetStream::Write(uint8_t const *buffer, int32_t offset, int32_t count)
 {
 	_write(buffer, offset, count);
 	CheckError();
@@ -123,7 +123,7 @@ DotNetStream *CreateDotNetStream(
 	int64_t(*length)(),
 	void (*set_length)(int64_t value),
 	int32_t(*read)(uint8_t *buffer, int32_t offset, int32_t count),
-	void (*write)(uint8_t *buffer, int32_t offset, int32_t count),
+	void (*write)(uint8_t const *buffer, int32_t offset, int32_t count),
 	void (*flush)(),
 	void (*close)(),
 	int64_t(*position)(),

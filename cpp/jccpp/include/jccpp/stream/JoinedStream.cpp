@@ -79,7 +79,7 @@ int32_t JoinedStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
 	}
 }
 
-void JoinedStream::Write(uint8_t *src_buf, int32_t offset, int32_t count)
+void JoinedStream::Write(uint8_t const *src_buf, int32_t offset, int32_t count)
 {
 	throw jc::NotSupportedException();
 }

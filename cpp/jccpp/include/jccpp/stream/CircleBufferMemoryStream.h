@@ -42,7 +42,7 @@ namespace jc
 		void AddHead(int32_t value);
 		void AddTail(int32_t value);
 		int32_t ReadNonCircular(uint8_t *dst_buf, int32_t offset, int32_t count);
-		void WriteNonCircular(uint8_t *src_buf, int32_t offset, int32_t count);
+		void WriteNonCircular(uint8_t const *src_buf, int32_t offset, int32_t count);
 
 	public:
 		/// <summary>
@@ -92,7 +92,7 @@ namespace jc
 		void SetLength(int64_t value) override;
 
 		int32_t Read(uint8_t *dst_buf, int32_t offset, int32_t count) override;
-		void Write(uint8_t *src_buf, int32_t offset, int32_t count) override;
+		void Write(uint8_t const *src_buf, int32_t offset, int32_t count) override;
 
 		/// <summary>
 		///		调用后什么都不会发生。这是一个空的函数。

@@ -46,7 +46,7 @@ namespace jc
 		int64_t Length() override;
 		void SetLength(int64_t value) override;
 		int32_t Read(uint8_t *dst_buf, int32_t offset, int32_t count) override;
-		void Write(uint8_t *src_buf, int32_t offset, int32_t count) override;
+		void Write(uint8_t const *src_buf, int32_t offset, int32_t count) override;
 		void Flush() override;
 
 		/// <summary>

@@ -45,7 +45,12 @@ void CircleBufferMemoryStream::AddTail(int32_t value)
 /// <returns></returns>
 int32_t CircleBufferMemoryStream::ReadNonCircular(uint8_t *dst_buf, int32_t offset, int32_t count)
 {
-	std::copy<uint8_t *, uint8_t *>(_buffer + _head, _buffer + _head + count, dst_buf + offset);
+	std::copy(
+		_buffer + _head,
+		_buffer + _head + count,
+		dst_buf + offset
+	);
+
 	AddHead(count);
 	_is_full = false;
 	return count;
@@ -58,9 +63,14 @@ int32_t CircleBufferMemoryStream::ReadNonCircular(uint8_t *dst_buf, int32_t offs
 /// <param name="src_buf"></param>
 /// <param name="offset"></param>
 /// <param name="count"></param>
-void CircleBufferMemoryStream::WriteNonCircular(uint8_t *src_buf, int32_t offset, int32_t count)
+void CircleBufferMemoryStream::WriteNonCircular(uint8_t const *src_buf, int32_t offset, int32_t count)
 {
-	std::copy<uint8_t *, uint8_t *>(src_buf + offset, src_buf + offset + count, _buffer + _tail);
+	std::copy(
+		src_buf + offset,
+		src_buf + offset + count,
+		_buffer + _tail
+	);
+
 	AddTail(count);
 	_is_full = _head == _tail;
 }
@@ -170,7 +180,7 @@ int32_t CircleBufferMemoryStream::Read(uint8_t *dst_buf, int32_t offset, int32_t
 	return have_read;
 }
 
-void CircleBufferMemoryStream::Write(uint8_t *src_buf, int32_t offset, int32_t count)
+void CircleBufferMemoryStream::Write(uint8_t const *src_buf, int32_t offset, int32_t count)
 {
 	if (BufferAvailableSpace() < count)
 	{

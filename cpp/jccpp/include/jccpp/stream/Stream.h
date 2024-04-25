@@ -67,7 +67,7 @@ public:
 	/// <param name="buffer">数据源缓冲区。</param>
 	/// <param name="offset">从 buffer 中取数据的起始位置。</param>
 	/// <param name="count">从 buffer 中取多少个字节。</param>
-	virtual void Write(uint8_t *buffer, int32_t offset, int32_t count) = 0;
+	virtual void Write(uint8_t const *buffer, int32_t offset, int32_t count) = 0;
 
 	/// <summary>
 	///		* 对于写入的数据，作用是将其从内部缓冲区转移到底层。

@@ -92,7 +92,7 @@ public:
 	}
 
 	#pragma region 通过 Stream 继承
-	void Write(uint8_t *src_buf, int32_t offset, int32_t count) override
+	void Write(uint8_t const *src_buf, int32_t offset, int32_t count) override
 	{
 		_mstream.Write(src_buf, offset, count);
 	}

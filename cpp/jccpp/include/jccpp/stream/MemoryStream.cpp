@@ -68,7 +68,7 @@ int32_t jc::MemoryStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
 		have_read = count;
 	}
 
-	std::copy<uint8_t *, uint8_t *>(
+	std::copy(
 		_buffer + _position,
 		_buffer + _position + have_read,
 		dst_buf + offset
@@ -77,7 +77,7 @@ int32_t jc::MemoryStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
 	return have_read;
 }
 
-void jc::MemoryStream::Write(uint8_t *src_buf, int32_t offset, int32_t count)
+void jc::MemoryStream::Write(uint8_t const *src_buf, int32_t offset, int32_t count)
 {
 	if (!src_buf)
 	{
@@ -89,7 +89,7 @@ void jc::MemoryStream::Write(uint8_t *src_buf, int32_t offset, int32_t count)
 		throw jc::BufferOverflowException();
 	}
 
-	std::copy<uint8_t *, uint8_t *>(
+	std::copy(
 		src_buf + offset,
 		src_buf + offset + count,
 		_buffer + _position
