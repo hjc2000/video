@@ -143,7 +143,7 @@ int64_t CircleBufferMemoryStream::Length()
 
 void CircleBufferMemoryStream::SetLength(int64_t value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 int32_t CircleBufferMemoryStream::Read(uint8_t *buffer, int32_t offset, int32_t count)
@@ -183,7 +183,7 @@ void CircleBufferMemoryStream::Write(uint8_t const *buffer, int32_t offset, int3
 {
 	if (AvailableToWrite() < count)
 	{
-		throw jc::BufferOverflowException();
+		throw std::overflow_error{ "缓冲区剩余空间无法接受这么多数据" };
 	}
 
 	if (count <= _buffer_size - _tail)
@@ -203,10 +203,10 @@ void CircleBufferMemoryStream::Write(uint8_t const *buffer, int32_t offset, int3
 
 int64_t CircleBufferMemoryStream::Position()
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 void CircleBufferMemoryStream::SetPosition(int64_t value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }

@@ -2,8 +2,8 @@
 #include<algorithm>
 #include<cstdint>
 #include<cstring>
-#include<jccpp/Exception.h>
 #include<jccpp/stream/Stream.h>
+#include<stdexcept>
 
 namespace jc
 {
@@ -110,13 +110,13 @@ namespace jc
 		}
 
 		/// <summary>
-		///		调用将发生 NotSupportedException
+		///		调用将发生 std::runtime_error
 		/// </summary>
 		/// <returns></returns>
 		int64_t Position() override;
 
 		/// <summary>
-		///		调用将发生 NotSupportedException
+		///		调用将发生 std::runtime_error
 		/// </summary>
 		/// <param name="value"></param>
 		void SetPosition(int64_t value) override;
