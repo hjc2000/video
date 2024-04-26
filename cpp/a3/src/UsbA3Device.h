@@ -152,7 +152,7 @@ public:// 方法
 
 		if (len > CHIP_STREAM_SLICE_LEN || (len % 64) != 0)
 		{
-			throw jc::ArgumentException();
+			throw jc::invalid_argument{ "非法参数" };
 		}
 
 		vk_result nres = vatek_badparam;
@@ -173,7 +173,7 @@ public:// 方法
 		vk_result nres = vatek_success;
 		if (len > CHIP_STREAM_SLICE_LEN || (len % 64) != 0)
 		{
-			throw jc::ArgumentException();
+			throw jc::invalid_argument{ "非法参数" };
 		}
 
 		return (vk_result)_usb_device.BulkTransfer(USBDEV_BULK_READ_EP, pbuf, len, 0);

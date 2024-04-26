@@ -44,12 +44,12 @@ bool JoinedStream::CanSeek()
 
 int64_t JoinedStream::Length()
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 void JoinedStream::SetLength(int64_t value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 int32_t JoinedStream::Read(uint8_t *buffer, int32_t offset, int32_t count)
@@ -81,12 +81,12 @@ int32_t JoinedStream::Read(uint8_t *buffer, int32_t offset, int32_t count)
 
 void JoinedStream::Write(uint8_t const *buffer, int32_t offset, int32_t count)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 void JoinedStream::Flush()
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 void JoinedStream::Close()
@@ -100,5 +100,5 @@ int64_t JoinedStream::Position()
 
 void JoinedStream::SetPosition(int64_t value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }

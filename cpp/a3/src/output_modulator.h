@@ -1,15 +1,15 @@
 #ifndef _OUTPUT_MODULATOR_
 #define _OUTPUT_MODULATOR_
 
-#include<jccpp/Exception.h>
 #include<R2TuneTable.h>
+#include<format>
 #include<format>
 #include<halreg_define.h>
 #include<halreg_output.h>
+#include<jccpp/Exception.h>
 #include<memory>
 #include<tool_helpful.h>
 #include<vatek_base.h>
-#include<format>
 
 using std::shared_ptr;
 using std::static_pointer_cast;
@@ -73,7 +73,7 @@ inline std::string ToString(modulator_type type)
 		}
 	default:
 		{
-			throw jc::ArgumentException();
+			throw std::invalid_argument{ "非法参数" };
 		}
 	}
 }
@@ -99,7 +99,7 @@ inline std::string ToString(atsc_constellation_mode value)
 		}
 	default:
 		{
-			throw jc::ArgumentException();
+			throw std::invalid_argument{ "非法参数" };
 		}
 	}
 }
@@ -254,7 +254,7 @@ inline std::string ToString(j83a_constellation_mode value)
 		}
 	default:
 		{
-			throw jc::ArgumentException();
+			throw std::invalid_argument{ "非法参数" };
 		}
 	}
 }
@@ -717,7 +717,7 @@ inline std::string ToString(t2_version value)
 		}
 	default:
 		{
-			throw jc::ArgumentException();
+			throw std::invalid_argument{ "非法参数" };
 		}
 	}
 }
@@ -988,7 +988,7 @@ inline std::string ToString(t2_guard_interval value)
 		}
 	default:
 		{
-			throw jc::ArgumentException();
+			throw std::invalid_argument{ "非法参数" };
 		}
 	}
 }
@@ -1235,7 +1235,7 @@ public:
 	modulator_type _type{};                /*!< modulation type */
 	dac_ifmode _ifmode{};                  /*!< select current DAC output mode */
 	uint32_t iffreq_offset = 0;             /*!< DAC output frequency (KHz)  */
-	
+
 	/**
 	 * @brief 如果精度小于等于 1000 kHz，需要设置 iffreq_offset 并将 dac_ifmode 设为 ifmode_iqoffset
 	*/

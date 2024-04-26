@@ -1,9 +1,9 @@
 #pragma once
-#include<cstdint>
 #include<algorithm>
 #include<bit>
-#include<jccpp/Exception.h>
+#include<cstdint>
 #include <execution>
+#include<jccpp/Exception.h>
 
 namespace jc
 {
@@ -62,19 +62,17 @@ namespace jc
 
 			if (element_size == 0)
 			{
-				throw jc::ArgumentException();
+				throw std::invalid_argument{ "element_size 不允许 == 0" };
 			}
 
 			if (buf_size < element_size)
 			{
-				// 整体尺寸不能比单个单元尺寸还小。
-				throw jc::ArgumentException();
+				throw std::invalid_argument{ "buf_size 不能小于 element_size。" };
 			}
 
 			if (buf_size % element_size != 0)
 			{
-				// 数组中必须包含整数个单元。
-				throw jc::ArgumentException();
+				throw std::invalid_argument{ "数组中必须包含整数个单元。" };
 			}
 			#pragma endregion
 

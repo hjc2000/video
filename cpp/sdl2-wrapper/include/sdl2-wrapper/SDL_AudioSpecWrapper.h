@@ -31,7 +31,7 @@ namespace video
 
 		SDL_AudioSpec *&WrappedObj() override
 		{
-			throw jc::NotSupportedException();
+			throw std::runtime_error{ "不支持的操作" };
 		}
 		SDL_AudioSpec *WrappedObj() const override
 		{

@@ -5,7 +5,7 @@ jc::MemoryStream::MemoryStream(int32_t max_size)
 {
 	if (max_size <= 0)
 	{
-		throw jc::ArgumentException();
+		throw std::invalid_argument{ "max_size 不能小于等于 0。" };
 	}
 
 	_buffer_size = max_size;
@@ -36,7 +36,7 @@ void jc::MemoryStream::SetLength(int64_t value)
 {
 	if (value > _buffer_size)
 	{
-		throw jc::ArgumentException();
+		throw std::invalid_argument{ "value 不能大于缓冲区大小。" };
 	}
 
 	_length = value;
@@ -86,7 +86,7 @@ void jc::MemoryStream::Write(uint8_t const *buffer, int32_t offset, int32_t coun
 
 	if (count > AvaliableToWrite())
 	{
-		throw jc::BufferOverflowException();
+		throw std::overflow_error{ "缓冲区剩余空间无法接受这么多数据" };
 	}
 
 	std::copy(
@@ -119,7 +119,7 @@ void jc::MemoryStream::SetPosition(int64_t value)
 {
 	if (_position > _length)
 	{
-		throw ArgumentException();
+		throw std::invalid_argument{ "value 不能流的长度。" };
 	}
 
 	_position = value;

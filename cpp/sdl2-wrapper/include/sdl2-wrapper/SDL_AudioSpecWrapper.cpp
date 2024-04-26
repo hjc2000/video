@@ -54,7 +54,7 @@ AVRational video::SDL_AudioSpecWrapper::TimeBase() const
 
 void video::SDL_AudioSpecWrapper::SetTimeBase(AVRational value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 AVSampleFormat video::SDL_AudioSpecWrapper::SampleFormat() const

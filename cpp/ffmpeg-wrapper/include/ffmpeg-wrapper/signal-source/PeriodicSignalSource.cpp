@@ -24,7 +24,7 @@ double video::PeriodicSignalSource::sample()
 
 void video::PeriodicSignalSource::SetSampleRate(int value)
 {
-	throw jc::NotSupportedException("不支持设置采样率。请重新构造一个 PeriodicSignalSource");
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 AVRational video::PeriodicSignalSource::TimeBase() const
@@ -34,7 +34,7 @@ AVRational video::PeriodicSignalSource::TimeBase() const
 
 void video::PeriodicSignalSource::SetTimeBase(AVRational value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 AVSampleFormat video::PeriodicSignalSource::SampleFormat()
@@ -44,7 +44,7 @@ AVSampleFormat video::PeriodicSignalSource::SampleFormat()
 
 void video::PeriodicSignalSource::SetSampleFormat(AVSampleFormat value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 AVChannelLayout video::PeriodicSignalSource::ChannelLayout() const

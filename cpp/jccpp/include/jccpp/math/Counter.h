@@ -48,7 +48,7 @@ namespace jc
 		{
 			if (max_value == 0)
 			{
-				throw jc::ArgumentException("计数的最大值不允许 == 0");
+				throw std::invalid_argument{ "计数的最大值不允许 == 0" };
 			}
 
 			_max_value = max_value;

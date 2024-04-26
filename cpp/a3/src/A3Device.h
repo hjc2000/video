@@ -414,7 +414,7 @@ public:
 	{
 		if (GetChipInfo()._hal_service != service_transform)
 		{
-			throw jc::NotSupportedException();
+			throw std::runtime_error{ "不支持的操作" };
 		}
 
 		SetModulatorParam(modulator_param);

@@ -34,7 +34,7 @@ std::string ToString(chip_status status)
 		}
 	default:
 		{
-			throw jc::ArgumentException();
+			throw std::invalid_argument{ "未知的非法参数" };
 		}
 	}
 }

@@ -62,8 +62,7 @@ namespace jc
 			using namespace std;
 			if (max == 0)
 			{
-				cout << CODE_POS_STR << "最大值不能是 0" << endl;
-				throw jc::ArgumentException();
+				throw std::invalid_argument{ CODE_POS_STR + std::string{"最大值不能是 0"} };
 			}
 
 			_max = max;

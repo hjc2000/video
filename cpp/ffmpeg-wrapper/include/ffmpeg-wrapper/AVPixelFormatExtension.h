@@ -28,11 +28,11 @@ namespace video
 				}
 			case AVPixelFormat::AV_PIX_FMT_YUV420P10LE:
 				{
-					throw jc::NotImplementedException(CODE_POS_STR + std::string("暂不支持"));
+					throw std::runtime_error{ CODE_POS_STR + std::string("暂不支持") };
 				}
 			default:
 				{
-					throw jc::NotImplementedException(CODE_POS_STR + std::string("暂不支持"));
+					throw std::runtime_error{ CODE_POS_STR + std::string("暂不支持") };
 				}
 			}
 		}
@@ -55,7 +55,7 @@ namespace video
 				}
 			default:
 				{
-					throw jc::NotImplementedException(CODE_POS_STR + std::string("暂不支持"));
+					throw std::runtime_error{ CODE_POS_STR + std::string("暂不支持") };
 				}
 			}
 		}

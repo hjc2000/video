@@ -2,6 +2,7 @@
 #include<algorithm>
 #include<jccpp/Exception.h>
 #include<jccpp/container/IList.h>
+#include<stdexcept>
 #include<vector>
 
 template<typename T>
@@ -52,7 +53,7 @@ public:
 	{
 		if (index < 0 || index > int(_vector.size()))
 		{
-			throw jc::OutOfRangeException();
+			throw std::out_of_range{ "索引超出范围" };
 		}
 
 		_vector.insert(_vector.begin() + index, item);
@@ -74,7 +75,7 @@ public:
 	{
 		if (index < 0 || index >= (int)_vector.size())
 		{
-			throw jc::OutOfRangeException();
+			throw std::out_of_range{ "索引超出范围" };
 		}
 
 		_vector.erase(_vector.begin() + index);
@@ -110,7 +111,7 @@ public:
 	{
 		if (index < 0 || index >= int(_vector.size()))
 		{
-			throw jc::OutOfRangeException();
+			throw std::out_of_range{ "索引超出范围" };
 		}
 
 		return _vector[index];
@@ -120,7 +121,7 @@ public:
 	{
 		if (index < 0 || index >= int(_vector.size()))
 		{
-			throw jc::OutOfRangeException();
+			throw std::out_of_range{ "索引超出范围" };
 		}
 
 		return _vector[index];

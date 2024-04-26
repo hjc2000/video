@@ -50,7 +50,7 @@ AVRational video::SDL_DefaultAudioDevice::TimeBase() const
 
 void video::SDL_DefaultAudioDevice::SetTimeBase(AVRational value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 AVSampleFormat video::SDL_DefaultAudioDevice::SampleFormat() const
@@ -60,7 +60,7 @@ AVSampleFormat video::SDL_DefaultAudioDevice::SampleFormat() const
 
 void video::SDL_DefaultAudioDevice::SetSampleFormat(AVSampleFormat value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 int video::SDL_DefaultAudioDevice::SampleRate() const
@@ -70,7 +70,7 @@ int video::SDL_DefaultAudioDevice::SampleRate() const
 
 void video::SDL_DefaultAudioDevice::SetSampleRate(int value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 AVChannelLayout video::SDL_DefaultAudioDevice::ChannelLayout() const
@@ -80,7 +80,7 @@ AVChannelLayout video::SDL_DefaultAudioDevice::ChannelLayout() const
 
 void video::SDL_DefaultAudioDevice::SetChannelLayout(AVChannelLayout value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 int video::SDL_DefaultAudioDevice::SampleCount() const
@@ -90,7 +90,7 @@ int video::SDL_DefaultAudioDevice::SampleCount() const
 
 void video::SDL_DefaultAudioDevice::SetSampleCount(int value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 Json video::SDL_DefaultAudioDevice::ToJson()

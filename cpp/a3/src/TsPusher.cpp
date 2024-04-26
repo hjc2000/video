@@ -17,22 +17,22 @@ bool TsPusher::CanSeek()
 
 int64_t TsPusher::Length()
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 void TsPusher::SetLength(int64_t value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 int32_t TsPusher::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 void TsPusher::Flush()
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 void TsPusher::Close()
@@ -45,10 +45,10 @@ void TsPusher::Close()
 
 int64_t TsPusher::Position()
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
 
 void TsPusher::SetPosition(int64_t value)
 {
-	throw jc::NotSupportedException();
+	throw std::runtime_error{ "不支持的操作" };
 }
