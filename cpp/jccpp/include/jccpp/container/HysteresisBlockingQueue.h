@@ -111,7 +111,7 @@ namespace jc
 
 			if (_disposed)
 			{
-				throw jc::ObjectDisposedException();
+				throw std::runtime_error{ "此对象已释放，不能再使用" };
 			}
 
 			_queue_avaliable_cv.wait(l, [&]()
@@ -141,7 +141,7 @@ namespace jc
 
 			if (_disposed)
 			{
-				throw jc::ObjectDisposedException();
+				throw std::runtime_error{ "此对象已释放，不能再使用" };
 			}
 
 			_queue_avaliable_cv.wait(l, [&]()
@@ -178,7 +178,7 @@ namespace jc
 
 			if (_disposed)
 			{
-				throw jc::ObjectDisposedException();
+				throw std::runtime_error{ "此对象已释放，不能再使用" };
 			}
 
 			if (_flushed)
@@ -211,7 +211,7 @@ namespace jc
 		{
 			if (_disposed)
 			{
-				throw jc::ObjectDisposedException();
+				throw std::runtime_error{ "此对象已释放，不能再使用" };
 			}
 
 			_queue.Clear();
@@ -228,7 +228,7 @@ namespace jc
 		{
 			if (_disposed)
 			{
-				throw jc::ObjectDisposedException();
+				throw std::runtime_error{ "此对象已释放，不能再使用" };
 			}
 
 			_flushed = true;

@@ -134,7 +134,7 @@ void video::JoinedTsStream::AddSource(shared_ptr<ITSPacketSource> source)
 {
 	if (source == nullptr)
 	{
-		throw jc::ArgumentNullException();
+		throw std::invalid_argument{ "source 不能是空指针" };
 	}
 
 	_ts_packet_source_queue.Enqueue(source);

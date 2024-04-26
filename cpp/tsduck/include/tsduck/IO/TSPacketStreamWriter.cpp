@@ -8,7 +8,7 @@ TSPacketStreamWriter::TSPacketStreamWriter(shared_ptr<Stream> out_stream)
 {
 	if (out_stream == nullptr)
 	{
-		throw jc::ArgumentNullException("不允许传入空指针");
+		throw std::invalid_argument{ "out_stream 不能是空指针" };
 	}
 
 	_out_stream = out_stream;

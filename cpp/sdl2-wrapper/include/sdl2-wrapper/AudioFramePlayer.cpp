@@ -89,19 +89,15 @@ void AudioFramePlayer::SendFrame(AVFrameWrapper *frame)
 {
 	if (_disposed)
 	{
-		throw jc::ObjectDisposedException();
+		throw std::runtime_error{ "此对象已释放，不能再使用" };
 	}
 
 	try
 	{
 		_swr_pipe->SendFrame(frame);
 	}
-	catch (jc::InvalidOperationException &)
+	catch (std::exception &e)
 	{
-		cout << CODE_POS_STR << "帧队列已冲洗，无法送入帧" << endl;
-	}
-	catch (jc::ObjectDisposedException &)
-	{
-		cout << CODE_POS_STR << "帧队列已释放，无法送入帧" << endl;
+		cout << CODE_POS_STR << e.what() << endl;
 	}
 }

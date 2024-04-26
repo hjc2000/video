@@ -50,7 +50,7 @@ int32_t jc::MemoryStream::Read(uint8_t *buffer, int32_t offset, int32_t count)
 {
 	if (!buffer)
 	{
-		throw jc::ArgumentNullException();
+		throw std::invalid_argument{ "buffer 不能是空指针" };
 	}
 
 	if (AvaliableToRead() == 0)
@@ -81,7 +81,7 @@ void jc::MemoryStream::Write(uint8_t const *buffer, int32_t offset, int32_t coun
 {
 	if (!buffer)
 	{
-		throw jc::ArgumentNullException();
+		throw std::invalid_argument{ "buffer 不能是空指针" };
 	}
 
 	if (count > AvaliableToWrite())
