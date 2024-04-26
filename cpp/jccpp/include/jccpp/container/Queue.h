@@ -23,10 +23,10 @@ public:
 	}
 
 	/// <summary>
-	///		退队。如果队列为空，会抛出 InvalidOperationException
+	///		退队
 	/// </summary>
 	/// <returns></returns>
-	/// <exception cref="InvalidOperationException"></exception>
+	/// <exception cref="underflow_error">如果队列为空，会抛出 underflow_error</exception>
 	T Dequeue() override
 	{
 		if (_queue.empty())
