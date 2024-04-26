@@ -63,6 +63,10 @@ public:
 	void Cancel();
 };
 
+/// <summary>
+///		任务取消后抛出此异常。
+///		* 建议抛出，因为这有助于帮助后台线程停下来。
+/// </summary>
 class TaskCanceledException :public std::runtime_error
 {
 public:
