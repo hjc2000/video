@@ -46,9 +46,9 @@ void jc::MemoryStream::SetLength(int64_t value)
 	}
 }
 
-int32_t jc::MemoryStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
+int32_t jc::MemoryStream::Read(uint8_t *buffer, int32_t offset, int32_t count)
 {
-	if (!dst_buf)
+	if (!buffer)
 	{
 		throw jc::ArgumentNullException();
 	}
@@ -71,15 +71,15 @@ int32_t jc::MemoryStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
 	std::copy(
 		_buffer + _position,
 		_buffer + _position + have_read,
-		dst_buf + offset
+		buffer + offset
 	);
 
 	return have_read;
 }
 
-void jc::MemoryStream::Write(uint8_t const *src_buf, int32_t offset, int32_t count)
+void jc::MemoryStream::Write(uint8_t const *buffer, int32_t offset, int32_t count)
 {
-	if (!src_buf)
+	if (!buffer)
 	{
 		throw jc::ArgumentNullException();
 	}
@@ -90,8 +90,8 @@ void jc::MemoryStream::Write(uint8_t const *src_buf, int32_t offset, int32_t cou
 	}
 
 	std::copy(
-		src_buf + offset,
-		src_buf + offset + count,
+		buffer + offset,
+		buffer + offset + count,
 		_buffer + _position
 	);
 

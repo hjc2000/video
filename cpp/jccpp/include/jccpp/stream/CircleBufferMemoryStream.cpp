@@ -39,7 +39,7 @@ void CircleBufferMemoryStream::AddTail(int32_t value)
 ///		以非环绕方式读取。从 _head 处开始读取 count 个字节，不管会不会超出边界。
 ///		所以调用本方法前需要检查。
 /// </summary>
-/// <param name="dst_buf"></param>
+/// <param name="buffer"></param>
 /// <param name="offset"></param>
 /// <param name="count"></param>
 /// <returns></returns>
@@ -60,7 +60,7 @@ int32_t CircleBufferMemoryStream::ReadNonCircular(uint8_t *dst_buf, int32_t offs
 ///		以非环绕方式写入。从 _tail 的位置开始往后写入 count 个字节，不会管会不会超出边界，
 ///		所以调用本方法前需要检查。
 /// </summary>
-/// <param name="src_buf"></param>
+/// <param name="buffer"></param>
 /// <param name="offset"></param>
 /// <param name="count"></param>
 void CircleBufferMemoryStream::WriteNonCircular(uint8_t const *src_buf, int32_t offset, int32_t count)
@@ -75,7 +75,7 @@ void CircleBufferMemoryStream::WriteNonCircular(uint8_t const *src_buf, int32_t 
 	_is_full = _head == _tail;
 }
 
-int32_t CircleBufferMemoryStream::BufferAvailableSpace() const
+int32_t CircleBufferMemoryStream::AvailableToWrite() const
 {
 	if (_is_full)
 	{
@@ -125,7 +125,6 @@ int64_t CircleBufferMemoryStream::Length()
 
 	if (_tail >= _head)
 	{
-		// 非满的情况下如果头尾指针重叠了，则缓冲区为空。
 		return _tail - _head;
 	}
 
@@ -147,7 +146,7 @@ void CircleBufferMemoryStream::SetLength(int64_t value)
 	throw jc::NotSupportedException();
 }
 
-int32_t CircleBufferMemoryStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
+int32_t CircleBufferMemoryStream::Read(uint8_t *buffer, int32_t offset, int32_t count)
 {
 	if (BufferEmpty())
 	{
@@ -160,29 +159,29 @@ int32_t CircleBufferMemoryStream::Read(uint8_t *dst_buf, int32_t offset, int32_t
 	if (_tail > _head)
 	{
 		// 尾指针在头指针的后面，当前缓冲区内的数据没有环绕，所以读取时也不需要环绕
-		return ReadNonCircular(dst_buf, offset, count);
+		return ReadNonCircular(buffer, offset, count);
 	}
 
 	/* 执行到这里说明 _tail <= _head，此时缓冲区内的数据发生了环绕，所以读取时有可能要环绕。*/
 	if (count <= _buffer_size - _head)
 	{
 		// 此时从 _head 到缓冲区末尾的数据刚好够本次读取，不用环绕
-		return ReadNonCircular(dst_buf, offset, count);
+		return ReadNonCircular(buffer, offset, count);
 	}
 
 	// 执行到这里说明要环绕了。
 	// 先读取从 _head 开始到缓冲区末尾的数据
-	int64_t have_read = ReadNonCircular(dst_buf, offset, _buffer_size - _head);
+	int64_t have_read = ReadNonCircular(buffer, offset, _buffer_size - _head);
 	count -= have_read;
 
 	// 此时变成非环绕模式了，因为 _head 已经变成 0 了。
-	have_read += ReadNonCircular(dst_buf, offset + have_read, count);
+	have_read += ReadNonCircular(buffer, offset + have_read, count);
 	return have_read;
 }
 
-void CircleBufferMemoryStream::Write(uint8_t const *src_buf, int32_t offset, int32_t count)
+void CircleBufferMemoryStream::Write(uint8_t const *buffer, int32_t offset, int32_t count)
 {
-	if (BufferAvailableSpace() < count)
+	if (AvailableToWrite() < count)
 	{
 		throw jc::BufferOverflowException();
 	}
@@ -190,16 +189,16 @@ void CircleBufferMemoryStream::Write(uint8_t const *src_buf, int32_t offset, int
 	if (count <= _buffer_size - _tail)
 	{
 		// _tail 到缓冲区尾部的空间刚好够写入，此时不需要环绕
-		WriteNonCircular(src_buf, offset, count);
+		WriteNonCircular(buffer, offset, count);
 		return;
 	}
 
 	// 需要环绕
 	int64_t first_chunk_size = _buffer_size - _tail;
-	WriteNonCircular(src_buf, offset, first_chunk_size);
+	WriteNonCircular(buffer, offset, first_chunk_size);
 
 	// 此时 _tail 已经变成 0 了，继续用 WriteNonCircular 写入剩余的字节
-	WriteNonCircular(src_buf, offset + first_chunk_size, count - first_chunk_size);
+	WriteNonCircular(buffer, offset + first_chunk_size, count - first_chunk_size);
 }
 
 int64_t CircleBufferMemoryStream::Position()

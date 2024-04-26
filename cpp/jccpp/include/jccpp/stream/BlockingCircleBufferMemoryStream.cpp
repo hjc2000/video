@@ -66,10 +66,10 @@ void jc::BlockingCircleBufferMemoryStream::Write(uint8_t const *src_buf, int32_t
 				return true;
 			}
 
-			return _mstream.BufferAvailableSpace();
+			return _mstream.AvailableToWrite();
 		});
 
-		int64_t should_write = std::min(_mstream.BufferAvailableSpace(), count);
+		int64_t should_write = std::min(_mstream.AvailableToWrite(), count);
 		_mstream.Write(src_buf, offset, should_write);
 		offset += should_write;
 		count -= should_write;

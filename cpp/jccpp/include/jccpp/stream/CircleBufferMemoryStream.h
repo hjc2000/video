@@ -12,10 +12,6 @@ namespace jc
 	/// </summary>
 	class CircleBufferMemoryStream :public Stream
 	{
-	public:
-		CircleBufferMemoryStream(int32_t size);
-		~CircleBufferMemoryStream();
-
 	private:
 		uint8_t *_buffer;
 		int32_t _buffer_size;
@@ -45,6 +41,9 @@ namespace jc
 		void WriteNonCircular(uint8_t const *src_buf, int32_t offset, int32_t count);
 
 	public:
+		CircleBufferMemoryStream(int32_t size);
+		~CircleBufferMemoryStream();
+
 		/// <summary>
 		///		返回内部缓冲区的大小，也是此流所能达到的最大长度。
 		/// </summary>
@@ -67,7 +66,7 @@ namespace jc
 		///		本流内部的缓冲区剩余空间。单位：字节。
 		/// </summary>
 		/// <returns></returns>
-		int32_t BufferAvailableSpace() const;
+		int32_t AvailableToWrite() const;
 
 		/// <summary>
 		///		清空流
@@ -91,8 +90,8 @@ namespace jc
 		/// <param name="value"></param>
 		void SetLength(int64_t value) override;
 
-		int32_t Read(uint8_t *dst_buf, int32_t offset, int32_t count) override;
-		void Write(uint8_t const *src_buf, int32_t offset, int32_t count) override;
+		int32_t Read(uint8_t *buffer, int32_t offset, int32_t count) override;
+		void Write(uint8_t const *buffer, int32_t offset, int32_t count) override;
 
 		/// <summary>
 		///		调用后什么都不会发生。这是一个空的函数。

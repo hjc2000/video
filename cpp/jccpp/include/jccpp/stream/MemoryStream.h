@@ -5,6 +5,7 @@ namespace jc
 {
 	class MemoryStream :public Stream
 	{
+	private:
 		int32_t _buffer_size;
 		uint8_t *_buffer;
 
@@ -80,32 +81,32 @@ namespace jc
 
 		int64_t Length() override;
 
-		/**
-		 * @brief
-		 * @param value
-		 * @exception ArgumentException：value 大于 max_size 会抛出异常。
-		*/
+		/// <summary>
+		///		
+		/// </summary>
+		/// <param name="value"></param>
+		/// <exception cref="ArgumentException">value 大于 max_size 会抛出异常。</exception>
 		void SetLength(int64_t value) override;
 
-		/**
-		 * @brief
-		 * @param dst_buf
-		 * @param offset
-		 * @param count
-		 * @return
-		 * @exception ArgumentNullException dst_buf 为空指针会抛出异常。
-		*/
-		int32_t Read(uint8_t *dst_buf, int32_t offset, int32_t count) override;
+		/// <summary>
+		///		
+		/// </summary>
+		/// <param name="buffer"></param>
+		/// <param name="offset"></param>
+		/// <param name="count"></param>
+		/// <returns></returns>
+		/// <exception cref="ArgumentNullException">buffer 为空指针会抛出异常。</exception>
+		int32_t Read(uint8_t *buffer, int32_t offset, int32_t count) override;
 
-		/**
-		 * @brief
-		 * @param src_buf
-		 * @param offset
-		 * @param count
-		 * @exception ArgumentNullException：data_buf 为空指针会抛出异常。
-		 * @exception BufferOverflowException：count 大于 AvaliableToWrite 时会抛出异常。
-		*/
-		void Write(uint8_t const *src_buf, int32_t offset, int32_t count) override;
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="buffer"></param>
+		/// <param name="offset"></param>
+		/// <param name="count"></param>
+		/// <exception cref="ArgumentNullException">data_buf 为空指针会抛出异常。</exception>
+		/// <exception cref="BufferOverflowException">count 大于 AvaliableToWrite 时会抛出异常。</exception>
+		void Write(uint8_t const *buffer, int32_t offset, int32_t count) override;
 
 		void Flush() override;
 
