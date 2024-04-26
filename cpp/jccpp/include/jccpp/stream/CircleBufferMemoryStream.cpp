@@ -43,12 +43,12 @@ void CircleBufferMemoryStream::AddTail(int32_t value)
 /// <param name="offset"></param>
 /// <param name="count"></param>
 /// <returns></returns>
-int32_t CircleBufferMemoryStream::ReadNonCircular(uint8_t *dst_buf, int32_t offset, int32_t count)
+int32_t CircleBufferMemoryStream::ReadNonCircular(uint8_t *buffer, int32_t offset, int32_t count)
 {
 	std::copy(
 		_buffer + _head,
 		_buffer + _head + count,
-		dst_buf + offset
+		buffer + offset
 	);
 
 	AddHead(count);
@@ -63,11 +63,11 @@ int32_t CircleBufferMemoryStream::ReadNonCircular(uint8_t *dst_buf, int32_t offs
 /// <param name="buffer"></param>
 /// <param name="offset"></param>
 /// <param name="count"></param>
-void CircleBufferMemoryStream::WriteNonCircular(uint8_t const *src_buf, int32_t offset, int32_t count)
+void CircleBufferMemoryStream::WriteNonCircular(uint8_t const *buffer, int32_t offset, int32_t count)
 {
 	std::copy(
-		src_buf + offset,
-		src_buf + offset + count,
+		buffer + offset,
+		buffer + offset + count,
 		_buffer + _tail
 	);
 

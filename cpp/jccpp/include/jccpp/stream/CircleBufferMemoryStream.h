@@ -37,8 +37,8 @@ namespace jc
 
 		void AddHead(int32_t value);
 		void AddTail(int32_t value);
-		int32_t ReadNonCircular(uint8_t *dst_buf, int32_t offset, int32_t count);
-		void WriteNonCircular(uint8_t const *src_buf, int32_t offset, int32_t count);
+		int32_t ReadNonCircular(uint8_t *buffer, int32_t offset, int32_t count);
+		void WriteNonCircular(uint8_t const *buffer, int32_t offset, int32_t count);
 
 	public:
 		CircleBufferMemoryStream(int32_t size);
