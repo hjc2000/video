@@ -23,7 +23,7 @@ public:
 	///		当前流读到尽头时就会触发此回调。需要调用 AppendStream 方法添加流到本对象，
 	///		否则 JoinedStream 将结束。
 	/// </summary>
-	std::function<void()> _stream_end_callback;
+	std::function<void()> _on_current_stream_end;
 
 	/// <summary>
 	///		向本对象中追加流。如果不追加，在队列中所有流都读完后，JoinedStream 也将结束。
@@ -39,8 +39,8 @@ public:
 	int64_t Length() override;
 	void SetLength(int64_t value) override;
 
-	int32_t Read(uint8_t *dst_buf, int32_t offset, int32_t count) override;
-	void Write(uint8_t const *src_buf, int32_t offset, int32_t count) override;
+	int32_t Read(uint8_t *buffer, int32_t offset, int32_t count) override;
+	void Write(uint8_t const *buffer, int32_t offset, int32_t count) override;
 
 	void Flush() override;
 	void Close() override;

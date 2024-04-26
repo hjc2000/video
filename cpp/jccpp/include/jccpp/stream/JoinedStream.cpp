@@ -7,9 +7,9 @@
 /// <returns></returns>
 shared_ptr<Stream> JoinedStream::TrtGetStream()
 {
-	if (_stream_queue.Count() == 0 && _stream_end_callback)
+	if (_stream_queue.Count() == 0 && _on_current_stream_end)
 	{
-		_stream_end_callback();
+		_on_current_stream_end();
 	}
 
 	try
@@ -52,7 +52,7 @@ void JoinedStream::SetLength(int64_t value)
 	throw jc::NotSupportedException();
 }
 
-int32_t JoinedStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
+int32_t JoinedStream::Read(uint8_t *buffer, int32_t offset, int32_t count)
 {
 	while (1)
 	{
@@ -66,7 +66,7 @@ int32_t JoinedStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
 		}
 
 		// 执行到这里说明 _current_stream 不为空
-		int32_t have_read = _current_stream->Read(dst_buf, offset, count);
+		int32_t have_read = _current_stream->Read(buffer, offset, count);
 		if (have_read == 0)
 		{
 			// 此流结束了，应该尝试获取下一个流继续读取
@@ -79,7 +79,7 @@ int32_t JoinedStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
 	}
 }
 
-void JoinedStream::Write(uint8_t const *src_buf, int32_t offset, int32_t count)
+void JoinedStream::Write(uint8_t const *buffer, int32_t offset, int32_t count)
 {
 	throw jc::NotSupportedException();
 }

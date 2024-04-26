@@ -94,7 +94,7 @@ int main()
 	{
 		shared_ptr<FileStream> fstream = FileStream::Open("mux_out.ts");
 		JoinedStream jstream;
-		jstream._stream_end_callback = [&]()
+		jstream._on_current_stream_end = [&]()
 		{
 			fstream->SetPosition(0);
 			jstream.AppendStream(fstream);

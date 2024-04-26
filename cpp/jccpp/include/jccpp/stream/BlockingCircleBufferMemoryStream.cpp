@@ -27,7 +27,7 @@ void jc::BlockingCircleBufferMemoryStream::SetLength(int64_t value)
 	_mstream.SetLength(value);
 }
 
-int32_t jc::BlockingCircleBufferMemoryStream::Read(uint8_t *dst_buf, int32_t offset, int32_t count)
+int32_t jc::BlockingCircleBufferMemoryStream::Read(uint8_t *buffer, int32_t offset, int32_t count)
 {
 	std::unique_lock l(_lock);
 
@@ -42,12 +42,12 @@ int32_t jc::BlockingCircleBufferMemoryStream::Read(uint8_t *dst_buf, int32_t off
 		return _mstream.Length();
 	});
 
-	int64_t have_read = _mstream.Read(dst_buf, offset, count);
+	int64_t have_read = _mstream.Read(buffer, offset, count);
 	_buffer_consumed.notify_all();
 	return have_read;
 }
 
-void jc::BlockingCircleBufferMemoryStream::Write(uint8_t const *src_buf, int32_t offset, int32_t count)
+void jc::BlockingCircleBufferMemoryStream::Write(uint8_t const *buffer, int32_t offset, int32_t count)
 {
 	std::unique_lock l(_lock);
 
@@ -70,7 +70,7 @@ void jc::BlockingCircleBufferMemoryStream::Write(uint8_t const *src_buf, int32_t
 		});
 
 		int64_t should_write = std::min(_mstream.AvailableToWrite(), count);
-		_mstream.Write(src_buf, offset, should_write);
+		_mstream.Write(buffer, offset, should_write);
 		offset += should_write;
 		count -= should_write;
 		_buffer_avaliable.notify_all();

@@ -11,18 +11,6 @@ namespace jc
 	/// </summary>
 	class BlockingCircleBufferMemoryStream :public Stream
 	{
-	public:
-		BlockingCircleBufferMemoryStream(int32_t max_size) :
-			_mstream(max_size)
-		{
-
-		}
-
-		~BlockingCircleBufferMemoryStream()
-		{
-			Close();
-		}
-
 	private:
 		CircleBufferMemoryStream _mstream;
 		std::mutex _lock;
@@ -39,14 +27,25 @@ namespace jc
 		std::condition_variable _buffer_avaliable;
 
 	public:
+		BlockingCircleBufferMemoryStream(int32_t max_size) :
+			_mstream(max_size)
+		{
+
+		}
+
+		~BlockingCircleBufferMemoryStream()
+		{
+			Close();
+		}
+
 		#pragma region 通过 Stream 继承
 		bool CanRead() override;
 		bool CanWrite() override;
 		bool CanSeek() override;
 		int64_t Length() override;
 		void SetLength(int64_t value) override;
-		int32_t Read(uint8_t *dst_buf, int32_t offset, int32_t count) override;
-		void Write(uint8_t const *src_buf, int32_t offset, int32_t count) override;
+		int32_t Read(uint8_t *buffer, int32_t offset, int32_t count) override;
+		void Write(uint8_t const *buffer, int32_t offset, int32_t count) override;
 		void Flush() override;
 
 		/// <summary>
