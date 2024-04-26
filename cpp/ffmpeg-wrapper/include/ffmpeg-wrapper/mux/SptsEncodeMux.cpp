@@ -103,7 +103,7 @@ void test_SptsEncodeMux()
 			in_fmt_ctx->DumpFormat();
 			return in_fmt_ctx;
 		}
-		catch (jc::InvalidOperationException &e)
+		catch (std::runtime_error &e)
 		{
 
 		}

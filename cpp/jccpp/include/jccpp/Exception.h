@@ -34,15 +34,4 @@ namespace jc
 	private:
 		std::string _msg;
 	};
-
-	/// <summary>
-	///		非法操作
-	/// </summary>
-	class InvalidOperationException :public Exception
-	{
-	public:
-		InvalidOperationException() :Exception(__func__) {}
-		InvalidOperationException(const char *msg) :Exception(std::string(__func__) + " " + msg) {}
-		InvalidOperationException(std::string msg) :Exception(std::string(__func__) + " " + msg) {}
-	};
 }

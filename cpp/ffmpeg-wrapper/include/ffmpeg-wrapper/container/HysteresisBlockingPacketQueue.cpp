@@ -29,7 +29,7 @@ int HysteresisBlockingPacketQueue::ReadPacket(AVPacketWrapper &packet)
 		packet = _packet_queue.Dequeue();
 		return 0;
 	}
-	catch (jc::InvalidOperationException &)
+	catch (std::exception &e)
 	{
 		return (int)ErrorCode::eof;
 	}

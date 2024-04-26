@@ -57,7 +57,7 @@ uint32_t video::VideoFramePlayer::SDL_TimerCallbackHandler(uint32_t interval_in_
 	{
 		frame = _frame_queue.Dequeue();
 	}
-	catch (jc::InvalidOperationException &)
+	catch (std::runtime_error &e)
 	{
 		cout << CODE_POS_STR << "_frame_queue.Dequeue() 抛出异常。停止 SDL 定时器" << endl;
 		return 0;

@@ -7,7 +7,7 @@ void video::TSPacketQueue::SendPacket(ts::TSPacket *packet)
 {
 	if (_flushed)
 	{
-		throw jc::InvalidOperationException("已经冲洗了，禁止再送入包");
+		throw std::runtime_error("已经冲洗了，禁止再送入包");
 	}
 
 	if (packet == nullptr)

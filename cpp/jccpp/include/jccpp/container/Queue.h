@@ -31,7 +31,7 @@ public:
 	{
 		if (_queue.empty())
 		{
-			throw jc::InvalidOperationException("队列当前为空，无法退队");
+			throw std::runtime_error("队列当前为空，无法退队");
 		}
 
 		T ret = _queue.front();

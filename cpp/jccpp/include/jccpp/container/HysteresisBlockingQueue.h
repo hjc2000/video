@@ -183,7 +183,7 @@ namespace jc
 
 			if (_flushed)
 			{
-				throw jc::InvalidOperationException();
+				throw std::runtime_error{ "队列已冲洗，无法入队。" };
 			}
 
 			_queue_consumed_cv.wait(l, [&]()
