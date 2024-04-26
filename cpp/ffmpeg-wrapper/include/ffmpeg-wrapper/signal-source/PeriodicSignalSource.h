@@ -31,7 +31,7 @@ namespace video
 			t = t - multiple * signal_period();
 			if (t < 0)
 			{
-				throw jc::Exception("下溢");
+				throw std::underflow_error{ "下溢" };
 			}
 
 			return t;

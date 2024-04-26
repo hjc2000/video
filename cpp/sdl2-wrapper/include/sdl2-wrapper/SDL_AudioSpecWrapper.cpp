@@ -1,6 +1,5 @@
 #include "sdl2-wrapper/SDL_AudioSpecWrapper.h"
 #include<ffmpeg-wrapper/AVChannelLayoutExtension.h>
-#include<jccpp/Exception.h>
 
 video::SDL_AudioSpecWrapper::SDL_AudioSpecWrapper(IAudioFrameInfoCollection const &infos)
 {

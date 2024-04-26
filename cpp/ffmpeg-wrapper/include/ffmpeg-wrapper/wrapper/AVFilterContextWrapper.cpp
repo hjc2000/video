@@ -1,4 +1,6 @@
 #include"ffmpeg-wrapper/wrapper/AVFilterContextWrapper.h"
+#include<ffmpeg-wrapper/AVToString.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 
 using namespace video;
 using namespace std;
@@ -26,9 +28,10 @@ AVFilterContextWrapper &AVFilterContextWrapper::operator=(AVFilterContextWrapper
 
 void AVFilterContextWrapper::link(AVFilterContextWrapper &next_filter)
 {
-	if (avfilter_link(_wrapped_obj, 0, next_filter, 0))
+	int ret = avfilter_link(_wrapped_obj, 0, next_filter, 0);
+	if (ret)
 	{
-		throw jc::Exception();
+		throw std::runtime_error{ ToString((ErrorCode)ret) };
 	}
 }
 

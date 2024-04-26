@@ -1,6 +1,5 @@
 #pragma once
 #include<functional>
-#include<jccpp/Exception.h>
 #include<jccpp/container/SafeQueue.h>
 #include<jccpp/stream/Stream.h>
 #include<memory>

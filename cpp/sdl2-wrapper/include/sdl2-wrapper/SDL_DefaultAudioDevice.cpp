@@ -12,7 +12,7 @@ SDL_DefaultAudioDevice::SDL_DefaultAudioDevice()
 	if (device_id < 0)
 	{
 		string error_str = "Could not open audio: " + string(SDL_GetError());
-		throw jc::Exception(error_str);
+		throw std::runtime_error(error_str);
 	}
 }
 

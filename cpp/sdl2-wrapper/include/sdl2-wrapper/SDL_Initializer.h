@@ -3,7 +3,6 @@
 #include<exception>
 #include<functional>
 #include<iostream>
-#include<jccpp/Exception.h>
 #include<jccpp/Wrapper.h>
 #include<jccpp/define.h>
 #include<mutex>

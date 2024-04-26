@@ -25,15 +25,13 @@ SwrContextWrapper::SwrContextWrapper(
 
 	if (ret < 0)
 	{
-		cout << CODE_POS_STR << "构造重采样器并设置参数失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"构造重采样器并设置参数失败"} };
 	}
 
 	ret = swr_init(_wrapped_obj);
 	if (ret < 0)
 	{
-		cout << CODE_POS_STR << "初始化重采样器失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"初始化重采样器失败"} };
 	}
 }
 
@@ -61,7 +59,7 @@ void video::SwrContextWrapper::SendFrame(AVFrameWrapper *input_frame)
 		int ret = convert(nullptr, 0, nullptr, 0);
 		if (ret < 0)
 		{
-			throw jc::Exception();
+			throw std::runtime_error{ ToString((ErrorCode)ret) };
 		}
 
 		return;
@@ -82,7 +80,7 @@ void video::SwrContextWrapper::SendFrame(AVFrameWrapper *input_frame)
 	int ret = convert(nullptr, 0, (*input_frame)->extended_data, input_frame->SampleCount());
 	if (ret < 0)
 	{
-		throw jc::Exception();
+		throw std::runtime_error{ ToString((ErrorCode)ret) };
 	}
 }
 
@@ -186,7 +184,7 @@ int SwrContextWrapper::read_frame_in_non_flushing_mode(AVFrameWrapper &output_fr
 		int count = convert(nullptr, &output_frame);
 		if (count != output_frame.SampleCount())
 		{
-			throw jc::Exception("read_frame 没有填充完整的 output_frame，本来认为这里一定会填充完整的帧的。");
+			throw std::runtime_error("read_frame 没有填充完整的 output_frame，本来认为这里一定会填充完整的帧的。");
 		}
 
 		return 0;
@@ -240,7 +238,7 @@ int SwrContextWrapper::get_out_nb_samples(int in_nb_samples)
 	int samples = swr_get_out_samples(_wrapped_obj, in_nb_samples);
 	if (samples < 0)
 	{
-		throw jc::Exception("swr_get_out_samples 函数出错");
+		throw std::runtime_error("swr_get_out_samples 函数出错");
 	}
 
 	return samples;

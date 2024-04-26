@@ -3,7 +3,6 @@
 #include<bit>
 #include<cstdint>
 #include <execution>
-#include<jccpp/Exception.h>
 
 namespace jc
 {

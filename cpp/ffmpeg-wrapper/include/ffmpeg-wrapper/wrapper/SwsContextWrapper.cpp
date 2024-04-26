@@ -26,8 +26,7 @@ video::SwsContextWrapper::SwsContextWrapper(
 
 	if (!_wrapped_obj)
 	{
-		cout << CODE_POS_STR << "构造 sws 失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"构造 sws 失败"} };
 	}
 }
 
@@ -36,8 +35,7 @@ void video::SwsContextWrapper::SendFrame(AVFrameWrapper *frame)
 	std::lock_guard l(_lock);
 	if (_flushed)
 	{
-		cout << CODE_POS_STR << "冲洗后不允许再送入" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"冲洗后不允许再送入"} };
 	}
 
 	if (!frame)
@@ -48,8 +46,7 @@ void video::SwsContextWrapper::SendFrame(AVFrameWrapper *frame)
 
 	if (_out_frame_avaliable)
 	{
-		cout << CODE_POS_STR << "还没有读出帧却继续送入帧" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"还没有读出帧却继续送入帧"} };
 	}
 
 	_in_frame = *frame;

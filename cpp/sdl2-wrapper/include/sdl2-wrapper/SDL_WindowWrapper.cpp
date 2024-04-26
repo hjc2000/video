@@ -11,7 +11,7 @@ video::SDL_WindowWrapper::SDL_WindowWrapper(
 	_wrapped_obj = ::SDL_CreateWindow(title, x, y, w, h, flags);
 	if (!_wrapped_obj)
 	{
-		throw jc::Exception(SDL_GetError());
+		throw std::runtime_error(SDL_GetError());
 	}
 }
 
@@ -51,7 +51,7 @@ SDL_Rect video::SDL_WindowWrapper::GetScreenSize()
 	int ret = SDL_GetDisplayBounds(0, &screenRect);
 	if (ret < 0)
 	{
-		throw jc::Exception(SDL_GetError());
+		throw std::runtime_error(SDL_GetError());
 	}
 
 	return screenRect;

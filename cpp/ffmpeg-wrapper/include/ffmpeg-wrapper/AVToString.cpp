@@ -1,5 +1,4 @@
 #include<ffmpeg-wrapper/AVToString.h>
-#include<jccpp/Exception.h>
 #include<ffmpeg-wrapper/base_include.h>
 
 std::string ToString(AVRational value)
@@ -17,8 +16,7 @@ std::string ToString(AVPixelFormat pixel_format)
 	const char *name = ::av_get_pix_fmt_name(pixel_format);
 	if (name == nullptr)
 	{
-		cout << CODE_POS_STR << "未知的像素格式" << endl;
-		throw jc::Exception();
+		throw std::invalid_argument{ CODE_POS_STR + std::string{"未知的像素格式"} };
 	}
 
 	return name;

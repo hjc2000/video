@@ -228,7 +228,7 @@ private:
 		nres = SendCmdAndGetResult(RFMIXER_CMD_START, HALREG_TRANSFORM_CNTL);
 		if (nres < 0)
 		{
-			throw jc::Exception();
+			throw std::runtime_error("");
 		}
 	}
 
@@ -445,7 +445,7 @@ public:
 		nres = SendCmdAndGetResult(BC_START, HALREG_TRANSFORM_CNTL);
 		if (nres < 0)
 		{
-			throw jc::Exception();
+			throw std::runtime_error("");
 		}
 
 		if (GetChipInfo()._status != chip_status_running)
@@ -803,7 +803,7 @@ public:
 			}
 		default:
 			{
-				throw jc::Exception("不支持的制式");
+				throw std::runtime_error("不支持的制式");
 			}
 		}
 
@@ -891,7 +891,7 @@ public:
 			}
 		default:
 			{
-				throw jc::Exception("不支持的制式");
+				throw std::runtime_error("不支持的制式");
 			}
 		}
 	}

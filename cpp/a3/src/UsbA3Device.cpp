@@ -1,7 +1,5 @@
 #include"UsbA3Device.h"
 #include<functional>
-#include<jccpp/Exception.h>
-#include<memory>
 #include<memory>
 #include<stdio.h>
 #include<vector>

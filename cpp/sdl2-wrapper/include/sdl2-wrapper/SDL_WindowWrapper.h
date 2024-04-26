@@ -1,5 +1,4 @@
 #pragma once
-#include<jccpp/Exception.h>
 #include<jccpp/Wrapper.h>
 #include<sdl2-wrapper/SDL_Initializer.h>
 #include<sdl2-wrapper/SDL_RendererWrapper.h>

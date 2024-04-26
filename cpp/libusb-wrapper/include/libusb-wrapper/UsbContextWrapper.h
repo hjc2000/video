@@ -1,5 +1,4 @@
 #pragma once
-#include<jccpp/Exception.h>
 #include<jccpp/Wrapper.h>
 #include<jccpp/define.h>
 #include<libusb-1.0/libusb.h>
@@ -21,8 +20,7 @@ namespace libusb
 			int result = libusb_init(&_wrapped_obj);
 			if (result < 0)
 			{
-				cout << CODE_POS_STR << "初始化失败" << endl;
-				throw jc::Exception();
+				throw std::runtime_error("初始化失败");
 			}
 
 			libusb_set_debug(_wrapped_obj, LIBUSB_LOG_LEVEL_INFO);

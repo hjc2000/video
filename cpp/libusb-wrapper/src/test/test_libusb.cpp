@@ -31,7 +31,7 @@ void test_libusb()
 			cout << std::format("{:x}  {:x}", desc.idVendor, desc.idProduct) << endl;
 		}
 	}
-	catch (jc::Exception &ex)
+	catch (std::runtime_error &ex)
 	{
 		cout << ex.what() << endl;
 	}

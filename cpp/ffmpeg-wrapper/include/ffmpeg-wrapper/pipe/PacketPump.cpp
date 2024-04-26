@@ -38,8 +38,7 @@ void video::PacketPump::Pump(shared_ptr<CancellationToken> cancellation_token)
 			}
 		default:
 			{
-				cout << CODE_POS_STR << "read_packet 返回了未知错误代码。" << endl;
-				throw jc::Exception();
+				throw std::runtime_error{ "read_packet 返回了未知错误代码。" };
 			}
 		}
 	}

@@ -2,7 +2,6 @@
 #include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
 #include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
 #include<ffmpeg-wrapper/pipe/interface/IDecoderPipe.h>
-#include<jccpp/Exception.h>
 #include<jccpp/TaskCompletionSignal.h>
 #include<jccpp/define.h>
 

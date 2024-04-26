@@ -53,7 +53,7 @@ libusb_device_descriptor UsbDeviceWrapper::GetDescriptor()
 	int ret = libusb_get_device_descriptor(_wrapped_obj, &desc);
 	if (ret < 0)
 	{
-		throw jc::Exception(UsbErrorCodeToString(ret));
+		throw std::runtime_error(UsbErrorCodeToString(ret));
 	}
 
 	return desc;
@@ -71,7 +71,7 @@ void UsbDeviceWrapper::Open()
 	int ret = libusb_open(_wrapped_obj, &handle);
 	if (ret)
 	{
-		throw jc::Exception(UsbErrorCodeToString(ret));
+		throw std::runtime_error(UsbErrorCodeToString(ret));
 	}
 
 	_device_handle = shared_ptr<libusb_device_handle>{
@@ -124,8 +124,7 @@ uint16_t UsbDeviceWrapper::GetStatus()
 
 	if (have_read != sizeof(status_buf))
 	{
-		cout << CODE_POS_STR << "获取状态信息失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error("获取状态信息失败");
 	}
 
 	return (status_buf[1] << 8) | status_buf[0];
@@ -146,8 +145,7 @@ int UsbDeviceWrapper::BulkTransfer(uint8_t endpoint, uint8_t *data, int length, 
 
 	if (ret < 0)
 	{
-		cout << CODE_POS_STR << UsbErrorCodeToString(ret) << endl;
-		throw jc::Exception();
+		throw std::runtime_error(UsbErrorCodeToString(ret));
 	}
 
 	return transferred;
@@ -208,6 +206,6 @@ void UsbDeviceWrapper::ClaimInterface(int interface_number)
 	if (ret)
 	{
 		cout << CODE_POS_STR << UsbErrorCodeToString(ret) << endl;
-		throw jc::Exception(UsbErrorCodeToString(ret));
+		throw std::runtime_error(UsbErrorCodeToString(ret));
 	}
 }

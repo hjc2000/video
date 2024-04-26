@@ -38,8 +38,7 @@ void video::OutputFormat::WriteHeader(AVDictionary **dic)
 	int ret = ::avformat_write_header(WrappedObj(), dic);
 	if (ret < 0)
 	{
-		cout << "write_header 方法异常：" << ToString((ErrorCode)ret) << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ ToString((ErrorCode)ret) };
 	}
 }
 
@@ -48,8 +47,7 @@ void video::OutputFormat::WriteTrailer()
 	int ret = ::av_write_trailer(WrappedObj());
 	if (ret < 0)
 	{
-		cout << CODE_POS_STR << ToString((ErrorCode)ret) << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ ToString((ErrorCode)ret) };
 	}
 }
 
@@ -77,8 +75,7 @@ AVStreamWrapper video::OutputFormat::CreateNewStream()
 	::AVStream *ps = avformat_new_stream(WrappedObj(), nullptr);
 	if (ps == nullptr)
 	{
-		cout << CODE_POS_STR << "创建流失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ "创建流失败" };
 	}
 
 	return AVStreamWrapper(ps);
@@ -90,8 +87,7 @@ AVStreamWrapper video::OutputFormat::CreateNewStream(shared_ptr<AVCodecContextWr
 	AVStream *ps = avformat_new_stream(WrappedObj(), nullptr);
 	if (ps == nullptr)
 	{
-		cout << CODE_POS_STR << "创建流失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ "创建流失败" };
 	}
 
 	AVStreamWrapper stream{ ps };
@@ -100,8 +96,7 @@ AVStreamWrapper video::OutputFormat::CreateNewStream(shared_ptr<AVCodecContextWr
 	int ret = stream.SetCodecParams(codec_ctx);
 	if (ret < 0)
 	{
-		cout << CODE_POS_STR << "设置流参数失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ "设置流参数失败" };
 	}
 
 	return stream;

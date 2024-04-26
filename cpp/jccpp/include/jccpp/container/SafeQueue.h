@@ -2,6 +2,7 @@
 #include<atomic>
 #include<jccpp/container/IQueue.h>
 #include<mutex>
+#include<stdexcept>
 
 /// <summary>
 ///		线程安全的队列，加了互斥锁。

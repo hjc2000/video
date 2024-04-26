@@ -73,7 +73,7 @@ void video::ThreadDecoderPipe::DecodeThreadFunc()
 			}
 		default:
 			{
-				throw jc::Exception(ToString((ErrorCode)read_packet_result));
+				throw std::runtime_error(ToString((ErrorCode)read_packet_result));
 			}
 		}
 	}

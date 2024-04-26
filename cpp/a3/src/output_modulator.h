@@ -6,8 +6,8 @@
 #include<format>
 #include<halreg_define.h>
 #include<halreg_output.h>
-#include<jccpp/Exception.h>
 #include<memory>
+#include<stdexcept>
 #include<tool_helpful.h>
 #include<vatek_base.h>
 
@@ -1347,7 +1347,7 @@ public:
 			}
 		default:
 			{
-				throw jc::Exception("不支持的制式");
+				throw std::runtime_error("不支持的制式");
 			}
 		}
 

@@ -11,7 +11,7 @@ void DotNetStream::CheckError()
 		* 反正此 DotNetStream 对象已经无法使用了。没有必要将详细的错误信息
 		* 从 C# 传递到 C++。C# 的错误就在 C# 中处理。
 		*/
-		throw jc::Exception();
+		throw std::runtime_error{ ".NET 侧发生了错误" };
 	}
 }
 

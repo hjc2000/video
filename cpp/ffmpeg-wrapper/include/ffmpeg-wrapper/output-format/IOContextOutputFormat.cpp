@@ -9,8 +9,7 @@ IOContextOutputFormat::IOContextOutputFormat(std::string url, shared_ptr<AVIOCon
 	int ret = avformat_alloc_output_context2(&_wrapped_obj, nullptr, nullptr, url.c_str());
 	if (ret < 0)
 	{
-		std::cerr << CODE_POS_STR << ToString((ErrorCode)ret) << std::endl;
-		throw jc::Exception();
+		throw std::runtime_error{ ToString((ErrorCode)ret) };
 	}
 
 	_wrapped_obj->flags |= AVFMT_FLAG_CUSTOM_IO;

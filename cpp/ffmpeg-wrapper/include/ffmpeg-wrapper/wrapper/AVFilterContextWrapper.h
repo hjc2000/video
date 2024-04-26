@@ -1,6 +1,5 @@
 #pragma once
 #include<ffmpeg-wrapper/base_include.h>
-#include<jccpp/Exception.h>
 #include<jccpp/Wrapper.h>
 
 namespace video

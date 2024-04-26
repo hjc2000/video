@@ -25,7 +25,7 @@ std::string Point24Solver::OperatorToString(uint8_t op)
 		}
 	}
 
-	throw jc::Exception();
+	throw std::invalid_argument("未知的运算符");
 }
 
 std::string Point24Solver::GetExpression(std::array<uint8_t, 4> const &nums, std::vector<uint8_t> const &operators)
@@ -73,8 +73,7 @@ double Point24Solver::CalculateExpression(std::string const &expr)
 	double result = te_interp(expr.c_str(), &error);
 	if (error)
 	{
-		cerr << "非法表达式：" << expr << endl;
-		throw jc::Exception();
+		throw std::runtime_error("非法表达式：" + expr);
 	}
 
 	return result;

@@ -8,7 +8,6 @@
 #include<ffmpeg-wrapper/wrapper/AVPacketWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 #include<format>
-#include<jccpp/Exception.h>
 
 using namespace video;
 
@@ -19,7 +18,7 @@ AVCodecContextWrapper::AVCodecContextWrapper(AVCodec const *codec)
 	_wrapped_obj = ::avcodec_alloc_context3(codec);
 	if (!_wrapped_obj)
 	{
-		throw jc::Exception("AVCodecContextWrapper create(AVCodecWrapper codec) 失败");
+		throw std::runtime_error("AVCodecContextWrapper create(AVCodecWrapper codec) 失败");
 	}
 }
 
@@ -62,8 +61,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 	auto codec = AVCodecExtention::find_encoder_by_name(encoder_name);
 	if (!codec)
 	{
-		cout << CODE_POS_STR << "查找编码器失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"查找编码器失败"} };
 	}
 
 	shared_ptr<AVCodecContextWrapper> ctx{ new AVCodecContextWrapper{codec,} };
@@ -97,8 +95,7 @@ shared_ptr<AVCodecContextWrapper> AVCodecContextWrapper::CreateEncoder(
 	auto codec = AVCodecExtention::find_encoder_by_name(encoder_name);
 	if (!codec)
 	{
-		cout << CODE_POS_STR << "查找编码器失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"查找编码器失败"} };
 	}
 
 	shared_ptr<AVCodecContextWrapper> ctx{ new AVCodecContextWrapper{codec} };
@@ -134,7 +131,7 @@ void AVCodecContextWrapper::SetCodecParams(AVCodecParameters *param)
 	int ret = ::avcodec_parameters_to_context(_wrapped_obj, param);
 	if (ret < 0)
 	{
-		throw jc::Exception("AVCodecContextWrapper::set_encoder_param");
+		throw std::runtime_error("AVCodecContextWrapper::set_encoder_param");
 	}
 }
 
@@ -143,8 +140,7 @@ void AVCodecContextWrapper::Open(AVDictionary **dic)
 	int ret = ::avcodec_open2(_wrapped_obj, _codec, dic);
 	if (ret)
 	{
-		std::cerr << CODE_POS_STR << "打开编解码器失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"打开编解码器失败"} };
 	}
 }
 
@@ -177,8 +173,7 @@ void AVCodecContextWrapper::SendFrame(AVFrameWrapper *frame)
 			ToString((ErrorCode)ret)
 		);
 
-		cout << CODE_POS_STR << msg << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + msg };
 	}
 }
 

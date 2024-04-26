@@ -8,8 +8,7 @@ AVPacketWrapper::AVPacketWrapper()
 	_wrapped_obj = av_packet_alloc();
 	if (_wrapped_obj == nullptr)
 	{
-		cout << CODE_POS_STR << "构造 AVPacket 失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"构造 AVPacket 失败"} };
 	}
 }
 
@@ -44,8 +43,7 @@ void AVPacketWrapper::ref(const AVPacketWrapper &other)
 	int ret = av_packet_ref(_wrapped_obj, other._wrapped_obj);
 	if (ret < 0)
 	{
-		cout << CODE_POS_STR << "引用 AVPacket 失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"引用 AVPacket 失败"} };
 	}
 }
 

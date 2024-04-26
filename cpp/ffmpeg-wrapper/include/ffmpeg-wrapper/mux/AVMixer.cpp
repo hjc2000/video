@@ -9,8 +9,7 @@ void video::AVMixer::CreateNewVideoStream()
 	AVStreamWrapper stream = _input_video_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_VIDEO);
 	if (stream.IsNull())
 	{
-		cout << "没有视频流" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ "没有视频流" };
 	}
 
 	_src_video_stream_index = stream.Index();
@@ -26,8 +25,7 @@ void video::AVMixer::CreateNewAudioStream()
 	AVStreamWrapper stream = _input_audio_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_AUDIO);
 	if (stream.IsNull())
 	{
-		cout << "没有音频流" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ "没有音频流" };
 	}
 
 	_src_audio_stream_index = stream.Index();

@@ -1,5 +1,4 @@
 #pragma once
-#include<jccpp/Exception.h>
 #include<jccpp/stream/Stream.h>
 
 /// <summary>

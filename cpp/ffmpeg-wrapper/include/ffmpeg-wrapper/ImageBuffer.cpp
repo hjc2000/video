@@ -13,7 +13,7 @@ video::ImageBuffer::ImageBuffer(int width, int height, AVPixelFormat format, int
 
 	if (_size < 0)
 	{
-		throw jc::Exception("ImageBuffer");
+		throw std::runtime_error{ ToString((ErrorCode)_size) };
 	}
 }
 

@@ -62,7 +62,7 @@ shared_ptr<SDL_TextureWrapper> SDL_RendererWrapper::CreateTexture(
 	{
 		auto error = SDL_GetError();
 		cout << error << endl;
-		throw jc::Exception(error);
+		throw std::runtime_error(error);
 	}
 
 	return shared_ptr<SDL_TextureWrapper>{ new SDL_TextureWrapper{ tex }};

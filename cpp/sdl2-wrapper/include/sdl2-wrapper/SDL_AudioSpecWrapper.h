@@ -1,7 +1,6 @@
 #pragma once
 #include<SDL.h>
 #include<ffmpeg-wrapper/info-collection/IAudioFrameInfoCollection.h>
-#include<jccpp/Exception.h>
 #include<jccpp/Json.h>
 #include<jccpp/Wrapper.h>
 #include<sstream>

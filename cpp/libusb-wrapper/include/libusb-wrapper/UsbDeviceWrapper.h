@@ -1,6 +1,5 @@
 #pragma once
 #include<iostream>
-#include<jccpp/Exception.h>
 #include<jccpp/Wrapper.h>
 #include<jccpp/container/List.h>
 #include<jccpp/define.h>

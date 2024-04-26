@@ -18,8 +18,7 @@ video::InputFormat::InputFormat(std::string url)
 	int ret = ::avformat_open_input(&_wrapped_obj, url.c_str(), nullptr, nullptr);
 	if (ret < 0)
 	{
-		cout << CODE_POS_STR << "打开输入格式失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"打开输入格式失败"} };
 	}
 
 	FindStreamInfo();
@@ -32,8 +31,7 @@ video::InputFormat::InputFormat(std::string url, AVInputFormat const *fmt, AVDic
 	int ret = ::avformat_open_input(&_wrapped_obj, url.c_str(), fmt, options);
 	if (ret < 0)
 	{
-		cout << CODE_POS_STR << "打开输入格式失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"打开输入格式失败"} };
 	}
 
 	FindStreamInfo();
@@ -49,8 +47,7 @@ video::InputFormat::InputFormat(shared_ptr<AVIOContextWrapper> io_context)
 	int ret = ::avformat_open_input(&_wrapped_obj, nullptr, nullptr, nullptr);
 	if (ret < 0)
 	{
-		cout << CODE_POS_STR << "打开输入格式失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"打开输入格式失败"} };
 	}
 
 	FindStreamInfo();
@@ -85,8 +82,7 @@ void InputFormat::FindStreamInfo(::AVDictionary **options)
 	int ret = ::avformat_find_stream_info(_wrapped_obj, options);
 	if (ret < 0)
 	{
-		cerr << CODE_POS_STR << "查找流信息失败" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"查找流信息失败"} };
 	}
 }
 
@@ -137,8 +133,7 @@ AVStreamWrapper InputFormat::GetStream(int stream_index)
 	// 强制转换为无符号类型就不用判断 stream_index >= 0 了
 	if ((uint32_t)stream_index >= _wrapped_obj->nb_streams)
 	{
-		cerr << CODE_POS_STR << "流索引号超出范围" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"流索引号超出范围"} };
 	}
 
 	return AVStreamWrapper{ _wrapped_obj->streams[stream_index] };

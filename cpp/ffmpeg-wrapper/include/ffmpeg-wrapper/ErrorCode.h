@@ -1,11 +1,10 @@
 #pragma once
-#include<ffmpeg-wrapper/base_include.h>
-#include<string>
-#include<iostream>
-#include<sstream>
 #include<exception>
-#include<jccpp/Exception.h>
+#include<ffmpeg-wrapper/base_include.h>
+#include<iostream>
 #include<jccpp/define.h>
+#include<sstream>
+#include<string>
 
 using std::exception;
 using std::string;

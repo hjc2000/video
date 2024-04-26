@@ -1,5 +1,6 @@
 #include "ffmpeg-wrapper/wrapper/AVFrameWrapper.h"
 #include<ffmpeg-wrapper/AVToString.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/ImageBuffer.h>
 #include<ffmpeg-wrapper/base_include.h>
 
@@ -95,8 +96,7 @@ void AVFrameWrapper::get_buffer(int align)
 	int ret = ::av_frame_get_buffer(_wrapped_obj, align);
 	if (ret < 0)
 	{
-		cout << CODE_POS_STR << "av_frame_get_buffer 失败。" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"av_frame_get_buffer 失败。"} };
 	}
 }
 
@@ -120,8 +120,7 @@ void AVFrameWrapper::make_writable()
 	int ret = ::av_frame_make_writable(_wrapped_obj);
 	if (ret)
 	{
-		cout << CODE_POS_STR << "av_frame_make_writable 失败。" << endl;
-		throw jc::Exception();
+		throw std::runtime_error{ CODE_POS_STR + std::string{"av_frame_make_writable 失败。"} };
 	}
 }
 
@@ -150,7 +149,7 @@ void AVFrameWrapper::CopyAudioDataToBuffer(uint8_t *buffer, int len)
 {
 	if (IsPlanar())
 	{
-		throw jc::Exception("本帧是平面类型，写入缓冲区的音频数据不允许是平面类型");
+		throw std::runtime_error("本帧是平面类型，写入缓冲区的音频数据不允许是平面类型");
 	}
 
 	memcpy(buffer, _wrapped_obj->extended_data[0], len);
@@ -231,7 +230,7 @@ void video::AVFrameWrapper::CopyAudioFrameToStream(Stream &stream)
 	int buf_size = audio_data_size();
 	if (buf_size < 0)
 	{
-		throw jc::Exception();
+		throw std::runtime_error{ video::ToString((ErrorCode)buf_size) };
 	}
 
 	stream.Write(_wrapped_obj->extended_data[0], 0, buf_size);

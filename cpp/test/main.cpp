@@ -23,7 +23,7 @@ int main(void)
 		//test_libusb();
 		return 0;
 	}
-	catch (jc::Exception &e)
+	catch (std::runtime_error &e)
 	{
 		cout << e.what() << endl;
 		throw;

@@ -1,7 +1,6 @@
 #pragma once
 #include<condition_variable>
 #include<iostream>
-#include<jccpp/Exception.h>
 #include<jccpp/IDisposable.h>
 #include<jccpp/container/IQueue.h>
 #include<jccpp/container/SafeQueue.h>

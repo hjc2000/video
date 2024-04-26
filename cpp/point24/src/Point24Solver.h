@@ -3,7 +3,6 @@
 #include<array>
 #include<format>
 #include<iostream>
-#include<jccpp/Exception.h>
 #include<jccpp/math/BaseConverter.h>
 #include<math.h>
 #include<string>

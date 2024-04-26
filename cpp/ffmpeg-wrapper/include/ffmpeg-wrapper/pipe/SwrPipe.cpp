@@ -34,8 +34,7 @@ void video::SwrPipe::read_and_send_frame()
 			}
 		default:
 			{
-				// 未知错误
-				throw jc::Exception();
+				throw std::runtime_error{ ToString((ErrorCode)ret) };
 			}
 		}
 	}
@@ -65,8 +64,7 @@ void video::SwrPipe::read_and_send_frame_without_flushing_consumer()
 			}
 		default:
 			{
-				// 未知错误
-				throw jc::Exception();
+				throw std::runtime_error{ ToString((ErrorCode)ret) };
 			}
 		}
 	}

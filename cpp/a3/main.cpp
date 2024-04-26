@@ -6,7 +6,6 @@
 #include<UsbA3Device.h>
 #include<chrono>
 #include<iostream>
-#include<jccpp/Exception.h>
 #include<jccpp/TaskCompletionSignal.h>
 #include<jccpp/stream/FileStream.h>
 #include<jccpp/stream/JoinedStream.h>
@@ -104,7 +103,7 @@ int main()
 		{
 			jstream.CopyTo(&ts_pusher, cancel_copying_stream_token);
 		}
-		catch (jc::Exception &e)
+		catch (std::runtime_error &e)
 		{
 			cout << CODE_POS_STR << e.what() << endl;
 			cout << "线程退出" << endl;
@@ -157,7 +156,7 @@ int main()
 				std::this_thread::sleep_for(std::chrono::seconds(1));
 			}
 		}
-		catch (jc::Exception &e)
+		catch (std::runtime_error &e)
 		{
 			cout << CODE_POS_STR << e.what() << endl;
 			cout << "线程退出" << endl;

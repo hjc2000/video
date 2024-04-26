@@ -96,13 +96,13 @@ void PidChanger::SetPidMap(std::map<uint16_t, uint16_t> const &pid_map)
 	auto it = pid_map.find(0);
 	if (it != pid_map.end())
 	{
-		throw jc::Exception("不允许更改 PAT 的 PID。");
+		throw std::runtime_error("不允许更改 PAT 的 PID。");
 	}
 
 	it = pid_map.find(0x11);
 	if (it != pid_map.end())
 	{
-		throw jc::Exception("不允许更改 SDT 的 PID。");
+		throw std::runtime_error("不允许更改 SDT 的 PID。");
 	}
 
 	_pid_map = pid_map;

@@ -1,6 +1,5 @@
 #include "Timer.h"
 #include<iostream>
-#include<jccpp/Exception.h>
 
 using namespace video;
 using namespace std;
@@ -65,7 +64,7 @@ void video::Timer::Start(uint32_t interval_in_milliseconds)
 
 	if (!_callback)
 	{
-		throw jc::Exception("Timer 的回调函数不能为空");
+		throw std::runtime_error("Timer 的回调函数不能为空");
 	}
 
 	// 到这里，条件满足了，可以开启定时器了。

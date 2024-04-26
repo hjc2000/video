@@ -74,8 +74,7 @@ void DecoderPipe::read_and_send_frame()
 			}
 		default:
 			{
-				// 未知错误
-				throw jc::Exception();
+				throw std::runtime_error{ ToString((ErrorCode)ret) };
 			}
 		}
 	}
@@ -106,8 +105,7 @@ void DecoderPipe::FlushDecoderButNotFlushConsumers()
 			}
 		default:
 			{
-				// 未知错误
-				throw jc::Exception();
+				throw std::runtime_error{ ToString((ErrorCode)ret) };
 			}
 		}
 	}

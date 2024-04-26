@@ -237,7 +237,7 @@ public:// 方法
 
 		if (length_read != 8)
 		{
-			throw jc::Exception();
+			throw std::runtime_error("");
 		}
 	}
 

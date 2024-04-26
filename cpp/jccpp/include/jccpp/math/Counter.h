@@ -1,5 +1,5 @@
 #pragma once
-#include<jccpp/Exception.h>
+#include<stdexcept>
 #include<stdint.h>
 
 namespace jc

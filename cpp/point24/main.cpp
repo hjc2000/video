@@ -10,7 +10,7 @@ int main(void)
 		cout << Point24Solver::Solve(nums) << endl;
 		return 0;
 	}
-	catch (jc::Exception &e)
+	catch (std::runtime_error &e)
 	{
 		cout << e.what() << endl;
 		throw;

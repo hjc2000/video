@@ -3,7 +3,6 @@
 #include<ffmpeg-wrapper/output-format/FileOutputFormat.h>
 
 using namespace video;
-using namespace jc;
 using namespace std;
 
 int main(int argc, char **argv)
@@ -77,7 +76,7 @@ int main(int argc, char **argv)
 
 		return -1;
 	}
-	catch (jc::Exception &e)
+	catch (std::runtime_error &e)
 	{
 		cerr << e.what() << endl;
 		throw;

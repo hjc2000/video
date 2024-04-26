@@ -1,9 +1,8 @@
 #ifndef _CHIP_DEFINE_
 #define _CHIP_DEFINE_
 
-#include<vatek_base.h>
 #include<halservice_base.h>
-#include<jccpp/Exception.h>
+#include<vatek_base.h>
 
 /**
  * @ingroup core_props

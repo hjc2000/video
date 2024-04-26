@@ -3,7 +3,6 @@
 #include<ffmpeg-wrapper/output-format/FileOutputFormat.h>
 
 using namespace video;
-using namespace jc;
 
 int main(int argc, char **argv)
 {
@@ -52,7 +51,7 @@ int main(int argc, char **argv)
 		std::cout << "花费的时间: " << duration.count() << "ms" << std::endl;
 		return 0;
 	}
-	catch (jc::Exception &e)
+	catch (std::runtime_error &e)
 	{
 		cout << e.what() << endl;
 		throw;

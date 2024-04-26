@@ -3,7 +3,6 @@
 #include<chrono>
 #include<functional>
 #include<iostream>
-#include<jccpp/Exception.h>
 #include<map>
 #include<memory>
 #include<mutex>
@@ -64,10 +63,10 @@ public:
 	void Cancel();
 };
 
-class TaskCanceledException :public jc::Exception
+class TaskCanceledException :public std::runtime_error
 {
 public:
-	TaskCanceledException() :Exception(__func__) {}
-	TaskCanceledException(const char *msg) :Exception(std::string(__func__) + " " + msg) {}
-	TaskCanceledException(std::string msg) :Exception(std::string(__func__) + " " + msg) {}
+	TaskCanceledException() :runtime_error(__func__) {}
+	TaskCanceledException(const char *msg) :runtime_error(std::string(__func__) + " " + msg) {}
+	TaskCanceledException(std::string msg) :runtime_error(std::string(__func__) + " " + msg) {}
 };
