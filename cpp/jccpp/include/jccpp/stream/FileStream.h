@@ -10,6 +10,12 @@ private:
 		_url = url;
 	}
 
+	string _url;
+	shared_ptr<fstream> _fs;
+	bool _can_read = false;
+	bool _can_write = false;
+	bool _can_seek = false;
+
 public:
 	~FileStream()
 	{
@@ -17,7 +23,6 @@ public:
 	}
 
 	#pragma region 工厂函数
-public:
 	/// <summary>
 	///		用创建模式打开文件流，无论如何都会创建一个新的空白文件。会覆盖旧的。
 	/// </summary>
@@ -40,7 +45,6 @@ public:
 	static shared_ptr<FileStream> OpenReadOnly(std::string url);
 	#pragma endregion
 
-public:
 	bool CanRead() override;
 	bool CanWrite() override;
 	bool CanSeek() override;
@@ -56,11 +60,4 @@ public:
 
 	void Flush() override;
 	void Close() override;
-
-private:
-	string _url;
-	shared_ptr<fstream> _fs;
-	bool _can_read = false;
-	bool _can_write = false;
-	bool _can_seek = false;
 };
