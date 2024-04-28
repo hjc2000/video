@@ -36,6 +36,8 @@ public:
 	///		* 如果传进来的 url 不是文件，而是目录，会引发异常
 	/// </exception>
 	static shared_ptr<FileStream> Open(std::string url);
+
+	static shared_ptr<FileStream> OpenReadOnly(std::string url);
 	#pragma endregion
 
 public:

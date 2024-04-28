@@ -71,6 +71,36 @@ shared_ptr<FileStream> FileStream::Open(std::string url)
 	return fs;
 }
 
+shared_ptr<FileStream> FileStream::OpenReadOnly(std::string url)
+{
+	if (!filesystem::exists(url))
+	{
+		// 文件不存在
+		throw std::runtime_error(std::format("{} 文件 {} 不存在。", CODE_POS_STR, url));
+	}
+
+	if (filesystem::is_directory(url))
+	{
+		throw std::runtime_error(std::format("{} {} 不是一个文件，而是一个目录", CODE_POS_STR, url));
+	}
+
+	shared_ptr<FileStream> fs{ new FileStream{url} };
+	fs->_fs = shared_ptr<fstream>{ new fstream{
+		url,
+		ios_base::in | ios_base::binary
+	} };
+
+	if (fs->_fs->fail())
+	{
+		throw std::runtime_error(std::format("{} 打开 {} 失败。检查文件是不是只读的。", CODE_POS_STR, url));
+	}
+
+	fs->_can_read = true;
+	fs->_can_write = true;
+	fs->_can_seek = true;
+	return fs;
+}
+
 int64_t FileStream::Length()
 {
 	// 记录当前位置
