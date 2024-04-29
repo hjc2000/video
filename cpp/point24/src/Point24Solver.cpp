@@ -28,7 +28,10 @@ std::string Point24Solver::OperatorToString(uint8_t op)
 	throw std::invalid_argument("未知的运算符");
 }
 
-std::string Point24Solver::GetExpression(std::array<uint8_t, 4> const &nums, std::vector<uint8_t> const &operators)
+std::string Point24Solver::GetExpression(
+	std::array<uint8_t, 4> const &nums,
+	std::vector<uint8_t> const &operators
+)
 {
 	return std::format(
 		"{} {} {} {} {} {} {}",
