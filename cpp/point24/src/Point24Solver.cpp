@@ -1,5 +1,5 @@
 #include"Point24Solver.h"
-#include<tinyexpr.h>
+#include<jccpp/math/tinyexpr.h>
 
 using namespace std;
 
@@ -73,7 +73,7 @@ double Point24Solver::CalculateExpression(std::string const &expr)
 	double result = te_interp(expr.c_str(), &error);
 	if (error)
 	{
-		throw std::runtime_error("非法表达式：" + expr);
+		throw std::invalid_argument("非法表达式：" + expr);
 	}
 
 	return result;
