@@ -15,7 +15,7 @@ std::vector<uint8_t> jc::BaseConverter::ConvertBase(uint64_t num, uint8_t base)
 	return result;
 }
 
-uint64_t jc::BaseConverter::ToNumber(std::vector<uint8_t> num, uint8_t base)
+uint64_t jc::BaseConverter::ToNumber(std::vector<uint8_t> const &num, uint8_t base)
 {
 	uint64_t result = 0;
 	for (uint64_t i = 0; i < num.size(); i++)

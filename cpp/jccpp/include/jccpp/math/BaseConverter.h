@@ -28,7 +28,7 @@ namespace jc
 		/// <param name="num"></param>
 		/// <param name="base"></param>
 		/// <returns></returns>
-		static uint64_t ToNumber(std::vector<uint8_t> num, uint8_t base);
+		static uint64_t ToNumber(std::vector<uint8_t> const &num, uint8_t base);
 
 		/// <summary>
 		///		将整型转为 8421 BCD 码。每个码都独立放到一个字节中。虽然说每个码只需要 4 位，
