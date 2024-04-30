@@ -21,6 +21,11 @@ if(MSVC)
 	# add_link_options(/ignore:4099 /ignore:4006)
 endif()
 
+set(
+	platform "msys"
+	CACHE STRING 
+	"选择平台"
+)
 
 
 
