@@ -1,6 +1,7 @@
 ﻿{
 	"version": 3,
 	"configurePresets": [
+		// 所有平台的公共选项
 		{
 			"name": "options",
 			"hidden": true,
@@ -10,6 +11,10 @@
 		},
 
 
+
+
+
+		// windows 配置
 		{
 			"name": "windows-base",
 			"hidden": true,
@@ -21,7 +26,8 @@
 				"CMAKE_C_COMPILER": "C:/msys64/ucrt64/bin/gcc.exe",
 				"CMAKE_CXX_COMPILER": "C:/msys64/ucrt64/bin/g++.exe",
 				"CMAKE_C_FLAGS": "-Wall -Wextra -Wno-unused-parameter",
-				"CMAKE_CXX_FLAGS": "-Wall -Wextra -Wno-unused-parameter"
+				"CMAKE_CXX_FLAGS": "-Wall -Wextra -Wno-unused-parameter",
+				"platform": "msys"
 			},
 			"condition": {
 				"type": "equals",
@@ -79,10 +85,28 @@
 
 
 
+
+		// linux 配置
+		{
+			"name": "linux_base",
+			"hidden": true,
+			"inherits": "options",
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Linux"
+			},
+			"vendor": {
+				"microsoft.com/VisualStudioSettings/CMake/1.0": {
+					"intelliSenseMode": "linux-gcc-x64",
+					"sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
+				}
+			}
+		},
 		{
 			"name": "linux-debug",
 			"displayName": "Linux Debug",
-			"inherits": "options",
+			"inherits": "linux_base",
 			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/out/build/${presetName}",
 			"installDir": "${sourceDir}/out/install/${presetName}",
@@ -91,22 +115,12 @@
 				"CMAKE_C_COMPILER": "gcc",
 				"CMAKE_CXX_COMPILER": "g++",
 				"platform": "linux"
-			},
-			"condition": {
-				"type": "equals",
-				"lhs": "${hostSystemName}",
-				"rhs": "Linux"
-			},
-			"vendor": {
-				"microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-					"sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
-				}
 			}
 		},
 		{
 			"name": "linux-arm-debug",
 			"displayName": "Linux Arm Debug",
-			"inherits": "options",
+			"inherits": "linux_base",
 			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/out/build/${presetName}",
 			"installDir": "${sourceDir}/out/install/${presetName}",
@@ -115,16 +129,6 @@
 				"CMAKE_C_COMPILER": "$env{HOME}/install/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-linux-gnueabihf/bin/arm-none-linux-gnueabihf-gcc",
 				"CMAKE_CXX_COMPILER": "$env{HOME}/install/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-linux-gnueabihf/bin/arm-none-linux-gnueabihf-g++",
 				"platform": "arm-none-linux-gnueabihf"
-			},
-			"condition": {
-				"type": "equals",
-				"lhs": "${hostSystemName}",
-				"rhs": "Linux"
-			},
-			"vendor": {
-				"microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-					"sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
-				}
 			}
 		}
 	]
