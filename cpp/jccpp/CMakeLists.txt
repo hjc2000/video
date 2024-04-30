@@ -14,4 +14,4 @@ include(target_import_nlohmann_json)
 # 编译目标
 add_library(${ProjectName} SHARED)
 target_import_src(${ProjectName})
-target_import_nlohmann_json(${ProjectName})
+target_import_nlohmann_json(${ProjectName} PUBLIC)
