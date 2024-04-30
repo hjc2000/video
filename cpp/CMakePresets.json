@@ -1,24 +1,10 @@
 ﻿{
 	"version": 3,
 	"configurePresets": [
-		// 所有平台的公共选项
-		{
-			"name": "options",
-			"hidden": true,
-			"cacheVariables": {
-				"option_install_headers": true
-			}
-		},
-
-
-
-
-
 		// windows 配置
 		{
 			"name": "windows-base",
 			"hidden": true,
-			"inherits": "options",
 			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/out/build/${presetName}",
 			"installDir": "${sourceDir}/out/install/${presetName}",
@@ -91,7 +77,6 @@
 		{
 			"name": "linux_base",
 			"hidden": true,
-			"inherits": "options",
 			"condition": {
 				"type": "equals",
 				"lhs": "${hostSystemName}",
