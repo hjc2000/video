@@ -15,8 +15,8 @@ include(target_import_qt)
 add_executable(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
 target_compile_definitions(${ProjectName} PRIVATE Predefine_ResourceDir="${CMAKE_CURRENT_SOURCE_DIR}/资源")
 target_import_src(${ProjectName})
-target_import_boost_asio(${ProjectName})
-target_import_qt_core(${ProjectName})
+target_import_boost_asio(${ProjectName} PUBLIC)
+target_import_qt_core(${ProjectName} PUBLIC)
 target_link_libraries(${ProjectName} PUBLIC
     jccpp 
     tsduck 

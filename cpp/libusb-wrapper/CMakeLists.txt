@@ -14,5 +14,5 @@ include(target_import_libusb)
 # 定义生成规则
 add_library("${ProjectName}" SHARED)
 target_import_src(${ProjectName})
-target_import_libusb(${ProjectName})
+target_import_libusb(${ProjectName} PUBLIC)
 target_link_libraries(${ProjectName} PUBLIC jccpp)
