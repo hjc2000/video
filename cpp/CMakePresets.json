@@ -98,7 +98,7 @@
 				"rhs": "Linux"
 			},
 			"cacheVariables": {
-				"cpp_lib_build_scripts_path": "$env{cpp_lib_build_scripts_path}"
+				"cpp_lib_build_scripts_path": "$env{HOME}/cpp-lib-build-scripts"
 			},
 			"vendor": {
 				"microsoft.com/VisualStudioSettings/CMake/1.0": {
