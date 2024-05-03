@@ -3,7 +3,7 @@
 	"configurePresets": [
 		// windows 配置
 		{
-			"name": "windows-base",
+			"name": "windows_base",
 			"hidden": true,
 			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/out/build/${presetName}",
@@ -30,7 +30,7 @@
 		{
 			"name": "x64-debug",
 			"displayName": "x64 Debug",
-			"inherits": "windows-base",
+			"inherits": "windows_base",
 			"architecture": {
 				"value": "x64",
 				"strategy": "external"
@@ -50,7 +50,7 @@
 		{
 			"name": "x86-debug",
 			"displayName": "x86 Debug",
-			"inherits": "windows-base",
+			"inherits": "windows_base",
 			"architecture": {
 				"value": "x86",
 				"strategy": "external"
