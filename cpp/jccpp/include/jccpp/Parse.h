@@ -1,22 +1,30 @@
 #pragma once
-#include<jccpp/Exception.h>
+#include<stdexcept>
 #include<stdint.h>
 #include<string>
 
 template <typename TRet, typename TParam>
 TRet Parse(TParam param)
 {
-	throw jc::NotImplementedException();
+	throw std::runtime_error{ "此重载未实现" };
 }
 
-// 特化版本：从 std::string 解析为 int
+/// <summary>
+///		特化版本：从 std::string 解析为 int
+/// </summary>
+/// <param name="param"></param>
+/// <returns></returns>
 template <>
 int Parse<int, std::string>(std::string param)
 {
 	return std::stoi(param);
 }
 
-// 特化版本：从 std::string 解析为 double
+/// <summary>
+///		特化版本：从 std::string 解析为 double
+/// </summary>
+/// <param name="param"></param>
+/// <returns></returns>
 template <>
 double Parse<double, std::string>(std::string param)
 {
