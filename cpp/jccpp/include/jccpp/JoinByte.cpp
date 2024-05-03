@@ -1,4 +1,4 @@
-#include "jccpp/JoinByte.h"
+#include "JoinByte.h"
 
 uint16_t JoinByte(uint8_t high, uint8_t low)
 {
