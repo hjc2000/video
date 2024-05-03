@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 			if (option_video->count() + option_audio->count() != 1)
 			{
 				throw CLI::ParseError(
-					"必须且只能指定一个 --video 或 --audio 选项。",
+					"--video 和 --audio 这两个选项必须指定一个且只能指定一个。",
 					CLI::ExitCodes::ExtrasError
 				);
 			}
@@ -43,17 +43,15 @@ int main(int argc, char **argv)
 		// 解析命令行参数
 		CLI11_PARSE(app, argc, argv);
 
+		// 命令行解析完成，开始处理
 		shared_ptr<InputFormat> input_format{ new InputFormat{input_url} };
 		if (option_video->count())
 		{
+			// 使用了 --video 选项
 			AVStreamWrapper stream = input_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_VIDEO);
 			if (stream.IsNull())
 			{
-				cout << "false" << endl;
-			}
-			else
-			{
-				cout << "true" << endl;
+				return -1;
 			}
 
 			return 0;
@@ -61,14 +59,11 @@ int main(int argc, char **argv)
 
 		if (option_audio->count())
 		{
+			// 使用了 --audio 选项
 			AVStreamWrapper stream = input_format->FindBestStream(AVMediaType::AVMEDIA_TYPE_AUDIO);
 			if (stream.IsNull())
 			{
-				cout << "false" << endl;
-			}
-			else
-			{
-				cout << "true" << endl;
+				return -1;
 			}
 
 			return 0;
