@@ -16,7 +16,4 @@ add_executable(${ProjectName} ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
 target_import_src(${ProjectName})
 target_import_cli11(${ProjectName} PUBLIC)
 target_import_jccpp(${ProjectName} PUBLIC)
-target_link_libraries(
-    ${ProjectName} PUBLIC
-    ffmpeg-wrapper 
-)
+target_link_libraries(${ProjectName} PUBLIC ffmpeg-wrapper)
