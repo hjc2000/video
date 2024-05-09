@@ -10,6 +10,7 @@ endif()
 
 include($ENV{cpp_lib_build_scripts_path}/cmake-module/setup.cmake)
 include(target_import_sdl2)
+include(target_import_jccpp)
 
 
 # 编译为动态库
@@ -19,4 +20,5 @@ add_library(${ProjectName} SHARED)
 target_compile_definitions(${ProjectName} PRIVATE Predefine_ResourceDir="${CMAKE_CURRENT_SOURCE_DIR}/资源")
 target_import_src(${ProjectName})
 target_import_sdl2(${ProjectName} PUBLIC)
-target_link_libraries(${ProjectName} PUBLIC jccpp ffmpeg-wrapper)
+target_import_jccpp(${ProjectName} PUBLIC)
+target_link_libraries(${ProjectName} PUBLIC ffmpeg-wrapper)

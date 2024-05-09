@@ -11,9 +11,11 @@ endif()
 
 include($ENV{cpp_lib_build_scripts_path}/cmake-module/setup.cmake)
 include(target_import_ffmpeg)
+include(target_import_jccpp)
 
 # 编译为动态库
 add_library(${ProjectName} SHARED)
 target_import_src(${ProjectName})
-target_link_libraries(${ProjectName} PUBLIC jccpp PInvokeNativeHelper)
+target_import_jccpp(${ProjectName} PUBLIC)
 target_import_ffmpeg(${ProjectName} PUBLIC)
+target_link_libraries(${ProjectName} PUBLIC PInvokeNativeHelper)

@@ -8,8 +8,6 @@ if(1)
 endif()
 
 # 包含子项目。
-add_subdirectory(${CMAKE_SOURCE_DIR}/jccpp)
-
 add_subdirectory(${CMAKE_SOURCE_DIR}/PInvokeNativeHelper)
 add_subdirectory(${CMAKE_SOURCE_DIR}/ffmpeg-wrapper)
 add_subdirectory(${CMAKE_SOURCE_DIR}/tsduck)
