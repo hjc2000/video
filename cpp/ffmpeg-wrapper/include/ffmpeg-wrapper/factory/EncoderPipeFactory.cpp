@@ -43,4 +43,3 @@ shared_ptr<IFrameConsumer> video::EncoderPipeFactory::CreateEncoderPipe(
 		output_format
 	}};
 }
-
