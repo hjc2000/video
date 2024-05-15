@@ -1,4 +1,5 @@
 ﻿#include<bit>
+#include<format>
 #include<iostream>
 #include<jccpp/Bit.h>
 #include<jccpp/math/ModbusCrc16.h>
@@ -18,5 +19,5 @@ int main(void)
 	crc16.Add(0x00);
 	crc16.Add(0x00);
 	crc16.Add(0x01);
-	std::cout << crc16.RegisterValue() << std::endl;
+	std::cout << std::format("{:x}", crc16.RegisterValue()) << std::endl;
 }
