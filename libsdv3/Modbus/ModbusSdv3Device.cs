@@ -22,7 +22,7 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			byte[] send_buffer = FrameGenerator.ReadBits(_device_addr, 0x0208, 1);
+			byte[] send_buffer = ModbusFrameGenerator.ReadBits(_device_addr, 0x0208, 1);
 			_serial.Write(send_buffer, 0, send_buffer.Length);
 
 			byte[] read_buffer = new byte[6];

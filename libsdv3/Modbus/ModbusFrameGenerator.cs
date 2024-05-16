@@ -7,7 +7,7 @@ public enum FunctionCode
 	ReadBits = 0x01,
 }
 
-public static class FrameGenerator
+public static class ModbusFrameGenerator
 {
 	public static bool Bigendian { get; set; } = true;
 
