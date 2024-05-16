@@ -9,15 +9,11 @@ int main(void)
 {
 	jccpp::ModbusCrc16 crc16;
 	crc16.Add(0x01);
-	crc16.Add(0x10);
-	crc16.Add(0x40);
-	crc16.Add(0x00);
-	crc16.Add(0x00);
-	crc16.Add(0x02);
+	crc16.Add(0x03);
 	crc16.Add(0x04);
 	crc16.Add(0x00);
 	crc16.Add(0x00);
-	crc16.Add(0x00);
-	crc16.Add(0x01);
-	std::cout << std::format("{:x}", crc16.RegisterValue()) << std::endl;
+	crc16.Add(0x27);
+	crc16.Add(0x10);
+	std::cout << std::format("{:04x}", crc16.RegisterValue()) << std::endl;
 }
