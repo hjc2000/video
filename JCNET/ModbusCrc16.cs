@@ -1,4 +1,4 @@
-﻿namespace Modbus;
+﻿namespace JCNET;
 
 public class ModbusCrc16
 {
@@ -7,6 +7,15 @@ public class ModbusCrc16
 	public ModbusCrc16(ushort polynomial)
 	{
 		_polynomial = polynomial;
+	}
+
+	/// <summary>
+	///		将 CRC16 寄存器重置为全 1，使本类对象恢复为刚构造时的样子。
+	///		所有之前进行到一半的 CRC 计算全部终止，计算结果作废。
+	/// </summary>
+	public void Reset()
+	{
+		Crc16RegisterValue = ushort.MaxValue;
 	}
 
 	/// <summary>
@@ -58,7 +67,7 @@ public class ModbusCrc16
 	{
 		get
 		{
-			return (byte)(Crc16RegisterValueHighByte >> 8);
+			return (byte)(Crc16RegisterValue >> 8);
 		}
 	}
 
