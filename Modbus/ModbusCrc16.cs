@@ -44,7 +44,7 @@ public class ModbusCrc16
 		}
 	}
 
-	public void Add(byte[] datas)
+	public void Add(IEnumerable<byte> datas)
 	{
 		foreach (byte value in datas)
 		{
