@@ -6,7 +6,7 @@ namespace libsdv3.Modbus;
 /// <summary>
 ///		利用 modbus 进行控制的 SDV3 设备。
 /// </summary>
-public class ModbusSdv3Device : ISdv3Device, IModbusDevice
+public class ModbusSdv3Device : ISdv3Device
 {
 	public ModbusSdv3Device(SerialPort serial, byte device_addr)
 	{
