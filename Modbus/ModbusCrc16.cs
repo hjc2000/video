@@ -44,6 +44,14 @@ public class ModbusCrc16
 		}
 	}
 
+	public void Add(byte[] datas)
+	{
+		foreach (byte value in datas)
+		{
+			Add(value);
+		}
+	}
+
 	public ushort Crc16RegisterValue { get; private set; } = ushort.MaxValue;
 
 	public byte Crc16RegisterValueHighByte
