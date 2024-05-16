@@ -15,16 +15,21 @@ public class ModbusSdv3Device : ISdv3Device, IModbusDevice
 	}
 
 	private byte _device_addr = 1;
-
 	private SerialPort _serial;
 
 	/// <summary>
-	///		对接收到的帧进行 CRC16
+	///		检查 ADU。
+	///		* 不包括 PDU 部分，只检查作为头部的地址和作为尾部的 CRC16。
 	/// </summary>
 	/// <param name="received_frame"></param>
 	/// <exception cref="IOException"></exception>
-	private void EnsureReceivedFrameCrc16(byte[] received_frame)
+	private void CheckADU(byte[] received_frame)
 	{
+		if (received_frame[0] != _device_addr)
+		{
+			throw new IOException("接收到非预期地址的设备的响应");
+		}
+
 		ModbusCrc16 crc16 = new();
 		crc16.Add(received_frame[..^2]);
 		if (received_frame[^2] != crc16.RegisterLowByte)
@@ -38,6 +43,46 @@ public class ModbusSdv3Device : ISdv3Device, IModbusDevice
 		}
 	}
 
+	private static ushort ToLocalEndian(byte[] buffer)
+	{
+		if (buffer.Length != 2)
+		{
+			throw new ArgumentException($"{nameof(buffer)}必须是长度为 2 的数组");
+		}
+
+		if (BitConverter.IsLittleEndian ^ !ModbusFrameGenerator.Bigendian)
+		{
+			Array.Reverse(buffer);
+		}
+
+		return BitConverter.ToUInt16(buffer, 0);
+	}
+
+	public void WriteSingleBit(ushort data_addr, bool value)
+	{
+		_serial.Write(ModbusFrameGenerator.WriteSingleBit(_device_addr, data_addr, value));
+		byte[] read_buffer = _serial.ReadExactly(8);
+		CheckADU(read_buffer);
+		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
+		{
+			throw new IOException("设备回复的帧中的功能码错误");
+		}
+
+		byte[] temp_buffer = read_buffer[2..4];
+		ushort received_data_addr = ToLocalEndian(temp_buffer);
+		if (received_data_addr != data_addr)
+		{
+			throw new IOException("设备回复帧中的数据地址不对");
+		}
+
+		temp_buffer = read_buffer[4..6];
+		ushort received_data = ToLocalEndian(temp_buffer);
+		if (received_data != 0 != value)
+		{
+			throw new IOException("设备回复帧中的数据不对");
+		}
+	}
+
 	public bool EI9
 	{
 		get
@@ -46,17 +91,12 @@ public class ModbusSdv3Device : ISdv3Device, IModbusDevice
 			{
 				_serial.Write(ModbusFrameGenerator.ReadBits(_device_addr, 0x0208, 1));
 				byte[] read_buffer = _serial.ReadExactly(6);
-				if (read_buffer[0] != _device_addr)
-				{
-					throw new IOException("接收到非预期地址的设备的响应");
-				}
-
+				CheckADU(read_buffer);
 				if (read_buffer[1] != (byte)FunctionCode.ReadBits)
 				{
 					throw new IOException("设备回复的帧中的功能码错误");
 				}
 
-				EnsureReceivedFrameCrc16(read_buffer);
 				return read_buffer[^3] != 0;
 			}
 		}
@@ -67,22 +107,5 @@ public class ModbusSdv3Device : ISdv3Device, IModbusDevice
 				WriteSingleBit(0x0208, value);
 			}
 		}
-	}
-
-	public void WriteSingleBit(ushort addr, bool value)
-	{
-		_serial.Write(ModbusFrameGenerator.WriteSingleBit(_device_addr, addr, value));
-		byte[] read_buffer = _serial.ReadExactly(8);
-		if (read_buffer[0] != _device_addr)
-		{
-			throw new IOException("接收到非预期地址的设备的响应");
-		}
-
-		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
-		{
-			throw new IOException("设备回复的帧中的功能码错误");
-		}
-
-		EnsureReceivedFrameCrc16(read_buffer);
 	}
 }

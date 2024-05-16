@@ -11,7 +11,7 @@ public static class ModbusFrameGenerator
 		byte[] frame = new byte[6];
 		frame[0] = device_addr;
 		frame[1] = (byte)FunctionCode.ReadBits;
-		if (Bigendian && BitConverter.IsLittleEndian)
+		if (Bigendian)
 		{
 			// 如果数据要求大端序，并且本机是小端序
 			frame[2] = (byte)(data_addr >> 8);
@@ -41,7 +41,7 @@ public static class ModbusFrameGenerator
 
 		frame[0] = device_addr;
 		frame[1] = (byte)FunctionCode.WriteSingleBit;
-		if (Bigendian && BitConverter.IsLittleEndian)
+		if (Bigendian)
 		{
 			// 如果数据要求大端序，并且本机是小端序
 			frame[2] = (byte)(data_addr >> 8);
