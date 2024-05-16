@@ -15,7 +15,7 @@ public class ModbusCrc16
 	/// </summary>
 	public void Reset()
 	{
-		Crc16RegisterValue = ushort.MaxValue;
+		Register = ushort.MaxValue;
 	}
 
 	/// <summary>
@@ -41,14 +41,14 @@ public class ModbusCrc16
 
 	public void Add(byte value)
 	{
-		Crc16RegisterValue ^= value;
+		Register ^= value;
 		for (int i = 0; i < 8; i++)
 		{
-			ushort lsb = (ushort)(Crc16RegisterValue & 0x1);
-			Crc16RegisterValue >>= 1;
+			ushort lsb = (ushort)(Register & 0x1);
+			Register >>= 1;
 			if (lsb != 0)
 			{
-				Crc16RegisterValue ^= _polynomial;
+				Register ^= _polynomial;
 			}
 		}
 	}
@@ -61,21 +61,21 @@ public class ModbusCrc16
 		}
 	}
 
-	public ushort Crc16RegisterValue { get; private set; } = ushort.MaxValue;
+	public ushort Register { get; private set; } = ushort.MaxValue;
 
-	public byte Crc16RegisterValueHighByte
+	public byte RegisterHighByte
 	{
 		get
 		{
-			return (byte)(Crc16RegisterValue >> 8);
+			return (byte)(Register >> 8);
 		}
 	}
 
-	public byte Crc16RegisterValueLowByte
+	public byte RegisterLowByte
 	{
 		get
 		{
-			return (byte)Crc16RegisterValue;
+			return (byte)Register;
 		}
 	}
 }

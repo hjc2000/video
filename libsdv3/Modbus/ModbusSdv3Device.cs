@@ -6,7 +6,7 @@ namespace libsdv3.Modbus;
 /// <summary>
 ///		利用 modbus 进行控制的 SDV3 设备。
 /// </summary>
-public class ModbusSdv3Device : ISdv3Device
+public class ModbusSdv3Device : ISdv3Device, IModbusDevice
 {
 	public ModbusSdv3Device(SerialPort serial, byte device_addr)
 	{
@@ -14,47 +14,75 @@ public class ModbusSdv3Device : ISdv3Device
 		_device_addr = device_addr;
 	}
 
-	private SerialPort _serial;
 	private byte _device_addr = 1;
-	private ModbusCrc16 _crc16 = new();
+
+	private SerialPort _serial;
+
+	/// <summary>
+	///		对接收到的帧进行 CRC16
+	/// </summary>
+	/// <param name="received_frame"></param>
+	/// <exception cref="IOException"></exception>
+	private void EnsureReceivedFrameCrc16(byte[] received_frame)
+	{
+		ModbusCrc16 crc16 = new();
+		crc16.Add(received_frame[..^2]);
+		if (received_frame[^2] != crc16.RegisterLowByte)
+		{
+			throw new IOException("CRC 校验错误");
+		}
+
+		if (received_frame[^1] != crc16.RegisterHighByte)
+		{
+			throw new IOException("CRC 校验错误");
+		}
+	}
 
 	public bool EI9
 	{
 		get
 		{
-			byte[] send_buffer = ModbusFrameGenerator.ReadBits(_device_addr, 0x0208, 1);
-			_serial.Write(send_buffer, 0, send_buffer.Length);
-
-			byte[] read_buffer = new byte[6];
-			int total_read = 0;
-			while (total_read < read_buffer.Length)
+			lock (this)
 			{
-				int have_read = _serial.Read(read_buffer, total_read, read_buffer.Length - total_read);
-				total_read += have_read;
-			}
+				_serial.Write(ModbusFrameGenerator.ReadBits(_device_addr, 0x0208, 1));
+				byte[] read_buffer = _serial.ReadExactly(6);
+				if (read_buffer[0] != _device_addr)
+				{
+					throw new IOException("接收到非预期地址的设备的响应");
+				}
 
-			if (read_buffer[0] != _device_addr)
-			{
-				throw new IOException("接收到非预期地址的设备的响应");
-			}
+				if (read_buffer[1] != (byte)FunctionCode.ReadBits)
+				{
+					throw new IOException("设备回复的帧中的功能码错误");
+				}
 
-			if (read_buffer[1] != (byte)FunctionCode.ReadBits)
-			{
-				throw new IOException("设备回复的帧中的功能码错误");
+				EnsureReceivedFrameCrc16(read_buffer);
+				return read_buffer[^3] != 0;
 			}
-
-			ModbusCrc16 crc16 = new();
-			crc16.Add(read_buffer[..^2]);
-			if (!(read_buffer[^1] == crc16.Crc16RegisterValueHighByte && read_buffer[^2] == crc16.Crc16RegisterValueLowByte))
-			{
-				throw new IOException("CRC 校验错误");
-			}
-
-			return read_buffer[^3] != 0;
 		}
 		set
 		{
-
+			lock (this)
+			{
+				WriteSingleBit(0x0208, value);
+			}
 		}
+	}
+
+	public void WriteSingleBit(ushort addr, bool value)
+	{
+		_serial.Write(ModbusFrameGenerator.WriteSingleBit(_device_addr, addr, value));
+		byte[] read_buffer = _serial.ReadExactly(8);
+		if (read_buffer[0] != _device_addr)
+		{
+			throw new IOException("接收到非预期地址的设备的响应");
+		}
+
+		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
+		{
+			throw new IOException("设备回复的帧中的功能码错误");
+		}
+
+		EnsureReceivedFrameCrc16(read_buffer);
 	}
 }
