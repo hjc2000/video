@@ -88,9 +88,9 @@ public class ModbusSdv3Device : ISdv3Device
 
 			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.WriteSingleBit;
-			if (Bigendian)
+			if (!Bigendian ^ BitConverter.IsLittleEndian)
 			{
-				// 如果数据要求大端序，并且本机是小端序
+				// 如果本机字节序和要发送的字节序不同
 				frame[2] = (byte)(data_addr >> 8);
 				frame[3] = (byte)data_addr;
 
@@ -156,9 +156,9 @@ public class ModbusSdv3Device : ISdv3Device
 			byte[] frame = new byte[6];
 			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.ReadBits;
-			if (Bigendian)
+			if (!Bigendian ^ BitConverter.IsLittleEndian)
 			{
-				// 如果数据要求大端序，并且本机是小端序
+				// 要发送的字节序和本机字节序不同
 				frame[2] = (byte)(data_addr >> 8);
 				frame[3] = (byte)data_addr;
 
