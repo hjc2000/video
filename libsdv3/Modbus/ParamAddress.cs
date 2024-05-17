@@ -2,6 +2,10 @@
 
 public static class ParamAddress
 {
+	#region 通信 EI
+	/* - 通信 EI 可读可写。
+	 * - 这里每个 EI 占用一个地址，不像功能参数那样每个数据要占用 2 个地址。所以地址是逐 1 递增的。
+	 */
 	public static ushort EI9 { get; } = 0x0208;
 	public static ushort EI10 { get; } = (ushort)(EI9 + (10 - 9));
 	public static ushort EI11 { get; } = (ushort)(EI9 + (11 - 9));
@@ -18,4 +22,24 @@ public static class ParamAddress
 	public static ushort EI22 { get; } = (ushort)(EI9 + (22 - 9));
 	public static ushort EI23 { get; } = (ushort)(EI9 + (23 - 9));
 	public static ushort EI24 { get; } = (ushort)(EI9 + (24 - 9));
+	#endregion
+
+	#region 通信 EOUT
+	public static ushort EOUT6 { get; } = 0x0305;
+	public static ushort EOUT7 { get; } = (ushort)(EOUT6 + (7 - 6));
+	public static ushort EOUT8 { get; } = (ushort)(EOUT6 + (8 - 6));
+	public static ushort EOUT9 { get; } = (ushort)(EOUT6 + (9 - 6));
+	public static ushort EOUT10 { get; } = (ushort)(EOUT6 + (10 - 6));
+	public static ushort EOUT11 { get; } = (ushort)(EOUT6 + (11 - 6));
+	public static ushort EOUT12 { get; } = (ushort)(EOUT6 + (12 - 6));
+	public static ushort EOUT13 { get; } = (ushort)(EOUT6 + (13 - 6));
+	public static ushort EOUT14 { get; } = (ushort)(EOUT6 + (14 - 6));
+	public static ushort EOUT15 { get; } = (ushort)(EOUT6 + (15 - 6));
+	public static ushort EOUT16 { get; } = (ushort)(EOUT6 + (16 - 6));
+	public static ushort EOUT17 { get; } = (ushort)(EOUT6 + (17 - 6));
+	public static ushort EOUT18 { get; } = (ushort)(EOUT6 + (18 - 6));
+	public static ushort EOUT19 { get; } = (ushort)(EOUT6 + (19 - 6));
+	public static ushort EOUT20 { get; } = (ushort)(EOUT6 + (20 - 6));
+	public static ushort EOUT21 { get; } = (ushort)(EOUT6 + (21 - 6));
+	#endregion
 }

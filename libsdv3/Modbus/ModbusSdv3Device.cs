@@ -235,4 +235,25 @@ public class ModbusSdv3Device : ISdv3Device
 			}
 		}
 	}
+
+	public bool EOUT7
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT7");
+				byte[] bits = ReadBits(ParamAddress.EOUT7, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EOUT7");
+				WriteSingleBit(ParamAddress.EOUT7, value);
+			}
+		}
+	}
 }
