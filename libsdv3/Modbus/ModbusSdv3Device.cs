@@ -194,6 +194,74 @@ public class ModbusSdv3Device : ISdv3Device
 		return read_buffer[3..^2];
 	}
 
+	#region 硬件 EI
+	public bool EI1
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI1");
+				byte[] bits = ReadBits(ParamAddress.EI1, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EI2
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI2");
+				byte[] bits = ReadBits(ParamAddress.EI2, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EI3
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI3");
+				byte[] bits = ReadBits(ParamAddress.EI3, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EI4
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI4");
+				byte[] bits = ReadBits(ParamAddress.EI4, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EI5
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI5");
+				byte[] bits = ReadBits(ParamAddress.EI5, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+	#endregion
+
+	#region 通信 EI
 	public bool EI9
 	{
 		get
@@ -211,6 +279,27 @@ public class ModbusSdv3Device : ISdv3Device
 			{
 				Console.WriteLine("写入 EI9");
 				WriteSingleBit(ParamAddress.EI9, value);
+			}
+		}
+	}
+
+	public bool EI10
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI10");
+				byte[] bits = ReadBits(ParamAddress.EI10, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI10");
+				WriteSingleBit(ParamAddress.EI10, value);
 			}
 		}
 	}
@@ -235,6 +324,280 @@ public class ModbusSdv3Device : ISdv3Device
 			}
 		}
 	}
+
+	public bool EI12
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI12");
+				byte[] bits = ReadBits(ParamAddress.EI12, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI12");
+				WriteSingleBit(ParamAddress.EI12, value);
+			}
+		}
+	}
+
+	public bool EI13
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI13");
+				byte[] bits = ReadBits(ParamAddress.EI13, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI13");
+				WriteSingleBit(ParamAddress.EI13, value);
+			}
+		}
+	}
+
+	public bool EI14
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI14");
+				byte[] bits = ReadBits(ParamAddress.EI14, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI14");
+				WriteSingleBit(ParamAddress.EI14, value);
+			}
+		}
+	}
+
+	public bool EI15
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI15");
+				byte[] bits = ReadBits(ParamAddress.EI15, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI15");
+				WriteSingleBit(ParamAddress.EI15, value);
+			}
+		}
+	}
+
+	public bool EI16
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI16");
+				byte[] bits = ReadBits(ParamAddress.EI16, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI16");
+				WriteSingleBit(ParamAddress.EI16, value);
+			}
+		}
+	}
+
+	public bool EI17
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI17");
+				byte[] bits = ReadBits(ParamAddress.EI17, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI17");
+				WriteSingleBit(ParamAddress.EI17, value);
+			}
+		}
+	}
+
+	public bool EI18
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI18");
+				byte[] bits = ReadBits(ParamAddress.EI18, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI18");
+				WriteSingleBit(ParamAddress.EI18, value);
+			}
+		}
+	}
+
+	public bool EI19
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI19");
+				byte[] bits = ReadBits(ParamAddress.EI19, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI19");
+				WriteSingleBit(ParamAddress.EI19, value);
+			}
+		}
+	}
+
+	public bool EI20
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI20");
+				byte[] bits = ReadBits(ParamAddress.EI20, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI20");
+				WriteSingleBit(ParamAddress.EI20, value);
+			}
+		}
+	}
+
+	public bool EI21
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI21");
+				byte[] bits = ReadBits(ParamAddress.EI21, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI21");
+				WriteSingleBit(ParamAddress.EI21, value);
+			}
+		}
+	}
+
+	public bool EI22
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI22");
+				byte[] bits = ReadBits(ParamAddress.EI22, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI22");
+				WriteSingleBit(ParamAddress.EI22, value);
+			}
+		}
+	}
+
+	public bool EI23
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI23");
+				byte[] bits = ReadBits(ParamAddress.EI23, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI23");
+				WriteSingleBit(ParamAddress.EI23, value);
+			}
+		}
+	}
+
+	public bool EI24
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI24");
+				byte[] bits = ReadBits(ParamAddress.EI24, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI24");
+				WriteSingleBit(ParamAddress.EI24, value);
+			}
+		}
+	}
+	#endregion
 
 	public bool EOUT7
 	{

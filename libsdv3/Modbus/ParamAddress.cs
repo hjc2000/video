@@ -32,6 +32,12 @@ public static class ParamAddress
 	public static ushort EI24 { get; } = (ushort)(EI9 + (24 - 9));
 	#endregion
 
+	#region 硬件 EOUT
+	public static ushort EOUT1 { get; } = 0x0500;
+	public static ushort EOUT2 { get; } = (ushort)(EOUT1 + (2 - 1));
+	public static ushort EOUT3 { get; } = (ushort)(EOUT1 + (3 - 1));
+	#endregion
+
 	#region 通信 EOUT
 	public static ushort EOUT6 { get; } = 0x0305;
 	public static ushort EOUT7 { get; } = (ushort)(EOUT6 + (7 - 6));
