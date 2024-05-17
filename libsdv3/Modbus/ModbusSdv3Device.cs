@@ -123,6 +123,11 @@ public class ModbusSdv3Device : ISdv3Device
 	/// <returns></returns>
 	private byte[] ReadBits(ushort data_addr, ushort count)
 	{
+		if (count == 0)
+		{
+			throw new ArgumentException("不允许读取 0 个位");
+		}
+
 		byte[] GenerateReadBitsFrame(byte device_addr, ushort data_addr, ushort bit_count)
 		{
 			byte[] frame = new byte[6];
