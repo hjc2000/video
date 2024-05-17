@@ -12,12 +12,12 @@ public partial class ModbusSdv3Device : ISdv3Device
 	{
 		_serial = serial;
 		_device_addr = device_addr;
-		Bigendian = big_endian;
+		_auto_bit_converter = new AutoBitConverter(big_endian);
 	}
 
 	private byte _device_addr = 1;
 	private SerialPort _serial;
-	private bool Bigendian { get; set; } = true;
+	private AutoBitConverter _auto_bit_converter;
 
 	private static void PrintFrame(byte[] frame, bool is_send)
 	{
@@ -76,65 +76,6 @@ public partial class ModbusSdv3Device : ISdv3Device
 		}
 	}
 
-	#region BitConverter
-	/// <summary>
-	///		将接收到的字节数组转化为整形。会根据本机字节序和通信字节序进行适当的转换。
-	/// </summary>
-	/// <param name="buffer"></param>
-	/// <returns></returns>
-	/// <exception cref="ArgumentException"></exception>
-	private ushort ToUInt16(byte[] buffer)
-	{
-		if (buffer.Length != 2)
-		{
-			throw new ArgumentException($"{nameof(buffer)}必须是长度为 2 的数组");
-		}
-
-		if (!Bigendian ^ BitConverter.IsLittleEndian)
-		{
-			// 本机字节序和通信字节序不同
-			Array.Reverse(buffer);
-		}
-
-		return BitConverter.ToUInt16(buffer, 0);
-	}
-
-	private uint ToUInt32(byte[] buffer)
-	{
-		if (buffer.Length != 4)
-		{
-			throw new ArgumentException($"{nameof(buffer)}必须是长度为 4 的数组");
-		}
-
-		if (!Bigendian ^ BitConverter.IsLittleEndian)
-		{
-			// 本机字节序和通信字节序不同
-			Array.Reverse(buffer);
-		}
-
-		return BitConverter.ToUInt32(buffer, 0);
-	}
-
-	/// <summary>
-	///		将整型转化为字节数组。会根据本机字节序和通信字节序进行适当的转换。
-	///		在发送时，只需将本函数返回的字节数组，从 0 索引开始递增，按顺序
-	///		放到要发送的帧中就行了。
-	/// </summary>
-	/// <param name="value"></param>
-	/// <returns></returns>
-	private byte[] GetBytes(ushort value)
-	{
-		byte[] bytes = BitConverter.GetBytes(value);
-		if (!Bigendian ^ BitConverter.IsLittleEndian)
-		{
-			// 本机字节序和通信字节序不同
-			Array.Reverse(bytes);
-		}
-
-		return bytes;
-	}
-	#endregion
-
 	private void WriteSingleBit(ushort data_addr, bool value)
 	{
 		byte[] GenerateWriteSingleBitFrame()
@@ -144,11 +85,11 @@ public partial class ModbusSdv3Device : ISdv3Device
 			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.WriteSingleBit;
 
-			byte[] data_addr_bytes = GetBytes(data_addr);
+			byte[] data_addr_bytes = _auto_bit_converter.GetBytes(data_addr);
 			frame[2] = data_addr_bytes[0];
 			frame[3] = data_addr_bytes[1];
 
-			byte[] data_bytes = GetBytes(value ? (ushort)0Xff00 : (ushort)0);
+			byte[] data_bytes = _auto_bit_converter.GetBytes(value ? (ushort)0Xff00 : (ushort)0);
 			frame[4] = data_bytes[0];
 			frame[5] = data_bytes[1];
 
@@ -168,14 +109,14 @@ public partial class ModbusSdv3Device : ISdv3Device
 		}
 
 		byte[] temp_buffer = read_buffer[2..4];
-		ushort received_data_addr = ToUInt16(temp_buffer);
+		ushort received_data_addr = _auto_bit_converter.ToUInt16(temp_buffer);
 		if (received_data_addr != data_addr)
 		{
 			throw new IOException("设备回复帧中的数据地址不对");
 		}
 
 		temp_buffer = read_buffer[4..6];
-		ushort received_data = ToUInt16(temp_buffer);
+		ushort received_data = _auto_bit_converter.ToUInt16(temp_buffer);
 		if (received_data != 0 != value)
 		{
 			throw new IOException("设备回复帧中的数据不对");
@@ -201,11 +142,11 @@ public partial class ModbusSdv3Device : ISdv3Device
 			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.ReadBits;
 
-			byte[] data_addr_bytes = GetBytes(data_addr);
+			byte[] data_addr_bytes = _auto_bit_converter.GetBytes(data_addr);
 			frame[2] = data_addr_bytes[0];
 			frame[3] = data_addr_bytes[1];
 
-			byte[] bit_count_bytes = GetBytes(bit_count);
+			byte[] bit_count_bytes = _auto_bit_converter.GetBytes(bit_count);
 			frame[4] = bit_count_bytes[0];
 			frame[5] = bit_count_bytes[1];
 
@@ -246,11 +187,11 @@ public partial class ModbusSdv3Device : ISdv3Device
 			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.ReadDatas;
 
-			byte[] data_addr_bytes = GetBytes(data_addr);
+			byte[] data_addr_bytes = _auto_bit_converter.GetBytes(data_addr);
 			frame[2] = data_addr_bytes[0];
 			frame[3] = data_addr_bytes[1];
 
-			byte[] record_count_bytes = GetBytes(record_count);
+			byte[] record_count_bytes = _auto_bit_converter.GetBytes(record_count);
 			frame[4] = record_count_bytes[0];
 			frame[5] = record_count_bytes[1];
 
@@ -280,7 +221,7 @@ public partial class ModbusSdv3Device : ISdv3Device
 		{
 			int start_pos = 3 + (i * 4);
 			byte[] data_bytes = read_buffer[start_pos..(start_pos + 4)];
-			ret[i] = ToUInt32(data_bytes);
+			ret[i] = _auto_bit_converter.ToUInt32(data_bytes);
 		}
 
 		return ret;
