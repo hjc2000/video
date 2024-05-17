@@ -2,6 +2,14 @@
 
 public static class ParamAddress
 {
+	#region 硬件 EI
+	public static ushort EI1 { get; } = 0x0400;
+	public static ushort EI2 { get; } = (ushort)(EI1 + (2 - 1));
+	public static ushort EI3 { get; } = (ushort)(EI1 + (3 - 1));
+	public static ushort EI4 { get; } = (ushort)(EI1 + (4 - 1));
+	public static ushort EI5 { get; } = (ushort)(EI1 + (5 - 1));
+	#endregion
+
 	#region 通信 EI
 	/* - 通信 EI 可读可写。
 	 * - 这里每个 EI 占用一个地址，不像功能参数那样每个数据要占用 2 个地址。所以地址是逐 1 递增的。
