@@ -76,6 +76,12 @@ public partial class ModbusSdv3Device : ISdv3Device
 		}
 	}
 
+	/// <summary>
+	///		写单个位
+	/// </summary>
+	/// <param name="data_addr"></param>
+	/// <param name="value"></param>
+	/// <exception cref="IOException"></exception>
 	private void WriteSingleBit(ushort data_addr, bool value)
 	{
 		byte[] GenerateWriteSingleBitFrame()
@@ -880,4 +886,5 @@ public partial class ModbusSdv3Device
 		}
 	}
 	#endregion
+
 }
