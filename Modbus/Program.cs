@@ -12,4 +12,7 @@ serial.Open();
 ModbusSdv3Device sdv3 = new(serial, 1);
 sdv3.EI9 = !sdv3.EI9;
 Console.WriteLine(sdv3.EI9);
-Console.WriteLine(sdv3.EOUT7);
+Console.WriteLine(sdv3.EI1);
+Console.WriteLine(sdv3.EI3);
+Console.WriteLine(sdv3.EOUT1);
+Console.WriteLine(sdv3.EOUT3);
