@@ -108,15 +108,13 @@ public partial class ModbusSdv3Device : ISdv3Device
 			throw new IOException("设备回复的帧中的功能码错误");
 		}
 
-		byte[] temp_buffer = read_buffer[2..4];
-		ushort received_data_addr = _auto_bit_converter.ToUInt16(temp_buffer);
+		ushort received_data_addr = _auto_bit_converter.ToUInt16(read_buffer, 2);
 		if (received_data_addr != data_addr)
 		{
 			throw new IOException("设备回复帧中的数据地址不对");
 		}
 
-		temp_buffer = read_buffer[4..6];
-		ushort received_data = _auto_bit_converter.ToUInt16(temp_buffer);
+		ushort received_data = _auto_bit_converter.ToUInt16(read_buffer, 4);
 		if (received_data != 0 != value)
 		{
 			throw new IOException("设备回复帧中的数据不对");
@@ -220,8 +218,7 @@ public partial class ModbusSdv3Device : ISdv3Device
 		for (int i = 0; i < uint32_data_count; i++)
 		{
 			int start_pos = 3 + (i * 4);
-			byte[] data_bytes = read_buffer[start_pos..(start_pos + 4)];
-			ret[i] = _auto_bit_converter.ToUInt32(data_bytes);
+			ret[i] = _auto_bit_converter.ToUInt32(read_buffer, start_pos);
 		}
 
 		return ret;
