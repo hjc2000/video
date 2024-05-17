@@ -109,7 +109,7 @@ public class ModbusSdv3Device : ISdv3Device
 
 	private void WriteSingleBit(ushort data_addr, bool value)
 	{
-		byte[] GenerateWriteSingleBitFrame(ushort data_addr, bool value)
+		byte[] GenerateWriteSingleBitFrame()
 		{
 			byte[] frame = new byte[6];
 			ushort data = value ? (ushort)0Xff00 : (ushort)0;
@@ -130,7 +130,7 @@ public class ModbusSdv3Device : ISdv3Device
 			return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
 		}
 
-		byte[] frame = GenerateWriteSingleBitFrame(data_addr, value);
+		byte[] frame = GenerateWriteSingleBitFrame();
 		PrintFrame(frame, true);
 		_serial.Write(frame);
 
@@ -161,16 +161,16 @@ public class ModbusSdv3Device : ISdv3Device
 	///		读取多个位数据。
 	/// </summary>
 	/// <param name="data_addr">数据地址</param>
-	/// <param name="count">要读取多少个位</param>
+	/// <param name="bit_count">要读取多少个位</param>
 	/// <returns></returns>
-	private byte[] ReadBits(ushort data_addr, ushort count)
+	private byte[] ReadBits(ushort data_addr, ushort bit_count)
 	{
-		if (count == 0)
+		if (bit_count == 0)
 		{
 			throw new ArgumentException("不允许读取 0 个位");
 		}
 
-		byte[] GenerateReadBitsFrame(ushort data_addr, ushort bit_count)
+		byte[] GenerateReadBitsFrame()
 		{
 			byte[] frame = new byte[6];
 			frame[0] = _device_addr;
@@ -189,11 +189,11 @@ public class ModbusSdv3Device : ISdv3Device
 			return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
 		}
 
-		byte[] frame = GenerateReadBitsFrame(data_addr, 1);
+		byte[] frame = GenerateReadBitsFrame();
 		PrintFrame(frame, true);
 		_serial.Write(frame);
 
-		byte[] read_buffer = _serial.ReadExactly(5 + (count / 8) + 1);
+		byte[] read_buffer = _serial.ReadExactly(5 + (bit_count / 8) + 1);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
