@@ -269,9 +269,9 @@ public class ModbusSdv3Device : ISdv3Device
 			throw new IOException("返回的数据字节数不对");
 		}
 
-		int data_count = read_buffer[2] / 4;
-		uint[] ret = new uint[data_count];
-		for (int i = 0; i < data_count; i++)
+		int uint32_data_count = read_buffer[2] / 4;
+		uint[] ret = new uint[uint32_data_count];
+		for (int i = 0; i < uint32_data_count; i++)
 		{
 			int start_pos = 3 + (i * 4);
 			byte[] data_bytes = read_buffer[start_pos..(start_pos + 4)];
