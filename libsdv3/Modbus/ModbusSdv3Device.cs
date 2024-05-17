@@ -46,11 +46,6 @@ public class ModbusSdv3Device : ISdv3Device
 	/// <exception cref="IOException"></exception>
 	private void CheckADU(byte[] received_frame)
 	{
-		if (received_frame[0] != _device_addr)
-		{
-			throw new IOException("接收到非预期地址的设备的响应");
-		}
-
 		ModbusCrc16 crc16 = new();
 		crc16.Add(received_frame[..^2]);
 		if (received_frame[^2] != crc16.RegisterLowByte)
@@ -61,6 +56,11 @@ public class ModbusSdv3Device : ISdv3Device
 		if (received_frame[^1] != crc16.RegisterHighByte)
 		{
 			throw new IOException("CRC 校验错误");
+		}
+
+		if (received_frame[0] != _device_addr)
+		{
+			throw new IOException("接收到非预期地址的设备的响应");
 		}
 	}
 
