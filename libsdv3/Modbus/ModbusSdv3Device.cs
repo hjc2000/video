@@ -38,6 +38,13 @@ public class ModbusSdv3Device : ISdv3Device
 		Console.WriteLine();
 	}
 
+	private byte[] AppendCrc16(byte[] buffer)
+	{
+		ModbusCrc16 crc16 = new();
+		crc16.Add(buffer);
+		return [.. buffer, crc16.RegisterLowByte, crc16.RegisterHighByte];
+	}
+
 	/// <summary>
 	///		检查 ADU。
 	///		* 不包括 PDU 部分，只检查作为头部的地址和作为尾部的 CRC16。
@@ -124,9 +131,7 @@ public class ModbusSdv3Device : ISdv3Device
 			frame[4] = data_bytes[0];
 			frame[5] = data_bytes[1];
 
-			ModbusCrc16 crc16 = new();
-			crc16.Add(frame);
-			return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
+			return AppendCrc16(frame);
 		}
 
 		byte[] frame = GenerateWriteSingleBitFrame();
@@ -183,9 +188,7 @@ public class ModbusSdv3Device : ISdv3Device
 			frame[4] = bit_count_bytes[0];
 			frame[5] = bit_count_bytes[1];
 
-			ModbusCrc16 crc16 = new();
-			crc16.Add(frame);
-			return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
+			return AppendCrc16(frame);
 		}
 
 		byte[] frame = GenerateReadBitsFrame();
@@ -213,7 +216,7 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		byte[] GenerateReadDatasFrame()
 		{
-			byte[] frame = new byte[8];
+			byte[] frame = new byte[6];
 			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.ReadDatas;
 
@@ -221,7 +224,11 @@ public class ModbusSdv3Device : ISdv3Device
 			frame[2] = data_addr_bytes[0];
 			frame[3] = data_addr_bytes[1];
 
-			return frame;
+			byte[] record_count_bytes = GetBytes(record_count);
+			frame[4] = record_count_bytes[0];
+			frame[5] = record_count_bytes[1];
+
+			return AppendCrc16(frame);
 		}
 
 		throw new NotImplementedException();
