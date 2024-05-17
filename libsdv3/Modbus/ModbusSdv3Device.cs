@@ -94,6 +94,22 @@ public class ModbusSdv3Device : ISdv3Device
 		return BitConverter.ToUInt16(buffer, 0);
 	}
 
+	private uint ToUInt32(byte[] buffer)
+	{
+		if (buffer.Length != 4)
+		{
+			throw new ArgumentException($"{nameof(buffer)}必须是长度为 4 的数组");
+		}
+
+		if (!Bigendian ^ BitConverter.IsLittleEndian)
+		{
+			// 本机字节序和通信字节序不同
+			Array.Reverse(buffer);
+		}
+
+		return BitConverter.ToUInt32(buffer, 0);
+	}
+
 	/// <summary>
 	///		将整型转化为字节数组。会根据本机字节序和通信字节序进行适当的转换。
 	///		在发送时，只需将本函数返回的字节数组，从 0 索引开始递增，按顺序
@@ -212,8 +228,13 @@ public class ModbusSdv3Device : ISdv3Device
 	/// <param name="data_addr">数据地址</param>
 	/// <param name="record_count">记录数。一个记录是 16 位。读取 1 个 32 位的数据需要 2 个记录。</param>
 	/// <returns></returns>
-	private byte[] ReadDatas(ushort data_addr, ushort record_count)
+	private uint[] ReadDatas(ushort data_addr, ushort record_count)
 	{
+		if (record_count == 0)
+		{
+			throw new ArgumentException($"{nameof(record_count)} 不能为 0");
+		}
+
 		byte[] GenerateReadDatasFrame()
 		{
 			byte[] frame = new byte[6];
@@ -231,7 +252,33 @@ public class ModbusSdv3Device : ISdv3Device
 			return AppendCrc16(frame);
 		}
 
-		throw new NotImplementedException();
+		byte[] frame = GenerateReadDatasFrame();
+		PrintFrame(frame, true);
+		_serial.Write(frame);
+
+		byte[] read_buffer = _serial.ReadExactly(5 + (record_count * 2));
+		PrintFrame(read_buffer, false);
+		CheckADU(read_buffer);
+		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
+		{
+			throw new IOException("设备回复的帧中的功能码错误");
+		}
+
+		if (read_buffer[2] != record_count * 2)
+		{
+			throw new IOException("返回的数据字节数不对");
+		}
+
+		int data_count = read_buffer[2] / 4;
+		uint[] ret = new uint[data_count];
+		for (int i = 0; i < data_count; i++)
+		{
+			int start_pos = 3 + (i * 4);
+			byte[] data_bytes = read_buffer[start_pos..(start_pos + 4)];
+			ret[i] = ToUInt32(data_bytes);
+		}
+
+		return ret;
 	}
 
 	#region 硬件 EI
