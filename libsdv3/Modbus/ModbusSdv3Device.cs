@@ -112,7 +112,6 @@ public class ModbusSdv3Device : ISdv3Device
 		byte[] GenerateWriteSingleBitFrame()
 		{
 			byte[] frame = new byte[6];
-			ushort data = value ? (ushort)0Xff00 : (ushort)0;
 
 			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.WriteSingleBit;
@@ -121,7 +120,7 @@ public class ModbusSdv3Device : ISdv3Device
 			frame[2] = data_addr_bytes[0];
 			frame[3] = data_addr_bytes[1];
 
-			byte[] data_bytes = GetBytes(data);
+			byte[] data_bytes = GetBytes(value ? (ushort)0Xff00 : (ushort)0);
 			frame[4] = data_bytes[0];
 			frame[5] = data_bytes[1];
 
