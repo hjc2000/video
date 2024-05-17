@@ -599,6 +599,59 @@ public class ModbusSdv3Device : ISdv3Device
 	}
 	#endregion
 
+	#region EOUT
+	public bool EOUT1
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT1");
+				byte[] bits = ReadBits(ParamAddress.EOUT1, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT2
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT2");
+				byte[] bits = ReadBits(ParamAddress.EOUT2, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT3
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT3");
+				byte[] bits = ReadBits(ParamAddress.EOUT3, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT6
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT6");
+				byte[] bits = ReadBits(ParamAddress.EOUT6, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
 	public bool EOUT7
 	{
 		get
@@ -610,13 +663,189 @@ public class ModbusSdv3Device : ISdv3Device
 				return bits[0] != 0;
 			}
 		}
-		set
+	}
+
+	public bool EOUT8
+	{
+		get
 		{
 			lock (this)
 			{
-				Console.WriteLine("写入 EOUT7");
-				WriteSingleBit(ParamAddress.EOUT7, value);
+				Console.WriteLine("读取 EOUT8");
+				byte[] bits = ReadBits(ParamAddress.EOUT8, 1);
+				return bits[0] != 0;
 			}
 		}
 	}
+
+	public bool EOUT9
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT9");
+				byte[] bits = ReadBits(ParamAddress.EOUT9, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT10
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT10");
+				byte[] bits = ReadBits(ParamAddress.EOUT10, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT11
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT11");
+				byte[] bits = ReadBits(ParamAddress.EOUT11, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT12
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT12");
+				byte[] bits = ReadBits(ParamAddress.EOUT12, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT13
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT13");
+				byte[] bits = ReadBits(ParamAddress.EOUT13, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT14
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT14");
+				byte[] bits = ReadBits(ParamAddress.EOUT14, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT15
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT15");
+				byte[] bits = ReadBits(ParamAddress.EOUT15, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT16
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT16");
+				byte[] bits = ReadBits(ParamAddress.EOUT16, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT17
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT17");
+				byte[] bits = ReadBits(ParamAddress.EOUT17, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT18
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT18");
+				byte[] bits = ReadBits(ParamAddress.EOUT18, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT19
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT19");
+				byte[] bits = ReadBits(ParamAddress.EOUT19, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT20
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT20");
+				byte[] bits = ReadBits(ParamAddress.EOUT20, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+
+	public bool EOUT21
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EOUT21");
+				byte[] bits = ReadBits(ParamAddress.EOUT21, 1);
+				return bits[0] != 0;
+			}
+		}
+	}
+	#endregion
+
 }
