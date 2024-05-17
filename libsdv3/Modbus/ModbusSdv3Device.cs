@@ -17,6 +17,66 @@ public class ModbusSdv3Device : ISdv3Device
 	private byte _device_addr = 1;
 	private SerialPort _serial;
 
+	public bool Bigendian { get; set; } = true;
+
+	public byte[] GenerateReadBitsFrame(byte device_addr, ushort data_addr, ushort bit_count)
+	{
+		byte[] frame = new byte[6];
+		frame[0] = device_addr;
+		frame[1] = (byte)FunctionCode.ReadBits;
+		if (Bigendian)
+		{
+			// 如果数据要求大端序，并且本机是小端序
+			frame[2] = (byte)(data_addr >> 8);
+			frame[3] = (byte)data_addr;
+
+			frame[4] = (byte)(bit_count >> 8);
+			frame[5] = (byte)bit_count;
+		}
+		else
+		{
+			frame[2] = (byte)data_addr;
+			frame[3] = (byte)(data_addr >> 8);
+
+			frame[4] = (byte)bit_count;
+			frame[5] = (byte)(bit_count >> 8);
+		}
+
+		ModbusCrc16 crc16 = new();
+		crc16.Add(frame);
+		return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
+	}
+
+	public byte[] GenerateWriteSingleBitFrame(byte device_addr, ushort data_addr, bool value)
+	{
+		byte[] frame = new byte[6];
+		ushort data = value ? (ushort)0Xff00 : (ushort)0;
+
+		frame[0] = device_addr;
+		frame[1] = (byte)FunctionCode.WriteSingleBit;
+		if (Bigendian)
+		{
+			// 如果数据要求大端序，并且本机是小端序
+			frame[2] = (byte)(data_addr >> 8);
+			frame[3] = (byte)data_addr;
+
+			frame[4] = (byte)(data >> 8);
+			frame[5] = (byte)data;
+		}
+		else
+		{
+			frame[2] = (byte)data_addr;
+			frame[3] = (byte)(data_addr >> 8);
+
+			frame[4] = (byte)data;
+			frame[5] = (byte)(data >> 8);
+		}
+
+		ModbusCrc16 crc16 = new();
+		crc16.Add(frame);
+		return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
+	}
+
 	/// <summary>
 	///		检查 ADU。
 	///		* 不包括 PDU 部分，只检查作为头部的地址和作为尾部的 CRC16。
@@ -43,14 +103,14 @@ public class ModbusSdv3Device : ISdv3Device
 		}
 	}
 
-	private static ushort ToLocalEndian(byte[] buffer)
+	private ushort ToLocalEndian(byte[] buffer)
 	{
 		if (buffer.Length != 2)
 		{
 			throw new ArgumentException($"{nameof(buffer)}必须是长度为 2 的数组");
 		}
 
-		if (BitConverter.IsLittleEndian ^ !ModbusFrameGenerator.Bigendian)
+		if (BitConverter.IsLittleEndian ^ !Bigendian)
 		{
 			Array.Reverse(buffer);
 		}
@@ -60,7 +120,7 @@ public class ModbusSdv3Device : ISdv3Device
 
 	public void WriteSingleBit(ushort data_addr, bool value)
 	{
-		_serial.Write(ModbusFrameGenerator.WriteSingleBit(_device_addr, data_addr, value));
+		_serial.Write(GenerateWriteSingleBitFrame(_device_addr, data_addr, value));
 		byte[] read_buffer = _serial.ReadExactly(8);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
@@ -89,7 +149,7 @@ public class ModbusSdv3Device : ISdv3Device
 		{
 			lock (this)
 			{
-				_serial.Write(ModbusFrameGenerator.ReadBits(_device_addr, 0x0208, 1));
+				_serial.Write(GenerateReadBitsFrame(_device_addr, 0x0208, 1));
 				byte[] read_buffer = _serial.ReadExactly(6);
 				CheckADU(read_buffer);
 				if (read_buffer[1] != (byte)FunctionCode.ReadBits)
