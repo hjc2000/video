@@ -15,7 +15,7 @@ public partial class ModbusSdv3Device : ISdv3Device
 		_auto_bit_converter = new AutoBitConverter(big_endian);
 	}
 
-	private byte _device_addr = 1;
+	private byte _device_addr;
 	private SerialPort _serial;
 	private AutoBitConverter _auto_bit_converter;
 
