@@ -201,7 +201,7 @@ public class ModbusSdv3Device : ISdv3Device
 			lock (this)
 			{
 				Console.WriteLine("读取 EI9");
-				byte[] bits = ReadBits(0x0208, 1);
+				byte[] bits = ReadBits(ParamAddress.EI9, 1);
 				return bits[0] != 0;
 			}
 		}
@@ -210,7 +210,28 @@ public class ModbusSdv3Device : ISdv3Device
 			lock (this)
 			{
 				Console.WriteLine("写入 EI9");
-				WriteSingleBit(0x0208, value);
+				WriteSingleBit(ParamAddress.EI9, value);
+			}
+		}
+	}
+
+	public bool EI11
+	{
+		get
+		{
+			lock (this)
+			{
+				Console.WriteLine("读取 EI11");
+				byte[] bits = ReadBits(ParamAddress.EI11, 1);
+				return bits[0] != 0;
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				Console.WriteLine("写入 EI11");
+				WriteSingleBit(ParamAddress.EI11, value);
 			}
 		}
 	}
