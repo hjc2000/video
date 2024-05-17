@@ -56,4 +56,15 @@ public static class ParamAddress
 	public static ushort EOUT20 { get; } = (ushort)(EOUT6 + (20 - 6));
 	public static ushort EOUT21 { get; } = (ushort)(EOUT6 + (21 - 6));
 	#endregion
+
+	public static ushort FeedbackSpeed { get; } = 0x1000;
+	public static ushort CommandSpeed { get; } = 0x1002;
+	public static ushort CommandTorque { get; } = 0x1004;
+	public static ushort PeakTorque { get; } = 0x1006;
+	public static ushort MotorCurrent { get; } = 0x1008;
+	public static ushort EffectiveTorque { get; } = 0x100A;
+	public static ushort FeedbackCurrentPosition { get; } = 0x100C;
+	public static ushort CommandCurrentPosition { get; } = 0x100E;
+	public static ushort PositionDeviation { get; } = 0x1010;
+	public static ushort CommandPulseFrequency { get; } = 0x1012;
 }
