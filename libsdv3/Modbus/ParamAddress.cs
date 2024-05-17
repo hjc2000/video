@@ -117,5 +117,16 @@ public static class ParamAddress
 	///		指令累计脉冲数
 	/// </summary>
 	public static ushort TotalCommandPulseCount { get; } = 0x1016;
+
+	/// <summary>
+	///		LS-Z 之间脉冲数
+	/// </summary>
+	public static ushort PulseCountBetween_LS_And_Z { get; } = 0x1018;
+
+	/// <summary>
+	///		负载惯性力矩比
+	/// </summary>
+	public static ushort LoadInertiaTorqueRatio { get; } = 0x101A;
 	#endregion
+
 }
