@@ -19,34 +19,6 @@ public class ModbusSdv3Device : ISdv3Device
 
 	public bool Bigendian { get; set; } = true;
 
-	public byte[] GenerateReadBitsFrame(byte device_addr, ushort data_addr, ushort bit_count)
-	{
-		byte[] frame = new byte[6];
-		frame[0] = device_addr;
-		frame[1] = (byte)FunctionCode.ReadBits;
-		if (Bigendian)
-		{
-			// 如果数据要求大端序，并且本机是小端序
-			frame[2] = (byte)(data_addr >> 8);
-			frame[3] = (byte)data_addr;
-
-			frame[4] = (byte)(bit_count >> 8);
-			frame[5] = (byte)bit_count;
-		}
-		else
-		{
-			frame[2] = (byte)data_addr;
-			frame[3] = (byte)(data_addr >> 8);
-
-			frame[4] = (byte)bit_count;
-			frame[5] = (byte)(bit_count >> 8);
-		}
-
-		ModbusCrc16 crc16 = new();
-		crc16.Add(frame);
-		return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
-	}
-
 	/// <summary>
 	///		检查 ADU。
 	///		* 不包括 PDU 部分，只检查作为头部的地址和作为尾部的 CRC16。
@@ -143,21 +115,62 @@ public class ModbusSdv3Device : ISdv3Device
 		}
 	}
 
+	/// <summary>
+	///		读取多个位数据。
+	/// </summary>
+	/// <param name="data_addr">数据地址</param>
+	/// <param name="count">要读取多少个位</param>
+	/// <returns></returns>
+	private byte[] ReadBits(ushort data_addr, ushort count)
+	{
+		byte[] GenerateReadBitsFrame(byte device_addr, ushort data_addr, ushort bit_count)
+		{
+			byte[] frame = new byte[6];
+			frame[0] = device_addr;
+			frame[1] = (byte)FunctionCode.ReadBits;
+			if (Bigendian)
+			{
+				// 如果数据要求大端序，并且本机是小端序
+				frame[2] = (byte)(data_addr >> 8);
+				frame[3] = (byte)data_addr;
+
+				frame[4] = (byte)(bit_count >> 8);
+				frame[5] = (byte)bit_count;
+			}
+			else
+			{
+				frame[2] = (byte)data_addr;
+				frame[3] = (byte)(data_addr >> 8);
+
+				frame[4] = (byte)bit_count;
+				frame[5] = (byte)(bit_count >> 8);
+			}
+
+			ModbusCrc16 crc16 = new();
+			crc16.Add(frame);
+			return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
+		}
+
+		_serial.Write(GenerateReadBitsFrame(_device_addr, 0x0208, 1));
+		byte[] read_buffer = _serial.ReadExactly(5 + (count / 8) + 1);
+		CheckADU(read_buffer);
+		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
+		{
+			throw new IOException("设备回复的帧中的功能码错误");
+		}
+
+		Console.WriteLine($"读取到 {read_buffer[2]} 个字节");
+		return read_buffer[3..^2];
+	}
+
 	public bool EI9
 	{
 		get
 		{
 			lock (this)
 			{
-				_serial.Write(GenerateReadBitsFrame(_device_addr, 0x0208, 1));
-				byte[] read_buffer = _serial.ReadExactly(6);
-				CheckADU(read_buffer);
-				if (read_buffer[1] != (byte)FunctionCode.ReadBits)
-				{
-					throw new IOException("设备回复的帧中的功能码错误");
-				}
-
-				return read_buffer[^3] != 0;
+				byte[] bits = ReadBits(0x0208, 1);
+				return bits[0] != 0;
 			}
 		}
 		set
