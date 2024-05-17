@@ -17,7 +17,26 @@ public class ModbusSdv3Device : ISdv3Device
 	private byte _device_addr = 1;
 	private SerialPort _serial;
 
-	public bool Bigendian { get; set; } = true;
+	private bool Bigendian { get; set; } = true;
+
+	private static void PrintFrame(byte[] frame, bool is_send)
+	{
+		if (is_send)
+		{
+			Console.Write("发送：");
+		}
+		else
+		{
+			Console.Write("接收：");
+		}
+
+		foreach (byte b in frame)
+		{
+			Console.Write($"{b:x2} ");
+		}
+
+		Console.WriteLine();
+	}
 
 	/// <summary>
 	///		检查 ADU。
@@ -60,7 +79,7 @@ public class ModbusSdv3Device : ISdv3Device
 		return BitConverter.ToUInt16(buffer, 0);
 	}
 
-	public void WriteSingleBit(ushort data_addr, bool value)
+	private void WriteSingleBit(ushort data_addr, bool value)
 	{
 		byte[] GenerateWriteSingleBitFrame(ushort data_addr, bool value)
 		{
@@ -92,8 +111,12 @@ public class ModbusSdv3Device : ISdv3Device
 			return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
 		}
 
-		_serial.Write(GenerateWriteSingleBitFrame(data_addr, value));
+		byte[] frame = GenerateWriteSingleBitFrame(data_addr, value);
+		PrintFrame(frame, true);
+		_serial.Write(frame);
+
 		byte[] read_buffer = _serial.ReadExactly(8);
+		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
 		{
@@ -156,15 +179,18 @@ public class ModbusSdv3Device : ISdv3Device
 			return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
 		}
 
-		_serial.Write(GenerateReadBitsFrame(data_addr, 1));
+		byte[] frame = GenerateReadBitsFrame(data_addr, 1);
+		PrintFrame(frame, true);
+		_serial.Write(frame);
+
 		byte[] read_buffer = _serial.ReadExactly(5 + (count / 8) + 1);
+		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
 		{
 			throw new IOException("设备回复的帧中的功能码错误");
 		}
 
-		Console.WriteLine($"读取到 {read_buffer[2]} 个字节");
 		return read_buffer[3..^2];
 	}
 
@@ -174,6 +200,7 @@ public class ModbusSdv3Device : ISdv3Device
 		{
 			lock (this)
 			{
+				Console.WriteLine("读取 EI9");
 				byte[] bits = ReadBits(0x0208, 1);
 				return bits[0] != 0;
 			}
@@ -182,6 +209,7 @@ public class ModbusSdv3Device : ISdv3Device
 		{
 			lock (this)
 			{
+				Console.WriteLine("写入 EI9");
 				WriteSingleBit(0x0208, value);
 			}
 		}
