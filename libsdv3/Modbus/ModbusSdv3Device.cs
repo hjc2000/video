@@ -64,20 +64,48 @@ public class ModbusSdv3Device : ISdv3Device
 		}
 	}
 
-	private ushort ToLocalEndian(byte[] buffer)
+	#region BitConverter
+	/// <summary>
+	///		将接收到的字节数组转化为整形。会根据本机字节序和通信字节序进行适当的转换。
+	/// </summary>
+	/// <param name="buffer"></param>
+	/// <returns></returns>
+	/// <exception cref="ArgumentException"></exception>
+	private ushort ToUInt16(byte[] buffer)
 	{
 		if (buffer.Length != 2)
 		{
 			throw new ArgumentException($"{nameof(buffer)}必须是长度为 2 的数组");
 		}
 
-		if (BitConverter.IsLittleEndian ^ !Bigendian)
+		if (!Bigendian ^ BitConverter.IsLittleEndian)
 		{
+			// 本机字节序和通信字节序不同
 			Array.Reverse(buffer);
 		}
 
 		return BitConverter.ToUInt16(buffer, 0);
 	}
+
+	/// <summary>
+	///		将整型转化为字节数组。会根据本机字节序和通信字节序进行适当的转换。
+	///		在发送时，只需将本函数返回的字节数组，从 0 索引开始递增，按顺序
+	///		放到要发送的帧中就行了。
+	/// </summary>
+	/// <param name="value"></param>
+	/// <returns></returns>
+	private byte[] GetBytes(ushort value)
+	{
+		byte[] bytes = BitConverter.GetBytes(value);
+		if (!Bigendian ^ BitConverter.IsLittleEndian)
+		{
+			// 本机字节序和通信字节序不同
+			Array.Reverse(bytes);
+		}
+
+		return bytes;
+	}
+	#endregion
 
 	private void WriteSingleBit(ushort data_addr, bool value)
 	{
@@ -88,19 +116,15 @@ public class ModbusSdv3Device : ISdv3Device
 
 			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.WriteSingleBit;
-			byte[] data_addr_bytes = BitConverter.GetBytes(data_addr);
-			byte[] data_bytes = BitConverter.GetBytes(data);
-			if (!Bigendian ^ BitConverter.IsLittleEndian)
-			{
-				// 如果本机字节序和要发送的字节序不同
-				Array.Reverse(data_addr_bytes);
-				Array.Reverse(data_bytes);
-			}
 
+			byte[] data_addr_bytes = GetBytes(data_addr);
 			frame[2] = data_addr_bytes[0];
 			frame[3] = data_addr_bytes[1];
+
+			byte[] data_bytes = GetBytes(data);
 			frame[4] = data_bytes[0];
 			frame[5] = data_bytes[1];
+
 			ModbusCrc16 crc16 = new();
 			crc16.Add(frame);
 			return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
@@ -119,14 +143,14 @@ public class ModbusSdv3Device : ISdv3Device
 		}
 
 		byte[] temp_buffer = read_buffer[2..4];
-		ushort received_data_addr = ToLocalEndian(temp_buffer);
+		ushort received_data_addr = ToUInt16(temp_buffer);
 		if (received_data_addr != data_addr)
 		{
 			throw new IOException("设备回复帧中的数据地址不对");
 		}
 
 		temp_buffer = read_buffer[4..6];
-		ushort received_data = ToLocalEndian(temp_buffer);
+		ushort received_data = ToUInt16(temp_buffer);
 		if (received_data != 0 != value)
 		{
 			throw new IOException("设备回复帧中的数据不对");
@@ -151,19 +175,15 @@ public class ModbusSdv3Device : ISdv3Device
 			byte[] frame = new byte[6];
 			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.ReadBits;
-			byte[] data_addr_bytes = BitConverter.GetBytes(data_addr);
-			byte[] bit_count_bytes = BitConverter.GetBytes(bit_count);
-			if (!Bigendian ^ BitConverter.IsLittleEndian)
-			{
-				// 要发送的字节序和本机字节序不同
-				Array.Reverse(data_addr_bytes);
-				Array.Reverse(bit_count_bytes);
-			}
 
+			byte[] data_addr_bytes = GetBytes(data_addr);
 			frame[2] = data_addr_bytes[0];
 			frame[3] = data_addr_bytes[1];
+
+			byte[] bit_count_bytes = GetBytes(bit_count);
 			frame[4] = bit_count_bytes[0];
 			frame[5] = bit_count_bytes[1];
+
 			ModbusCrc16 crc16 = new();
 			crc16.Add(frame);
 			return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
@@ -197,15 +217,11 @@ public class ModbusSdv3Device : ISdv3Device
 			byte[] frame = new byte[8];
 			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.ReadDatas;
-			byte[] data_addr_bytes = BitConverter.GetBytes(data_addr);
-			if (!Bigendian ^ BitConverter.IsLittleEndian)
-			{
-				// 要发送的字节序和本机字节序不同
-				Array.Reverse(data_addr_bytes);
-			}
 
+			byte[] data_addr_bytes = GetBytes(data_addr);
 			frame[2] = data_addr_bytes[0];
 			frame[3] = data_addr_bytes[1];
+
 			return frame;
 		}
 
