@@ -136,7 +136,17 @@ public static class ParamAddress
 	/// <summary>
 	///		直流中间电压（最小）
 	/// </summary>
-	public static ushort MinDCIntermediateVoltage { get; } = 0x101C;
+	public static ushort MinDCIntermediateVoltage { get; } = 0x101E;
+
+	/// <summary>
+	///		VREF 输入电压
+	/// </summary>
+	public static ushort VrefInputVoltage { get; } = 0x1020;
+
+	/// <summary>
+	///		TREF 输入电压
+	/// </summary>
+	public static ushort TrefInputVoltage { get; } = 0x1022;
 	#endregion
 
 }
