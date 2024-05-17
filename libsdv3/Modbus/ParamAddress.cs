@@ -127,6 +127,16 @@ public static class ParamAddress
 	///		负载惯性力矩比
 	/// </summary>
 	public static ushort LoadInertiaTorqueRatio { get; } = 0x101A;
+
+	/// <summary>
+	///		直流中间电压（最大）
+	/// </summary>
+	public static ushort MaxDCIntermediateVoltage { get; } = 0x101C;
+
+	/// <summary>
+	///		直流中间电压（最小）
+	/// </summary>
+	public static ushort MinDCIntermediateVoltage { get; } = 0x101C;
 	#endregion
 
 }
