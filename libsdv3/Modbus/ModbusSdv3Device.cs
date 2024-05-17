@@ -8,10 +8,11 @@ namespace libsdv3.Modbus;
 /// </summary>
 public partial class ModbusSdv3Device : ISdv3Device
 {
-	public ModbusSdv3Device(SerialPort serial, byte device_addr)
+	public ModbusSdv3Device(SerialPort serial, byte device_addr, bool big_endian)
 	{
 		_serial = serial;
 		_device_addr = device_addr;
+		Bigendian = big_endian;
 	}
 
 	private byte _device_addr = 1;

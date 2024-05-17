@@ -9,7 +9,7 @@ SerialPort serial = new("COM5")
 };
 
 serial.Open();
-ModbusSdv3Device sdv3 = new(serial, 1);
+ModbusSdv3Device sdv3 = new(serial, 1, true);
 sdv3.EI9 = !sdv3.EI9;
 Console.WriteLine(sdv3.EI9);
 Console.WriteLine(sdv3.EI1);
