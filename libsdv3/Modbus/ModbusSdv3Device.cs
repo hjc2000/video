@@ -16,7 +16,6 @@ public partial class ModbusSdv3Device : ISdv3Device
 
 	private byte _device_addr = 1;
 	private SerialPort _serial;
-
 	private bool Bigendian { get; set; } = true;
 
 	private static void PrintFrame(byte[] frame, bool is_send)
@@ -38,6 +37,11 @@ public partial class ModbusSdv3Device : ISdv3Device
 		Console.WriteLine();
 	}
 
+	/// <summary>
+	///		返回一个新的字节数组，在 buffer 的后面追加 buffer 的 CRC16。
+	/// </summary>
+	/// <param name="buffer"></param>
+	/// <returns></returns>
 	private byte[] AppendCrc16(byte[] buffer)
 	{
 		ModbusCrc16 crc16 = new();
