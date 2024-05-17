@@ -88,24 +88,19 @@ public class ModbusSdv3Device : ISdv3Device
 
 			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.WriteSingleBit;
+			byte[] data_addr_bytes = BitConverter.GetBytes(data_addr);
+			byte[] data_bytes = BitConverter.GetBytes(data);
 			if (!Bigendian ^ BitConverter.IsLittleEndian)
 			{
 				// 如果本机字节序和要发送的字节序不同
-				frame[2] = (byte)(data_addr >> 8);
-				frame[3] = (byte)data_addr;
-
-				frame[4] = (byte)(data >> 8);
-				frame[5] = (byte)data;
-			}
-			else
-			{
-				frame[2] = (byte)data_addr;
-				frame[3] = (byte)(data_addr >> 8);
-
-				frame[4] = (byte)data;
-				frame[5] = (byte)(data >> 8);
+				Array.Reverse(data_addr_bytes);
+				Array.Reverse(data_bytes);
 			}
 
+			frame[2] = data_addr_bytes[0];
+			frame[3] = data_addr_bytes[1];
+			frame[4] = data_bytes[0];
+			frame[5] = data_bytes[1];
 			ModbusCrc16 crc16 = new();
 			crc16.Add(frame);
 			return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
@@ -156,24 +151,19 @@ public class ModbusSdv3Device : ISdv3Device
 			byte[] frame = new byte[6];
 			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.ReadBits;
+			byte[] data_addr_bytes = BitConverter.GetBytes(data_addr);
+			byte[] bit_count_bytes = BitConverter.GetBytes(bit_count);
 			if (!Bigendian ^ BitConverter.IsLittleEndian)
 			{
 				// 要发送的字节序和本机字节序不同
-				frame[2] = (byte)(data_addr >> 8);
-				frame[3] = (byte)data_addr;
-
-				frame[4] = (byte)(bit_count >> 8);
-				frame[5] = (byte)bit_count;
-			}
-			else
-			{
-				frame[2] = (byte)data_addr;
-				frame[3] = (byte)(data_addr >> 8);
-
-				frame[4] = (byte)bit_count;
-				frame[5] = (byte)(bit_count >> 8);
+				Array.Reverse(data_addr_bytes);
+				Array.Reverse(bit_count_bytes);
 			}
 
+			frame[2] = data_addr_bytes[0];
+			frame[3] = data_addr_bytes[1];
+			frame[4] = bit_count_bytes[0];
+			frame[5] = bit_count_bytes[1];
 			ModbusCrc16 crc16 = new();
 			crc16.Add(frame);
 			return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
@@ -192,6 +182,34 @@ public class ModbusSdv3Device : ISdv3Device
 		}
 
 		return read_buffer[3..^2];
+	}
+
+	/// <summary>
+	///		读取各种数据
+	/// </summary>
+	/// <param name="data_addr">数据地址</param>
+	/// <param name="record_count">记录数。一个记录是 16 位。读取 1 个 32 位的数据需要 2 个记录。</param>
+	/// <returns></returns>
+	private byte[] ReadDatas(ushort data_addr, ushort record_count)
+	{
+		byte[] GenerateReadDatasFrame()
+		{
+			byte[] frame = new byte[8];
+			frame[0] = _device_addr;
+			frame[1] = (byte)FunctionCode.ReadDatas;
+			byte[] data_addr_bytes = BitConverter.GetBytes(data_addr);
+			if (!Bigendian ^ BitConverter.IsLittleEndian)
+			{
+				// 要发送的字节序和本机字节序不同
+				Array.Reverse(data_addr_bytes);
+			}
+
+			frame[2] = data_addr_bytes[0];
+			frame[3] = data_addr_bytes[1];
+			return frame;
+		}
+
+		throw new NotImplementedException();
 	}
 
 	#region 硬件 EI
