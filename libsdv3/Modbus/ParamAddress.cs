@@ -57,14 +57,65 @@ public static class ParamAddress
 	public static ushort EOUT21 { get; } = (ushort)(EOUT6 + (21 - 6));
 	#endregion
 
+	#region 监控数据
+	/// <summary>
+	///		反馈速度
+	/// </summary>
 	public static ushort FeedbackSpeed { get; } = 0x1000;
+
+	/// <summary>
+	///		指令速度
+	/// </summary>
 	public static ushort CommandSpeed { get; } = 0x1002;
+
+	/// <summary>
+	///		指令转矩
+	/// </summary>
 	public static ushort CommandTorque { get; } = 0x1004;
+
+	/// <summary>
+	///		峰值转矩
+	/// </summary>
 	public static ushort PeakTorque { get; } = 0x1006;
+
+	/// <summary>
+	///		电机电流
+	/// </summary>
 	public static ushort MotorCurrent { get; } = 0x1008;
+
+	/// <summary>
+	///		有效转矩
+	/// </summary>
 	public static ushort EffectiveTorque { get; } = 0x100A;
+
+	/// <summary>
+	///		反馈当前位置
+	/// </summary>
 	public static ushort FeedbackCurrentPosition { get; } = 0x100C;
+
+	/// <summary>
+	///		指令当前位置
+	/// </summary>
 	public static ushort CommandCurrentPosition { get; } = 0x100E;
+
+	/// <summary>
+	///		位置偏差
+	/// </summary>
 	public static ushort PositionDeviation { get; } = 0x1010;
+
+	/// <summary>
+	///		指令脉冲频率
+	/// </summary>
 	public static ushort CommandPulseFrequency { get; } = 0x1012;
+
+	/// <summary>
+	///		反馈累计脉冲数
+	/// </summary>
+	public static ushort TotalFeedbackPulseCount { get; } = 0x1014;
+
+	/// <summary>
+	///		指令累计脉冲数
+	/// </summary>
+	public static ushort TotalCommandPulseCount { get; } = 0x1016;
+	#endregion
 }
