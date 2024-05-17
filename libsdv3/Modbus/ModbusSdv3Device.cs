@@ -62,12 +62,12 @@ public class ModbusSdv3Device : ISdv3Device
 
 	public void WriteSingleBit(ushort data_addr, bool value)
 	{
-		byte[] GenerateWriteSingleBitFrame(byte device_addr, ushort data_addr, bool value)
+		byte[] GenerateWriteSingleBitFrame(ushort data_addr, bool value)
 		{
 			byte[] frame = new byte[6];
 			ushort data = value ? (ushort)0Xff00 : (ushort)0;
 
-			frame[0] = device_addr;
+			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.WriteSingleBit;
 			if (Bigendian)
 			{
@@ -92,7 +92,7 @@ public class ModbusSdv3Device : ISdv3Device
 			return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
 		}
 
-		_serial.Write(GenerateWriteSingleBitFrame(_device_addr, data_addr, value));
+		_serial.Write(GenerateWriteSingleBitFrame(data_addr, value));
 		byte[] read_buffer = _serial.ReadExactly(8);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
@@ -128,10 +128,10 @@ public class ModbusSdv3Device : ISdv3Device
 			throw new ArgumentException("不允许读取 0 个位");
 		}
 
-		byte[] GenerateReadBitsFrame(byte device_addr, ushort data_addr, ushort bit_count)
+		byte[] GenerateReadBitsFrame(ushort data_addr, ushort bit_count)
 		{
 			byte[] frame = new byte[6];
-			frame[0] = device_addr;
+			frame[0] = _device_addr;
 			frame[1] = (byte)FunctionCode.ReadBits;
 			if (Bigendian)
 			{
@@ -156,7 +156,7 @@ public class ModbusSdv3Device : ISdv3Device
 			return [.. frame, crc16.RegisterLowByte, crc16.RegisterHighByte];
 		}
 
-		_serial.Write(GenerateReadBitsFrame(_device_addr, 0x0208, 1));
+		_serial.Write(GenerateReadBitsFrame(data_addr, 1));
 		byte[] read_buffer = _serial.ReadExactly(5 + (count / 8) + 1);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
