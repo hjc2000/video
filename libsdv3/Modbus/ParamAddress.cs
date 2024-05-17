@@ -147,6 +147,11 @@ public static class ParamAddress
 	///		TREF 输入电压
 	/// </summary>
 	public static ushort TrefInputVoltage { get; } = 0x1022;
+
+	/// <summary>
+	///		OL 预报值
+	/// </summary>
+	public static ushort OLForecast { get; } = 0x1024;
 	#endregion
 
 }
