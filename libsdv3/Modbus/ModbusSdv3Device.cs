@@ -42,18 +42,6 @@ public partial class ModbusSdv3Device : ISdv3Device
 	}
 
 	/// <summary>
-	///		返回一个新的字节数组，在 buffer 的后面追加 buffer 的 CRC16。
-	/// </summary>
-	/// <param name="buffer"></param>
-	/// <returns></returns>
-	private byte[] AppendCrc16(byte[] buffer)
-	{
-		ModbusCrc16 crc16 = new();
-		crc16.Add(buffer);
-		return [.. buffer, crc16.RegisterLowByte, crc16.RegisterHighByte];
-	}
-
-	/// <summary>
 	///		检查 ADU。
 	///		* 不包括 PDU 部分，只检查作为头部的地址和作为尾部的 CRC16。
 	/// </summary>
