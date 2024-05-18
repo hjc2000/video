@@ -1,4 +1,5 @@
-﻿using libsdv3.Modbus;
+﻿using JCNET.流;
+using libsdv3.Modbus;
 using System.IO.Ports;
 
 SerialPort serial = new("COM5")
@@ -9,7 +10,7 @@ SerialPort serial = new("COM5")
 };
 
 serial.Open();
-ModbusSdv3Device sdv3 = new(serial, 1, true);
+ModbusSdv3Device sdv3 = new(new SerialPortStream(serial), 1, true);
 sdv3.EI9 = !sdv3.EI9;
 Console.WriteLine(sdv3.EI9);
 Console.WriteLine(sdv3.EI1);

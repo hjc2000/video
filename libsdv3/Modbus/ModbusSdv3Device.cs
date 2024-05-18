@@ -1,6 +1,5 @@
 ﻿using JCNET;
 using libsdv3.Modbus.Frame;
-using System.IO.Ports;
 
 namespace libsdv3.Modbus;
 
@@ -9,16 +8,16 @@ namespace libsdv3.Modbus;
 /// </summary>
 public partial class ModbusSdv3Device : ISdv3Device
 {
-	public ModbusSdv3Device(SerialPort serial, byte device_addr, bool big_endian)
+	public ModbusSdv3Device(Stream serial_stream, byte device_addr, bool big_endian)
 	{
-		_serial = serial;
+		_serial_stream = serial_stream;
 		_device_addr = device_addr;
 		_big_endian = big_endian;
 		_auto_bit_converter = new AutoBitConverter(big_endian);
 	}
 
 	private byte _device_addr;
-	private SerialPort _serial;
+	private Stream _serial_stream;
 	private bool _big_endian;
 	private AutoBitConverter _auto_bit_converter;
 
@@ -83,9 +82,10 @@ public partial class ModbusSdv3Device : ISdv3Device
 		};
 		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
-		_serial.Write(frame);
+		_serial_stream.Write(frame);
 
-		byte[] read_buffer = _serial.ReadExactly(8);
+		byte[] read_buffer = new byte[8];
+		_serial_stream.ReadExactly(read_buffer);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
@@ -127,9 +127,10 @@ public partial class ModbusSdv3Device : ISdv3Device
 		};
 		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
-		_serial.Write(frame);
+		_serial_stream.Write(frame);
 
-		byte[] read_buffer = _serial.ReadExactly(5 + (bit_count / 8) + 1);
+		byte[] read_buffer = new byte[5 + (bit_count / 8) + 1];
+		_serial_stream.ReadExactly(read_buffer);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
@@ -161,9 +162,10 @@ public partial class ModbusSdv3Device : ISdv3Device
 		};
 		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
-		_serial.Write(frame);
+		_serial_stream.Write(frame);
 
-		byte[] read_buffer = _serial.ReadExactly(5 + (record_count * 2));
+		byte[] read_buffer = new byte[5 + (record_count * 2)];
+		_serial_stream.ReadExactly(read_buffer);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
