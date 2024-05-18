@@ -12,6 +12,8 @@ public class WriteSingleBitRequestFrame
 	/// </summary>
 	public byte SlaveAddress { get; set; } = 1;
 
+	private FunctionCode FunctionCode { get; } = FunctionCode.WriteSingleBit;
+
 	/// <summary>
 	///		数据地址。这里就是要写入的位的地址。
 	/// </summary>
@@ -21,8 +23,6 @@ public class WriteSingleBitRequestFrame
 	///		要写入的位的值
 	/// </summary>
 	public bool Value { get; set; } = false;
-
-	private FunctionCode FunctionCode { get; } = FunctionCode.WriteSingleBit;
 
 	/// <summary>
 	///		序列化为字节数组

@@ -8,10 +8,9 @@ namespace libsdv3.Modbus.Frame;
 public class ReadDatasRequestFrame
 {
 	public byte SlaveAddress { get; set; } = 1;
+	private FunctionCode FunctionCode { get; } = FunctionCode.ReadDatas;
 	public ushort DataAddress { get; set; } = 0;
 	public ushort RecordCount { get; set; } = 1;
-
-	private FunctionCode FunctionCode { get; } = FunctionCode.ReadDatas;
 
 	public byte[] ToBytes(bool big_endian)
 	{
