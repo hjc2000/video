@@ -2,6 +2,9 @@
 
 namespace libsdv3.Modbus.Frame;
 
+/// <summary>
+///		读取各种数据的请求帧。
+/// </summary>
 public class ReadDatasRequestFrame
 {
 	public byte SlaveAddress { get; set; } = 1;
