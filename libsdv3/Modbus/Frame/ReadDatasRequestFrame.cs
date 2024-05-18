@@ -2,13 +2,13 @@
 
 namespace libsdv3.Modbus.Frame;
 
-public class ReadBitsRequestFrame
+public class ReadDatasRequestFrame
 {
 	public byte SlaveAddress { get; set; } = 1;
 	public ushort DataAddress { get; set; } = 0;
-	public ushort BitCount { get; set; } = 1;
+	public ushort RecordCount { get; set; } = 1;
 
-	private FunctionCode FunctionCode { get; } = FunctionCode.ReadBits;
+	private FunctionCode FunctionCode { get; } = FunctionCode.ReadDatas;
 
 	public byte[] ToBytes(bool big_endian)
 	{
@@ -22,7 +22,7 @@ public class ReadBitsRequestFrame
 		frame[2] = data_addr_bytes[0];
 		frame[3] = data_addr_bytes[1];
 
-		byte[] data_bytes = auto_bit_converter.GetBytes(BitCount);
+		byte[] data_bytes = auto_bit_converter.GetBytes(RecordCount);
 		frame[4] = data_bytes[0];
 		frame[5] = data_bytes[1];
 

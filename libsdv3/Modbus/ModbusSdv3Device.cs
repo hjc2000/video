@@ -165,24 +165,13 @@ public partial class ModbusSdv3Device : ISdv3Device
 			throw new ArgumentException($"{nameof(record_count)} 不能为 0");
 		}
 
-		byte[] GenerateReadDatasFrame()
+		ReadDatasRequestFrame request_frame = new()
 		{
-			byte[] frame = new byte[6];
-			frame[0] = _device_addr;
-			frame[1] = (byte)FunctionCode.ReadDatas;
-
-			byte[] data_addr_bytes = _auto_bit_converter.GetBytes(data_addr);
-			frame[2] = data_addr_bytes[0];
-			frame[3] = data_addr_bytes[1];
-
-			byte[] record_count_bytes = _auto_bit_converter.GetBytes(record_count);
-			frame[4] = record_count_bytes[0];
-			frame[5] = record_count_bytes[1];
-
-			return AppendCrc16(frame);
-		}
-
-		byte[] frame = GenerateReadDatasFrame();
+			SlaveAddress = _device_addr,
+			DataAddress = data_addr,
+			RecordCount = record_count,
+		};
+		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
 		_serial.Write(frame);
 
