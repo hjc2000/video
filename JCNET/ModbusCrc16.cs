@@ -53,9 +53,9 @@ public class ModbusCrc16
 		}
 	}
 
-	public void Add(IEnumerable<byte> datas)
+	public void Add(Memory<byte> datas)
 	{
-		foreach (byte value in datas)
+		foreach (byte value in datas.Span)
 		{
 			Add(value);
 		}
