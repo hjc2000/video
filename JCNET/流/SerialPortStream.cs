@@ -2,6 +2,9 @@
 
 namespace JCNET.流;
 
+/// <summary>
+///		为 SerialPort 实现流接口。
+/// </summary>
 public class SerialPortStream : Stream
 {
 	public SerialPortStream(SerialPort serial_port)
