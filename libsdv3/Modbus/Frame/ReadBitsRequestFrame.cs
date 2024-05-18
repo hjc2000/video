@@ -2,33 +2,14 @@
 
 namespace libsdv3.Modbus.Frame;
 
-/// <summary>
-///		写单个位的请求帧。由主机发给从机。
-/// </summary>
-public class WriteSingleBitRequestFrame
+public class ReadBitsRequestFrame
 {
-	/// <summary>
-	///		从机地址
-	/// </summary>
 	public byte SlaveAddress { get; set; } = 1;
-
-	/// <summary>
-	///		数据地址。这里就是要写入的位的地址。
-	/// </summary>
 	public ushort DataAddress { get; set; } = 0;
-
-	/// <summary>
-	///		要写入的位的值
-	/// </summary>
-	public bool Value { get; set; } = false;
+	public ushort BitCount { get; set; } = 1;
 
 	private FunctionCode FunctionCode { get; } = FunctionCode.WriteSingleBit;
 
-	/// <summary>
-	///		序列化为字节数组
-	/// </summary>
-	/// <param name="big_endian"></param>
-	/// <returns></returns>
 	public byte[] ToBytes(bool big_endian)
 	{
 		AutoBitConverter auto_bit_converter = new(big_endian);
@@ -41,7 +22,7 @@ public class WriteSingleBitRequestFrame
 		frame[2] = data_addr_bytes[0];
 		frame[3] = data_addr_bytes[1];
 
-		byte[] data_bytes = auto_bit_converter.GetBytes(Value ? (ushort)0Xff00 : (ushort)0);
+		byte[] data_bytes = auto_bit_converter.GetBytes(BitCount);
 		frame[4] = data_bytes[0];
 		frame[5] = data_bytes[1];
 

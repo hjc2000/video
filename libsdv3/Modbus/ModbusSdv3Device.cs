@@ -93,7 +93,6 @@ public partial class ModbusSdv3Device : ISdv3Device
 			DataAddress = data_addr,
 			Value = value,
 		};
-
 		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
 		_serial.Write(frame);
@@ -132,24 +131,13 @@ public partial class ModbusSdv3Device : ISdv3Device
 			throw new ArgumentException("不允许读取 0 个位");
 		}
 
-		byte[] GenerateReadBitsFrame()
+		ReadBitsRequestFrame request_frame = new()
 		{
-			byte[] frame = new byte[6];
-			frame[0] = _device_addr;
-			frame[1] = (byte)FunctionCode.ReadBits;
-
-			byte[] data_addr_bytes = _auto_bit_converter.GetBytes(data_addr);
-			frame[2] = data_addr_bytes[0];
-			frame[3] = data_addr_bytes[1];
-
-			byte[] bit_count_bytes = _auto_bit_converter.GetBytes(bit_count);
-			frame[4] = bit_count_bytes[0];
-			frame[5] = bit_count_bytes[1];
-
-			return AppendCrc16(frame);
-		}
-
-		byte[] frame = GenerateReadBitsFrame();
+			SlaveAddress = _device_addr,
+			DataAddress = data_addr,
+			BitCount = bit_count,
+		};
+		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
 		_serial.Write(frame);
 
