@@ -1,4 +1,5 @@
 ﻿using JCNET;
+using libsdv3.Modbus.Frame;
 using System.IO.Ports;
 
 namespace libsdv3.Modbus;
@@ -12,11 +13,13 @@ public partial class ModbusSdv3Device : ISdv3Device
 	{
 		_serial = serial;
 		_device_addr = device_addr;
+		_big_endian = big_endian;
 		_auto_bit_converter = new AutoBitConverter(big_endian);
 	}
 
 	private byte _device_addr;
 	private SerialPort _serial;
+	private bool _big_endian;
 	private AutoBitConverter _auto_bit_converter;
 
 	private static void PrintFrame(byte[] frame, bool is_send)
@@ -84,25 +87,14 @@ public partial class ModbusSdv3Device : ISdv3Device
 	/// <exception cref="IOException"></exception>
 	private void WriteSingleBit(ushort data_addr, bool value)
 	{
-		byte[] GenerateWriteSingleBitFrame()
+		WriteSingleBitRequestFrame request_frame = new()
 		{
-			byte[] frame = new byte[6];
+			SlaveAddress = _device_addr,
+			DataAddress = data_addr,
+			Value = value,
+		};
 
-			frame[0] = _device_addr;
-			frame[1] = (byte)FunctionCode.WriteSingleBit;
-
-			byte[] data_addr_bytes = _auto_bit_converter.GetBytes(data_addr);
-			frame[2] = data_addr_bytes[0];
-			frame[3] = data_addr_bytes[1];
-
-			byte[] data_bytes = _auto_bit_converter.GetBytes(value ? (ushort)0Xff00 : (ushort)0);
-			frame[4] = data_bytes[0];
-			frame[5] = data_bytes[1];
-
-			return AppendCrc16(frame);
-		}
-
-		byte[] frame = GenerateWriteSingleBitFrame();
+		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
 		_serial.Write(frame);
 
