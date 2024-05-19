@@ -164,6 +164,7 @@ public partial class ModbusSdv3Device : ISdv3Device
 		PrintFrame(frame, true);
 		_serial_stream.Write(frame);
 
+		// 接收响应
 		byte[] read_buffer = new byte[5 + (record_count * 2)];
 		_serial_stream.ReadExactly(read_buffer);
 		PrintFrame(read_buffer, false);
@@ -178,9 +179,9 @@ public partial class ModbusSdv3Device : ISdv3Device
 			throw new IOException("返回的数据字节数不对");
 		}
 
-		int uint32_data_count = read_buffer[2] / 4;
-		uint[] ret = new uint[uint32_data_count];
-		for (int i = 0; i < uint32_data_count; i++)
+		int response_uint32_data_count = read_buffer[2] / 4;
+		uint[] ret = new uint[response_uint32_data_count];
+		for (int i = 0; i < response_uint32_data_count; i++)
 		{
 			int start_pos = 3 + (i * 4);
 			ret[i] = _auto_bit_converter.ToUInt32(read_buffer, start_pos);
@@ -189,9 +190,44 @@ public partial class ModbusSdv3Device : ISdv3Device
 		return ret;
 	}
 
-	private void WriteDatas(ushort data_addr, byte[] datas)
+	private void WriteDatas(ushort data_addr, uint[] datas)
 	{
+		if (datas.Length == 0)
+		{
+			throw new ArgumentException($"{nameof(datas)} 的长度不能为 0");
+		}
 
+		WriteDatasRequestFrame request_frame = new()
+		{
+			SlaveAddress = _device_addr,
+			DataAddress = data_addr,
+			Datas = datas,
+		};
+		byte[] frame = request_frame.ToBytes(_big_endian);
+		PrintFrame(frame, true);
+		_serial_stream.Write(frame);
+
+		// 接收响应
+		byte[] read_buffer = new byte[8];
+		_serial_stream.ReadExactly(read_buffer);
+		PrintFrame(read_buffer, false);
+		CheckADU(read_buffer);
+		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
+		{
+			throw new IOException("设备回复的帧中的功能码错误");
+		}
+
+		ushort response_data_addr = _auto_bit_converter.ToUInt16(read_buffer, 2);
+		if (response_data_addr != data_addr)
+		{
+			throw new IOException("设备回复帧中的数据地址不对");
+		}
+
+		ushort response_record_count = _auto_bit_converter.ToUInt16(read_buffer, 4);
+		if (response_record_count != datas.Length * 2)
+		{
+			throw new IOException("设备回复帧中的记录数不对");
+		}
 	}
 }
 
