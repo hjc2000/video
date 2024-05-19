@@ -44,14 +44,14 @@ public partial class ModbusSdv3Device : ISdv3Device
 	///		检查 ADU。
 	///		* 不包括 PDU 部分，只检查作为头部的地址和作为尾部的 CRC16。
 	/// </summary>
-	/// <param name="received_frame"></param>
+	/// <param name="response_frame"></param>
 	/// <exception cref="IOException"></exception>
-	private void CheckADU(Memory<byte> received_frame)
+	private void CheckADU(Memory<byte> response_frame)
 	{
 		ModbusCrc16 crc16 = new();
-		crc16.Add(received_frame[..^2]);
+		crc16.Add(response_frame[..^2]);
 
-		Span<byte> span = received_frame.Span;
+		Span<byte> span = response_frame.Span;
 		if (span[^2] != crc16.RegisterLowByte)
 		{
 			throw new IOException("CRC 校验错误");
