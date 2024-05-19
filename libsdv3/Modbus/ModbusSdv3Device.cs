@@ -188,6 +188,11 @@ public partial class ModbusSdv3Device : ISdv3Device
 
 		return ret;
 	}
+
+	private void WriteDatas(ushort data_addr, byte[] datas)
+	{
+
+	}
 }
 
 public partial class ModbusSdv3Device
