@@ -22,7 +22,7 @@ public class WriteSingleBitRequestFrame
 	/// <summary>
 	///		要写入的位的值
 	/// </summary>
-	public bool Value { get; set; } = false;
+	public bool BitValue { get; set; } = false;
 
 	/// <summary>
 	///		序列化为字节数组
@@ -41,7 +41,7 @@ public class WriteSingleBitRequestFrame
 		frame[2] = data_addr_bytes[0];
 		frame[3] = data_addr_bytes[1];
 
-		byte[] data_bytes = auto_bit_converter.GetBytes(Value ? (ushort)0Xff00 : (ushort)0);
+		byte[] data_bytes = auto_bit_converter.GetBytes(BitValue ? (ushort)0Xff00 : (ushort)0);
 		frame[4] = data_bytes[0];
 		frame[5] = data_bytes[1];
 

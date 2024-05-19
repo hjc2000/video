@@ -78,7 +78,7 @@ public partial class ModbusSdv3Device : ISdv3Device
 		{
 			SlaveAddress = _device_addr,
 			DataAddress = data_addr,
-			Value = value,
+			BitValue = value,
 		};
 		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
