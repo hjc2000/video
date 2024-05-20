@@ -2,10 +2,11 @@
 
 @*根节点占据全部视觉宽高，溢出隐藏*@
 <div class="root"
-	 style="width:@(Width);
-			height:@(Height);">
-
-	<div @ref="_left_menu_element" class="left-menu">
+	 style="width: @(Width);
+			height: @(Height);">
+	<div class="left-menu"
+		 style="width: @(UsedLeftMenuWidth);
+				transition: width 0.4s;">
 		@LeftMenu
 	</div>
 	<div class="top-bar">
@@ -17,7 +18,7 @@
 	<div class="state-bar">
 		@StateBar
 	</div>
-	<div class="hide-left-menu-button-box" @onclick="ToggleHideLeftMenuAsync">
+	<div class="hide-left-menu-button-box" @onclick="ToggleHideLeftMenu">
 		@if (HideLeftMenuButton is null)
 		{
 			@*☰☱☲☳☴☵☶☷*@

@@ -4,78 +4,28 @@ namespace JCRazor.WindowComponents;
 
 public partial class PCLayoutComponent
 {
-	protected override async Task OnAfterRenderAsync(bool firstRender)
+	private bool _hide_left_menu = false;
+	private string UsedLeftMenuWidth
 	{
-		if (!firstRender)
+		get
 		{
-			return;
+			if (_hide_left_menu)
+			{
+				return "0";
+			}
+
+			return LeftMenuWidth;
 		}
-
-		_jsop = new JSOp(JSRuntime);
-		_initTcs.TrySetResult();
-
-		/* 初始化的时候先获取当前的计算样式的宽度，然后设置一遍，将计算样式应用到内联样式中
-		 * 如果不这么做，宽度变化的过渡效果不会生效。想要生效必须初始时有明确设置一个固定宽度。
-		 */
-		_init_left_menu_width = await GetLeftMenuWidthAsync();
-		await SetLeftMenuWidthAsync(_init_left_menu_width);
 	}
-
-	private JSOp _jsop = default!;
-	private TaskCompletionSource _initTcs = new();
-
-	/// <summary>
-	///		左侧边栏初始的宽度
-	/// </summary>
-	private double _init_left_menu_width = 0;
 
 	/// <summary>
 	///		反转侧边栏的隐藏状态。本来出现的，调用后会隐藏。本来隐藏的，调用后会出现。
 	/// </summary>
 	/// <returns></returns>
-	private async Task ToggleHideLeftMenuAsync()
+	private void ToggleHideLeftMenu()
 	{
-		double width = await GetLeftMenuWidthAsync();
-		if (width > 0)
-		{
-			await SetLeftMenuWidthAsync(0);
-		}
-		else
-		{
-			await SetLeftMenuWidthAsync(_init_left_menu_width);
-		}
+		_hide_left_menu = !_hide_left_menu;
 	}
-
-	/// <summary>
-	/// 获取侧边栏的宽度
-	/// </summary>
-	/// <returns></returns>
-	public async Task<double> GetLeftMenuWidthAsync()
-	{
-		await _initTcs.Task;
-		string width_string = await _jsop.GetComputedStyle(_left_menu_element, "width");
-		width_string = width_string[..(^2)];
-		try
-		{
-			return double.Parse(width_string);
-		}
-		catch
-		{
-			return 300;
-		}
-	}
-
-	/// <summary>
-	/// 设置侧边栏的宽度
-	/// </summary>
-	/// <returns></returns>
-	public async Task SetLeftMenuWidthAsync(double width)
-	{
-		await _initTcs.Task;
-		await _jsop.SetElementStyle(_left_menu_element, "width", $"{width}px");
-	}
-
-	private ElementReference _left_menu_element = default!;
 
 	[Parameter]
 	public RenderFragment? LeftMenu { get; set; }
@@ -99,4 +49,6 @@ public partial class PCLayoutComponent
 	public string Width { get; set; } = "100vw";
 	[Parameter]
 	public string Height { get; set; } = "100vh";
+	[Parameter]
+	public string LeftMenuWidth { get; set; } = "200px";
 }
