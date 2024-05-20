@@ -1,0 +1,17 @@
+<BreathingBorderBox>
+	<FormTable>
+		<Head>
+			串口配置
+		</Head>
+		<Body>
+			<div>波特率</div>
+			<div>
+				<input list="@($"baudrate_data_list_{GetHashCode()}")" />
+				<datalist id="@($"baudrate_data_list_{GetHashCode()}")">
+					<option>115200</option>
+					<option>9600</option>
+				</datalist>
+			</div>
+		</Body>
+	</FormTable>
+</BreathingBorderBox>
