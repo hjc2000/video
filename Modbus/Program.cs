@@ -12,4 +12,5 @@ SerialPort serial = new("COM5")
 serial.Open();
 ModbusSdv3Device sdv3 = new(new SerialPortStream(serial), 1, true);
 sdv3.EI9 = !sdv3.EI9;
+sdv3.SetPn(1, 1, 0);
 Console.WriteLine(sdv3.Pn(1, 1));

@@ -894,4 +894,12 @@ public partial class ModbusSdv3Device
 		uint[] datas = ReadDatas(ParamAddress.Pn(major, minor), 2);
 		return datas[0];
 	}
+	public void SetPn(int major, int minor, uint[] value)
+	{
+		WriteDatas(ParamAddress.Pn(major, minor), value);
+	}
+	public void SetPn(int major, int minor, uint value)
+	{
+		WriteDatas(ParamAddress.Pn(major, minor), [value]);
+	}
 }
