@@ -11,7 +11,7 @@ public partial class TestPage : IAsyncDisposable
 	public TestPage()
 	{
 		_serial.Open();
-		_sdv3 = new(new SerialPortStream(_serial), 1, true);
+		_sdv3 = new ModbusSdv3Device(new SerialPortStream(_serial), 1, true);
 		//JCNET.定时器.Timer.SetInterval(() =>
 		//{
 
