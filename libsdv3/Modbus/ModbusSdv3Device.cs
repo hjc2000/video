@@ -893,8 +893,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.FeedbackSpeed, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.FeedbackSpeed, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -902,8 +905,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.CommandSpeed, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.CommandSpeed, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -911,8 +917,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.CommandTorque, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.CommandTorque, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -920,8 +929,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.PeakTorque, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.PeakTorque, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -929,8 +941,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.MotorCurrent, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.MotorCurrent, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -938,8 +953,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.EffectiveTorque, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.EffectiveTorque, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -947,8 +965,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.FeedbackCurrentPosition, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.FeedbackCurrentPosition, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -956,8 +977,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.CommandCurrentPosition, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.CommandCurrentPosition, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -965,8 +989,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.PositionDeviation, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.PositionDeviation, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -974,8 +1001,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.CommandPulseFrequency, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.CommandPulseFrequency, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -983,8 +1013,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.TotalFeedbackPulseCount, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.TotalFeedbackPulseCount, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -992,8 +1025,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.TotalCommandPulseCount, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.TotalCommandPulseCount, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -1001,8 +1037,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.PulseCountBetween_LS_And_Z, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.PulseCountBetween_LS_And_Z, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -1010,8 +1049,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.LoadInertiaTorqueRatio, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.LoadInertiaTorqueRatio, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -1019,8 +1061,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.MaxDCIntermediateVoltage, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.MaxDCIntermediateVoltage, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -1028,8 +1073,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.MinDCIntermediateVoltage, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.MinDCIntermediateVoltage, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -1037,8 +1085,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.VrefInputVoltage, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.VrefInputVoltage, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -1046,8 +1097,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.TrefInputVoltage, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.TrefInputVoltage, 2);
+				return datas[0];
+			}
 		}
 	}
 
@@ -1055,8 +1109,11 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.OLForecast, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.OLForecast, 2);
+				return datas[0];
+			}
 		}
 	}
 	#endregion
@@ -1066,20 +1123,26 @@ public class ModbusSdv3Device : ISdv3Device
 	{
 		get
 		{
-			uint[] datas = ReadDatas(ParamAddress.CurrentAlarm, 2);
-			return datas[0];
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.CurrentAlarm, 2);
+				return datas[0];
+			}
 		}
 	}
 
 	public uint AlarmRecords(int record_id)
 	{
-		if (record_id < 1 || record_id > AlarmRecordCount)
+		lock (this)
 		{
-			throw new ArgumentOutOfRangeException($"{nameof(record_id)} 必须在 [1, {AlarmRecordCount}] 上。");
-		}
+			if (record_id < 1 || record_id > AlarmRecordCount)
+			{
+				throw new ArgumentOutOfRangeException($"{nameof(record_id)} 必须在 [1, {AlarmRecordCount}] 上。");
+			}
 
-		uint[] datas = ReadDatas(ParamAddress.AlarmRecords(record_id), 2);
-		return datas[0];
+			uint[] datas = ReadDatas(ParamAddress.AlarmRecords(record_id), 2);
+			return datas[0];
+		}
 	}
 
 	public int AlarmRecordCount
@@ -1093,15 +1156,24 @@ public class ModbusSdv3Device : ISdv3Device
 
 	public uint Pn(int major, int minor)
 	{
-		uint[] datas = ReadDatas(ParamAddress.Pn(major, minor), 2);
-		return datas[0];
+		lock (this)
+		{
+			uint[] datas = ReadDatas(ParamAddress.Pn(major, minor), 2);
+			return datas[0];
+		}
 	}
 	public void SetPn(int major, int minor, uint[] value)
 	{
-		WriteDatas(ParamAddress.Pn(major, minor), value);
+		lock (this)
+		{
+			WriteDatas(ParamAddress.Pn(major, minor), value);
+		}
 	}
 	public void SetPn(int major, int minor, uint value)
 	{
-		WriteDatas(ParamAddress.Pn(major, minor), [value]);
+		lock (this)
+		{
+			WriteDatas(ParamAddress.Pn(major, minor), [value]);
+		}
 	}
 }

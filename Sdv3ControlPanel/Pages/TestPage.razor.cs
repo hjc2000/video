@@ -1,5 +1,4 @@
-﻿using JCNET.流;
-using libsdv3.Modbus;
+﻿using libsdv3.Modbus;
 using System;
 using System.IO.Ports;
 using System.Threading.Tasks;
@@ -8,18 +7,6 @@ namespace Sdv3ControlPanel.Pages;
 
 public partial class TestPage : IAsyncDisposable
 {
-	public TestPage()
-	{
-		_serial.Open();
-		_sdv3 = new ModbusSdv3Device(new SerialPortStream(_serial), 1, true);
-		//JCNET.定时器.Timer.SetInterval(() =>
-		//{
-
-		//},
-		//1000,
-		//CancellationToken.None);
-	}
-
 	private bool _disposed = false;
 	public async ValueTask DisposeAsync()
 	{
@@ -32,17 +19,34 @@ public partial class TestPage : IAsyncDisposable
 		GC.SuppressFinalize(this);
 
 		await ValueTask.CompletedTask;
-		_serial.Close();
-		_serial.Dispose();
+		_serial?.Close();
+		_serial?.Dispose();
 	}
 
-	private ModbusSdv3Device _sdv3;
-	private SerialPort _serial = new("COM5")
+	private ModbusSdv3Device? _sdv3;
+	private SerialPort? _serial = new("COM5")
 	{
 		BaudRate = 115200,
 		Parity = Parity.Even,
 		StopBits = StopBits.One
 	};
+
+	private void Open()
+	{
+		if (_serial is null)
+		{
+			return;
+		}
+
+		_serial.Open();
+		_sdv3 = new ModbusSdv3Device(_serial.BaseStream, 1, true);
+		//JCNET.定时器.Timer.SetInterval(() =>
+		//{
+
+		//},
+		//1000,
+		//CancellationToken.None);
+	}
 
 	private bool Enabled
 	{
@@ -50,6 +54,11 @@ public partial class TestPage : IAsyncDisposable
 		{
 			try
 			{
+				if (_sdv3 is null)
+				{
+					return false;
+				}
+
 				return _sdv3.EI9;
 			}
 			catch
@@ -63,6 +72,11 @@ public partial class TestPage : IAsyncDisposable
 	{
 		try
 		{
+			if (_sdv3 is null)
+			{
+				return;
+			}
+
 			await Task.CompletedTask;
 			_sdv3.EI9 = !_sdv3.EI9;
 		}
@@ -78,6 +92,11 @@ public partial class TestPage : IAsyncDisposable
 		{
 			try
 			{
+				if (_sdv3 is null)
+				{
+					return 0;
+				}
+
 				return _sdv3.FeedbackCurrentPosition;
 			}
 			catch
