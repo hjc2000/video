@@ -1,17 +1,43 @@
+@using System.IO.Ports
+
 <BreathingBorderBox>
-	<FormTable>
+	<FormTable HeadPadding="10px"
+			   BodyPadding="10px"
+			   FootPadding="10px">
 		<Head>
 			串口配置
 		</Head>
 		<Body>
-			<div>波特率</div>
+			<div>波特率：</div>
 			<div>
-				<input list="@($"baudrate_data_list_{GetHashCode()}")" />
+				<input @bind="BaudRateString" list="@($"baudrate_data_list_{GetHashCode()}")" />
 				<datalist id="@($"baudrate_data_list_{GetHashCode()}")">
 					<option>115200</option>
 					<option>9600</option>
 				</datalist>
 			</div>
+
+			<div>校验：</div>
+			<div>
+				<select @bind="ParityValue">
+					<option value="@(Parity.Even)">偶校验</option>
+					<option value="@(Parity.Odd)">奇校验</option>
+					<option value="@(Parity.None)">无</option>
+				</select>
+			</div>
+
+			<div>
+				停止位：
+			</div>
+			<div>
+				<select @bind="StopBitsValue">
+					<option value="@(StopBits.One)">1 位</option>
+					<option value="@(StopBits.Two)">2 位</option>
+				</select>
+			</div>
 		</Body>
+		<Foot>
+			<STButton @onclick="OnConnectButtonClickAsync">连接</STButton>
+		</Foot>
 	</FormTable>
 </BreathingBorderBox>
