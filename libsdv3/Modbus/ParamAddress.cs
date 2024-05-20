@@ -154,4 +154,33 @@ public static class ParamAddress
 	public static ushort OLForecast { get; } = 0x1024;
 	#endregion
 
+	public static ushort Pn(int major, int minor)
+	{
+		if (minor is < 1 or > 99)
+		{
+			throw new ArgumentOutOfRangeException($"{nameof(minor)} 只能在 [1, 99] 中。");
+		}
+
+		switch (major)
+		{
+		case 1:
+			{
+				return (ushort)(0x4000 + (minor * 2));
+			}
+		case 2:
+			{
+				return (ushort)(0x4100 + (minor * 2));
+			}
+		case 3:
+			{
+				return (ushort)(0x4200 + (minor * 2));
+			}
+		case 4:
+			{
+				return (ushort)(0x4300 + (minor * 2));
+			}
+		}
+
+		throw new ArgumentOutOfRangeException($"{nameof(major)} 只能在 [1, 4] 中。");
+	}
 }
