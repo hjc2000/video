@@ -171,7 +171,7 @@ public partial class ModbusSdv3Device : ISdv3Device
 		_serial_stream.ReadExactly(read_buffer);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
-		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
+		if (read_buffer[1] != (byte)FunctionCode.ReadDatas)
 		{
 			throw new IOException("设备回复的帧中的功能码错误");
 		}
@@ -214,7 +214,7 @@ public partial class ModbusSdv3Device : ISdv3Device
 		_serial_stream.ReadExactly(read_buffer);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
-		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
+		if (read_buffer[1] != (byte)FunctionCode.WriteDatas)
 		{
 			throw new IOException("设备回复的帧中的功能码错误");
 		}
@@ -889,4 +889,9 @@ public partial class ModbusSdv3Device
 	}
 	#endregion
 
+	public uint Pn(int major, int minor)
+	{
+		uint[] datas = ReadDatas(ParamAddress.Pn(major, minor), 2);
+		return datas[0];
+	}
 }

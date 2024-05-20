@@ -165,19 +165,19 @@ public static class ParamAddress
 		{
 		case 1:
 			{
-				return (ushort)(0x4000 + (minor * 2));
+				return (ushort)(0x4000 + ((minor - 1) * 2));
 			}
 		case 2:
 			{
-				return (ushort)(0x4100 + (minor * 2));
+				return (ushort)(0x4100 + ((minor - 1) * 2));
 			}
 		case 3:
 			{
-				return (ushort)(0x4200 + (minor * 2));
+				return (ushort)(0x4200 + ((minor - 1) * 2));
 			}
 		case 4:
 			{
-				return (ushort)(0x4300 + (minor * 2));
+				return (ushort)(0x4300 + ((minor - 1) * 2));
 			}
 		}
 
