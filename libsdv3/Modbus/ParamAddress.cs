@@ -154,6 +154,8 @@ public static class ParamAddress
 	public static ushort OLForecast { get; } = 0x1024;
 	#endregion
 
+	public static ushort CurrentAlarm { get; } = 0x2200;
+
 	public static ushort Pn(int major, int minor)
 	{
 		if (minor is < 1 or > 99)

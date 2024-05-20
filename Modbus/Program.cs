@@ -13,3 +13,4 @@ serial.Open();
 ModbusSdv3Device sdv3 = new(new SerialPortStream(serial), 1, true);
 Console.WriteLine(sdv3.Pn(1, 6));
 Console.WriteLine(sdv3.Pn(1, 7));
+Console.WriteLine(sdv3.CurrentAlarm);

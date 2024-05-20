@@ -889,6 +889,15 @@ public partial class ModbusSdv3Device
 	}
 	#endregion
 
+	public uint CurrentAlarm
+	{
+		get
+		{
+			uint[] datas = ReadDatas(ParamAddress.CurrentAlarm, 2);
+			return datas[0];
+		}
+	}
+
 	public uint Pn(int major, int minor)
 	{
 		uint[] datas = ReadDatas(ParamAddress.Pn(major, minor), 2);
