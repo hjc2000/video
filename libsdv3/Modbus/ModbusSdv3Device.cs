@@ -1062,6 +1062,7 @@ public partial class ModbusSdv3Device
 	}
 	#endregion
 
+	#region 报警
 	public uint CurrentAlarm
 	{
 		get
@@ -1089,6 +1090,7 @@ public partial class ModbusSdv3Device
 			return 20;
 		}
 	}
+	#endregion
 
 	public uint Pn(int major, int minor)
 	{

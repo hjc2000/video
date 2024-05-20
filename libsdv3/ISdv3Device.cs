@@ -148,6 +148,7 @@ public interface ISdv3Device
 	public uint OLForecast { get; }
 	#endregion
 
+	#region 报警
 	/// <summary>
 	///		当前报警
 	/// </summary>
@@ -165,6 +166,7 @@ public interface ISdv3Device
 	/// </summary>
 	/// <returns></returns>
 	public int AlarmRecordCount { get; }
+	#endregion
 
 	public uint Pn(int major, int minor);
 	public void SetPn(int major, int minor, uint[] value);
