@@ -1,6 +1,4 @@
-﻿using JCRazor.js互操作;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+﻿using Microsoft.AspNetCore.Components;
 
 namespace JCRazor.WindowComponents;
 
@@ -13,12 +11,8 @@ public partial class PCLayoutComponent
 			return;
 		}
 
-		_jsm = new JSModule(JSRuntime, "./_content/JCRazor/WindowComponents/PCLayoutComponent.razor.js");
 		_jsop = new JSOp(JSRuntime);
 		_initTcs.TrySetResult();
-
-		// js 模块初始化完毕，可以使用了。
-		await SetBodyStyleAsync();
 
 		/* 初始化的时候先获取当前的计算样式的宽度，然后设置一遍，将计算样式应用到内联样式中
 		 * 如果不这么做，宽度变化的过渡效果不会生效。想要生效必须初始时有明确设置一个固定宽度。
@@ -27,7 +21,6 @@ public partial class PCLayoutComponent
 		await SetLeftMenuWidthAsync(_init_left_menu_width);
 	}
 
-	private JSModule _jsm = default!;
 	private JSOp _jsop = default!;
 	private TaskCompletionSource _initTcs = new();
 
@@ -80,11 +73,6 @@ public partial class PCLayoutComponent
 	{
 		await _initTcs.Task;
 		await _jsop.SetElementStyle(_left_menu_element, "width", $"{width}px");
-	}
-
-	private async Task SetBodyStyleAsync()
-	{
-		await _jsm.InvokeVoidAsync("set_body_style");
 	}
 
 	private ElementReference _left_menu_element = default!;
