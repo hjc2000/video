@@ -157,7 +157,7 @@ public static class ParamAddress
 	public static ushort CurrentAlarm { get; } = 0x2200;
 
 	/// <summary>
-	///		
+	///		报警记录的地址
 	/// </summary>
 	/// <param name="record_id">从 1 开始</param>
 	/// <returns></returns>
