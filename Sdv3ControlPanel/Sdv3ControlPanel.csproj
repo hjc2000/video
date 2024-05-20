@@ -16,5 +16,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\JCRazor\JCRazor.csproj" />
+	  <ProjectReference Include="..\libsdv3\libsdv3.csproj" />
 	</ItemGroup>
 </Project>

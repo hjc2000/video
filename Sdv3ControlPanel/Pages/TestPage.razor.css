@@ -1,0 +1,13 @@
+.root {
+	padding: 20px;
+}
+
+.enable-light {
+	width: 40px;
+	height: 40px;
+	background-color: gray;
+}
+
+	.enable-light[_enabled] {
+		background-color: green;
+	}
