@@ -38,9 +38,31 @@ public partial class TestPage : IAsyncDisposable
 		StopBits = StopBits.One
 	};
 
+	private bool Enabled
+	{
+		get
+		{
+			try
+			{
+				return _sdv3.EI9;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+	}
+
 	private async Task OnEnableButtonClickAsync()
 	{
-		await Task.CompletedTask;
-		_sdv3.EI9 = !_sdv3.EI9;
+		try
+		{
+			await Task.CompletedTask;
+			_sdv3.EI9 = !_sdv3.EI9;
+		}
+		catch
+		{
+
+		}
 	}
 }
