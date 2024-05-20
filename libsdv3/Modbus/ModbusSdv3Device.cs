@@ -899,7 +899,7 @@ public partial class ModbusSdv3Device
 	}
 
 	/// <summary>
-	///		
+	///		报警记录
 	/// </summary>
 	/// <param name="record_id">从 1 开始。</param>
 	/// <returns></returns>
