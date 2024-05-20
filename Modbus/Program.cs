@@ -19,7 +19,7 @@ Console.WriteLine();
 
 Console.WriteLine("报警记录：");
 Console.WriteLine($"0x{sdv3.CurrentAlarm:x2}");
-for (int i = 1; i <= 20; i++)
+for (int i = 1; i <= sdv3.AlarmRecordCount; i++)
 {
 	Console.WriteLine($"0x{sdv3.AlarmRecords(i):x2}");
 }

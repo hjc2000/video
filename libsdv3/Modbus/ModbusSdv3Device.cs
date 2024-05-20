@@ -1073,13 +1073,21 @@ public partial class ModbusSdv3Device
 
 	public uint AlarmRecords(int record_id)
 	{
-		if (record_id is < 1 or > 20)
+		if (record_id < 1 || record_id > AlarmRecordCount)
 		{
-			throw new ArgumentOutOfRangeException($"{nameof(record_id)} 必须在 [1, 20]");
+			throw new ArgumentOutOfRangeException($"{nameof(record_id)} 必须在 [1, {AlarmRecordCount}] 上。");
 		}
 
 		uint[] datas = ReadDatas(ParamAddress.AlarmRecords(record_id), 2);
 		return datas[0];
+	}
+
+	public int AlarmRecordCount
+	{
+		get
+		{
+			return 20;
+		}
 	}
 
 	public uint Pn(int major, int minor)

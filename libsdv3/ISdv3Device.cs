@@ -160,6 +160,12 @@ public interface ISdv3Device
 	/// <returns></returns>
 	public uint AlarmRecords(int record_id);
 
+	/// <summary>
+	///		AlarmRecords 的数量
+	/// </summary>
+	/// <returns></returns>
+	public int AlarmRecordCount { get; }
+
 	public uint Pn(int major, int minor);
 	public void SetPn(int major, int minor, uint[] value);
 	public void SetPn(int major, int minor, uint value);
