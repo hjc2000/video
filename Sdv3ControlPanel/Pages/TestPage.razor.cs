@@ -7,6 +7,7 @@ namespace Sdv3ControlPanel.Pages;
 
 public partial class TestPage : IAsyncDisposable
 {
+	#region 生命周期
 	private bool _disposed = false;
 	public async ValueTask DisposeAsync()
 	{
@@ -19,25 +20,17 @@ public partial class TestPage : IAsyncDisposable
 		GC.SuppressFinalize(this);
 
 		await ValueTask.CompletedTask;
-		_serial?.Close();
 		_serial?.Dispose();
 	}
+	#endregion
 
 	private ModbusSdv3Device? _sdv3;
-	private SerialPort? _serial = new("COM5")
-	{
-		BaudRate = 115200,
-		Parity = Parity.Even,
-		StopBits = StopBits.One
-	};
+	private SerialPort? _serial;
 
-	private void Open()
+	private async Task OnConnecteAsync(SerialPort serial)
 	{
-		if (_serial is null)
-		{
-			return;
-		}
-
+		await Task.CompletedTask;
+		_serial = serial;
 		_serial.Open();
 		_sdv3 = new ModbusSdv3Device(_serial.BaseStream, 1, true);
 		//JCNET.定时器.Timer.SetInterval(() =>
