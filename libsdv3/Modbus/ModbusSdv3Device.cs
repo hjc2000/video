@@ -6,7 +6,7 @@ namespace libsdv3.Modbus;
 /// <summary>
 ///		利用 modbus 进行控制的 SDV3 设备。
 /// </summary>
-public partial class ModbusSdv3Device : ISdv3Device
+public class ModbusSdv3Device : ISdv3Device
 {
 	public ModbusSdv3Device(Stream serial_stream, byte device_addr, bool big_endian)
 	{
@@ -231,10 +231,7 @@ public partial class ModbusSdv3Device : ISdv3Device
 			throw new IOException("设备回复帧中的记录数不对");
 		}
 	}
-}
 
-public partial class ModbusSdv3Device
-{
 	#region 硬件 EI
 	public bool EI1
 	{
