@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using JCNET;
+using Microsoft.AspNetCore.Components;
 using System.IO.Ports;
 
 namespace JCRazor.表单;
@@ -51,6 +52,7 @@ public partial class SerialPortSetupFormTable
 	private Parity ParityValue { get; set; } = Parity.Even;
 	private StopBits StopBitsValue { get; set; } = StopBits.One;
 
+	private SemaphoreSlim _connect_lock = new(1);
 	private async Task OnConnectButtonClickAsync()
 	{
 		if (SelectedPortName == string.Empty)
@@ -58,13 +60,23 @@ public partial class SerialPortSetupFormTable
 			return;
 		}
 
-		SerialPort serial = new(SelectedPortName)
+		using LockGuard l = new(_connect_lock);
+		await l.WaitAsync();
+		try
 		{
-			BaudRate = BaudRate,
-			Parity = ParityValue,
-			StopBits = StopBitsValue,
-		};
-		await ConnectButtonClickCallback.InvokeAsync(serial);
+			SerialPort serial = new(SelectedPortName)
+			{
+				BaudRate = BaudRate,
+				Parity = ParityValue,
+				StopBits = StopBitsValue,
+			};
+
+			await ConnectButtonClickCallback.InvokeAsync(serial);
+		}
+		catch
+		{
+
+		}
 	}
 }
 

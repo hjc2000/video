@@ -19,20 +19,34 @@ public partial class TestPage : IAsyncDisposable
 		_disposed = true;
 		GC.SuppressFinalize(this);
 
-		await ValueTask.CompletedTask;
-		_serial?.Dispose();
+		if (_sdv3 is not null)
+		{
+			await _sdv3.DisposeAsync();
+		}
 	}
 	#endregion
 
 	private ModbusSdv3Device? _sdv3;
-	private SerialPort? _serial;
 
-	private async Task OnConnecteAsync(SerialPort serial)
+	private async Task OnConnecteButtonClickAsync(SerialPort serial)
 	{
-		await Task.CompletedTask;
-		_serial = serial;
-		_serial.Open();
-		_sdv3 = new ModbusSdv3Device(_serial.BaseStream, 1, true);
+		try
+		{
+			serial.ReadTimeout = 2000;
+			serial.WriteTimeout = 2000;
+			await Task.Run(serial.Open);
+		}
+		catch
+		{
+			return;
+		}
+
+		if (_sdv3 is not null)
+		{
+			await _sdv3.DisposeAsync();
+		}
+
+		_sdv3 = new ModbusSdv3Device(serial.BaseStream, 1, true);
 		//JCNET.定时器.Timer.SetInterval(() =>
 		//{
 

@@ -6,7 +6,7 @@ namespace libsdv3.Modbus;
 /// <summary>
 ///		利用 modbus 进行控制的 SDV3 设备。
 /// </summary>
-public class ModbusSdv3Device : ISdv3Device
+public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 {
 	public ModbusSdv3Device(Stream serial_stream, byte device_addr, bool big_endian)
 	{
@@ -14,6 +14,20 @@ public class ModbusSdv3Device : ISdv3Device
 		_device_addr = device_addr;
 		_big_endian = big_endian;
 		_auto_bit_converter = new AutoBitConverter(big_endian);
+	}
+
+	private bool _disposed = false;
+	public async ValueTask DisposeAsync()
+	{
+		if (_disposed)
+		{
+			return;
+		}
+
+		_disposed = true;
+		GC.SuppressFinalize(this);
+
+		await _serial_stream.DisposeAsync();
 	}
 
 	private byte _device_addr;
