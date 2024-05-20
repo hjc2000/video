@@ -12,6 +12,12 @@ public partial class TestPage : IAsyncDisposable
 	{
 		_serial.Open();
 		_sdv3 = new(new SerialPortStream(_serial), 1, true);
+		//JCNET.定时器.Timer.SetInterval(() =>
+		//{
+
+		//},
+		//1000,
+		//CancellationToken.None);
 	}
 
 	private bool _disposed = false;
@@ -63,6 +69,21 @@ public partial class TestPage : IAsyncDisposable
 		catch
 		{
 
+		}
+	}
+
+	private uint FeedbackCurrentPosition
+	{
+		get
+		{
+			try
+			{
+				return _sdv3.FeedbackCurrentPosition;
+			}
+			catch
+			{
+				return 0;
+			}
 		}
 	}
 }
