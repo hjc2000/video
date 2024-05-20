@@ -890,9 +890,6 @@ public partial class ModbusSdv3Device
 	#endregion
 
 	#region 监控数据
-	/// <summary>
-	///		反馈速度
-	/// </summary>
 	public uint FeedbackSpeed
 	{
 		get
@@ -902,9 +899,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		指令速度
-	/// </summary>
 	public uint CommandSpeed
 	{
 		get
@@ -914,9 +908,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		指令转矩
-	/// </summary>
 	public uint CommandTorque
 	{
 		get
@@ -926,9 +917,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		峰值转矩
-	/// </summary>
 	public uint PeakTorque
 	{
 		get
@@ -938,9 +926,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		电机电流
-	/// </summary>
 	public uint MotorCurrent
 	{
 		get
@@ -950,9 +935,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		有效转矩
-	/// </summary>
 	public uint EffectiveTorque
 	{
 		get
@@ -962,9 +944,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		反馈当前位置
-	/// </summary>
 	public uint FeedbackCurrentPosition
 	{
 		get
@@ -974,9 +953,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		指令当前位置
-	/// </summary>
 	public uint CommandCurrentPosition
 	{
 		get
@@ -986,9 +962,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		位置偏差
-	/// </summary>
 	public uint PositionDeviation
 	{
 		get
@@ -998,9 +971,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		指令脉冲频率
-	/// </summary>
 	public uint CommandPulseFrequency
 	{
 		get
@@ -1010,9 +980,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		反馈累计脉冲数
-	/// </summary>
 	public uint TotalFeedbackPulseCount
 	{
 		get
@@ -1022,9 +989,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		指令累计脉冲数
-	/// </summary>
 	public uint TotalCommandPulseCount
 	{
 		get
@@ -1034,9 +998,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		LS-Z 之间脉冲数
-	/// </summary>
 	public uint PulseCountBetween_LS_And_Z
 	{
 		get
@@ -1046,9 +1007,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		负载惯性力矩比
-	/// </summary>
 	public uint LoadInertiaTorqueRatio
 	{
 		get
@@ -1058,9 +1016,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		直流中间电压（最大）
-	/// </summary>
 	public uint MaxDCIntermediateVoltage
 	{
 		get
@@ -1070,9 +1025,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		直流中间电压（最小）
-	/// </summary>
 	public uint MinDCIntermediateVoltage
 	{
 		get
@@ -1082,9 +1034,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		VREF 输入电压
-	/// </summary>
 	public uint VrefInputVoltage
 	{
 		get
@@ -1094,9 +1043,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		TREF 输入电压
-	/// </summary>
 	public uint TrefInputVoltage
 	{
 		get
@@ -1106,9 +1052,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		OL 预报值
-	/// </summary>
 	public uint OLForecast
 	{
 		get
@@ -1119,9 +1062,6 @@ public partial class ModbusSdv3Device
 	}
 	#endregion
 
-	/// <summary>
-	///		当前报警
-	/// </summary>
 	public uint CurrentAlarm
 	{
 		get
@@ -1131,11 +1071,6 @@ public partial class ModbusSdv3Device
 		}
 	}
 
-	/// <summary>
-	///		报警记录
-	/// </summary>
-	/// <param name="record_id">从 1 开始。</param>
-	/// <returns></returns>
 	public uint AlarmRecords(int record_id)
 	{
 		if (record_id is < 1 or > 20)
