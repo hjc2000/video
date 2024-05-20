@@ -8,6 +8,16 @@
 			串口配置
 		</Head>
 		<Body>
+			<div>选择端口：</div>
+			<div>
+				<select @bind="SelectedPortName">
+					@foreach (string name in PortNames)
+					{
+						<option value="@(name)">@(name)</option>
+					}
+				</select>
+			</div>
+
 			<div>波特率：</div>
 			<div>
 				<input @bind="BaudRateString" list="@($"baudrate_data_list_{GetHashCode()}")" />

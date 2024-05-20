@@ -14,6 +14,23 @@ public partial class SerialPortSetupFormTable
 	[Parameter]
 	public EventCallback<SerialPort> ConnectButtonClickCallback { get; set; }
 
+	public string[] PortNames
+	{
+		get
+		{
+			string[] names = SerialPort.GetPortNames();
+			if (names.Length > 0 && SelectedPortName == string.Empty)
+			{
+				SelectedPortName = names[0];
+				StateHasChanged();
+			}
+
+			return names;
+		}
+	}
+
+	private string SelectedPortName { get; set; } = string.Empty;
+
 	private int BaudRate { get; set; } = 115200;
 	public string BaudRateString
 	{
@@ -36,7 +53,12 @@ public partial class SerialPortSetupFormTable
 
 	private async Task OnConnectButtonClickAsync()
 	{
-		SerialPort serial = new()
+		if (SelectedPortName == string.Empty)
+		{
+			return;
+		}
+
+		SerialPort serial = new(SelectedPortName)
 		{
 			BaudRate = BaudRate,
 			Parity = ParityValue,
