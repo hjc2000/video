@@ -156,6 +156,16 @@ public static class ParamAddress
 
 	public static ushort CurrentAlarm { get; } = 0x2200;
 
+	/// <summary>
+	///		
+	/// </summary>
+	/// <param name="record_id">从 1 开始</param>
+	/// <returns></returns>
+	public static ushort AlarmRecords(int record_id)
+	{
+		return (ushort)(0x2202 + ((record_id - 1) * 2));
+	}
+
 	public static ushort Pn(int major, int minor)
 	{
 		if (minor is < 1 or > 99)

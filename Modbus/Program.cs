@@ -13,4 +13,8 @@ serial.Open();
 ModbusSdv3Device sdv3 = new(new SerialPortStream(serial), 1, true);
 Console.WriteLine(sdv3.Pn(1, 6));
 Console.WriteLine(sdv3.Pn(1, 7));
-Console.WriteLine(sdv3.CurrentAlarm);
+Console.WriteLine($"0x{sdv3.CurrentAlarm:x2}");
+for (int i = 1; i <= 20; i++)
+{
+	Console.WriteLine($"0x{sdv3.AlarmRecords(i):x2}");
+}

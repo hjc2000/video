@@ -898,6 +898,22 @@ public partial class ModbusSdv3Device
 		}
 	}
 
+	/// <summary>
+	///		
+	/// </summary>
+	/// <param name="record_id">从 1 开始。</param>
+	/// <returns></returns>
+	public uint AlarmRecords(int record_id)
+	{
+		if (record_id is < 1 or > 20)
+		{
+			throw new ArgumentOutOfRangeException($"{nameof(record_id)} 必须在 [1, 20]");
+		}
+
+		uint[] datas = ReadDatas(ParamAddress.AlarmRecords(record_id), 2);
+		return datas[0];
+	}
+
 	public uint Pn(int major, int minor)
 	{
 		uint[] datas = ReadDatas(ParamAddress.Pn(major, minor), 2);
