@@ -1,5 +1,9 @@
 ﻿namespace libsdv3;
 
+/// <summary>
+///		本接口的方法、属性需要实现为线程安全，允许多个线程同时使用同一个方法、属性，
+///		或者同时使用不同的方法、属性。
+/// </summary>
 public interface ISdv3Device
 {
 	#region 硬件 EI
