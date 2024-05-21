@@ -41,11 +41,55 @@ public enum AlarmCode
 	/// <summary>
 	///		外部端子报警
 	/// </summary>
-	ExternalTerminalAlarm=0x20,
+	ExternalTerminalAlarm = 0x20,
 
 	/// <summary>
 	///		主电路电压不足
 	/// </summary>
 	MainCircuitLowVoltage = 0x21,
 
+	/// <summary>
+	///		回生晶体管异常
+	/// </summary>
+	RegenerativeTransistorException = 0x24,
+
+	/// <summary>
+	///		偏差超出
+	/// </summary>
+	DeviationOverflow = 0x25,
+
+	/// <summary>
+	///		驱动器过热
+	/// </summary>
+	DriverTooHot = 0x26,
+
+	/// <summary>
+	///		ABS数据丢失 1
+	/// </summary>
+	AbsDataLoss1 = 0x28,
+
+	/// <summary>
+	///		ABS数据丢失 2
+	/// </summary>
+	AbsDataLoss2 = 0x29,
+
+	/// <summary>
+	///		ABS数据丢失 3
+	/// </summary>
+	AbsDataLoss3 = 0x2A,
+
+	/// <summary>
+	///		多圈溢出
+	/// </summary>
+	MultiLoopOverflow = 0x2B,
+
+	/// <summary>
+	///		原点复归超时
+	/// </summary>
+	OriginRestorationTimeout = 0x2E,
+
+	/// <summary>
+	///		失速
+	/// </summary>
+	Stall = 0x2F,
 }
