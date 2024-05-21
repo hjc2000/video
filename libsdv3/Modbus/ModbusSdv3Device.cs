@@ -90,7 +90,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 	/// <param name="data_addr"></param>
 	/// <param name="value"></param>
 	/// <exception cref="IOException"></exception>
-	private void WriteSingleBit(ushort data_addr, bool value)
+	private async Task WriteSingleBitAsync(ushort data_addr, bool value)
 	{
 		WriteSingleBitRequestFrame request_frame = new()
 		{
@@ -100,10 +100,11 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		};
 		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
-		_serial_stream.Write(frame);
+		await _serial_stream.WriteAsync(frame);
 
+		// 接收
 		byte[] read_buffer = new byte[8];
-		_serial_stream.ReadExactly(read_buffer);
+		await _serial_stream.ReadExactlyAsync(read_buffer);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
@@ -130,7 +131,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 	/// <param name="data_addr">数据地址</param>
 	/// <param name="bit_count">要读取多少个位</param>
 	/// <returns></returns>
-	private byte[] ReadBits(ushort data_addr, ushort bit_count)
+	private async Task<byte[]> ReadBitsAsync(ushort data_addr, ushort bit_count)
 	{
 		if (bit_count == 0)
 		{
@@ -145,10 +146,10 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		};
 		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
-		_serial_stream.Write(frame);
+		await _serial_stream.WriteAsync(frame);
 
 		byte[] read_buffer = new byte[5 + (bit_count / 8) + 1];
-		_serial_stream.ReadExactly(read_buffer);
+		await _serial_stream.ReadExactlyAsync(read_buffer);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
@@ -165,7 +166,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 	/// <param name="data_addr">数据地址</param>
 	/// <param name="record_count">记录数。一个记录是 16 位。读取 1 个 32 位的数据需要 2 个记录。</param>
 	/// <returns></returns>
-	private uint[] ReadDatas(ushort data_addr, ushort record_count)
+	private async Task<uint[]> ReadDatasAsync(ushort data_addr, ushort record_count)
 	{
 		if (record_count == 0)
 		{
@@ -180,11 +181,11 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		};
 		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
-		_serial_stream.Write(frame);
+		await _serial_stream.WriteAsync(frame);
 
 		// 接收响应
 		byte[] read_buffer = new byte[5 + (record_count * 2)];
-		_serial_stream.ReadExactly(read_buffer);
+		await _serial_stream.ReadExactlyAsync(read_buffer);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.ReadDatas)
@@ -208,7 +209,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		return ret;
 	}
 
-	private void WriteDatas(ushort data_addr, uint[] datas)
+	private async Task WriteDatasAsync(ushort data_addr, uint[] datas)
 	{
 		if (datas.Length == 0)
 		{
@@ -223,11 +224,11 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		};
 		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
-		_serial_stream.Write(frame);
+		await _serial_stream.WriteAsync(frame);
 
 		// 接收响应
 		byte[] read_buffer = new byte[8];
-		_serial_stream.ReadExactly(read_buffer);
+		await _serial_stream.ReadExactlyAsync(read_buffer);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.WriteDatas)
@@ -250,914 +251,468 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 	#endregion
 
 	#region 硬件 EI
-	public bool EI1
+	public async Task<bool> GetEI1Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI1");
-				byte[] bits = ReadBits(ParamAddress.EI1, 1);
-				return bits[0] != 0;
-			}
-		}
+		Console.WriteLine("读取 EI1");
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI1, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI2
+	public async Task<bool> GetEI2Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI2");
-				byte[] bits = ReadBits(ParamAddress.EI2, 1);
-				return bits[0] != 0;
-			}
-		}
+		Console.WriteLine("读取 EI2");
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI2, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI3
+	public async Task<bool> GetEI3Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI3");
-				byte[] bits = ReadBits(ParamAddress.EI3, 1);
-				return bits[0] != 0;
-			}
-		}
+		Console.WriteLine("读取 EI3");
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI3, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI4
+	public async Task<bool> GetEI4Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI4");
-				byte[] bits = ReadBits(ParamAddress.EI4, 1);
-				return bits[0] != 0;
-			}
-		}
+		Console.WriteLine("读取 EI4");
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI4, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI5
+	public async Task<bool> GetEI5Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI5");
-				byte[] bits = ReadBits(ParamAddress.EI5, 1);
-				return bits[0] != 0;
-			}
-		}
+		Console.WriteLine("读取 EI5");
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI5, 1);
+		return bits[0] != 0;
 	}
 	#endregion
 
 	#region 通信 EI
-	public bool EI9
+	public async Task<bool> GetEI9Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI9");
-				byte[] bits = ReadBits(ParamAddress.EI9, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI9");
-				WriteSingleBit(ParamAddress.EI9, value);
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI9, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI10
+	public async Task SetEI9Async(bool value)
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI10");
-				byte[] bits = ReadBits(ParamAddress.EI10, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI10");
-				WriteSingleBit(ParamAddress.EI10, value);
-			}
-		}
+		await WriteSingleBitAsync(ParamAddress.EI9, value);
 	}
 
-	public bool EI11
+	public async Task<bool> GetEI10Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI11");
-				byte[] bits = ReadBits(ParamAddress.EI11, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI11");
-				WriteSingleBit(ParamAddress.EI11, value);
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI10, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI12
+	public async Task SetEI10Async(bool value)
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI12");
-				byte[] bits = ReadBits(ParamAddress.EI12, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI12");
-				WriteSingleBit(ParamAddress.EI12, value);
-			}
-		}
+		await WriteSingleBitAsync(ParamAddress.EI10, value);
 	}
 
-	public bool EI13
+	public async Task<bool> GetEI11Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI13");
-				byte[] bits = ReadBits(ParamAddress.EI13, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI13");
-				WriteSingleBit(ParamAddress.EI13, value);
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI11, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI14
+	public async Task SetEI11Async(bool value)
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI14");
-				byte[] bits = ReadBits(ParamAddress.EI14, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI14");
-				WriteSingleBit(ParamAddress.EI14, value);
-			}
-		}
+		await WriteSingleBitAsync(ParamAddress.EI11, value);
 	}
 
-	public bool EI15
+	public async Task<bool> GetEI12Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI15");
-				byte[] bits = ReadBits(ParamAddress.EI15, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI15");
-				WriteSingleBit(ParamAddress.EI15, value);
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI12, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI16
+	public async Task SetEI12Async(bool value)
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI16");
-				byte[] bits = ReadBits(ParamAddress.EI16, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI16");
-				WriteSingleBit(ParamAddress.EI16, value);
-			}
-		}
+		await WriteSingleBitAsync(ParamAddress.EI12, value);
 	}
 
-	public bool EI17
+	public async Task<bool> GetEI13Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI17");
-				byte[] bits = ReadBits(ParamAddress.EI17, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI17");
-				WriteSingleBit(ParamAddress.EI17, value);
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI13, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI18
+	public async Task SetEI13Async(bool value)
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI18");
-				byte[] bits = ReadBits(ParamAddress.EI18, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI18");
-				WriteSingleBit(ParamAddress.EI18, value);
-			}
-		}
+		await WriteSingleBitAsync(ParamAddress.EI13, value);
 	}
 
-	public bool EI19
+	public async Task<bool> GetEI14Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI19");
-				byte[] bits = ReadBits(ParamAddress.EI19, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI19");
-				WriteSingleBit(ParamAddress.EI19, value);
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI14, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI20
+	public async Task SetEI14Async(bool value)
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI20");
-				byte[] bits = ReadBits(ParamAddress.EI20, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI20");
-				WriteSingleBit(ParamAddress.EI20, value);
-			}
-		}
+		await WriteSingleBitAsync(ParamAddress.EI14, value);
 	}
 
-	public bool EI21
+	public async Task<bool> GetEI15Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI21");
-				byte[] bits = ReadBits(ParamAddress.EI21, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI21");
-				WriteSingleBit(ParamAddress.EI21, value);
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI15, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI22
+	public async Task SetEI15Async(bool value)
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI22");
-				byte[] bits = ReadBits(ParamAddress.EI22, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI22");
-				WriteSingleBit(ParamAddress.EI22, value);
-			}
-		}
+		await WriteSingleBitAsync(ParamAddress.EI15, value);
 	}
 
-	public bool EI23
+	public async Task<bool> GetEI16Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI23");
-				byte[] bits = ReadBits(ParamAddress.EI23, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI23");
-				WriteSingleBit(ParamAddress.EI23, value);
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI16, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI24
+	public async Task SetEI16Async(bool value)
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI24");
-				byte[] bits = ReadBits(ParamAddress.EI24, 1);
-				return bits[0] != 0;
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				Console.WriteLine("写入 EI24");
-				WriteSingleBit(ParamAddress.EI24, value);
-			}
-		}
+		await WriteSingleBitAsync(ParamAddress.EI16, value);
+	}
+
+	public async Task<bool> GetEI17Async()
+	{
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI17, 1);
+		return bits[0] != 0;
+	}
+
+	public async Task SetEI17Async(bool value)
+	{
+		await WriteSingleBitAsync(ParamAddress.EI17, value);
+	}
+
+	public async Task<bool> GetEI18Async()
+	{
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI18, 1);
+		return bits[0] != 0;
+	}
+
+	public async Task SetEI18Async(bool value)
+	{
+		await WriteSingleBitAsync(ParamAddress.EI18, value);
+	}
+
+	public async Task<bool> GetEI19Async()
+	{
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI19, 1);
+		return bits[0] != 0;
+	}
+
+	public async Task SetEI19Async(bool value)
+	{
+		await WriteSingleBitAsync(ParamAddress.EI19, value);
+	}
+
+	public async Task<bool> GetEI20Async()
+	{
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI20, 1);
+		return bits[0] != 0;
+	}
+
+	public async Task SetEI20Async(bool value)
+	{
+		await WriteSingleBitAsync(ParamAddress.EI20, value);
+	}
+
+	public async Task<bool> GetEI21Async()
+	{
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI21, 1);
+		return bits[0] != 0;
+	}
+
+	public async Task SetEI21Async(bool value)
+	{
+		await WriteSingleBitAsync(ParamAddress.EI21, value);
+	}
+
+	public async Task<bool> GetEI22Async()
+	{
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI22, 1);
+		return bits[0] != 0;
+	}
+
+	public async Task SetEI22Async(bool value)
+	{
+		await WriteSingleBitAsync(ParamAddress.EI22, value);
+	}
+
+	public async Task<bool> GetEI23Async()
+	{
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI23, 1);
+		return bits[0] != 0;
+	}
+
+	public async Task SetEI23Async(bool value)
+	{
+		await WriteSingleBitAsync(ParamAddress.EI23, value);
+	}
+
+	public async Task<bool> GetEI24Async()
+	{
+		byte[] bits = await ReadBitsAsync(ParamAddress.EI24, 1);
+		return bits[0] != 0;
+	}
+
+	public async Task SetEI24Async(bool value)
+	{
+		await WriteSingleBitAsync(ParamAddress.EI24, value);
 	}
 	#endregion
 
 	#region EOUT
-	public bool EOUT1
+	public async Task<bool> GetEout1Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT1");
-				byte[] bits = ReadBits(ParamAddress.EOUT1, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT1, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT2
+	public async Task<bool> GetEout2Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT2");
-				byte[] bits = ReadBits(ParamAddress.EOUT2, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT2, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT3
+	public async Task<bool> GetEout3Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT3");
-				byte[] bits = ReadBits(ParamAddress.EOUT3, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT3, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT6
+	public async Task<bool> GetEout6Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT6");
-				byte[] bits = ReadBits(ParamAddress.EOUT6, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT6, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT7
+	public async Task<bool> GetEout7Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT7");
-				byte[] bits = ReadBits(ParamAddress.EOUT7, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT7, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT8
+	public async Task<bool> GetEout8Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT8");
-				byte[] bits = ReadBits(ParamAddress.EOUT8, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT8, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT9
+	public async Task<bool> GetEout9Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT9");
-				byte[] bits = ReadBits(ParamAddress.EOUT9, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT9, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT10
+	public async Task<bool> GetEout10Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT10");
-				byte[] bits = ReadBits(ParamAddress.EOUT10, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT10, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT11
+	public async Task<bool> GetEout11Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT11");
-				byte[] bits = ReadBits(ParamAddress.EOUT11, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT11, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT12
+	public async Task<bool> GetEout12Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT12");
-				byte[] bits = ReadBits(ParamAddress.EOUT12, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT12, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT13
+	public async Task<bool> GetEout13Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT13");
-				byte[] bits = ReadBits(ParamAddress.EOUT13, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT13, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT14
+	public async Task<bool> GetEout14Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT14");
-				byte[] bits = ReadBits(ParamAddress.EOUT14, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT14, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT15
+	public async Task<bool> GetEout15Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT15");
-				byte[] bits = ReadBits(ParamAddress.EOUT15, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT15, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT16
+	public async Task<bool> GetEout16Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT16");
-				byte[] bits = ReadBits(ParamAddress.EOUT16, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT16, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT17
+	public async Task<bool> GetEout17Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT17");
-				byte[] bits = ReadBits(ParamAddress.EOUT17, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT17, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT18
+	public async Task<bool> GetEout18Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT18");
-				byte[] bits = ReadBits(ParamAddress.EOUT18, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT18, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT19
+	public async Task<bool> GetEout19Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT19");
-				byte[] bits = ReadBits(ParamAddress.EOUT19, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT19, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT20
+	public async Task<bool> GetEout20Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT20");
-				byte[] bits = ReadBits(ParamAddress.EOUT20, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT20, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EOUT21
+	public async Task<bool> GetEout21Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EOUT21");
-				byte[] bits = ReadBits(ParamAddress.EOUT21, 1);
-				return bits[0] != 0;
-			}
-		}
+		byte[] bits = await ReadBitsAsync(ParamAddress.EOUT21, 1);
+		return bits[0] != 0;
 	}
 	#endregion
 
 	#region 监控数据
-	public int FeedbackSpeed
+	public async Task<int> GetFeedbackSpeedAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.FeedbackSpeed, 2);
-				return (int)datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.FeedbackSpeed, 2);
+		return (int)datas[0];
 	}
 
-	public uint CommandSpeed
+	public async Task<uint> GetCommandSpeedAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.CommandSpeed, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.CommandSpeed, 2);
+		return datas[0];
 	}
 
-	public uint CommandTorque
+	public async Task<uint> GetCommandTorqueAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.CommandTorque, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.CommandTorque, 2);
+		return datas[0];
 	}
 
-	public uint PeakTorque
+	public async Task<uint> GetPeakTorqueAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.PeakTorque, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.PeakTorque, 2);
+		return datas[0];
 	}
 
-	public uint MotorCurrent
+	public async Task<uint> GetMotorCurrentAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.MotorCurrent, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.MotorCurrent, 2);
+		return datas[0];
 	}
 
-	public uint EffectiveTorque
+	public async Task<uint> GetEffectiveTorqueAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.EffectiveTorque, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.EffectiveTorque, 2);
+		return datas[0];
 	}
 
-	public int FeedbackCurrentPosition
+	public async Task<int> GetFeedbackCurrentPositionAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.FeedbackCurrentPosition, 2);
-				return (int)datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.FeedbackCurrentPosition, 2);
+		return (int)datas[0];
 	}
 
-	public uint CommandCurrentPosition
+	public async Task<uint> GetCommandCurrentPositionAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.CommandCurrentPosition, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.CommandCurrentPosition, 2);
+		return datas[0];
 	}
 
-	public uint PositionDeviation
+	public async Task<uint> GetPositionDeviationAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.PositionDeviation, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.PositionDeviation, 2);
+		return datas[0];
 	}
 
-	public uint CommandPulseFrequency
+	public async Task<uint> GetCommandPulseFrequencyAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.CommandPulseFrequency, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.CommandPulseFrequency, 2);
+		return datas[0];
 	}
 
-	public uint TotalFeedbackPulseCount
+	public async Task<uint> GetTotalFeedbackPulseCountAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.TotalFeedbackPulseCount, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.TotalFeedbackPulseCount, 2);
+		return datas[0];
 	}
 
-	public uint TotalCommandPulseCount
+	public async Task<uint> GetTotalCommandPulseCountAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.TotalCommandPulseCount, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.TotalCommandPulseCount, 2);
+		return datas[0];
 	}
 
-	public uint PulseCountBetween_LS_And_Z
+	public async Task<uint> GetPulseCountBetween_LS_And_Z_Async()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.PulseCountBetween_LS_And_Z, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.PulseCountBetween_LS_And_Z, 2);
+		return datas[0];
 	}
 
-	public uint LoadInertiaTorqueRatio
+	public async Task<uint> GetLoadInertiaTorqueRatioAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.LoadInertiaTorqueRatio, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.LoadInertiaTorqueRatio, 2);
+		return datas[0];
 	}
 
-	public uint MaxDCIntermediateVoltage
+	public async Task<uint> GetMaxDCIntermediateVoltageAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.MaxDCIntermediateVoltage, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.MaxDCIntermediateVoltage, 2);
+		return datas[0];
 	}
 
-	public uint MinDCIntermediateVoltage
+	public async Task<uint> GetMinDCIntermediateVoltageAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.MinDCIntermediateVoltage, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.MinDCIntermediateVoltage, 2);
+		return datas[0];
 	}
 
-	public uint VrefInputVoltage
+	public async Task<uint> GetVrefInputVoltageAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.VrefInputVoltage, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.VrefInputVoltage, 2);
+		return datas[0];
 	}
 
-	public uint TrefInputVoltage
+	public async Task<uint> GetTrefInputVoltageAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.TrefInputVoltage, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.TrefInputVoltage, 2);
+		return datas[0];
 	}
 
-	public uint OLForecast
+	public async Task<uint> GetOlForecastAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.OLForecast, 2);
-				return datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.OLForecast, 2);
+		return datas[0];
 	}
 	#endregion
 
 	#region 报警
-	public AlarmCode CurrentAlarm
+	public async Task<AlarmCode> GetCurrentAlarmAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatas(ParamAddress.CurrentAlarm, 2);
-				return (AlarmCode)datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.CurrentAlarm, 2);
+		return (AlarmCode)datas[0];
 	}
 
-	public AlarmCode AlarmRecords(int record_id)
+	public async Task<AlarmCode> GetAlarmRecordsAsync(int record_id)
 	{
-		lock (this)
+		if (record_id < 1 || record_id > AlarmRecordCount)
 		{
-			if (record_id < 1 || record_id > AlarmRecordCount)
-			{
-				throw new ArgumentOutOfRangeException($"{nameof(record_id)} 必须在 [1, {AlarmRecordCount}] 上。");
-			}
-
-			uint[] datas = ReadDatas(ParamAddress.AlarmRecords(record_id), 2);
-			return (AlarmCode)datas[0];
+			throw new ArgumentOutOfRangeException($"{nameof(record_id)} 必须在 [1, {AlarmRecordCount}] 上。");
 		}
+
+		uint[] datas = await ReadDatasAsync(ParamAddress.AlarmRecords(record_id), 2);
+		return (AlarmCode)datas[0];
 	}
 
 	public int AlarmRecordCount
@@ -1178,7 +733,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		{
 			lock (this)
 			{
-				uint[] datas = ReadDatas(ParamAddress.CurrentAlarm, 2);
+				uint[] datas = ReadDatasAsync(ParamAddress.CurrentAlarm, 2);
 				return (ControlModeCode)datas[0];
 			}
 		}
@@ -1193,7 +748,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		{
 			lock (this)
 			{
-				uint[] datas = ReadDatas(ParamAddress.CurrentAlarm, 2);
+				uint[] datas = ReadDatasAsync(ParamAddress.CurrentAlarm, 2);
 				return (ActionModeCode)datas[0];
 			}
 		}
@@ -1203,7 +758,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 	{
 		lock (this)
 		{
-			uint[] datas = ReadDatas(ParamAddress.Pn(major, minor), 2);
+			uint[] datas = ReadDatasAsync(ParamAddress.Pn(major, minor), 2);
 			return datas[0];
 		}
 	}
@@ -1211,14 +766,14 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 	{
 		lock (this)
 		{
-			WriteDatas(ParamAddress.Pn(major, minor), value);
+			WriteDatasAsync(ParamAddress.Pn(major, minor), value);
 		}
 	}
 	public void SetPn(int major, int minor, uint value)
 	{
 		lock (this)
 		{
-			WriteDatas(ParamAddress.Pn(major, minor), [value]);
+			WriteDatasAsync(ParamAddress.Pn(major, minor), [value]);
 		}
 	}
 
@@ -1229,7 +784,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		{
 			lock (this)
 			{
-				uint[] datas = ReadDatas(ParamAddress.ImmediatePosition, 2);
+				uint[] datas = ReadDatasAsync(ParamAddress.ImmediatePosition, 2);
 				return (int)datas[0];
 			}
 		}
@@ -1237,7 +792,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		{
 			lock (this)
 			{
-				WriteDatas(ParamAddress.ImmediatePosition, [(uint)value]);
+				WriteDatasAsync(ParamAddress.ImmediatePosition, [(uint)value]);
 			}
 		}
 	}
@@ -1248,7 +803,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		{
 			lock (this)
 			{
-				uint[] datas = ReadDatas(ParamAddress.ImmediateSpeed, 2);
+				uint[] datas = ReadDatasAsync(ParamAddress.ImmediateSpeed, 2);
 				return (int)datas[0];
 			}
 		}
@@ -1256,7 +811,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		{
 			lock (this)
 			{
-				WriteDatas(ParamAddress.ImmediateSpeed, [(uint)value]);
+				WriteDatasAsync(ParamAddress.ImmediateSpeed, [(uint)value]);
 			}
 		}
 	}
@@ -1267,7 +822,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		{
 			lock (this)
 			{
-				uint[] datas = ReadDatas(ParamAddress.ImmediateAccelerationDuration, 2);
+				uint[] datas = ReadDatasAsync(ParamAddress.ImmediateAccelerationDuration, 2);
 				return (int)datas[0];
 			}
 		}
@@ -1275,7 +830,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		{
 			lock (this)
 			{
-				WriteDatas(ParamAddress.ImmediateAccelerationDuration, [(uint)value]);
+				WriteDatasAsync(ParamAddress.ImmediateAccelerationDuration, [(uint)value]);
 			}
 		}
 	}
@@ -1286,7 +841,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		{
 			lock (this)
 			{
-				uint[] datas = ReadDatas(ParamAddress.ImmediateDecelerationDuration, 2);
+				uint[] datas = ReadDatasAsync(ParamAddress.ImmediateDecelerationDuration, 2);
 				return (int)datas[0];
 			}
 		}
@@ -1294,7 +849,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		{
 			lock (this)
 			{
-				WriteDatas(ParamAddress.ImmediateDecelerationDuration, [(uint)value]);
+				WriteDatasAsync(ParamAddress.ImmediateDecelerationDuration, [(uint)value]);
 			}
 		}
 	}
@@ -1306,7 +861,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		{
 			lock (this)
 			{
-				uint[] datas = ReadDatas(ParamAddress.Speed, 2);
+				uint[] datas = ReadDatasAsync(ParamAddress.Speed, 2);
 				return (int)datas[0];
 			}
 		}
@@ -1316,7 +871,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 			{
 				lock (this)
 				{
-					WriteDatas(ParamAddress.Speed, [(uint)value]);
+					WriteDatasAsync(ParamAddress.Speed, [(uint)value]);
 				}
 			}
 		}
