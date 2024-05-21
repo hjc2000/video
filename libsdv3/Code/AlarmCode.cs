@@ -29,4 +29,23 @@ public enum AlarmCode
 	///		过载 1
 	/// </summary>
 	OverLoad1 = 0x0F,
+	OverLoad2 = 0x10,
+
+	OverCurrent3 = 0x12,
+
+	/// <summary>
+	///		编码器匹配异常
+	/// </summary>
+	EncoderMatchingException = 0x13,
+
+	/// <summary>
+	///		外部端子报警
+	/// </summary>
+	ExternalTerminalAlarm=0x20,
+
+	/// <summary>
+	///		主电路电压不足
+	/// </summary>
+	MainCircuitLowVoltage = 0x21,
+
 }
