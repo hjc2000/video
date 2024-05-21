@@ -62,6 +62,7 @@ public partial class SerialPortSetupFormTable
 
 		using LockGuard l = new(_connect_lock);
 		await l.WaitAsync();
+		StateHasChanged();
 		try
 		{
 			SerialPort serial = new(SelectedPortName)

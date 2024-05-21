@@ -32,27 +32,26 @@ public partial class TestPage : IAsyncDisposable
 	{
 		try
 		{
+			if (_sdv3 is not null)
+			{
+				await _sdv3.DisposeAsync();
+			}
+
 			serial.ReadTimeout = 2000;
 			serial.WriteTimeout = 2000;
 			await Task.Run(serial.Open);
+			_sdv3 = new ModbusSdv3Device(serial.BaseStream, 1, true);
+			//JCNET.定时器.Timer.SetInterval(() =>
+			//{
+
+			//},
+			//1000,
+			//CancellationToken.None);
 		}
 		catch
 		{
-			return;
+
 		}
-
-		if (_sdv3 is not null)
-		{
-			await _sdv3.DisposeAsync();
-		}
-
-		_sdv3 = new ModbusSdv3Device(serial.BaseStream, 1, true);
-		//JCNET.定时器.Timer.SetInterval(() =>
-		//{
-
-		//},
-		//1000,
-		//CancellationToken.None);
 	}
 
 	private bool Enabled
