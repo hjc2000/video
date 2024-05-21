@@ -148,4 +148,40 @@ public partial class TestPage : IAsyncDisposable
 			}
 		}
 	}
+
+	private uint P1_01
+	{
+		get
+		{
+			try
+			{
+				if (_sdv3 is null)
+				{
+					return 0;
+				}
+
+				return _sdv3.Pn(1, 1);
+			}
+			catch
+			{
+				return 0;
+			}
+		}
+		set
+		{
+			try
+			{
+				if (_sdv3 is null)
+				{
+					return;
+				}
+
+				_sdv3.SetPn(1, 1, value);
+			}
+			catch
+			{
+
+			}
+		}
+	}
 }

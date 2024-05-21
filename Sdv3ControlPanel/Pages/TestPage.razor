@@ -5,7 +5,15 @@
 		<JCRazor.表单.SerialPortSetupFormTable ConnectButtonClickCallback="OnConnecteButtonClickAsync">
 		</JCRazor.表单.SerialPortSetupFormTable>
 	</div>
-	<div>
+	<div class="param-box">
+		<JCRazor.表单.FormTable HeadBorderBottom="none">
+			<Body>
+				<div>P1.01</div>
+				<div>
+					<input @bind="P1_01" />
+				</div>
+			</Body>
+		</JCRazor.表单.FormTable>
 		<STButton @onclick="OnEnableButtonClickAsync">使能</STButton>
 		<div class="enable-light" _enabled="@(Enabled)"></div>
 		<JCRazor.表单.FormTable HeadBorderBottom="none">
