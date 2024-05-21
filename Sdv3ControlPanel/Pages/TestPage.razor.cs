@@ -64,25 +64,7 @@ public partial class TestPage : IAsyncDisposable
 			_cancel_timer = new CancellationTokenSource();
 			JCNET.定时器.Timer.SetInterval(async () =>
 			{
-				try
-				{
-					Enabled = await _sdv3.GetEI9Async();
-					FeedbackCurrentPosition = await _sdv3.GetFeedbackCurrentPositionAsync();
-					FeedbackSpeed = await _sdv3.GetFeedbackSpeedAsync();
-					P1_01 = await _sdv3.GetPnAsync(1, 1);
-					P3_01 = await _sdv3.GetPnAsync(3, 1);
-					P3_09 = await _sdv3.GetPnAsync(3, 9);
-					P3_10 = await _sdv3.GetPnAsync(3, 10);
-					P3_11 = await _sdv3.GetPnAsync(3, 11);
-					P3_12 = await _sdv3.GetPnAsync(3, 12);
-					Speed = await _sdv3.GetSpeedAsync();
-				}
-				catch
-				{
-
-				}
-
-				await InvokeAsync(StateHasChanged);
+				await TimerElapsedEventHandler();
 			}, 1000, _cancel_timer.Token);
 		}
 		catch
@@ -94,6 +76,34 @@ public partial class TestPage : IAsyncDisposable
 	private bool Enabled { get; set; } = false;
 	private int FeedbackCurrentPosition { get; set; } = 0;
 	private int FeedbackSpeed { get; set; } = 0;
+
+	private async Task TimerElapsedEventHandler()
+	{
+		if (_sdv3 is null)
+		{
+			return;
+		}
+
+		try
+		{
+			Enabled = await _sdv3.GetEI9Async();
+			FeedbackCurrentPosition = await _sdv3.GetFeedbackCurrentPositionAsync();
+			FeedbackSpeed = await _sdv3.GetFeedbackSpeedAsync();
+			P1_01 = await _sdv3.GetPnAsync(1, 1);
+			P3_01 = await _sdv3.GetPnAsync(3, 1);
+			P3_09 = await _sdv3.GetPnAsync(3, 9);
+			P3_10 = await _sdv3.GetPnAsync(3, 10);
+			P3_11 = await _sdv3.GetPnAsync(3, 11);
+			P3_12 = await _sdv3.GetPnAsync(3, 12);
+			Speed = await _sdv3.GetSpeedAsync();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.ToString());
+		}
+
+		await InvokeAsync(StateHasChanged);
+	}
 
 	private async Task OnEnableButtonClickAsync()
 	{
@@ -108,9 +118,9 @@ public partial class TestPage : IAsyncDisposable
 			await _sdv3.SetEI10Async(true);
 			await _sdv3.SetEI11Async(false);
 		}
-		catch
+		catch (Exception ex)
 		{
-
+			Console.WriteLine(ex.ToString());
 		}
 	}
 
@@ -125,9 +135,9 @@ public partial class TestPage : IAsyncDisposable
 
 			await _sdv3.SetEI12Async(!await _sdv3.GetEI12Async());
 		}
-		catch
+		catch (Exception ex)
 		{
-
+			Console.WriteLine(ex.ToString());
 		}
 	}
 
