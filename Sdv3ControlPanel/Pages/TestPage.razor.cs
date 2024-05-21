@@ -11,6 +11,17 @@ namespace Sdv3ControlPanel.Pages;
 public partial class TestPage : IAsyncDisposable
 {
 	#region 生命周期
+	public TestPage()
+	{
+		_log_file = File.Open("log.txt", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+		_log_writer = new StreamWriter(_log_file)
+		{
+			AutoFlush = true
+		};
+
+		_log_writer.WriteLine("_log_writer 启动。");
+	}
+
 	private bool _disposed = false;
 	public async ValueTask DisposeAsync()
 	{
@@ -28,32 +39,16 @@ public partial class TestPage : IAsyncDisposable
 		}
 
 		_cancel_timer.Cancel();
+		_log_writer.Dispose();
+		_log_file.Dispose();
 	}
 	#endregion
 
 	private ModbusSdv3Device? _sdv3;
 	private CancellationTokenSource _cancel_timer = new();
 	private SerialPortOptions _serial_port_options = new();
-
-	private async Task InitSdv3Async()
-	{
-		if (_sdv3 is not null)
-		{
-			await _sdv3.DisposeAsync();
-		}
-
-		SerialPort serial = new(_serial_port_options.PortName)
-		{
-			BaudRate = _serial_port_options.BaudRate,
-			Parity = _serial_port_options.Parity,
-			StopBits = _serial_port_options.StopBits,
-			ReadTimeout = 2000,
-			WriteTimeout = 2000
-		};
-
-		await Task.Run(serial.Open);
-		_sdv3 = new ModbusSdv3Device(serial.BaseStream, 1, true);
-	}
+	private FileStream _log_file;
+	private StreamWriter _log_writer;
 
 	/// <summary>
 	///		连接按钮点击事件
@@ -65,19 +60,29 @@ public partial class TestPage : IAsyncDisposable
 		try
 		{
 			_serial_port_options = serial_port_options;
-			await Task.Delay(2000);
+			if (_sdv3 is not null)
+			{
+				await _sdv3.DisposeAsync();
+				_log_writer.WriteLine("释放旧的 _sdv3 对象");
+			}
 
 			// 设置定时器
 			_cancel_timer.Cancel();
 			_cancel_timer = new CancellationTokenSource();
-			JCNET.定时器.Timer.SetInterval(async () =>
+			_ = Task.Run(async () =>
 			{
-				await TimerElapsedEventHandler();
-			}, 1000, _cancel_timer.Token);
+				while (!_cancel_timer.IsCancellationRequested)
+				{
+					await TimerElapsedEventHandler();
+					await Task.Delay(1000);
+				}
+
+				_log_writer.WriteLine("定时任务退出");
+			}, _cancel_timer.Token);
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine(ex);
+			_log_writer.WriteLine(ex);
 		}
 	}
 
@@ -94,7 +99,18 @@ public partial class TestPage : IAsyncDisposable
 			{
 				if (_sdv3 is null)
 				{
-					await InitSdv3Async();
+					SerialPort serial = new(_serial_port_options.PortName)
+					{
+						BaudRate = _serial_port_options.BaudRate,
+						Parity = _serial_port_options.Parity,
+						StopBits = _serial_port_options.StopBits,
+						ReadTimeout = 2000,
+						WriteTimeout = 2000
+					};
+
+					await Task.Run(serial.Open);
+					_sdv3 = new ModbusSdv3Device(serial.BaseStream, 1, true);
+					_log_writer.WriteLine("成功打开新的 _sdv3 对象");
 				}
 
 				await update_func();
@@ -102,16 +118,18 @@ public partial class TestPage : IAsyncDisposable
 			}
 			catch (IOException e)
 			{
-				Console.WriteLine(e.ToString());
+				_log_writer.WriteLine(e.ToString());
 				if (count >= 2)
 				{
 					// 尝试 2 次后仍然失败就不试了 
+					_log_writer.WriteLine("尝试更新数据失败 2 次");
 					break;
 				}
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e.ToString());
+				_log_writer.WriteLine("发生异常，重新打开串口");
+				_log_writer.WriteLine(e.ToString());
 				if (_sdv3 is not null)
 				{
 					await _sdv3.DisposeAsync();
@@ -133,6 +151,7 @@ public partial class TestPage : IAsyncDisposable
 	/// <returns></returns>
 	private async Task TimerElapsedEventHandler()
 	{
+		_log_writer.WriteLine("定时器函数入口");
 		await TryUpdate(async () =>
 		{
 			Enabled = await _sdv3!.GetEI9Async();
@@ -183,6 +202,7 @@ public partial class TestPage : IAsyncDisposable
 			Speed = await _sdv3!.GetSpeedAsync();
 		});
 
+		_log_writer.WriteLine("所有数据更新完毕");
 		await InvokeAsync(StateHasChanged);
 	}
 
@@ -195,13 +215,14 @@ public partial class TestPage : IAsyncDisposable
 				return;
 			}
 
+			_log_writer.WriteLine("使能按钮处理函数");
 			await _sdv3.SetEI9Async(!await _sdv3.GetEI9Async());
 			await _sdv3.SetEI10Async(true);
 			await _sdv3.SetEI11Async(false);
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine(ex.ToString());
+			_log_writer.WriteLine(ex.ToString());
 		}
 	}
 
@@ -214,11 +235,12 @@ public partial class TestPage : IAsyncDisposable
 				return;
 			}
 
+			_log_writer.WriteLine("正转按钮处理函数");
 			await _sdv3.SetEI12Async(!await _sdv3.GetEI12Async());
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine(ex.ToString());
+			_log_writer.WriteLine(ex.ToString());
 		}
 	}
 
@@ -235,9 +257,9 @@ public partial class TestPage : IAsyncDisposable
 			await _sdv3.SetPnAsync(1, 1, value);
 			P1_01 = value;
 		}
-		catch
+		catch (Exception ex)
 		{
-
+			_log_writer.WriteLine(ex);
 		}
 	}
 
@@ -254,9 +276,9 @@ public partial class TestPage : IAsyncDisposable
 			await _sdv3.SetPnAsync(3, 1, value);
 			P3_01 = value;
 		}
-		catch
+		catch (Exception ex)
 		{
-
+			_log_writer.WriteLine(ex);
 		}
 	}
 
@@ -273,9 +295,9 @@ public partial class TestPage : IAsyncDisposable
 			await _sdv3.SetPnAsync(3, 9, value);
 			P3_09 = value;
 		}
-		catch
+		catch (Exception ex)
 		{
-
+			_log_writer.WriteLine(ex);
 		}
 	}
 
@@ -292,9 +314,9 @@ public partial class TestPage : IAsyncDisposable
 			await _sdv3.SetPnAsync(3, 10, value);
 			P3_10 = value;
 		}
-		catch
+		catch (Exception ex)
 		{
-
+			_log_writer.WriteLine(ex);
 		}
 	}
 
@@ -311,9 +333,9 @@ public partial class TestPage : IAsyncDisposable
 			await _sdv3.SetPnAsync(3, 11, value);
 			P3_11 = value;
 		}
-		catch
+		catch (Exception ex)
 		{
-
+			_log_writer.WriteLine(ex);
 		}
 	}
 
@@ -330,9 +352,9 @@ public partial class TestPage : IAsyncDisposable
 			await _sdv3.SetPnAsync(3, 12, value);
 			P3_12 = value;
 		}
-		catch
+		catch (Exception ex)
 		{
-
+			_log_writer.WriteLine(ex);
 		}
 	}
 
@@ -349,9 +371,9 @@ public partial class TestPage : IAsyncDisposable
 			await _sdv3.SetSpeedAsync(value);
 			Speed = value;
 		}
-		catch
+		catch (Exception ex)
 		{
-
+			_log_writer.WriteLine(ex);
 		}
 	}
 }
