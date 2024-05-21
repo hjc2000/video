@@ -14,21 +14,18 @@ public struct SerialPortOptions
 	}
 
 	public string PortName { get; set; } = string.Empty;
-	public int BaudRate { get; set; } = 0;
-	public Parity Parity { get; set; } = Parity.None;
+	public int BaudRate { get; set; } = 115200;
+	public Parity Parity { get; set; } = Parity.Even;
 	public StopBits StopBits { get; set; } = StopBits.One;
 }
 
 public partial class SerialPortSetupFormTable
 {
-	/// <summary>
-	///		用户点击连接按钮后会触发此事件，本组件会构造一个 SerialPort
-	///		对象并传递给你。这个 SerialPort 还没有调用 Open 方法打开。
-	/// </summary>
 	[Parameter]
-	public EventCallback<SerialPort> ConnectButtonClickCallback { get; set; }
+	public EventCallback<SerialPortOptions> ConnectButtonClickCallback { get; set; }
 
-	private SerialPortOptions _serial_port_options;
+	private SerialPortOptions _serial_port_options = new();
+	private SemaphoreSlim _connect_lock = new(1);
 
 	public string[] PortNames
 	{
@@ -61,7 +58,6 @@ public partial class SerialPortSetupFormTable
 		}
 	}
 
-	private SemaphoreSlim _connect_lock = new(1);
 	private async Task OnConnectButtonClickAsync()
 	{
 		if (_serial_port_options.PortName == string.Empty)
@@ -69,19 +65,12 @@ public partial class SerialPortSetupFormTable
 			return;
 		}
 
-		using LockGuard l = new(_connect_lock);
-		await l.WaitAsync();
-		StateHasChanged();
 		try
 		{
-			SerialPort serial = new(_serial_port_options.PortName)
-			{
-				BaudRate = _serial_port_options.BaudRate,
-				Parity = _serial_port_options.Parity,
-				StopBits = _serial_port_options.StopBits,
-			};
-
-			await ConnectButtonClickCallback.InvokeAsync(serial);
+			using LockGuard l = new(_connect_lock);
+			await l.WaitAsync();
+			StateHasChanged();
+			await ConnectButtonClickCallback.InvokeAsync(_serial_port_options);
 		}
 		catch
 		{

@@ -1,4 +1,5 @@
-﻿using libsdv3.Modbus;
+﻿using JCRazor.表单;
+using libsdv3.Modbus;
 using System;
 using System.IO.Ports;
 using System.Threading;
@@ -49,9 +50,9 @@ public partial class TestPage : IAsyncDisposable
 	/// <summary>
 	///		连接按钮点击事件
 	/// </summary>
-	/// <param name="serial"></param>
+	/// <param name="serial_port_options"></param>
 	/// <returns></returns>
-	private async Task OnConnecteButtonClickAsync(SerialPort serial)
+	private async Task OnConnecteButtonClickAsync(SerialPortOptions serial_port_options)
 	{
 		try
 		{
@@ -60,8 +61,15 @@ public partial class TestPage : IAsyncDisposable
 				await _sdv3.DisposeAsync();
 			}
 
-			serial.ReadTimeout = 2000;
-			serial.WriteTimeout = 2000;
+			SerialPort serial = new(serial_port_options.PortName)
+			{
+				BaudRate = serial_port_options.BaudRate,
+				Parity = serial_port_options.Parity,
+				StopBits = serial_port_options.StopBits,
+				ReadTimeout = 2000,
+				WriteTimeout = 2000
+			};
+
 			await Task.Run(serial.Open);
 			_sdv3 = new ModbusSdv3Device(serial.BaseStream, 1, true);
 		}
