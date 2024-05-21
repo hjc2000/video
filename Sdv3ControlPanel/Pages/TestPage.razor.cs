@@ -111,24 +111,6 @@ public partial class TestPage : IAsyncDisposable
 		}
 	}
 
-	private async Task OnFwdClickAsync()
-	{
-		await Task.CompletedTask;
-		try
-		{
-			if (_sdv3 is null)
-			{
-				return;
-			}
-
-			_sdv3.EI12 = !_sdv3.EI12;
-		}
-		catch
-		{
-
-		}
-	}
-
 	private int FeedbackCurrentPosition
 	{
 		get
@@ -341,42 +323,6 @@ public partial class TestPage : IAsyncDisposable
 				}
 
 				_sdv3.SetPn(3, 11, value);
-			}
-			catch
-			{
-
-			}
-		}
-	}
-
-	private uint P3_12
-	{
-		get
-		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return 0;
-				}
-
-				return _sdv3.Pn(3, 12);
-			}
-			catch
-			{
-				return 0;
-			}
-		}
-		set
-		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return;
-				}
-
-				_sdv3.SetPn(3, 12, value);
 			}
 			catch
 			{

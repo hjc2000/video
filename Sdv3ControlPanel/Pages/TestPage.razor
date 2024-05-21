@@ -33,11 +33,6 @@
 					<input @bind="P3_11" />
 				</div>
 
-				<div>P3.12：</div>
-				<div>
-					<input @bind="P3_12" />
-				</div>
-
 				<div>通信给定速度：</div>
 				<div>
 					<input @bind="Speed" />
@@ -45,7 +40,6 @@
 			</Body>
 		</JCRazor.表单.FormTable>
 		<STButton @onclick="OnEnableButtonClickAsync">使能</STButton>
-		<STButton @onclick="OnFwdClickAsync">正转</STButton>
 		<div class="enable-light" _enabled="@(Enabled)"></div>
 		<JCRazor.表单.FormTable HeadBorderBottom="none">
 			<Body>
