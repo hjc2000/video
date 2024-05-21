@@ -10,7 +10,7 @@
 		<Body>
 			<div>选择端口：</div>
 			<div>
-				<select @bind="SelectedPortName">
+				<select @bind="_serial_port_options.PortName">
 					@foreach (string name in PortNames)
 					{
 						<option value="@(name)">@(name)</option>
@@ -29,7 +29,7 @@
 
 			<div>校验：</div>
 			<div>
-				<select @bind="ParityValue">
+				<select @bind="_serial_port_options.Parity">
 					<option value="@(Parity.Even)">偶校验</option>
 					<option value="@(Parity.Odd)">奇校验</option>
 					<option value="@(Parity.None)">无</option>
@@ -40,7 +40,7 @@
 				停止位：
 			</div>
 			<div>
-				<select @bind="StopBitsValue">
+				<select @bind="_serial_port_options.StopBits">
 					<option value="@(StopBits.One)">1 位</option>
 					<option value="@(StopBits.Two)">2 位</option>
 				</select>
