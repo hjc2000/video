@@ -102,6 +102,8 @@ public partial class TestPage : IAsyncDisposable
 
 			await Task.CompletedTask;
 			_sdv3.EI9 = !_sdv3.EI9;
+			_sdv3.EI10 = true;
+			_sdv3.EI11 = false;
 		}
 		catch
 		{
@@ -177,6 +179,150 @@ public partial class TestPage : IAsyncDisposable
 				}
 
 				_sdv3.SetPn(1, 1, value);
+			}
+			catch
+			{
+
+			}
+		}
+	}
+
+	private uint P3_01
+	{
+		get
+		{
+			try
+			{
+				if (_sdv3 is null)
+				{
+					return 0;
+				}
+
+				return _sdv3.Pn(3, 1);
+			}
+			catch
+			{
+				return 0;
+			}
+		}
+		set
+		{
+			try
+			{
+				if (_sdv3 is null)
+				{
+					return;
+				}
+
+				_sdv3.SetPn(3, 1, value);
+			}
+			catch
+			{
+
+			}
+		}
+	}
+
+	private uint P3_09
+	{
+		get
+		{
+			try
+			{
+				if (_sdv3 is null)
+				{
+					return 0;
+				}
+
+				return _sdv3.Pn(3, 9);
+			}
+			catch
+			{
+				return 0;
+			}
+		}
+		set
+		{
+			try
+			{
+				if (_sdv3 is null)
+				{
+					return;
+				}
+
+				_sdv3.SetPn(3, 9, value);
+			}
+			catch
+			{
+
+			}
+		}
+	}
+
+	private uint P3_10
+	{
+		get
+		{
+			try
+			{
+				if (_sdv3 is null)
+				{
+					return 0;
+				}
+
+				return _sdv3.Pn(3, 10);
+			}
+			catch
+			{
+				return 0;
+			}
+		}
+		set
+		{
+			try
+			{
+				if (_sdv3 is null)
+				{
+					return;
+				}
+
+				_sdv3.SetPn(3, 10, value);
+			}
+			catch
+			{
+
+			}
+		}
+	}
+
+	private uint P3_11
+	{
+		get
+		{
+			try
+			{
+				if (_sdv3 is null)
+				{
+					return 0;
+				}
+
+				return _sdv3.Pn(3, 11);
+			}
+			catch
+			{
+				return 0;
+			}
+		}
+		set
+		{
+			try
+			{
+				if (_sdv3 is null)
+				{
+					return;
+				}
+
+				_sdv3.SetPn(3, 11, value);
 			}
 			catch
 			{
