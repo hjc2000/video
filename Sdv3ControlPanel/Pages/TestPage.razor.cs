@@ -184,4 +184,40 @@ public partial class TestPage : IAsyncDisposable
 			}
 		}
 	}
+
+	private int Speed
+	{
+		get
+		{
+			try
+			{
+				if (_sdv3 is null)
+				{
+					return 0;
+				}
+
+				return _sdv3.Speed;
+			}
+			catch
+			{
+				return 0;
+			}
+		}
+		set
+		{
+			try
+			{
+				if (_sdv3 is null)
+				{
+					return;
+				}
+
+				_sdv3.Speed = value;
+			}
+			catch
+			{
+
+			}
+		}
+	}
 }

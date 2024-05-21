@@ -203,4 +203,5 @@ public interface ISdv3Device
 	public int ImmediateDecelerationDuration { get; set; }
 	#endregion
 
+	public int Speed { get; set; }
 }

@@ -1300,4 +1300,25 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 	}
 	#endregion
 
+	public int Speed
+	{
+		get
+		{
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.Speed, 2);
+				return (int)datas[0];
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				lock (this)
+				{
+					WriteDatas(ParamAddress.Speed, [(uint)value]);
+				}
+			}
+		}
+	}
 }

@@ -202,4 +202,6 @@ public static class ParamAddress
 	public static ushort ImmediateAccelerationDuration { get; } = 0x5106;
 	public static ushort ImmediateDecelerationDuration { get; } = 0x5108;
 	#endregion
+
+	public static ushort Speed { get; } = 0x3000;
 }
