@@ -1190,4 +1190,26 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 			WriteDatas(ParamAddress.Pn(major, minor), [value]);
 		}
 	}
+
+	#region 立即数
+	public int ImmediatePosition
+	{
+		get
+		{
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.ImmediatePosition, 2);
+				return (int)datas[0];
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				WriteDatas(ParamAddress.ImmediatePosition, [(uint)value]);
+			}
+		}
+	}
+	#endregion
+
 }

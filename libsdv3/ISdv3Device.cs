@@ -175,4 +175,9 @@ public interface ISdv3Device
 	public uint Pn(int major, int minor);
 	public void SetPn(int major, int minor, uint[] value);
 	public void SetPn(int major, int minor, uint value);
+
+	#region 立即数
+	public int ImmediatePosition { get; set; }
+	#endregion
+
 }

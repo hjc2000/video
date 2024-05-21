@@ -195,4 +195,8 @@ public static class ParamAddress
 
 		throw new ArgumentOutOfRangeException($"{nameof(major)} 只能在 [1, 4] 中。");
 	}
+
+	#region 立即数
+	public static ushort ImmediatePosition { get; } = 0x5102;
+	#endregion
 }
