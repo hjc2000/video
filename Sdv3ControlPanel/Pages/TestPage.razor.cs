@@ -1,6 +1,7 @@
 ﻿using JCRazor.表单;
 using libsdv3.Modbus;
 using System;
+using System.IO;
 using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,6 +33,27 @@ public partial class TestPage : IAsyncDisposable
 
 	private ModbusSdv3Device? _sdv3;
 	private CancellationTokenSource _cancel_timer = new();
+	private SerialPortOptions _serial_port_options = new();
+
+	private async Task InitSdv3Async()
+	{
+		if (_sdv3 is not null)
+		{
+			await _sdv3.DisposeAsync();
+		}
+
+		SerialPort serial = new(_serial_port_options.PortName)
+		{
+			BaudRate = _serial_port_options.BaudRate,
+			Parity = _serial_port_options.Parity,
+			StopBits = _serial_port_options.StopBits,
+			ReadTimeout = 2000,
+			WriteTimeout = 2000
+		};
+
+		await Task.Run(serial.Open);
+		_sdv3 = new ModbusSdv3Device(serial.BaseStream, 1, true);
+	}
 
 	/// <summary>
 	///		连接按钮点击事件
@@ -42,22 +64,8 @@ public partial class TestPage : IAsyncDisposable
 	{
 		try
 		{
-			if (_sdv3 is not null)
-			{
-				await _sdv3.DisposeAsync();
-			}
-
-			SerialPort serial = new(serial_port_options.PortName)
-			{
-				BaudRate = serial_port_options.BaudRate,
-				Parity = serial_port_options.Parity,
-				StopBits = serial_port_options.StopBits,
-				ReadTimeout = 2000,
-				WriteTimeout = 2000
-			};
-
-			await Task.Run(serial.Open);
-			_sdv3 = new ModbusSdv3Device(serial.BaseStream, 1, true);
+			_serial_port_options = serial_port_options;
+			await Task.Delay(2000);
 
 			// 设置定时器
 			_cancel_timer.Cancel();
@@ -67,9 +75,9 @@ public partial class TestPage : IAsyncDisposable
 				await TimerElapsedEventHandler();
 			}, 1000, _cancel_timer.Token);
 		}
-		catch
+		catch (Exception ex)
 		{
-
+			Console.WriteLine(ex);
 		}
 	}
 
@@ -77,29 +85,58 @@ public partial class TestPage : IAsyncDisposable
 	private int FeedbackCurrentPosition { get; set; } = 0;
 	private int FeedbackSpeed { get; set; } = 0;
 
+	/// <summary>
+	///		定时任务
+	/// </summary>
+	/// <returns></returns>
 	private async Task TimerElapsedEventHandler()
 	{
-		if (_sdv3 is null)
+		ulong count = 0;
+		while (true)
 		{
-			return;
-		}
+			try
+			{
+				if (_sdv3 is null)
+				{
+					await InitSdv3Async();
+					continue;
+				}
 
-		try
-		{
-			Enabled = await _sdv3.GetEI9Async();
-			FeedbackCurrentPosition = await _sdv3.GetFeedbackCurrentPositionAsync();
-			FeedbackSpeed = await _sdv3.GetFeedbackSpeedAsync();
-			P1_01 = await _sdv3.GetPnAsync(1, 1);
-			P3_01 = await _sdv3.GetPnAsync(3, 1);
-			P3_09 = await _sdv3.GetPnAsync(3, 9);
-			P3_10 = await _sdv3.GetPnAsync(3, 10);
-			P3_11 = await _sdv3.GetPnAsync(3, 11);
-			P3_12 = await _sdv3.GetPnAsync(3, 12);
-			Speed = await _sdv3.GetSpeedAsync();
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine(ex.ToString());
+				Enabled = await _sdv3.GetEI9Async();
+				FeedbackCurrentPosition = await _sdv3.GetFeedbackCurrentPositionAsync();
+				FeedbackSpeed = await _sdv3.GetFeedbackSpeedAsync();
+				P1_01 = await _sdv3.GetPnAsync(1, 1);
+				P3_01 = await _sdv3.GetPnAsync(3, 1);
+				P3_09 = await _sdv3.GetPnAsync(3, 9);
+				P3_10 = await _sdv3.GetPnAsync(3, 10);
+				P3_11 = await _sdv3.GetPnAsync(3, 11);
+				P3_12 = await _sdv3.GetPnAsync(3, 12);
+				Speed = await _sdv3.GetSpeedAsync();
+				break;
+			}
+			catch (IOException e)
+			{
+				Console.WriteLine(e.ToString());
+				if (count >= 2)
+				{
+					// 尝试 2 次后仍然失败就不试了 
+					break;
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.ToString());
+				if (_sdv3 is not null)
+				{
+					await _sdv3.DisposeAsync();
+				}
+
+				_sdv3 = null;
+				count = 0;
+				continue;
+			}
+
+			count++;
 		}
 
 		await InvokeAsync(StateHasChanged);
