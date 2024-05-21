@@ -39,4 +39,7 @@ public partial class FormTable
 	public string BodyAlignContent { get; set; } = "start";
 	[Parameter]
 	public string BodyAlignItems { get; set; } = "stretch";
+
+	[Parameter]
+	public string HeadBorderBottom { get; set; } = "#583131 2px dashed";
 }

@@ -8,13 +8,13 @@
 	<div>
 		<STButton @onclick="OnEnableButtonClickAsync">使能</STButton>
 		<div class="enable-light" _enabled="@(Enabled)"></div>
-		<JCRazor.盒子.LeftRightBox>
-			<Left>
-				反馈当前位置：
-			</Left>
-			<Right>
-				<input readonly value="@(FeedbackCurrentPosition)" />
-			</Right>
-		</JCRazor.盒子.LeftRightBox>
+		<JCRazor.表单.FormTable>
+			<Body>
+				<div>反馈当前位置：</div>
+				<div>
+					<input readonly value="@(FeedbackCurrentPosition)" />
+				</div>
+			</Body>
+		</JCRazor.表单.FormTable>
 	</div>
 </div>
