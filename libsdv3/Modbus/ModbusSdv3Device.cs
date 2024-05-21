@@ -975,14 +975,14 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 		}
 	}
 
-	public uint FeedbackCurrentPosition
+	public int FeedbackCurrentPosition
 	{
 		get
 		{
 			lock (this)
 			{
 				uint[] datas = ReadDatas(ParamAddress.FeedbackCurrentPosition, 2);
-				return datas[0];
+				return (int)datas[0];
 			}
 		}
 	}

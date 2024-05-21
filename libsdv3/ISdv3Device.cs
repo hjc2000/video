@@ -89,7 +89,7 @@ public interface ISdv3Device
 	/// <summary>
 	///		反馈当前位置
 	/// </summary>
-	public uint FeedbackCurrentPosition { get; }
+	public int FeedbackCurrentPosition { get; }
 
 	/// <summary>
 	///		指令当前位置

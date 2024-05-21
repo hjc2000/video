@@ -92,7 +92,7 @@ public partial class TestPage : IAsyncDisposable
 		}
 	}
 
-	private uint FeedbackCurrentPosition
+	private int FeedbackCurrentPosition
 	{
 		get
 		{
