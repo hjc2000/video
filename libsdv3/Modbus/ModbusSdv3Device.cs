@@ -249,70 +249,58 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 	}
 	#endregion
 
+	private SemaphoreSlim _connect_lock = new(1);
+
 	#region 硬件 EI
-	public bool EI1
+	async Task<bool> ISdv3Device.EI1()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI1");
-				byte[] bits = ReadBits(ParamAddress.EI1, 1);
-				return bits[0] != 0;
-			}
-		}
+		using LockGuard l = new(_connect_lock);
+		await l.WaitAsync();
+
+		Console.WriteLine("读取 EI1");
+		byte[] bits = ReadBits(ParamAddress.EI1, 1);
+		return bits[0] != 0;
+
 	}
 
-	public bool EI2
+	async Task<bool> ISdv3Device.EI2()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI2");
-				byte[] bits = ReadBits(ParamAddress.EI2, 1);
-				return bits[0] != 0;
-			}
-		}
+		using LockGuard l = new(_connect_lock);
+		await l.WaitAsync();
+
+		Console.WriteLine("读取 EI2");
+		byte[] bits = ReadBits(ParamAddress.EI2, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI3
+	async Task<bool> ISdv3Device.EI3()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI3");
-				byte[] bits = ReadBits(ParamAddress.EI3, 1);
-				return bits[0] != 0;
-			}
-		}
+		using LockGuard l = new(_connect_lock);
+		await l.WaitAsync();
+
+		Console.WriteLine("读取 EI3");
+		byte[] bits = ReadBits(ParamAddress.EI3, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI4
+	async Task<bool> ISdv3Device.EI4()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI4");
-				byte[] bits = ReadBits(ParamAddress.EI4, 1);
-				return bits[0] != 0;
-			}
-		}
+		using LockGuard l = new(_connect_lock);
+		await l.WaitAsync();
+
+		Console.WriteLine("读取 EI4");
+		byte[] bits = ReadBits(ParamAddress.EI4, 1);
+		return bits[0] != 0;
 	}
 
-	public bool EI5
+	async Task<bool> ISdv3Device.EI5()
 	{
-		get
-		{
-			lock (this)
-			{
-				Console.WriteLine("读取 EI5");
-				byte[] bits = ReadBits(ParamAddress.EI5, 1);
-				return bits[0] != 0;
-			}
-		}
+		using LockGuard l = new(_connect_lock);
+		await l.WaitAsync();
+
+		Console.WriteLine("读取 EI5");
+		byte[] bits = ReadBits(ParamAddress.EI5, 1);
+		return bits[0] != 0;
 	}
 	#endregion
 

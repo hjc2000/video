@@ -9,11 +9,11 @@ namespace libsdv3;
 public interface ISdv3Device
 {
 	#region 硬件 EI
-	public bool EI1 { get; }
-	public bool EI2 { get; }
-	public bool EI3 { get; }
-	public bool EI4 { get; }
-	public bool EI5 { get; }
+	public Task<bool> EI1();
+	public Task<bool> EI2();
+	public Task<bool> EI3();
+	public Task<bool> EI4();
+	public Task<bool> EI5();
 	#endregion
 
 	#region 通信 EI
