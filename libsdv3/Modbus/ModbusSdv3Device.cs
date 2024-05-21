@@ -35,6 +35,7 @@ public class ModbusSdv3Device : IAsyncDisposable
 	private Stream _serial_stream;
 	private bool _big_endian;
 	private AutoBitConverter _auto_bit_converter;
+	private SemaphoreSlim _async_lock = new(1);
 
 	private static void PrintFrame(byte[] frame, bool is_send)
 	{
@@ -92,6 +93,9 @@ public class ModbusSdv3Device : IAsyncDisposable
 	/// <exception cref="IOException"></exception>
 	private async Task WriteSingleBitAsync(ushort data_addr, bool value)
 	{
+		using LockGuard l = new(_async_lock);
+		await l.WaitAsync();
+
 		WriteSingleBitRequestFrame request_frame = new()
 		{
 			SlaveAddress = _device_addr,
@@ -137,6 +141,9 @@ public class ModbusSdv3Device : IAsyncDisposable
 	/// <returns></returns>
 	private async Task<byte[]> ReadBitsAsync(ushort data_addr, ushort bit_count)
 	{
+		using LockGuard l = new(_async_lock);
+		await l.WaitAsync();
+
 		if (bit_count == 0)
 		{
 			throw new ArgumentException("不允许读取 0 个位");
@@ -176,6 +183,9 @@ public class ModbusSdv3Device : IAsyncDisposable
 	/// <returns></returns>
 	private async Task<uint[]> ReadDatasAsync(ushort data_addr, ushort record_count)
 	{
+		using LockGuard l = new(_async_lock);
+		await l.WaitAsync();
+
 		if (record_count == 0)
 		{
 			throw new ArgumentException($"{nameof(record_count)} 不能为 0");
@@ -223,6 +233,9 @@ public class ModbusSdv3Device : IAsyncDisposable
 
 	private async Task WriteDatasAsync(ushort data_addr, uint[] datas)
 	{
+		using LockGuard l = new(_async_lock);
+		await l.WaitAsync();
+
 		if (datas.Length == 0)
 		{
 			throw new ArgumentException($"{nameof(datas)} 的长度不能为 0");
