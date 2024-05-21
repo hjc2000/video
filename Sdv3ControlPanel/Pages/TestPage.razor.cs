@@ -12,12 +12,15 @@ public partial class TestPage : IAsyncDisposable
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		await base.OnAfterRenderAsync(firstRender);
-		JCNET.定时器.Timer.SetInterval(async () =>
+		if (firstRender)
 		{
-			await InvokeAsync(StateHasChanged);
-		},
-		1000,
-		_cancel_timer.Token);
+			JCNET.定时器.Timer.SetInterval(async () =>
+			{
+				await InvokeAsync(StateHasChanged);
+			},
+			1000,
+			_cancel_timer.Token);
+		}
 	}
 
 	private bool _disposed = false;
