@@ -1,6 +1,7 @@
 ﻿using libsdv3.Modbus;
 using System;
 using System.IO.Ports;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Sdv3ControlPanel.Pages;
@@ -8,6 +9,17 @@ namespace Sdv3ControlPanel.Pages;
 public partial class TestPage : IAsyncDisposable
 {
 	#region 生命周期
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		await base.OnAfterRenderAsync(firstRender);
+		JCNET.定时器.Timer.SetInterval(async () =>
+		{
+			await InvokeAsync(StateHasChanged);
+		},
+		1000,
+		_cancel_timer.Token);
+	}
+
 	private bool _disposed = false;
 	public async ValueTask DisposeAsync()
 	{
@@ -23,11 +35,19 @@ public partial class TestPage : IAsyncDisposable
 		{
 			await _sdv3.DisposeAsync();
 		}
+
+		_cancel_timer.Cancel();
 	}
 	#endregion
 
 	private ModbusSdv3Device? _sdv3;
+	private CancellationTokenSource _cancel_timer = new();
 
+	/// <summary>
+	///		连接按钮点击事件
+	/// </summary>
+	/// <param name="serial"></param>
+	/// <returns></returns>
 	private async Task OnConnecteButtonClickAsync(SerialPort serial)
 	{
 		try
@@ -41,12 +61,6 @@ public partial class TestPage : IAsyncDisposable
 			serial.WriteTimeout = 2000;
 			await Task.Run(serial.Open);
 			_sdv3 = new ModbusSdv3Device(serial.BaseStream, 1, true);
-			//JCNET.定时器.Timer.SetInterval(() =>
-			//{
-
-			//},
-			//1000,
-			//CancellationToken.None);
 		}
 		catch
 		{
