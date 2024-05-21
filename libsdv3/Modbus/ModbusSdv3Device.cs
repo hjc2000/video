@@ -904,14 +904,14 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 	#endregion
 
 	#region 监控数据
-	public uint FeedbackSpeed
+	public int FeedbackSpeed
 	{
 		get
 		{
 			lock (this)
 			{
 				uint[] datas = ReadDatas(ParamAddress.FeedbackSpeed, 2);
-				return datas[0];
+				return (int)datas[0];
 			}
 		}
 	}

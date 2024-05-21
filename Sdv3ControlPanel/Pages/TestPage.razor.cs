@@ -128,4 +128,24 @@ public partial class TestPage : IAsyncDisposable
 			}
 		}
 	}
+
+	private int FeedbackSpeed
+	{
+		get
+		{
+			try
+			{
+				if (_sdv3 is null)
+				{
+					return 0;
+				}
+
+				return _sdv3.FeedbackSpeed;
+			}
+			catch
+			{
+				return 0;
+			}
+		}
+	}
 }

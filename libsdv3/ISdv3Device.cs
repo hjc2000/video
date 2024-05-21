@@ -61,7 +61,7 @@ public interface ISdv3Device
 	/// <summary>
 	///		反馈速度
 	/// </summary>
-	public uint FeedbackSpeed { get; }
+	public int FeedbackSpeed { get; }
 
 	/// <summary>
 	///		指令速度
