@@ -85,11 +85,7 @@ public partial class TestPage : IAsyncDisposable
 	private int FeedbackCurrentPosition { get; set; } = 0;
 	private int FeedbackSpeed { get; set; } = 0;
 
-	/// <summary>
-	///		定时任务
-	/// </summary>
-	/// <returns></returns>
-	private async Task TimerElapsedEventHandler()
+	private async Task TryUpdate(Func<Task> update_func)
 	{
 		ulong count = 0;
 		while (true)
@@ -99,19 +95,9 @@ public partial class TestPage : IAsyncDisposable
 				if (_sdv3 is null)
 				{
 					await InitSdv3Async();
-					continue;
 				}
 
-				Enabled = await _sdv3.GetEI9Async();
-				FeedbackCurrentPosition = await _sdv3.GetFeedbackCurrentPositionAsync();
-				FeedbackSpeed = await _sdv3.GetFeedbackSpeedAsync();
-				P1_01 = await _sdv3.GetPnAsync(1, 1);
-				P3_01 = await _sdv3.GetPnAsync(3, 1);
-				P3_09 = await _sdv3.GetPnAsync(3, 9);
-				P3_10 = await _sdv3.GetPnAsync(3, 10);
-				P3_11 = await _sdv3.GetPnAsync(3, 11);
-				P3_12 = await _sdv3.GetPnAsync(3, 12);
-				Speed = await _sdv3.GetSpeedAsync();
+				await update_func();
 				break;
 			}
 			catch (IOException e)
@@ -133,11 +119,69 @@ public partial class TestPage : IAsyncDisposable
 
 				_sdv3 = null;
 				count = 0;
+				await Task.Delay(100);
 				continue;
 			}
 
 			count++;
 		}
+	}
+
+	/// <summary>
+	///		定时任务
+	/// </summary>
+	/// <returns></returns>
+	private async Task TimerElapsedEventHandler()
+	{
+		await TryUpdate(async () =>
+		{
+			Enabled = await _sdv3!.GetEI9Async();
+		});
+
+		await TryUpdate(async () =>
+		{
+			FeedbackCurrentPosition = await _sdv3!.GetFeedbackCurrentPositionAsync();
+		});
+
+		await TryUpdate(async () =>
+		{
+			FeedbackSpeed = await _sdv3!.GetFeedbackSpeedAsync();
+		});
+
+		await TryUpdate(async () =>
+		{
+			P1_01 = await _sdv3!.GetPnAsync(1, 1);
+		});
+
+		await TryUpdate(async () =>
+		{
+			P3_01 = await _sdv3!.GetPnAsync(3, 1);
+		});
+
+		await TryUpdate(async () =>
+		{
+			P3_09 = await _sdv3!.GetPnAsync(3, 9);
+		});
+
+		await TryUpdate(async () =>
+		{
+			P3_10 = await _sdv3!.GetPnAsync(3, 10);
+		});
+
+		await TryUpdate(async () =>
+		{
+			P3_11 = await _sdv3!.GetPnAsync(3, 11);
+		});
+
+		await TryUpdate(async () =>
+		{
+			P3_12 = await _sdv3!.GetPnAsync(3, 12);
+		});
+
+		await TryUpdate(async () =>
+		{
+			Speed = await _sdv3!.GetSpeedAsync();
+		});
 
 		await InvokeAsync(StateHasChanged);
 	}
@@ -305,6 +349,9 @@ public partial class TestPage : IAsyncDisposable
 			await _sdv3.SetSpeedAsync(value);
 			Speed = value;
 		}
-		catch { }
+		catch
+		{
+
+		}
 	}
 }
