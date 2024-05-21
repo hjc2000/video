@@ -1,4 +1,6 @@
-﻿namespace libsdv3;
+﻿using libsdv3.Code;
+
+namespace libsdv3;
 
 /// <summary>
 ///		本接口的方法、属性需要实现为线程安全，允许多个线程同时使用同一个方法、属性，
@@ -156,14 +158,14 @@ public interface ISdv3Device
 	/// <summary>
 	///		当前报警
 	/// </summary>
-	public uint CurrentAlarm { get; }
+	public AlarmCode CurrentAlarm { get; }
 
 	/// <summary>
 	///		报警记录
 	/// </summary>
 	/// <param name="record_id">从 1 开始。</param>
 	/// <returns></returns>
-	public uint AlarmRecords(int record_id);
+	public AlarmCode AlarmRecords(int record_id);
 
 	/// <summary>
 	///		AlarmRecords 的数量

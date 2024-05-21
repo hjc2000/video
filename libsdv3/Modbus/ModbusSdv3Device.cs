@@ -1,4 +1,5 @@
 ﻿using JCNET;
+using libsdv3.Code;
 using libsdv3.Modbus.Frame;
 
 namespace libsdv3.Modbus;
@@ -1133,19 +1134,19 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 	#endregion
 
 	#region 报警
-	public uint CurrentAlarm
+	public AlarmCode CurrentAlarm
 	{
 		get
 		{
 			lock (this)
 			{
 				uint[] datas = ReadDatas(ParamAddress.CurrentAlarm, 2);
-				return datas[0];
+				return (AlarmCode)datas[0];
 			}
 		}
 	}
 
-	public uint AlarmRecords(int record_id)
+	public AlarmCode AlarmRecords(int record_id)
 	{
 		lock (this)
 		{
@@ -1155,7 +1156,7 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 			}
 
 			uint[] datas = ReadDatas(ParamAddress.AlarmRecords(record_id), 2);
-			return datas[0];
+			return (AlarmCode)datas[0];
 		}
 	}
 
