@@ -10,20 +10,6 @@ namespace Sdv3ControlPanel.Pages;
 public partial class TestPage : IAsyncDisposable
 {
 	#region 生命周期
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		await base.OnAfterRenderAsync(firstRender);
-		if (firstRender)
-		{
-			JCNET.定时器.Timer.SetInterval(async () =>
-			{
-				await InvokeAsync(StateHasChanged);
-			},
-			1000,
-			_cancel_timer.Token);
-		}
-	}
-
 	private bool _disposed = false;
 	public async ValueTask DisposeAsync()
 	{
@@ -72,6 +58,32 @@ public partial class TestPage : IAsyncDisposable
 
 			await Task.Run(serial.Open);
 			_sdv3 = new ModbusSdv3Device(serial.BaseStream, 1, true);
+
+			// 设置定时器
+			_cancel_timer.Cancel();
+			_cancel_timer = new CancellationTokenSource();
+			JCNET.定时器.Timer.SetInterval(async () =>
+			{
+				try
+				{
+					Enabled = await _sdv3.GetEI9Async();
+					FeedbackCurrentPosition = await _sdv3.GetFeedbackCurrentPositionAsync();
+					FeedbackSpeed = await _sdv3.GetFeedbackSpeedAsync();
+					P1_01 = await _sdv3.GetPnAsync(1, 1);
+					P3_01 = await _sdv3.GetPnAsync(3, 1);
+					P3_09 = await _sdv3.GetPnAsync(3, 9);
+					P3_10 = await _sdv3.GetPnAsync(3, 10);
+					P3_11 = await _sdv3.GetPnAsync(3, 11);
+					P3_12 = await _sdv3.GetPnAsync(3, 12);
+					Speed = await _sdv3.GetSpeedAsync();
+				}
+				catch
+				{
+
+				}
+
+				await InvokeAsync(StateHasChanged);
+			}, 1000, _cancel_timer.Token);
 		}
 		catch
 		{
@@ -79,25 +91,9 @@ public partial class TestPage : IAsyncDisposable
 		}
 	}
 
-	private bool Enabled
-	{
-		get
-		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return false;
-				}
-
-				return _sdv3.EI9;
-			}
-			catch
-			{
-				return false;
-			}
-		}
-	}
+	private bool Enabled { get; set; } = false;
+	private int FeedbackCurrentPosition { get; set; } = 0;
+	private int FeedbackSpeed { get; set; } = 0;
 
 	private async Task OnEnableButtonClickAsync()
 	{
@@ -108,10 +104,9 @@ public partial class TestPage : IAsyncDisposable
 				return;
 			}
 
-			await Task.CompletedTask;
-			_sdv3.EI9 = !_sdv3.EI9;
-			_sdv3.EI10 = true;
-			_sdv3.EI11 = false;
+			await _sdv3.SetEI9Async(!await _sdv3.GetEI9Async());
+			await _sdv3.SetEI10Async(true);
+			await _sdv3.SetEI11Async(false);
 		}
 		catch
 		{
@@ -121,7 +116,6 @@ public partial class TestPage : IAsyncDisposable
 
 	private async Task OnFwdClickAsync()
 	{
-		await Task.CompletedTask;
 		try
 		{
 			if (_sdv3 is null)
@@ -129,7 +123,7 @@ public partial class TestPage : IAsyncDisposable
 				return;
 			}
 
-			_sdv3.EI12 = !_sdv3.EI12;
+			await _sdv3.SetEI12Async(!await _sdv3.GetEI12Async());
 		}
 		catch
 		{
@@ -137,295 +131,133 @@ public partial class TestPage : IAsyncDisposable
 		}
 	}
 
-	private int FeedbackCurrentPosition
+	private uint P1_01 { get; set; } = 0;
+	private async Task SetP1_01Async(uint value)
 	{
-		get
+		if (_sdv3 is null)
 		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return 0;
-				}
+			return;
+		}
 
-				return _sdv3.FeedbackCurrentPosition;
-			}
-			catch
-			{
-				return 0;
-			}
+		try
+		{
+			await _sdv3.SetPnAsync(1, 1, value);
+			P1_01 = value;
+		}
+		catch
+		{
+
 		}
 	}
 
-	private int FeedbackSpeed
+	private uint P3_01 { get; set; } = 0;
+	public async Task SetP3_01Async(uint value)
 	{
-		get
+		if (_sdv3 is null)
 		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return 0;
-				}
+			return;
+		}
 
-				return _sdv3.FeedbackSpeed;
-			}
-			catch
-			{
-				return 0;
-			}
+		try
+		{
+			await _sdv3.SetPnAsync(3, 1, value);
+			P3_01 = value;
+		}
+		catch
+		{
+
 		}
 	}
 
-	private uint P1_01
+	private uint P3_09 { get; set; } = 0;
+	public async Task SetP3_09Async(uint value)
 	{
-		get
+		if (_sdv3 is null)
 		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return 0;
-				}
-
-				return _sdv3.Pn(1, 1);
-			}
-			catch
-			{
-				return 0;
-			}
+			return;
 		}
-		set
+
+		try
 		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return;
-				}
+			await _sdv3.SetPnAsync(3, 9, value);
+			P3_09 = value;
+		}
+		catch
+		{
 
-				_sdv3.SetPn(1, 1, value);
-			}
-			catch
-			{
-
-			}
 		}
 	}
 
-	private uint P3_01
+	private uint P3_10 { get; set; } = 0;
+	public async Task SetP3_10Async(uint value)
 	{
-		get
+		if (_sdv3 is null)
 		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return 0;
-				}
-
-				return _sdv3.Pn(3, 1);
-			}
-			catch
-			{
-				return 0;
-			}
+			return;
 		}
-		set
+
+		try
 		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return;
-				}
+			await _sdv3.SetPnAsync(3, 10, value);
+			P3_10 = value;
+		}
+		catch
+		{
 
-				_sdv3.SetPn(3, 1, value);
-			}
-			catch
-			{
-
-			}
 		}
 	}
 
-	private uint P3_09
+	private uint P3_11 { get; set; } = 0;
+	public async Task SetP3_11Async(uint value)
 	{
-		get
+		if (_sdv3 is null)
 		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return 0;
-				}
-
-				return _sdv3.Pn(3, 9);
-			}
-			catch
-			{
-				return 0;
-			}
+			return;
 		}
-		set
+
+		try
 		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return;
-				}
+			await _sdv3.SetPnAsync(3, 11, value);
+			P3_11 = value;
+		}
+		catch
+		{
 
-				_sdv3.SetPn(3, 9, value);
-			}
-			catch
-			{
-
-			}
 		}
 	}
 
-	private uint P3_10
+	private uint P3_12 { get; set; } = 0;
+	public async Task SetP3_12Async(uint value)
 	{
-		get
+		if (_sdv3 is null)
 		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return 0;
-				}
-
-				return _sdv3.Pn(3, 10);
-			}
-			catch
-			{
-				return 0;
-			}
+			return;
 		}
-		set
+
+		try
 		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return;
-				}
+			await _sdv3.SetPnAsync(3, 12, value);
+			P3_12 = value;
+		}
+		catch
+		{
 
-				_sdv3.SetPn(3, 10, value);
-			}
-			catch
-			{
-
-			}
 		}
 	}
 
-	private uint P3_11
+	private int Speed { get; set; } = 0;
+	private async Task SetSpeedAsync(int value)
 	{
-		get
+		if (_sdv3 is null)
 		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return 0;
-				}
-
-				return _sdv3.Pn(3, 11);
-			}
-			catch
-			{
-				return 0;
-			}
+			return;
 		}
-		set
+
+		try
 		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return;
-				}
-
-				_sdv3.SetPn(3, 11, value);
-			}
-			catch
-			{
-
-			}
+			await _sdv3.SetSpeedAsync(value);
+			Speed = value;
 		}
-	}
-
-	private uint P3_12
-	{
-		get
-		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return 0;
-				}
-
-				return _sdv3.Pn(3, 12);
-			}
-			catch
-			{
-				return 0;
-			}
-		}
-		set
-		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return;
-				}
-
-				_sdv3.SetPn(3, 12, value);
-			}
-			catch
-			{
-
-			}
-		}
-	}
-
-	private int Speed
-	{
-		get
-		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return 0;
-				}
-
-				return _sdv3.Speed;
-			}
-			catch
-			{
-				return 0;
-			}
-		}
-		set
-		{
-			try
-			{
-				if (_sdv3 is null)
-				{
-					return;
-				}
-
-				_sdv3.Speed = value;
-			}
-			catch
-			{
-
-			}
-		}
+		catch { }
 	}
 }

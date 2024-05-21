@@ -7,7 +7,7 @@ namespace libsdv3.Modbus;
 /// <summary>
 ///		利用 modbus 进行控制的 SDV3 设备。
 /// </summary>
-public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
+public class ModbusSdv3Device : IAsyncDisposable
 {
 	public ModbusSdv3Device(Stream serial_stream, byte device_addr, bool big_endian)
 	{
@@ -727,153 +727,91 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 	/// <summary>
 	///		控制模式
 	/// </summary>
-	public ControlModeCode ControlMode
+	public async Task<ControlModeCode> GetControlModeAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatasAsync(ParamAddress.CurrentAlarm, 2);
-				return (ControlModeCode)datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.CurrentAlarm, 2);
+		return (ControlModeCode)datas[0];
 	}
 
 	/// <summary>
 	///		动作模式
 	/// </summary>
-	public ActionModeCode ActionMode
+	public async Task<ActionModeCode> GetActionModeAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatasAsync(ParamAddress.CurrentAlarm, 2);
-				return (ActionModeCode)datas[0];
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.CurrentAlarm, 2);
+		return (ActionModeCode)datas[0];
 	}
 
-	public uint Pn(int major, int minor)
+	public async Task<uint> GetPnAsync(int major, int minor)
 	{
-		lock (this)
-		{
-			uint[] datas = ReadDatasAsync(ParamAddress.Pn(major, minor), 2);
-			return datas[0];
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.Pn(major, minor), 2);
+		return datas[0];
 	}
-	public void SetPn(int major, int minor, uint[] value)
+
+	public async Task SetPnAsync(int major, int minor, uint[] value)
 	{
-		lock (this)
-		{
-			WriteDatasAsync(ParamAddress.Pn(major, minor), value);
-		}
+		await WriteDatasAsync(ParamAddress.Pn(major, minor), value);
 	}
-	public void SetPn(int major, int minor, uint value)
+
+	public async Task SetPnAsync(int major, int minor, uint value)
 	{
-		lock (this)
-		{
-			WriteDatasAsync(ParamAddress.Pn(major, minor), [value]);
-		}
+		await SetPnAsync(major, minor, [value]);
 	}
 
 	#region 立即数
-	public int ImmediatePosition
+	public async Task<int> GetImmediatePositionAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatasAsync(ParamAddress.ImmediatePosition, 2);
-				return (int)datas[0];
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				WriteDatasAsync(ParamAddress.ImmediatePosition, [(uint)value]);
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.ImmediatePosition, 2);
+		return (int)datas[0];
 	}
 
-	public int ImmediateSpeed
+	public async Task SetImmediatePositionAsync(int value)
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatasAsync(ParamAddress.ImmediateSpeed, 2);
-				return (int)datas[0];
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				WriteDatasAsync(ParamAddress.ImmediateSpeed, [(uint)value]);
-			}
-		}
+		await WriteDatasAsync(ParamAddress.ImmediatePosition, [(uint)value]);
 	}
 
-	public int ImmediateAccelerationDuration
+	public async Task<int> GetImmediateSpeedAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatasAsync(ParamAddress.ImmediateAccelerationDuration, 2);
-				return (int)datas[0];
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				WriteDatasAsync(ParamAddress.ImmediateAccelerationDuration, [(uint)value]);
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.ImmediateSpeed, 2);
+		return (int)datas[0];
 	}
 
-	public int ImmediateDecelerationDuration
+	public async Task SetImmediateSpeedAsync(int value)
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatasAsync(ParamAddress.ImmediateDecelerationDuration, 2);
-				return (int)datas[0];
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				WriteDatasAsync(ParamAddress.ImmediateDecelerationDuration, [(uint)value]);
-			}
-		}
+		await WriteDatasAsync(ParamAddress.ImmediateSpeed, [(uint)value]);
+	}
+
+	public async Task<int> GetImmediateAccelerationDurationAsync()
+	{
+		uint[] datas = await ReadDatasAsync(ParamAddress.ImmediateAccelerationDuration, 2);
+		return (int)datas[0];
+	}
+
+	public async Task SetImmediateAccelerationDuration(int value)
+	{
+		await WriteDatasAsync(ParamAddress.ImmediateAccelerationDuration, [(uint)value]);
+	}
+
+	public async Task<int> GetImmediateDecelerationDuration()
+	{
+		uint[] datas = await ReadDatasAsync(ParamAddress.ImmediateDecelerationDuration, 2);
+		return (int)datas[0];
+	}
+
+	public async Task SetImmediateDecelerationDuration(int value)
+	{
+		await WriteDatasAsync(ParamAddress.ImmediateDecelerationDuration, [(uint)value]);
 	}
 	#endregion
 
-	public int Speed
+	public async Task<int> GetSpeedAsync()
 	{
-		get
-		{
-			lock (this)
-			{
-				uint[] datas = ReadDatasAsync(ParamAddress.Speed, 2);
-				return (int)datas[0];
-			}
-		}
-		set
-		{
-			lock (this)
-			{
-				lock (this)
-				{
-					WriteDatasAsync(ParamAddress.Speed, [(uint)value]);
-				}
-			}
-		}
+		uint[] datas = await ReadDatasAsync(ParamAddress.Speed, 2);
+		return (int)datas[0];
+	}
+
+	public async Task SetSpeedAsync(int value)
+	{
+		await WriteDatasAsync(ParamAddress.Speed, [(uint)value]);
 	}
 }
