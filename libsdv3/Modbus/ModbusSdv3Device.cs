@@ -1169,6 +1169,36 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 	}
 	#endregion
 
+	/// <summary>
+	///		控制模式
+	/// </summary>
+	public ControlModeCode ControlMode
+	{
+		get
+		{
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.CurrentAlarm, 2);
+				return (ControlModeCode)datas[0];
+			}
+		}
+	}
+
+	/// <summary>
+	///		动作模式
+	/// </summary>
+	public ActionModeCode ActionMode
+	{
+		get
+		{
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.CurrentAlarm, 2);
+				return (ActionModeCode)datas[0];
+			}
+		}
+	}
+
 	public uint Pn(int major, int minor)
 	{
 		lock (this)
@@ -1268,7 +1298,6 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 			}
 		}
 	}
-
 	#endregion
 
 }

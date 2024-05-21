@@ -174,6 +174,9 @@ public interface ISdv3Device
 	public int AlarmRecordCount { get; }
 	#endregion
 
+	public ControlModeCode ControlMode { get; }
+	public ActionModeCode ActionMode { get; }
+
 	public uint Pn(int major, int minor);
 	public void SetPn(int major, int minor, uint[] value);
 	public void SetPn(int major, int minor, uint value);
