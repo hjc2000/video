@@ -1210,6 +1210,64 @@ public class ModbusSdv3Device : ISdv3Device, IAsyncDisposable
 			}
 		}
 	}
+
+	public int ImmediateSpeed
+	{
+		get
+		{
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.ImmediateSpeed, 2);
+				return (int)datas[0];
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				WriteDatas(ParamAddress.ImmediateSpeed, [(uint)value]);
+			}
+		}
+	}
+
+	public int ImmediateAccelerationDuration
+	{
+		get
+		{
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.ImmediateAccelerationDuration, 2);
+				return (int)datas[0];
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				WriteDatas(ParamAddress.ImmediateAccelerationDuration, [(uint)value]);
+			}
+		}
+	}
+
+	public int ImmediateDecelerationDuration
+	{
+		get
+		{
+			lock (this)
+			{
+				uint[] datas = ReadDatas(ParamAddress.ImmediateDecelerationDuration, 2);
+				return (int)datas[0];
+			}
+		}
+		set
+		{
+			lock (this)
+			{
+				WriteDatas(ParamAddress.ImmediateDecelerationDuration, [(uint)value]);
+			}
+		}
+	}
+
 	#endregion
 
 }

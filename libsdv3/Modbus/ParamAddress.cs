@@ -198,5 +198,8 @@ public static class ParamAddress
 
 	#region 立即数
 	public static ushort ImmediatePosition { get; } = 0x5102;
+	public static ushort ImmediateSpeed { get; } = 0x5104;
+	public static ushort ImmediateAccelerationDuration { get; } = 0x5106;
+	public static ushort ImmediateDecelerationDuration { get; } = 0x5108;
 	#endregion
 }

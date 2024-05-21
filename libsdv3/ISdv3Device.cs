@@ -177,7 +177,25 @@ public interface ISdv3Device
 	public void SetPn(int major, int minor, uint value);
 
 	#region 立即数
+	/// <summary>
+	///		立即数位置
+	/// </summary>
 	public int ImmediatePosition { get; set; }
+
+	/// <summary>
+	///		立即数速度
+	/// </summary>
+	public int ImmediateSpeed { get; set; }
+
+	/// <summary>
+	///		立即数加速持续时间
+	/// </summary>
+	public int ImmediateAccelerationDuration { get; set; }
+
+	/// <summary>
+	///		立即数减速持续时间
+	/// </summary>
+	public int ImmediateDecelerationDuration { get; set; }
 	#endregion
 
 }
