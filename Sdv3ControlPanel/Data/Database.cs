@@ -2,7 +2,6 @@
 using JCRazor.表单;
 using libsdv3.Modbus;
 using System;
-using System.IO;
 using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
@@ -120,7 +119,7 @@ public static class Database
 				await update_func();
 				break;
 			}
-			catch (IOException e)
+			catch (ModbusFrameException e)
 			{
 				LogOutputPort.WriteLine(e);
 				try
@@ -130,7 +129,7 @@ public static class Database
 						break;
 					}
 
-					LogOutputPort.WriteLine("发生 IOException，清理接收缓冲区和发送缓冲区中的垃圾数据");
+					LogOutputPort.WriteLine("发生 ModbusFrameException，清理接收缓冲区和发送缓冲区中的垃圾数据");
 					SerialPort?.DiscardInBuffer();
 					SerialPort?.DiscardOutBuffer();
 					retry_times++;

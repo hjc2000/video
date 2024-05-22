@@ -4,6 +4,21 @@ using libsdv3.Modbus.Frame;
 
 namespace libsdv3.Modbus;
 
+public class ModbusFrameException : Exception
+{
+	public ModbusFrameException()
+	{
+	}
+
+	public ModbusFrameException(string? message) : base(message)
+	{
+	}
+
+	public ModbusFrameException(string? message, Exception? innerException) : base(message, innerException)
+	{
+	}
+}
+
 /// <summary>
 ///		利用 modbus 进行控制的 SDV3 设备。
 /// </summary>
@@ -62,7 +77,7 @@ public class ModbusSdv3Device : IAsyncDisposable
 	///		* 不包括 PDU 部分，只检查作为头部的地址和作为尾部的 CRC16。
 	/// </summary>
 	/// <param name="response_frame"></param>
-	/// <exception cref="IOException"></exception>
+	/// <exception cref="ModbusFrameException"></exception>
 	private void CheckADU(Memory<byte> response_frame)
 	{
 		ModbusCrc16 crc16 = new();
@@ -71,17 +86,17 @@ public class ModbusSdv3Device : IAsyncDisposable
 		Span<byte> span = response_frame.Span;
 		if (span[^2] != crc16.RegisterLowByte)
 		{
-			throw new IOException("CRC 校验错误");
+			throw new ModbusFrameException("CRC 校验错误");
 		}
 
 		if (span[^1] != crc16.RegisterHighByte)
 		{
-			throw new IOException("CRC 校验错误");
+			throw new ModbusFrameException("CRC 校验错误");
 		}
 
 		if (span[0] != _device_addr)
 		{
-			throw new IOException("接收到非预期地址的设备的响应");
+			throw new ModbusFrameException("接收到非预期地址的设备的响应");
 		}
 	}
 
@@ -90,7 +105,7 @@ public class ModbusSdv3Device : IAsyncDisposable
 	/// </summary>
 	/// <param name="data_addr"></param>
 	/// <param name="value"></param>
-	/// <exception cref="IOException"></exception>
+	/// <exception cref="ModbusFrameException"></exception>
 	private async Task WriteSingleBitAsync(ushort data_addr, bool value)
 	{
 		using LockGuard l = new(_async_lock);
@@ -117,19 +132,19 @@ public class ModbusSdv3Device : IAsyncDisposable
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
 		{
-			throw new IOException("设备回复的帧中的功能码错误");
+			throw new ModbusFrameException("设备回复的帧中的功能码错误");
 		}
 
 		ushort received_data_addr = _auto_bit_converter.ToUInt16(read_buffer, 2);
 		if (received_data_addr != data_addr)
 		{
-			throw new IOException("设备回复帧中的数据地址不对");
+			throw new ModbusFrameException("设备回复帧中的数据地址不对");
 		}
 
 		ushort received_data = _auto_bit_converter.ToUInt16(read_buffer, 4);
 		if (received_data != 0 != value)
 		{
-			throw new IOException("设备回复帧中的数据不对");
+			throw new ModbusFrameException("设备回复帧中的数据不对");
 		}
 	}
 
@@ -169,7 +184,7 @@ public class ModbusSdv3Device : IAsyncDisposable
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
 		{
-			throw new IOException("设备回复的帧中的功能码错误");
+			throw new ModbusFrameException("设备回复的帧中的功能码错误");
 		}
 
 		return read_buffer[3..^2];
@@ -212,12 +227,12 @@ public class ModbusSdv3Device : IAsyncDisposable
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.ReadDatas)
 		{
-			throw new IOException("设备回复的帧中的功能码错误");
+			throw new ModbusFrameException("设备回复的帧中的功能码错误");
 		}
 
 		if (read_buffer[2] != record_count * 2)
 		{
-			throw new IOException("返回的数据字节数不对");
+			throw new ModbusFrameException("返回的数据字节数不对");
 		}
 
 		int response_uint32_data_count = read_buffer[2] / 4;
@@ -262,19 +277,19 @@ public class ModbusSdv3Device : IAsyncDisposable
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.WriteDatas)
 		{
-			throw new IOException("设备回复的帧中的功能码错误");
+			throw new ModbusFrameException("设备回复的帧中的功能码错误");
 		}
 
 		ushort response_data_addr = _auto_bit_converter.ToUInt16(read_buffer, 2);
 		if (response_data_addr != data_addr)
 		{
-			throw new IOException("设备回复帧中的数据地址不对");
+			throw new ModbusFrameException("设备回复帧中的数据地址不对");
 		}
 
 		ushort response_record_count = _auto_bit_converter.ToUInt16(read_buffer, 4);
 		if (response_record_count != datas.Length * 2)
 		{
-			throw new IOException("设备回复帧中的记录数不对");
+			throw new ModbusFrameException("设备回复帧中的记录数不对");
 		}
 	}
 	#endregion
