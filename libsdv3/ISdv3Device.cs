@@ -15,34 +15,49 @@ public interface ISdv3Device : IAsyncDisposable
 	#region 通信 EI
 	Task<bool> GetEI9Async();
 	Task SetEI9Async(bool value);
+
 	Task<bool> GetEI10Async();
 	Task SetEI10Async(bool value);
+
 	Task<bool> GetEI11Async();
 	Task SetEI11Async(bool value);
+
 	Task<bool> GetEI12Async();
 	Task SetEI12Async(bool value);
+
 	Task<bool> GetEI13Async();
 	Task SetEI13Async(bool value);
+
 	Task<bool> GetEI14Async();
 	Task SetEI14Async(bool value);
+
 	Task<bool> GetEI15Async();
 	Task SetEI15Async(bool value);
+
 	Task<bool> GetEI16Async();
 	Task SetEI16Async(bool value);
+
 	Task<bool> GetEI17Async();
 	Task SetEI17Async(bool value);
+
 	Task<bool> GetEI18Async();
 	Task SetEI18Async(bool value);
+
 	Task<bool> GetEI19Async();
 	Task SetEI19Async(bool value);
+
 	Task<bool> GetEI20Async();
 	Task SetEI20Async(bool value);
+
 	Task<bool> GetEI21Async();
 	Task SetEI21Async(bool value);
+
 	Task<bool> GetEI22Async();
 	Task SetEI22Async(bool value);
+
 	Task<bool> GetEI23Async();
 	Task SetEI23Async(bool value);
+
 	Task<bool> GetEI24Async();
 	Task SetEI24Async(bool value);
 	#endregion
@@ -114,10 +129,13 @@ public interface ISdv3Device : IAsyncDisposable
 	#region 立即数
 	Task<int> GetImmediatePositionAsync();
 	Task SetImmediatePositionAsync(int value);
+
 	Task<int> GetImmediateSpeedAsync();
 	Task SetImmediateSpeedAsync(int value);
+
 	Task<int> GetImmediateAccelerationDurationAsync();
 	Task SetImmediateAccelerationDuration(int value);
+
 	Task<int> GetImmediateDecelerationDuration();
 	Task SetImmediateDecelerationDuration(int value);
 	#endregion
