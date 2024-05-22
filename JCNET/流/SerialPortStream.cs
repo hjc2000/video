@@ -22,6 +22,11 @@ public class SerialPortStream : Stream
 
 	public void CleanInOutBuffer()
 	{
+		if (!_serial_port.IsOpen)
+		{
+			_serial_port.Open();
+		}
+
 		_serial_port.DiscardInBuffer();
 		_serial_port.DiscardOutBuffer();
 	}
@@ -33,6 +38,11 @@ public class SerialPortStream : Stream
 
 	public override int Read(byte[] buffer, int offset, int count)
 	{
+		if (!_serial_port.IsOpen)
+		{
+			_serial_port.Open();
+		}
+
 		return _serial_port.Read(buffer, offset, count);
 	}
 
@@ -48,6 +58,11 @@ public class SerialPortStream : Stream
 
 	public override void Write(byte[] buffer, int offset, int count)
 	{
+		if (!_serial_port.IsOpen)
+		{
+			_serial_port.Open();
+		}
+
 		_serial_port.Write(buffer, offset, count);
 	}
 

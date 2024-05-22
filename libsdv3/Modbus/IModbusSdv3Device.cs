@@ -20,6 +20,7 @@ public interface IModbusSdv3Device : IAsyncDisposable
 	/// <param name="data_addr">数据地址</param>
 	/// <param name="bit_count">要读取多少个位</param>
 	/// <returns></returns>
+	/// <exception cref="ModbusFrameException"></exception>
 	Task<byte[]> ReadBitsAsync(ushort data_addr, ushort bit_count);
 
 	/// <summary>
@@ -28,6 +29,7 @@ public interface IModbusSdv3Device : IAsyncDisposable
 	/// <param name="data_addr">数据地址</param>
 	/// <param name="record_count">记录数。一个记录是 16 位。读取 1 个 32 位的数据需要 2 个记录。</param>
 	/// <returns></returns>
+	/// <exception cref="ModbusFrameException"></exception>
 	Task<uint[]> ReadDatasAsync(ushort data_addr, ushort record_count);
 
 	/// <summary>
@@ -36,6 +38,7 @@ public interface IModbusSdv3Device : IAsyncDisposable
 	/// <param name="data_addr"></param>
 	/// <param name="datas"></param>
 	/// <returns></returns>
+	/// <exception cref="ModbusFrameException"></exception>
 	Task WriteDatasAsync(ushort data_addr, uint[] datas);
 	#endregion
 

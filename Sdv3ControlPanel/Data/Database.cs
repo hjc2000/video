@@ -1,5 +1,4 @@
 ﻿using JCNET.Modbus;
-using JCNET.流;
 using JCRazor.表单;
 using libsdv3.Modbus;
 using System;
@@ -105,7 +104,7 @@ public static class Database
 			 * 超时。SerialPortStream 内部通过 SerialPort 的同步读写方法来实现流，所以
 			 * 可以触发超时。
 			 */
-			SDV3 = new SerialPortModbusSdv3Device(new SerialPortStream(SerialPort), 1, true);
+			SDV3 = new SerialPortModbusSdv3Device(SerialPort, 1, true);
 			Console.WriteLine("成功打开新的 SDV3 对象");
 		}
 

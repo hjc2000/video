@@ -1,15 +1,186 @@
 ﻿using JCNET;
 using JCNET.Modbus;
+using JCNET.流;
 using libsdv3.Modbus.Frame;
+using System.IO.Ports;
 
 namespace libsdv3.Modbus;
 
-/// <summary>
-///		利用 modbus 进行控制的 SDV3 设备。
-/// </summary>
 public class SerialPortModbusSdv3Device : IModbusSdv3Device
 {
-	public SerialPortModbusSdv3Device(Stream serial_stream, byte device_addr, bool big_endian)
+	public SerialPortModbusSdv3Device(SerialPort serialPort, byte device_addr, bool big_endian)
+	{
+		_serial_port = serialPort;
+		_sdv3 = new InnerSerialPortModbusSdv3Device(
+			new SerialPortStream(serialPort),
+			device_addr,
+			big_endian
+		);
+	}
+
+	private bool _disposed = false;
+	public async ValueTask DisposeAsync()
+	{
+		await ((IAsyncDisposable)_sdv3).DisposeAsync();
+		if (_disposed)
+		{
+			return;
+		}
+
+		_disposed = true;
+		GC.SuppressFinalize(this);
+	}
+
+	private SerialPort _serial_port;
+	private InnerSerialPortModbusSdv3Device _sdv3;
+
+	/// <summary>
+	///		重新构造一个 SerialPort 对象，复制旧的 SerialPort 对象的所有属性，
+	///		然后打开，然后赋值给 _serial_port。
+	/// </summary>
+	private void ReopenPort()
+	{
+		if (_disposed)
+		{
+			throw new ObjectDisposedException("SerialPortModbusSdv3Device 已经释放，ReopenPort。");
+		}
+
+		lock (this)
+		{
+			try
+			{
+				_serial_port.Dispose();
+				SerialPort new_port = new()
+				{
+					BaudRate = _serial_port.BaudRate,
+					Parity = _serial_port.Parity,
+					StopBits = _serial_port.StopBits,
+					PortName = _serial_port.PortName,
+					ReadTimeout = _serial_port.ReadTimeout,
+					WriteTimeout = _serial_port.WriteTimeout,
+					BreakState = _serial_port.BreakState,
+					DataBits = _serial_port.DataBits,
+					DiscardNull = _serial_port.DiscardNull,
+					DtrEnable = _serial_port.DtrEnable,
+					Encoding = _serial_port.Encoding,
+					Handshake = _serial_port.Handshake,
+					NewLine = _serial_port.NewLine,
+					ParityReplace = _serial_port.ParityReplace,
+					ReadBufferSize = _serial_port.ReadBufferSize,
+					WriteBufferSize = _serial_port.WriteBufferSize,
+					ReceivedBytesThreshold = _serial_port.ReceivedBytesThreshold,
+					RtsEnable = _serial_port.RtsEnable,
+					Site = _serial_port.Site,
+				};
+				new_port.Open();
+				_serial_port = new_port;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.ToString());
+			}
+		}
+	}
+
+	public async Task WriteSingleBitAsync(ushort data_addr, bool value)
+	{
+		while (true)
+		{
+			try
+			{
+				await ((IModbusSdv3Device)_sdv3).WriteSingleBitAsync(data_addr, value);
+			}
+			catch (ModbusFrameException)
+			{
+				_serial_port.DiscardInBuffer();
+				_serial_port.DiscardOutBuffer();
+				throw;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex);
+				await Task.Delay(1000);
+				ReopenPort();
+			}
+		}
+	}
+
+	public async Task<byte[]> ReadBitsAsync(ushort data_addr, ushort bit_count)
+	{
+		while (true)
+		{
+			try
+			{
+				await ((IModbusSdv3Device)_sdv3).ReadBitsAsync(data_addr, bit_count);
+			}
+			catch (ModbusFrameException)
+			{
+				_serial_port.DiscardInBuffer();
+				_serial_port.DiscardOutBuffer();
+				throw;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex);
+				await Task.Delay(1000);
+				ReopenPort();
+			}
+		}
+	}
+
+	public async Task<uint[]> ReadDatasAsync(ushort data_addr, ushort record_count)
+	{
+		while (true)
+		{
+			try
+			{
+				await ((IModbusSdv3Device)_sdv3).ReadDatasAsync(data_addr, record_count);
+			}
+			catch (ModbusFrameException)
+			{
+				_serial_port.DiscardInBuffer();
+				_serial_port.DiscardOutBuffer();
+				throw;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex);
+				await Task.Delay(1000);
+				ReopenPort();
+			}
+		}
+	}
+
+	public async Task WriteDatasAsync(ushort data_addr, uint[] datas)
+	{
+		while (true)
+		{
+			try
+			{
+				await ((IModbusSdv3Device)_sdv3).WriteDatasAsync(data_addr, datas);
+			}
+			catch (ModbusFrameException)
+			{
+				_serial_port.DiscardInBuffer();
+				_serial_port.DiscardOutBuffer();
+				throw;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex);
+				await Task.Delay(1000);
+				ReopenPort();
+			}
+		}
+	}
+}
+
+/// <summary>
+///		内部使用
+/// </summary>
+internal class InnerSerialPortModbusSdv3Device : IModbusSdv3Device
+{
+	public InnerSerialPortModbusSdv3Device(Stream serial_stream, byte device_addr, bool big_endian)
 	{
 		_serial_stream = serial_stream;
 		_device_addr = device_addr;
