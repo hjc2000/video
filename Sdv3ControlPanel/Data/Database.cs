@@ -2,6 +2,7 @@
 using JCNET.Modbus;
 using JCNET.流;
 using JCRazor.表单;
+using libsdv3;
 using libsdv3.Modbus;
 using System;
 using System.IO.Ports;
@@ -50,7 +51,7 @@ public static class Database
 	private static CancellationTokenSource _cancel_timer = new();
 	private static SerialPort? SerialPort { get; set; }
 	private static SerialPortOptions SerialPortOptions { get; set; } = new();
-	public static ModbusSdv3Device? SDV3 { get; set; }
+	public static ISdv3Device? SDV3 { get; set; }
 
 	private static LogOutputPort? _log_output_port = null;
 	private static readonly object _log_lock = new();
