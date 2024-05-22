@@ -33,7 +33,6 @@ public partial class TestPage : IAsyncDisposable
 	#endregion
 
 	private CancellationTokenSource _cancel_timer = new();
-	private SerialPortOptions _serial_port_options = new();
 
 	/// <summary>
 	///		连接按钮点击事件
@@ -44,7 +43,7 @@ public partial class TestPage : IAsyncDisposable
 	{
 		try
 		{
-			_serial_port_options = serial_port_options;
+			Database.SerialPortOptions = serial_port_options;
 			if (Database.SDV3 is not null)
 			{
 				await Database.SDV3.DisposeAsync();
@@ -82,11 +81,11 @@ public partial class TestPage : IAsyncDisposable
 			{
 				if (Database.SDV3 is null)
 				{
-					Database.SerialPort = new(_serial_port_options.PortName)
+					Database.SerialPort = new(Database.SerialPortOptions.PortName)
 					{
-						BaudRate = _serial_port_options.BaudRate,
-						Parity = _serial_port_options.Parity,
-						StopBits = _serial_port_options.StopBits,
+						BaudRate = Database.SerialPortOptions.BaudRate,
+						Parity = Database.SerialPortOptions.Parity,
+						StopBits = Database.SerialPortOptions.StopBits,
 					};
 
 					await Task.Run(Database.SerialPort.Open);

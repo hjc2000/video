@@ -1,4 +1,5 @@
 ﻿using JCNET;
+using JCRazor.表单;
 using libsdv3.Modbus;
 using System.IO.Ports;
 
@@ -8,6 +9,7 @@ public class Database
 {
 	public static SerialPort? SerialPort { get; set; }
 	public static ModbusSdv3Device? SDV3 { get; set; }
+	public static SerialPortOptions SerialPortOptions { get; set; } = new();
 
 	private static LogOutputPort? _log_output_port = null;
 	private static readonly object _log_lock = new();
