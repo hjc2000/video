@@ -11,6 +11,11 @@ namespace Sdv3ControlPanel.Data;
 
 public static class Database
 {
+	/// <summary>
+	///		连接到设备
+	/// </summary>
+	/// <param name="serial_port_options"></param>
+	/// <returns></returns>
 	public static async Task ConnectAsync(SerialPortOptions serial_port_options)
 	{
 		try

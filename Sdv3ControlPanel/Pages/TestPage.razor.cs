@@ -34,7 +34,7 @@ public partial class TestPage : IAsyncDisposable
 	}
 
 	/// <summary>
-	///		连接按钮点击事件
+	///		连接按钮点击事件处理函数
 	/// </summary>
 	/// <param name="serial_port_options"></param>
 	/// <returns></returns>
@@ -67,6 +67,10 @@ public partial class TestPage : IAsyncDisposable
 		}
 	}
 
+	/// <summary>
+	///		正转按钮点击事件处理函数
+	/// </summary>
+	/// <returns></returns>
 	private async Task OnFwdClickAsync()
 	{
 		try
