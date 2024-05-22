@@ -44,6 +44,7 @@ public partial class TestPage : IAsyncDisposable
 	}
 	#endregion
 
+	private SerialPort? _serial_port;
 	private ModbusSdv3Device? _sdv3;
 	private CancellationTokenSource _cancel_timer = new();
 	private SerialPortOptions _serial_port_options = new();
@@ -90,13 +91,14 @@ public partial class TestPage : IAsyncDisposable
 
 	private async Task TryUpdate(Func<Task> update_func)
 	{
+		uint retry_times = 0;
 		while (true)
 		{
 			try
 			{
 				if (_sdv3 is null)
 				{
-					SerialPort serial = new(_serial_port_options.PortName)
+					_serial_port = new(_serial_port_options.PortName)
 					{
 						BaudRate = _serial_port_options.BaudRate,
 						Parity = _serial_port_options.Parity,
@@ -105,13 +107,31 @@ public partial class TestPage : IAsyncDisposable
 						WriteTimeout = 2000
 					};
 
-					await Task.Run(serial.Open);
-					_sdv3 = new ModbusSdv3Device(serial.BaseStream, 1, true);
+					await Task.Run(_serial_port.Open);
+					_sdv3 = new ModbusSdv3Device(_serial_port.BaseStream, 1, true);
 					_log_writer.WriteLine("成功打开新的 _sdv3 对象");
 				}
 
 				await update_func();
 				break;
+			}
+			catch (IOException e)
+			{
+				_log_writer.WriteLine(e);
+				try
+				{
+					if (retry_times >= 3)
+					{
+						break;
+					}
+
+					_log_writer.WriteLine("发生 IOException，清理接收缓冲区和发送缓冲区中的垃圾数据");
+					_serial_port?.DiscardInBuffer();
+					_serial_port?.DiscardOutBuffer();
+					retry_times++;
+					continue;
+				}
+				catch { }
 			}
 			catch (Exception e)
 			{
