@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Sdv3ControlPanel.Pages;
 
-public partial class ConfigConnectPage : IAsyncDisposable, IDataUpdater
+public partial class ConfigConnectionPage : IAsyncDisposable, IDataUpdater
 {
 	protected override async Task OnInitializedAsync()
 	{
