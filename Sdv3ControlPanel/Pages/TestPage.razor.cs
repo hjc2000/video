@@ -76,8 +76,6 @@ public partial class TestPage : IAsyncDisposable
 					await TimerElapsedEventHandler();
 					await Task.Delay(1000);
 				}
-
-				_log_writer.WriteLine("定时任务退出");
 			}, _cancel_timer.Token);
 		}
 		catch (Exception ex)
@@ -92,7 +90,6 @@ public partial class TestPage : IAsyncDisposable
 
 	private async Task TryUpdate(Func<Task> update_func)
 	{
-		ulong count = 0;
 		while (true)
 		{
 			try
@@ -116,16 +113,6 @@ public partial class TestPage : IAsyncDisposable
 				await update_func();
 				break;
 			}
-			catch (IOException e)
-			{
-				_log_writer.WriteLine(e.ToString());
-				if (count >= 2)
-				{
-					// 尝试 2 次后仍然失败就不试了 
-					_log_writer.WriteLine("尝试更新数据失败 2 次");
-					break;
-				}
-			}
 			catch (Exception e)
 			{
 				_log_writer.WriteLine("发生异常，重新打开串口");
@@ -136,12 +123,9 @@ public partial class TestPage : IAsyncDisposable
 				}
 
 				_sdv3 = null;
-				count = 0;
 				await Task.Delay(100);
 				continue;
 			}
-
-			count++;
 		}
 	}
 
@@ -151,7 +135,6 @@ public partial class TestPage : IAsyncDisposable
 	/// <returns></returns>
 	private async Task TimerElapsedEventHandler()
 	{
-		_log_writer.WriteLine("定时器函数入口");
 		await TryUpdate(async () =>
 		{
 			Enabled = await _sdv3!.GetEI9Async();
