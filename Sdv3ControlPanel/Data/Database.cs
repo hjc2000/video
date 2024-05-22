@@ -10,42 +10,6 @@ using System.Threading.Tasks;
 
 namespace Sdv3ControlPanel.Data;
 
-public interface ISdv3Database
-{
-	Task UpdateDatasAsync();
-
-	bool Enabled { get; set; }
-	int FeedbackCurrentPosition { get; set; }
-	int FeedbackSpeed { get; set; }
-
-	/// <summary>
-	///		运行模式
-	/// </summary>
-	uint P1_01 { get; set; }
-	Task SetP1_01Async(uint value);
-
-	uint P2_40 { get; set; }
-	Task SetP2_40Async(uint value);
-
-	uint P3_01 { get; set; }
-	Task SetP3_01Async(uint value);
-
-	uint P3_09 { get; set; }
-	Task SetP3_09Async(uint value);
-
-	uint P3_10 { get; set; }
-	Task SetP3_10Async(uint value);
-
-	uint P3_11 { get; set; }
-	Task SetP3_11Async(uint value);
-
-	uint P3_12 { get; set; }
-	Task SetP3_12Async(uint value);
-
-	int Speed { get; set; }
-	Task SetSpeedAsync(int value);
-}
-
 public static class Database
 {
 	/// <summary>
