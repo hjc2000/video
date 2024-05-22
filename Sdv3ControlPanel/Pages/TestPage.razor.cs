@@ -28,6 +28,19 @@ public partial class TestPage : IAsyncDisposable
 		Database.DataUpdatedEvent -= OnDataUpdatedEvent;
 	}
 
+	/// <summary>
+	///		配置为速度控制模式并能指定速度
+	/// </summary>
+	/// <returns></returns>
+	private async Task ConfigAsync()
+	{
+		await Database.SetP1_01Async(1);
+		await Database.SetP3_01Async(0);
+		await Database.SetP3_09Async(1);
+		await Database.SetP3_10Async(18);
+		await Database.SetP3_11Async(2);
+	}
+
 	private async void OnDataUpdatedEvent()
 	{
 		await InvokeAsync(StateHasChanged);
