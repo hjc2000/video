@@ -3,8 +3,10 @@ using libsdv3.Code;
 
 namespace libsdv3.Modbus;
 
-public interface IModbusSdv3Device : IAsyncDisposable
+public abstract class ModbusSdv3Device : ISdv3Device
 {
+	public abstract ValueTask DisposeAsync();
+
 	#region modbus 基本操作函数
 	/// <summary>
 	///		写单个位
@@ -12,7 +14,7 @@ public interface IModbusSdv3Device : IAsyncDisposable
 	/// <param name="data_addr"></param>
 	/// <param name="value"></param>
 	/// <exception cref="ModbusFrameException"></exception>
-	Task WriteSingleBitAsync(ushort data_addr, bool value);
+	public abstract Task WriteSingleBitAsync(ushort data_addr, bool value);
 
 	/// <summary>
 	///		读取多个位数据。
@@ -21,7 +23,7 @@ public interface IModbusSdv3Device : IAsyncDisposable
 	/// <param name="bit_count">要读取多少个位</param>
 	/// <returns></returns>
 	/// <exception cref="ModbusFrameException"></exception>
-	Task<byte[]> ReadBitsAsync(ushort data_addr, ushort bit_count);
+	public abstract Task<byte[]> ReadBitsAsync(ushort data_addr, ushort bit_count);
 
 	/// <summary>
 	///		读取各种数据
@@ -30,7 +32,7 @@ public interface IModbusSdv3Device : IAsyncDisposable
 	/// <param name="record_count">记录数。一个记录是 16 位。读取 1 个 32 位的数据需要 2 个记录。</param>
 	/// <returns></returns>
 	/// <exception cref="ModbusFrameException"></exception>
-	Task<uint[]> ReadDatasAsync(ushort data_addr, ushort record_count);
+	public abstract Task<uint[]> ReadDatasAsync(ushort data_addr, ushort record_count);
 
 	/// <summary>
 	///		写各种数据
@@ -39,7 +41,7 @@ public interface IModbusSdv3Device : IAsyncDisposable
 	/// <param name="datas"></param>
 	/// <returns></returns>
 	/// <exception cref="ModbusFrameException"></exception>
-	Task WriteDatasAsync(ushort data_addr, uint[] datas);
+	public abstract Task WriteDatasAsync(ushort data_addr, uint[] datas);
 	#endregion
 
 	#region 硬件 EI

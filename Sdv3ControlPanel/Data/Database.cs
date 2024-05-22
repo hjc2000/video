@@ -55,7 +55,7 @@ public static class Database
 	}
 
 	private static CancellationTokenSource _cancel_timer = new();
-	public static IModbusSdv3Device? SDV3 { get; set; }
+	public static ModbusSdv3Device? SDV3 { get; set; }
 
 	private static List<IDataUpdater> _data_updater_list = [];
 	public static void AddUpdater(IDataUpdater updater)

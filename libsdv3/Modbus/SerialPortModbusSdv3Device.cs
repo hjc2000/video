@@ -6,7 +6,7 @@ using System.IO.Ports;
 
 namespace libsdv3.Modbus;
 
-public class SerialPortModbusSdv3Device : IModbusSdv3Device
+public class SerialPortModbusSdv3Device : ModbusSdv3Device
 {
 	public SerialPortModbusSdv3Device(SerialPort serialPort, byte device_addr, bool big_endian)
 	{
@@ -21,7 +21,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 	}
 
 	private bool _disposed = false;
-	public async ValueTask DisposeAsync()
+	public override async ValueTask DisposeAsync()
 	{
 		await ((IAsyncDisposable)_sdv3).DisposeAsync();
 		if (_disposed)
@@ -79,7 +79,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 		}
 	}
 
-	public async Task WriteSingleBitAsync(ushort data_addr, bool value)
+	public override async Task WriteSingleBitAsync(ushort data_addr, bool value)
 	{
 		using LockGuard l = new(_async_lock);
 		await l.WaitAsync();
@@ -89,7 +89,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 		{
 			try
 			{
-				await ((IModbusSdv3Device)_sdv3).WriteSingleBitAsync(data_addr, value);
+				await _sdv3.WriteSingleBitAsync(data_addr, value);
 				return;
 			}
 			catch (ModbusFrameException)
@@ -113,7 +113,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 		}
 	}
 
-	public async Task<byte[]> ReadBitsAsync(ushort data_addr, ushort bit_count)
+	public override async Task<byte[]> ReadBitsAsync(ushort data_addr, ushort bit_count)
 	{
 		using LockGuard l = new(_async_lock);
 		await l.WaitAsync();
@@ -123,7 +123,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 		{
 			try
 			{
-				return await ((IModbusSdv3Device)_sdv3).ReadBitsAsync(data_addr, bit_count);
+				return await _sdv3.ReadBitsAsync(data_addr, bit_count);
 			}
 			catch (ModbusFrameException)
 			{
@@ -146,7 +146,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 		}
 	}
 
-	public async Task<uint[]> ReadDatasAsync(ushort data_addr, ushort record_count)
+	public override async Task<uint[]> ReadDatasAsync(ushort data_addr, ushort record_count)
 	{
 		using LockGuard l = new(_async_lock);
 		await l.WaitAsync();
@@ -156,7 +156,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 		{
 			try
 			{
-				return await ((IModbusSdv3Device)_sdv3).ReadDatasAsync(data_addr, record_count);
+				return await _sdv3.ReadDatasAsync(data_addr, record_count);
 			}
 			catch (ModbusFrameException)
 			{
@@ -179,7 +179,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 		}
 	}
 
-	public async Task WriteDatasAsync(ushort data_addr, uint[] datas)
+	public override async Task WriteDatasAsync(ushort data_addr, uint[] datas)
 	{
 		using LockGuard l = new(_async_lock);
 		await l.WaitAsync();
@@ -189,7 +189,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 		{
 			try
 			{
-				await ((IModbusSdv3Device)_sdv3).WriteDatasAsync(data_addr, datas);
+				await _sdv3.WriteDatasAsync(data_addr, datas);
 				return;
 			}
 			catch (ModbusFrameException)
@@ -217,7 +217,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 /// <summary>
 ///		内部使用
 /// </summary>
-internal class InnerSerialPortModbusSdv3Device : IModbusSdv3Device
+internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 {
 	public InnerSerialPortModbusSdv3Device(Stream serial_stream, byte device_addr, bool big_endian)
 	{
@@ -228,7 +228,7 @@ internal class InnerSerialPortModbusSdv3Device : IModbusSdv3Device
 	}
 
 	private bool _disposed = false;
-	public async ValueTask DisposeAsync()
+	public override async ValueTask DisposeAsync()
 	{
 		if (_disposed)
 		{
@@ -300,7 +300,7 @@ internal class InnerSerialPortModbusSdv3Device : IModbusSdv3Device
 	/// <param name="data_addr"></param>
 	/// <param name="value"></param>
 	/// <exception cref="ModbusFrameException"></exception>
-	async Task IModbusSdv3Device.WriteSingleBitAsync(ushort data_addr, bool value)
+	public override async Task WriteSingleBitAsync(ushort data_addr, bool value)
 	{
 		WriteSingleBitRequestFrame request_frame = new()
 		{
@@ -345,7 +345,7 @@ internal class InnerSerialPortModbusSdv3Device : IModbusSdv3Device
 	/// <param name="data_addr">数据地址</param>
 	/// <param name="bit_count">要读取多少个位</param>
 	/// <returns></returns>
-	async Task<byte[]> IModbusSdv3Device.ReadBitsAsync(ushort data_addr, ushort bit_count)
+	public override async Task<byte[]> ReadBitsAsync(ushort data_addr, ushort bit_count)
 	{
 		if (bit_count == 0)
 		{
@@ -384,7 +384,7 @@ internal class InnerSerialPortModbusSdv3Device : IModbusSdv3Device
 	/// <param name="data_addr">数据地址</param>
 	/// <param name="record_count">记录数。一个记录是 16 位。读取 1 个 32 位的数据需要 2 个记录。</param>
 	/// <returns></returns>
-	async Task<uint[]> IModbusSdv3Device.ReadDatasAsync(ushort data_addr, ushort record_count)
+	public override async Task<uint[]> ReadDatasAsync(ushort data_addr, ushort record_count)
 	{
 		if (record_count == 0)
 		{
@@ -431,7 +431,7 @@ internal class InnerSerialPortModbusSdv3Device : IModbusSdv3Device
 		return ret;
 	}
 
-	async Task IModbusSdv3Device.WriteDatasAsync(ushort data_addr, uint[] datas)
+	public override async Task WriteDatasAsync(ushort data_addr, uint[] datas)
 	{
 		if (datas.Length == 0)
 		{

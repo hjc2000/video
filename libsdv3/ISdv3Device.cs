@@ -2,7 +2,7 @@
 
 namespace libsdv3;
 
-public interface ISdv3Device
+public interface ISdv3Device : IAsyncDisposable
 {
 	#region 硬件 EI
 	Task<bool> GetEI1Async();
