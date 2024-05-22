@@ -1,6 +1,4 @@
-﻿using JCNET;
-using Microsoft.AspNetCore.Components;
-using Sdv3ControlPanel.Data;
+﻿using Sdv3ControlPanel.Data;
 using System;
 using System.Threading.Tasks;
 
@@ -29,9 +27,6 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 		Database.RemoveUpdater(this);
 	}
 
-	[Inject]
-	public LogOutputPort LogOutputPort { get; set; } = default!;
-
 	/// <summary>
 	///		配置为速度控制模式并能指定速度
 	/// </summary>
@@ -58,13 +53,13 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 				return;
 			}
 
-			Database.LogOutputPort.WriteLine("使能按钮处理函数");
+			Console.WriteLine("使能按钮处理函数");
 			await Database.SDV3.SetEI9Async(!await Database.SDV3.GetEI9Async());
 			await Database.SDV3.SetEI10Async(true);
 		}
 		catch (Exception ex)
 		{
-			Database.LogOutputPort.WriteLine(ex.ToString());
+			Console.WriteLine(ex.ToString());
 		}
 	}
 
@@ -81,12 +76,12 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 				return;
 			}
 
-			Database.LogOutputPort.WriteLine("正转按钮处理函数");
+			Console.WriteLine("正转按钮处理函数");
 			await Database.SDV3.SetEI11Async(!await Database.SDV3.GetEI11Async());
 		}
 		catch (Exception ex)
 		{
-			Database.LogOutputPort.WriteLine(ex.ToString());
+			Console.WriteLine(ex.ToString());
 		}
 	}
 
@@ -167,7 +162,7 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 		}
 		catch (Exception ex)
 		{
-			Database.LogOutputPort.WriteLine(ex);
+			Console.WriteLine(ex);
 		}
 	}
 
@@ -186,7 +181,7 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 		}
 		catch (Exception ex)
 		{
-			Database.LogOutputPort.WriteLine(ex);
+			Console.WriteLine(ex);
 		}
 	}
 
@@ -205,7 +200,7 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 		}
 		catch (Exception ex)
 		{
-			Database.LogOutputPort.WriteLine(ex);
+			Console.WriteLine(ex);
 		}
 	}
 
@@ -224,7 +219,7 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 		}
 		catch (Exception ex)
 		{
-			Database.LogOutputPort.WriteLine(ex);
+			Console.WriteLine(ex);
 		}
 	}
 
@@ -243,7 +238,7 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 		}
 		catch (Exception ex)
 		{
-			Database.LogOutputPort.WriteLine(ex);
+			Console.WriteLine(ex);
 		}
 	}
 
@@ -262,7 +257,7 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 		}
 		catch (Exception ex)
 		{
-			Database.LogOutputPort.WriteLine(ex);
+			Console.WriteLine(ex);
 		}
 	}
 
@@ -281,7 +276,7 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 		}
 		catch (Exception ex)
 		{
-			Database.LogOutputPort.WriteLine(ex);
+			Console.WriteLine(ex);
 		}
 	}
 
@@ -300,7 +295,7 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 		}
 		catch (Exception ex)
 		{
-			Database.LogOutputPort.WriteLine(ex);
+			Console.WriteLine(ex);
 		}
 	}
 }

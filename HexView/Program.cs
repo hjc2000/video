@@ -37,10 +37,10 @@ static async Task HandleAsync(string input_file_path, string? output_file_path,
 		try
 		{
 			byte b = binary_reader.ReadByte();
-			port.Write($"{b:x2}\t");
+			Console.Write($"{b:x2}\t");
 			if ((i + 1) % 10 == 0)
 			{
-				port.WriteLine();
+				Console.WriteLine();
 			}
 		}
 		catch

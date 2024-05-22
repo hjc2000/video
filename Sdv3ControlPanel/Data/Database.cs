@@ -1,5 +1,4 @@
-﻿using JCNET;
-using JCNET.Modbus;
+﻿using JCNET.Modbus;
 using JCNET.流;
 using JCRazor.表单;
 using libsdv3.Modbus;
@@ -57,7 +56,7 @@ public static class Database
 		}
 		catch (Exception ex)
 		{
-			LogOutputPort.WriteLine(ex);
+			Console.WriteLine(ex);
 		}
 	}
 
@@ -65,24 +64,6 @@ public static class Database
 	private static SerialPort? SerialPort { get; set; }
 	private static SerialPortOptions SerialPortOptions { get; set; } = new();
 	public static IModbusSdv3Device? SDV3 { get; set; }
-
-	private static LogOutputPort? _log_output_port = null;
-	private static readonly object _log_lock = new();
-	public static LogOutputPort LogOutputPort
-	{
-		get
-		{
-			if (_log_output_port is null)
-			{
-				lock (_log_lock)
-				{
-					_log_output_port ??= new LogOutputPort("log.txt");
-				}
-			}
-
-			return _log_output_port;
-		}
-	}
 
 	private static List<IDataUpdater> _data_updater_list = [];
 	public static void AddUpdater(IDataUpdater updater)
@@ -125,7 +106,7 @@ public static class Database
 			 * 可以触发超时。
 			 */
 			SDV3 = new SerialPortModbusSdv3Device(new SerialPortStream(SerialPort), 1, true);
-			LogOutputPort.WriteLine("成功打开新的 SDV3 对象");
+			Console.WriteLine("成功打开新的 SDV3 对象");
 		}
 
 		uint retry_times = 0;
@@ -158,7 +139,7 @@ public static class Database
 			}
 			catch (ModbusFrameException e)
 			{
-				LogOutputPort.WriteLine(e);
+				Console.WriteLine(e);
 				try
 				{
 					if (retry_times >= 3)
@@ -166,7 +147,7 @@ public static class Database
 						break;
 					}
 
-					LogOutputPort.WriteLine("发生 ModbusFrameException，清理接收缓冲区和发送缓冲区中的垃圾数据");
+					Console.WriteLine("发生 ModbusFrameException，清理接收缓冲区和发送缓冲区中的垃圾数据");
 					SerialPort?.DiscardInBuffer();
 					SerialPort?.DiscardOutBuffer();
 					retry_times++;
@@ -176,8 +157,8 @@ public static class Database
 			}
 			catch (Exception e)
 			{
-				LogOutputPort.WriteLine("发生异常，重新打开串口");
-				LogOutputPort.WriteLine(e.ToString());
+				Console.WriteLine("发生异常，重新打开串口");
+				Console.WriteLine(e.ToString());
 				if (SDV3 is not null)
 				{
 					await SDV3.DisposeAsync();

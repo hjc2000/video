@@ -12,6 +12,7 @@ public class LogOutputPort : IAsyncDisposable
 	public LogOutputPort(string? output_file_path)
 	{
 		_output_file_path = output_file_path;
+		_console_origin_writer = Console.Out;
 		if (_output_file_path is not null)
 		{
 			_log_file = File.Open(_output_file_path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
@@ -19,6 +20,8 @@ public class LogOutputPort : IAsyncDisposable
 			{
 				AutoFlush = true
 			};
+
+			Console.SetOut(_log_writer);
 		}
 	}
 
@@ -42,54 +45,12 @@ public class LogOutputPort : IAsyncDisposable
 		{
 			await _log_file.DisposeAsync();
 		}
+
+		Console.SetOut(_console_origin_writer);
 	}
 
 	private string? _output_file_path;
 	private FileStream? _log_file = null;
 	private StreamWriter? _log_writer = null;
-
-	public void Write<T>(T value)
-	{
-		lock (this)
-		{
-			if (_log_writer is not null)
-			{
-				_log_writer.Write(value);
-			}
-			else
-			{
-				Console.Write(value);
-			}
-		}
-	}
-
-	public void WriteLine<T>(T value)
-	{
-		lock (this)
-		{
-			if (_log_writer is not null)
-			{
-				_log_writer.WriteLine(value);
-			}
-			else
-			{
-				Console.WriteLine(value);
-			}
-		}
-	}
-
-	public void WriteLine()
-	{
-		lock (this)
-		{
-			if (_log_writer is not null)
-			{
-				_log_writer.WriteLine();
-			}
-			else
-			{
-				Console.WriteLine();
-			}
-		}
-	}
+	private TextWriter _console_origin_writer;
 }
