@@ -12,7 +12,19 @@ public class SerialPortStream : Stream
 		_serial_port = serial_port;
 	}
 
+	public override async ValueTask DisposeAsync()
+	{
+		await base.DisposeAsync();
+		_serial_port.Dispose();
+	}
+
 	private SerialPort _serial_port;
+
+	public void CleanInOutBuffer()
+	{
+		_serial_port.DiscardInBuffer();
+		_serial_port.DiscardOutBuffer();
+	}
 
 	public override void Flush()
 	{
