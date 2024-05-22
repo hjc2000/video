@@ -1,5 +1,4 @@
-﻿using JCNET;
-using JCRazor.表单;
+﻿using JCRazor.表单;
 using libsdv3.Modbus;
 using Sdv3ControlPanel.Data;
 using System;
@@ -12,12 +11,6 @@ namespace Sdv3ControlPanel.Pages;
 public partial class TestPage : IAsyncDisposable
 {
 	#region 生命周期
-	public TestPage()
-	{
-		_log_output_port = new LogOutputPort("log.txt");
-		_log_output_port.WriteLine("LogOutputPort 启动。");
-	}
-
 	private bool _disposed = false;
 	public async ValueTask DisposeAsync()
 	{
@@ -35,13 +28,12 @@ public partial class TestPage : IAsyncDisposable
 		}
 
 		_cancel_timer.Cancel();
-		await _log_output_port.DisposeAsync();
+		await Database.LogOutputPort.DisposeAsync();
 	}
 	#endregion
 
 	private CancellationTokenSource _cancel_timer = new();
 	private SerialPortOptions _serial_port_options = new();
-	private LogOutputPort _log_output_port;
 
 	/// <summary>
 	///		连接按钮点击事件
@@ -56,7 +48,7 @@ public partial class TestPage : IAsyncDisposable
 			if (Database.SDV3 is not null)
 			{
 				await Database.SDV3.DisposeAsync();
-				_log_output_port.WriteLine("释放旧的 Database.SDV3 对象");
+				Database.LogOutputPort.WriteLine("释放旧的 Database.SDV3 对象");
 			}
 
 			// 设置定时器
@@ -73,7 +65,7 @@ public partial class TestPage : IAsyncDisposable
 		}
 		catch (Exception ex)
 		{
-			_log_output_port.WriteLine(ex);
+			Database.LogOutputPort.WriteLine(ex);
 		}
 	}
 
@@ -99,7 +91,7 @@ public partial class TestPage : IAsyncDisposable
 
 					await Task.Run(Database.SerialPort.Open);
 					Database.SDV3 = new ModbusSdv3Device(Database.SerialPort.BaseStream, 1, true);
-					_log_output_port.WriteLine("成功打开新的 Database.SDV3 对象");
+					Database.LogOutputPort.WriteLine("成功打开新的 Database.SDV3 对象");
 				}
 
 				await update_func();
@@ -107,7 +99,7 @@ public partial class TestPage : IAsyncDisposable
 			}
 			catch (IOException e)
 			{
-				_log_output_port.WriteLine(e);
+				Database.LogOutputPort.WriteLine(e);
 				try
 				{
 					if (retry_times >= 3)
@@ -115,7 +107,7 @@ public partial class TestPage : IAsyncDisposable
 						break;
 					}
 
-					_log_output_port.WriteLine("发生 IOException，清理接收缓冲区和发送缓冲区中的垃圾数据");
+					Database.LogOutputPort.WriteLine("发生 IOException，清理接收缓冲区和发送缓冲区中的垃圾数据");
 					Database.SerialPort?.DiscardInBuffer();
 					Database.SerialPort?.DiscardOutBuffer();
 					retry_times++;
@@ -125,8 +117,8 @@ public partial class TestPage : IAsyncDisposable
 			}
 			catch (Exception e)
 			{
-				_log_output_port.WriteLine("发生异常，重新打开串口");
-				_log_output_port.WriteLine(e.ToString());
+				Database.LogOutputPort.WriteLine("发生异常，重新打开串口");
+				Database.LogOutputPort.WriteLine(e.ToString());
 				if (Database.SDV3 is not null)
 				{
 					await Database.SDV3.DisposeAsync();
@@ -211,14 +203,14 @@ public partial class TestPage : IAsyncDisposable
 				return;
 			}
 
-			_log_output_port.WriteLine("使能按钮处理函数");
+			Database.LogOutputPort.WriteLine("使能按钮处理函数");
 			await Database.SDV3.SetEI9Async(!await Database.SDV3.GetEI9Async());
 			await Database.SDV3.SetEI10Async(true);
 			await Database.SDV3.SetEI11Async(false);
 		}
 		catch (Exception ex)
 		{
-			_log_output_port.WriteLine(ex.ToString());
+			Database.LogOutputPort.WriteLine(ex.ToString());
 		}
 	}
 
@@ -231,12 +223,12 @@ public partial class TestPage : IAsyncDisposable
 				return;
 			}
 
-			_log_output_port.WriteLine("正转按钮处理函数");
+			Database.LogOutputPort.WriteLine("正转按钮处理函数");
 			await Database.SDV3.SetEI12Async(!await Database.SDV3.GetEI12Async());
 		}
 		catch (Exception ex)
 		{
-			_log_output_port.WriteLine(ex.ToString());
+			Database.LogOutputPort.WriteLine(ex.ToString());
 		}
 	}
 
@@ -255,7 +247,7 @@ public partial class TestPage : IAsyncDisposable
 		}
 		catch (Exception ex)
 		{
-			_log_output_port.WriteLine(ex);
+			Database.LogOutputPort.WriteLine(ex);
 		}
 	}
 
@@ -274,7 +266,7 @@ public partial class TestPage : IAsyncDisposable
 		}
 		catch (Exception ex)
 		{
-			_log_output_port.WriteLine(ex);
+			Database.LogOutputPort.WriteLine(ex);
 		}
 	}
 
@@ -293,7 +285,7 @@ public partial class TestPage : IAsyncDisposable
 		}
 		catch (Exception ex)
 		{
-			_log_output_port.WriteLine(ex);
+			Database.LogOutputPort.WriteLine(ex);
 		}
 	}
 
@@ -312,7 +304,7 @@ public partial class TestPage : IAsyncDisposable
 		}
 		catch (Exception ex)
 		{
-			_log_output_port.WriteLine(ex);
+			Database.LogOutputPort.WriteLine(ex);
 		}
 	}
 
@@ -331,7 +323,7 @@ public partial class TestPage : IAsyncDisposable
 		}
 		catch (Exception ex)
 		{
-			_log_output_port.WriteLine(ex);
+			Database.LogOutputPort.WriteLine(ex);
 		}
 	}
 
@@ -350,7 +342,7 @@ public partial class TestPage : IAsyncDisposable
 		}
 		catch (Exception ex)
 		{
-			_log_output_port.WriteLine(ex);
+			Database.LogOutputPort.WriteLine(ex);
 		}
 	}
 
@@ -369,7 +361,7 @@ public partial class TestPage : IAsyncDisposable
 		}
 		catch (Exception ex)
 		{
-			_log_output_port.WriteLine(ex);
+			Database.LogOutputPort.WriteLine(ex);
 		}
 	}
 }
