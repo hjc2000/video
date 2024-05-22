@@ -97,6 +97,21 @@ public static class Database
 		{
 			try
 			{
+				if (SerialPort is not null)
+				{
+					if (!SerialPort.IsOpen)
+					{
+						if (SDV3 is not null)
+						{
+							await SDV3.DisposeAsync();
+						}
+
+						SerialPort.Dispose();
+						SDV3 = null;
+						await Task.Delay(2000);
+					}
+				}
+
 				if (SDV3 is null)
 				{
 					await OpenDeviceAsync();
@@ -132,6 +147,7 @@ public static class Database
 					await SDV3.DisposeAsync();
 				}
 
+				SerialPort?.Dispose();
 				SDV3 = null;
 				await Task.Delay(100);
 				continue;
