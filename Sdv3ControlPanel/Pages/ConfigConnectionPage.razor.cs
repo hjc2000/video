@@ -1,15 +1,20 @@
-﻿using Sdv3ControlPanel.Data;
+﻿using JCNET.定时器;
+using JCRazor.表单;
+using libsdv3.Modbus;
+using Sdv3ControlPanel.Data;
 using System;
+using System.IO.Ports;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Sdv3ControlPanel.Pages;
 
-public partial class ConfigConnectionPage : IAsyncDisposable, IDataUpdater
+public partial class ConfigConnectionPage : IAsyncDisposable
 {
+	#region 生命周期
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
-		Database.AddUpdater(this);
 	}
 
 	private bool _disposed = false;
@@ -24,7 +29,46 @@ public partial class ConfigConnectionPage : IAsyncDisposable, IDataUpdater
 		GC.SuppressFinalize(this);
 
 		await Task.CompletedTask;
-		Database.RemoveUpdater(this);
+	}
+	#endregion
+
+	private static CancellationTokenSource _cancel_timer = new();
+
+	/// <summary>
+	///		连接到设备
+	/// </summary>
+	/// <param name="serial_port_options"></param>
+	/// <returns></returns>
+	public async Task ConnectAsync(SerialPortOptions serial_port_options)
+	{
+		try
+		{
+			if (Database.SDV3 is not null)
+			{
+				await Database.SDV3.DisposeAsync();
+			}
+
+			SerialPort serial_port = new(serial_port_options.PortName)
+			{
+				BaudRate = serial_port_options.BaudRate,
+				Parity = serial_port_options.Parity,
+				StopBits = serial_port_options.StopBits,
+				ReadTimeout = 2000,
+				WriteTimeout = 2000,
+			};
+
+			Database.SDV3 = new SerialPortModbusSdv3Device(serial_port, 1, true);
+			Console.WriteLine("成功打开新的 SDV3 对象");
+
+			// 设置定时器
+			_cancel_timer.Cancel();
+			_cancel_timer = new CancellationTokenSource();
+			TaskTimer.SetInterval(UpdateDatasAsync, 1000, _cancel_timer.Token);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex);
+		}
 	}
 
 	/// <summary>
@@ -85,7 +129,11 @@ public partial class ConfigConnectionPage : IAsyncDisposable, IDataUpdater
 		}
 	}
 
-	async Task IDataUpdater.UpdateDatasAsync()
+	/// <summary>
+	///		被定时器回调，定时更新伺服的状态
+	/// </summary>
+	/// <returns></returns>
+	private async Task UpdateDatasAsync()
 	{
 		if (Database.SDV3 is null)
 		{
