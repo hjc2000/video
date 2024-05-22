@@ -4,7 +4,7 @@ using libsdv3.Modbus;
 
 namespace libsdv3;
 
-public interface ISdv3Device : IAsyncDisposable
+public interface IModbusSdv3Device : IAsyncDisposable
 {
 	#region modbus 基本操作函数
 	/// <summary>

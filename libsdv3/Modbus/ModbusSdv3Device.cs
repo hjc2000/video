@@ -7,7 +7,7 @@ namespace libsdv3.Modbus;
 /// <summary>
 ///		利用 modbus 进行控制的 SDV3 设备。
 /// </summary>
-public class ModbusSdv3Device : ISdv3Device
+public class ModbusSdv3Device : IModbusSdv3Device
 {
 	public ModbusSdv3Device(Stream serial_stream, byte device_addr, bool big_endian)
 	{
@@ -91,7 +91,7 @@ public class ModbusSdv3Device : ISdv3Device
 	/// <param name="data_addr"></param>
 	/// <param name="value"></param>
 	/// <exception cref="ModbusFrameException"></exception>
-	async Task ISdv3Device.WriteSingleBitAsync(ushort data_addr, bool value)
+	async Task IModbusSdv3Device.WriteSingleBitAsync(ushort data_addr, bool value)
 	{
 		using LockGuard l = new(_async_lock);
 		await l.WaitAsync();
@@ -139,7 +139,7 @@ public class ModbusSdv3Device : ISdv3Device
 	/// <param name="data_addr">数据地址</param>
 	/// <param name="bit_count">要读取多少个位</param>
 	/// <returns></returns>
-	async Task<byte[]> ISdv3Device.ReadBitsAsync(ushort data_addr, ushort bit_count)
+	async Task<byte[]> IModbusSdv3Device.ReadBitsAsync(ushort data_addr, ushort bit_count)
 	{
 		using LockGuard l = new(_async_lock);
 		await l.WaitAsync();
@@ -181,7 +181,7 @@ public class ModbusSdv3Device : ISdv3Device
 	/// <param name="data_addr">数据地址</param>
 	/// <param name="record_count">记录数。一个记录是 16 位。读取 1 个 32 位的数据需要 2 个记录。</param>
 	/// <returns></returns>
-	async Task<uint[]> ISdv3Device.ReadDatasAsync(ushort data_addr, ushort record_count)
+	async Task<uint[]> IModbusSdv3Device.ReadDatasAsync(ushort data_addr, ushort record_count)
 	{
 		using LockGuard l = new(_async_lock);
 		await l.WaitAsync();
@@ -231,7 +231,7 @@ public class ModbusSdv3Device : ISdv3Device
 		return ret;
 	}
 
-	async Task ISdv3Device.WriteDatasAsync(ushort data_addr, uint[] datas)
+	async Task IModbusSdv3Device.WriteDatasAsync(ushort data_addr, uint[] datas)
 	{
 		using LockGuard l = new(_async_lock);
 		await l.WaitAsync();

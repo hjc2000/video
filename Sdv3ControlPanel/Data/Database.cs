@@ -51,7 +51,7 @@ public static class Database
 	private static CancellationTokenSource _cancel_timer = new();
 	private static SerialPort? SerialPort { get; set; }
 	private static SerialPortOptions SerialPortOptions { get; set; } = new();
-	public static ISdv3Device? SDV3 { get; set; }
+	public static IModbusSdv3Device? SDV3 { get; set; }
 
 	private static LogOutputPort? _log_output_port = null;
 	private static readonly object _log_lock = new();
