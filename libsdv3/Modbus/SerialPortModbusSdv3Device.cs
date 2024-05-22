@@ -11,6 +11,8 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 	public SerialPortModbusSdv3Device(SerialPort serialPort, byte device_addr, bool big_endian)
 	{
 		_serial_port = serialPort;
+		_device_addr = device_addr;
+		_big_endian = big_endian;
 		_sdv3 = new InnerSerialPortModbusSdv3Device(
 			new SerialPortStream(serialPort),
 			device_addr,
@@ -29,9 +31,14 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 
 		_disposed = true;
 		GC.SuppressFinalize(this);
+
+		await _sdv3.DisposeAsync();
+		_serial_port.Dispose();
 	}
 
 	private SerialPort _serial_port;
+	private byte _device_addr;
+	private bool _big_endian;
 	private InnerSerialPortModbusSdv3Device _sdv3;
 	private SemaphoreSlim _async_lock = new(1);
 
@@ -56,9 +63,15 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 				ReadTimeout = _serial_port.ReadTimeout,
 				WriteTimeout = _serial_port.WriteTimeout,
 			};
+			await _sdv3.DisposeAsync();
 			_serial_port.Dispose();
-			await Task.Run(new_port.Open);
+
 			_serial_port = new_port;
+			_sdv3 = new InnerSerialPortModbusSdv3Device(
+				new SerialPortStream(_serial_port),
+				_device_addr,
+				_big_endian
+			);
 		}
 		catch (Exception ex)
 		{
