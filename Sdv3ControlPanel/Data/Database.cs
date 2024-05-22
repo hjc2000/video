@@ -4,15 +4,46 @@ using libsdv3.Modbus;
 using System;
 using System.IO;
 using System.IO.Ports;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Sdv3ControlPanel.Data;
 
-public class Database
+public static class Database
 {
-	public static SerialPort? SerialPort { get; set; }
+	public static async Task ConnectAsync(SerialPortOptions serial_port_options)
+	{
+		try
+		{
+			SerialPortOptions = serial_port_options;
+			if (SDV3 is not null)
+			{
+				await SDV3.DisposeAsync();
+				LogOutputPort.WriteLine("释放旧的 SDV3 对象");
+			}
+
+			// 设置定时器
+			_cancel_timer.Cancel();
+			_cancel_timer = new CancellationTokenSource();
+			_ = Task.Run(async () =>
+			{
+				while (!_cancel_timer.IsCancellationRequested)
+				{
+					await UpdateDatas();
+					await Task.Delay(1000);
+				}
+			}, _cancel_timer.Token);
+		}
+		catch (Exception ex)
+		{
+			LogOutputPort.WriteLine(ex);
+		}
+	}
+
+	private static CancellationTokenSource _cancel_timer = new();
+	private static SerialPort? SerialPort { get; set; }
+	private static SerialPortOptions SerialPortOptions { get; set; } = new();
 	public static ModbusSdv3Device? SDV3 { get; set; }
-	public static SerialPortOptions SerialPortOptions { get; set; } = new();
 
 	private static LogOutputPort? _log_output_port = null;
 	private static readonly object _log_lock = new();
@@ -32,12 +63,14 @@ public class Database
 		}
 	}
 
+	public static event Action? DataUpdatedEvent;
+
 	/// <summary>
 	///		传入用来更新伺服属性的委托，会按照重试流程和异常处理流程回调传入的委托。
 	/// </summary>
 	/// <param name="update_func"></param>
 	/// <returns></returns>
-	public static async Task TryUpdate(Func<Task> update_func)
+	private static async Task TryUpdate(Func<Task> update_func)
 	{
 		uint retry_times = 0;
 		while (true)
@@ -94,6 +127,65 @@ public class Database
 			}
 		}
 	}
+
+	private static async Task UpdateDatas()
+	{
+		await TryUpdate(async () =>
+		{
+			Enabled = await SDV3!.GetEI9Async();
+		});
+
+		await TryUpdate(async () =>
+		{
+			FeedbackCurrentPosition = await SDV3!.GetFeedbackCurrentPositionAsync();
+		});
+
+		await TryUpdate(async () =>
+		{
+			FeedbackSpeed = await SDV3!.GetFeedbackSpeedAsync();
+		});
+
+		await TryUpdate(async () =>
+		{
+			P1_01 = await SDV3!.GetPnAsync(1, 1);
+		});
+
+		await TryUpdate(async () =>
+		{
+			P3_01 = await SDV3!.GetPnAsync(3, 1);
+		});
+
+		await TryUpdate(async () =>
+		{
+			P3_09 = await SDV3!.GetPnAsync(3, 9);
+		});
+
+		await TryUpdate(async () =>
+		{
+			P3_10 = await SDV3!.GetPnAsync(3, 10);
+		});
+
+		await TryUpdate(async () =>
+		{
+			P3_11 = await SDV3!.GetPnAsync(3, 11);
+		});
+
+		await TryUpdate(async () =>
+		{
+			P3_12 = await SDV3!.GetPnAsync(3, 12);
+		});
+
+		await TryUpdate(async () =>
+		{
+			Speed = await SDV3!.GetSpeedAsync();
+		});
+
+		DataUpdatedEvent?.Invoke();
+	}
+
+	public static bool Enabled { get; set; } = false;
+	public static int FeedbackCurrentPosition { get; set; } = 0;
+	public static int FeedbackSpeed { get; set; } = 0;
 
 	public static uint P1_01 { get; set; } = 0;
 	public static async Task SetP1_01Async(uint value)

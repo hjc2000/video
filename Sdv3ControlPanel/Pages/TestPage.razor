@@ -47,17 +47,17 @@
 		</JCRazor.表单.FormTable>
 		<STButton @onclick="OnEnableButtonClickAsync">使能</STButton>
 		<STButton @onclick="OnFwdClickAsync">正转</STButton>
-		<div class="enable-light" _enabled="@(Enabled)"></div>
+		<div class="enable-light" _enabled="@(Database.Enabled)"></div>
 		<JCRazor.表单.FormTable HeadBorderBottom="none">
 			<Body>
 				<div>反馈当前位置：</div>
 				<div>
-					<input readonly value="@(FeedbackCurrentPosition)" />
+					<input readonly value="@(Database.FeedbackCurrentPosition)" />
 				</div>
 
 				<div>反馈速度：</div>
 				<div>
-					<input readonly value="@(FeedbackSpeed)" />
+					<input readonly value="@(Database.FeedbackSpeed)" />
 				</div>
 			</Body>
 		</JCRazor.表单.FormTable>
