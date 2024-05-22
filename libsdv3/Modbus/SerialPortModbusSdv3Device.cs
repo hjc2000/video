@@ -43,11 +43,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 	/// </summary>
 	private void ReopenPort()
 	{
-		if (_disposed)
-		{
-			throw new ObjectDisposedException("SerialPortModbusSdv3Device 已经释放，ReopenPort。");
-		}
-
+		ObjectDisposedException.ThrowIf(_disposed, typeof(SerialPortModbusSdv3Device));
 		lock (this)
 		{
 			try

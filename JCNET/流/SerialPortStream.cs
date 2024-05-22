@@ -12,9 +12,18 @@ public class SerialPortStream : Stream
 		_serial_port = serial_port;
 	}
 
+	private bool _disposed = false;
 	public override async ValueTask DisposeAsync()
 	{
 		await base.DisposeAsync();
+		if (_disposed)
+		{
+			return;
+		}
+
+		_disposed = true;
+		GC.SuppressFinalize(this);
+
 		_serial_port.Dispose();
 	}
 
