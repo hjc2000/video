@@ -24,8 +24,9 @@ public static class Database
 			if (SDV3 is not null)
 			{
 				await SDV3.DisposeAsync();
-				LogOutputPort.WriteLine("释放旧的 SDV3 对象");
 			}
+
+			SerialPort?.Dispose();
 
 			// 设置定时器
 			_cancel_timer.Cancel();
@@ -77,6 +78,20 @@ public static class Database
 	/// <returns></returns>
 	private static async Task TryUpdate(Func<Task> update_func)
 	{
+		static async Task OpenDeviceAsync()
+		{
+			SerialPort = new(SerialPortOptions.PortName)
+			{
+				BaudRate = SerialPortOptions.BaudRate,
+				Parity = SerialPortOptions.Parity,
+				StopBits = SerialPortOptions.StopBits,
+			};
+
+			await Task.Run(SerialPort.Open);
+			SDV3 = new ModbusSdv3Device(SerialPort.BaseStream, 1, true);
+			LogOutputPort.WriteLine("成功打开新的 SDV3 对象");
+		}
+
 		uint retry_times = 0;
 		while (true)
 		{
@@ -84,16 +99,7 @@ public static class Database
 			{
 				if (SDV3 is null)
 				{
-					SerialPort = new(SerialPortOptions.PortName)
-					{
-						BaudRate = SerialPortOptions.BaudRate,
-						Parity = SerialPortOptions.Parity,
-						StopBits = SerialPortOptions.StopBits,
-					};
-
-					await Task.Run(SerialPort.Open);
-					SDV3 = new ModbusSdv3Device(SerialPort.BaseStream, 1, true);
-					LogOutputPort.WriteLine("成功打开新的 SDV3 对象");
+					await OpenDeviceAsync();
 				}
 
 				await update_func();
