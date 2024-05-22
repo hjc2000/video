@@ -15,7 +15,6 @@ public partial class MainWindow : Window
 		ServiceCollection serviceCollection = new();
 		serviceCollection.AddWpfBlazorWebView();
 		Resources.Add("services", serviceCollection.BuildServiceProvider());
-
 		LogOutputPort = new LogOutputPort("log.txt");
 	}
 

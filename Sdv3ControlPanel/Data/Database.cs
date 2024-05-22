@@ -9,15 +9,6 @@ using System.Threading.Tasks;
 
 namespace Sdv3ControlPanel.Data;
 
-public interface IDataUpdater
-{
-	/// <summary>
-	///		接口的实现者在这里更新自己需要的数据
-	/// </summary>
-	/// <returns></returns>
-	Task UpdateDatasAsync();
-}
-
 public static class Database
 {
 	/// <summary>
@@ -81,4 +72,13 @@ public static class Database
 			return _data_updater_list.Remove(updater);
 		}
 	}
+}
+
+public interface IDataUpdater
+{
+	/// <summary>
+	///		接口的实现者在这里更新自己需要的数据
+	/// </summary>
+	/// <returns></returns>
+	Task UpdateDatasAsync();
 }
