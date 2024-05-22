@@ -33,6 +33,8 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 
 	private SerialPort _serial_port;
 	private InnerSerialPortModbusSdv3Device _sdv3;
+	private SemaphoreSlim _async_lock = new(1);
+
 	public int RetryTimes { get; set; } = 2;
 
 	/// <summary>
@@ -85,6 +87,9 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 
 	public async Task WriteSingleBitAsync(ushort data_addr, bool value)
 	{
+		using LockGuard l = new(_async_lock);
+		await l.WaitAsync();
+
 		int retry_times = 0;
 		while (true)
 		{
@@ -115,6 +120,9 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 
 	public async Task<byte[]> ReadBitsAsync(ushort data_addr, ushort bit_count)
 	{
+		using LockGuard l = new(_async_lock);
+		await l.WaitAsync();
+
 		int retry_times = 0;
 		while (true)
 		{
@@ -145,6 +153,9 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 
 	public async Task<uint[]> ReadDatasAsync(ushort data_addr, ushort record_count)
 	{
+		using LockGuard l = new(_async_lock);
+		await l.WaitAsync();
+
 		int retry_times = 0;
 		while (true)
 		{
@@ -175,6 +186,9 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 
 	public async Task WriteDatasAsync(ushort data_addr, uint[] datas)
 	{
+		using LockGuard l = new(_async_lock);
+		await l.WaitAsync();
+
 		int retry_times = 0;
 		while (true)
 		{
@@ -235,7 +249,6 @@ internal class InnerSerialPortModbusSdv3Device : IModbusSdv3Device
 	private Stream _serial_stream;
 	private bool _big_endian;
 	private AutoBitConverter _auto_bit_converter;
-	private SemaphoreSlim _async_lock = new(1);
 
 	private static void PrintFrame(byte[] frame, bool is_send)
 	{
@@ -293,9 +306,6 @@ internal class InnerSerialPortModbusSdv3Device : IModbusSdv3Device
 	/// <exception cref="ModbusFrameException"></exception>
 	async Task IModbusSdv3Device.WriteSingleBitAsync(ushort data_addr, bool value)
 	{
-		using LockGuard l = new(_async_lock);
-		await l.WaitAsync();
-
 		WriteSingleBitRequestFrame request_frame = new()
 		{
 			SlaveAddress = _device_addr,
@@ -341,9 +351,6 @@ internal class InnerSerialPortModbusSdv3Device : IModbusSdv3Device
 	/// <returns></returns>
 	async Task<byte[]> IModbusSdv3Device.ReadBitsAsync(ushort data_addr, ushort bit_count)
 	{
-		using LockGuard l = new(_async_lock);
-		await l.WaitAsync();
-
 		if (bit_count == 0)
 		{
 			throw new ArgumentException("不允许读取 0 个位");
@@ -383,9 +390,6 @@ internal class InnerSerialPortModbusSdv3Device : IModbusSdv3Device
 	/// <returns></returns>
 	async Task<uint[]> IModbusSdv3Device.ReadDatasAsync(ushort data_addr, ushort record_count)
 	{
-		using LockGuard l = new(_async_lock);
-		await l.WaitAsync();
-
 		if (record_count == 0)
 		{
 			throw new ArgumentException($"{nameof(record_count)} 不能为 0");
@@ -433,9 +437,6 @@ internal class InnerSerialPortModbusSdv3Device : IModbusSdv3Device
 
 	async Task IModbusSdv3Device.WriteDatasAsync(ushort data_addr, uint[] datas)
 	{
-		using LockGuard l = new(_async_lock);
-		await l.WaitAsync();
-
 		if (datas.Length == 0)
 		{
 			throw new ArgumentException($"{nameof(datas)} 的长度不能为 0");
