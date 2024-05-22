@@ -1,4 +1,4 @@
-﻿namespace JCNET;
+﻿namespace JCNET.Modbus;
 
 public class ModbusCrc16
 {

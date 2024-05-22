@@ -1,4 +1,5 @@
 ﻿using JCNET;
+using JCNET.Modbus;
 
 namespace libsdv3.Modbus.Frame;
 

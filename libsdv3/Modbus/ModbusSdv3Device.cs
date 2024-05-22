@@ -1,4 +1,5 @@
 ﻿using JCNET;
+using JCNET.Modbus;
 using libsdv3.Code;
 using libsdv3.Modbus.Frame;
 
@@ -842,23 +843,5 @@ public class ModbusSdv3Device : IAsyncDisposable
 	public async Task SetSpeedAsync(int value)
 	{
 		await WriteDatasAsync(ParamAddress.Speed, [(uint)value]);
-	}
-}
-
-/// <summary>
-///		CRC 校验错误，响应帧中的功能码，数据地址等不符合预期，都会引发此异常。
-/// </summary>
-public class ModbusFrameException : Exception
-{
-	public ModbusFrameException()
-	{
-	}
-
-	public ModbusFrameException(string? message) : base(message)
-	{
-	}
-
-	public ModbusFrameException(string? message, Exception? innerException) : base(message, innerException)
-	{
 	}
 }
