@@ -41,43 +41,28 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 	///		重新构造一个 SerialPort 对象，复制旧的 SerialPort 对象的所有属性，
 	///		然后打开，然后赋值给 _serial_port。
 	/// </summary>
-	private void ReopenPort()
+	private async Task ReopenPortAsync()
 	{
 		ObjectDisposedException.ThrowIf(_disposed, typeof(SerialPortModbusSdv3Device));
-		lock (this)
+		Console.WriteLine("重新打开串口");
+		try
 		{
-			try
+			SerialPort new_port = new()
 			{
-				_serial_port.Dispose();
-				SerialPort new_port = new()
-				{
-					BaudRate = _serial_port.BaudRate,
-					Parity = _serial_port.Parity,
-					StopBits = _serial_port.StopBits,
-					PortName = _serial_port.PortName,
-					ReadTimeout = _serial_port.ReadTimeout,
-					WriteTimeout = _serial_port.WriteTimeout,
-					BreakState = _serial_port.BreakState,
-					DataBits = _serial_port.DataBits,
-					DiscardNull = _serial_port.DiscardNull,
-					DtrEnable = _serial_port.DtrEnable,
-					Encoding = _serial_port.Encoding,
-					Handshake = _serial_port.Handshake,
-					NewLine = _serial_port.NewLine,
-					ParityReplace = _serial_port.ParityReplace,
-					ReadBufferSize = _serial_port.ReadBufferSize,
-					WriteBufferSize = _serial_port.WriteBufferSize,
-					ReceivedBytesThreshold = _serial_port.ReceivedBytesThreshold,
-					RtsEnable = _serial_port.RtsEnable,
-					Site = _serial_port.Site,
-				};
-				new_port.Open();
-				_serial_port = new_port;
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.ToString());
-			}
+				PortName = _serial_port.PortName,
+				BaudRate = _serial_port.BaudRate,
+				Parity = _serial_port.Parity,
+				StopBits = _serial_port.StopBits,
+				ReadTimeout = _serial_port.ReadTimeout,
+				WriteTimeout = _serial_port.WriteTimeout,
+			};
+			_serial_port.Dispose();
+			await Task.Run(new_port.Open);
+			_serial_port = new_port;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.ToString());
 		}
 	}
 
@@ -110,7 +95,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 			{
 				Console.WriteLine(ex);
 				await Task.Delay(1000);
-				ReopenPort();
+				await ReopenPortAsync();
 			}
 		}
 	}
@@ -143,7 +128,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 			{
 				Console.WriteLine(ex);
 				await Task.Delay(1000);
-				ReopenPort();
+				await ReopenPortAsync();
 			}
 		}
 	}
@@ -176,7 +161,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 			{
 				Console.WriteLine(ex);
 				await Task.Delay(1000);
-				ReopenPort();
+				await ReopenPortAsync();
 			}
 		}
 	}
@@ -210,7 +195,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 			{
 				Console.WriteLine(ex);
 				await Task.Delay(1000);
-				ReopenPort();
+				await ReopenPortAsync();
 			}
 		}
 	}
