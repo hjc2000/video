@@ -108,7 +108,7 @@ public static class Database
 
 						SerialPort.Dispose();
 						SDV3 = null;
-						await Task.Delay(2000);
+						await Task.Delay(1000);
 					}
 				}
 
