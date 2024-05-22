@@ -222,6 +222,9 @@ public static class Database
 	public static int FeedbackCurrentPosition { get; set; } = 0;
 	public static int FeedbackSpeed { get; set; } = 0;
 
+	/// <summary>
+	///		运行模式
+	/// </summary>
 	public static uint P1_01 { get; set; } = 0;
 	public static async Task SetP1_01Async(uint value)
 	{
@@ -234,6 +237,25 @@ public static class Database
 		{
 			await SDV3.SetPnAsync(1, 1, value);
 			P1_01 = value;
+		}
+		catch (Exception ex)
+		{
+			LogOutputPort.WriteLine(ex);
+		}
+	}
+
+	public static uint P2_40 { get; set; } = 0;
+	public static async Task SetP2_40Async(uint value)
+	{
+		if (SDV3 is null)
+		{
+			return;
+		}
+
+		try
+		{
+			await SDV3.SetPnAsync(2, 40, value);
+			P2_40 = value;
 		}
 		catch (Exception ex)
 		{

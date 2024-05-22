@@ -7,6 +7,9 @@ public partial class PositionControlPage
 {
 	private async Task ConfigAsync()
 	{
+		// 定位运行模式
 		await Database.SetP1_01Async(7);
+
+
 	}
 }
