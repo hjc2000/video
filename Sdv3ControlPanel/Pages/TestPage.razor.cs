@@ -75,7 +75,7 @@ public partial class TestPage : IAsyncDisposable
 				while (!_cancel_timer.IsCancellationRequested)
 				{
 					await TimerElapsedEventHandler();
-					await Task.Delay(1000);
+					await Task.Delay(100);
 				}
 			}, _cancel_timer.Token);
 		}
