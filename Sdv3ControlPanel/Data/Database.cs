@@ -2,6 +2,7 @@
 using JCRazor.表单;
 using libsdv3.Modbus;
 using System;
+using System.IO;
 using System.IO.Ports;
 using System.Threading.Tasks;
 
@@ -28,6 +29,69 @@ public class Database
 			}
 
 			return _log_output_port;
+		}
+	}
+
+	/// <summary>
+	///		传入用来更新伺服属性的委托，会按照重试流程和异常处理流程回调传入的委托。
+	/// </summary>
+	/// <param name="update_func"></param>
+	/// <returns></returns>
+	public static async Task TryUpdate(Func<Task> update_func)
+	{
+		uint retry_times = 0;
+		while (true)
+		{
+			try
+			{
+				if (SDV3 is null)
+				{
+					SerialPort = new(SerialPortOptions.PortName)
+					{
+						BaudRate = SerialPortOptions.BaudRate,
+						Parity = SerialPortOptions.Parity,
+						StopBits = SerialPortOptions.StopBits,
+					};
+
+					await Task.Run(SerialPort.Open);
+					SDV3 = new ModbusSdv3Device(SerialPort.BaseStream, 1, true);
+					LogOutputPort.WriteLine("成功打开新的 SDV3 对象");
+				}
+
+				await update_func();
+				break;
+			}
+			catch (IOException e)
+			{
+				LogOutputPort.WriteLine(e);
+				try
+				{
+					if (retry_times >= 3)
+					{
+						break;
+					}
+
+					LogOutputPort.WriteLine("发生 IOException，清理接收缓冲区和发送缓冲区中的垃圾数据");
+					SerialPort?.DiscardInBuffer();
+					SerialPort?.DiscardOutBuffer();
+					retry_times++;
+					continue;
+				}
+				catch { }
+			}
+			catch (Exception e)
+			{
+				LogOutputPort.WriteLine("发生异常，重新打开串口");
+				LogOutputPort.WriteLine(e.ToString());
+				if (SDV3 is not null)
+				{
+					await SDV3.DisposeAsync();
+				}
+
+				SDV3 = null;
+				await Task.Delay(100);
+				continue;
+			}
 		}
 	}
 
