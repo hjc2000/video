@@ -4,21 +4,6 @@ using libsdv3.Modbus.Frame;
 
 namespace libsdv3.Modbus;
 
-public class ModbusFrameException : Exception
-{
-	public ModbusFrameException()
-	{
-	}
-
-	public ModbusFrameException(string? message) : base(message)
-	{
-	}
-
-	public ModbusFrameException(string? message, Exception? innerException) : base(message, innerException)
-	{
-	}
-}
-
 /// <summary>
 ///		利用 modbus 进行控制的 SDV3 设备。
 /// </summary>
@@ -857,5 +842,23 @@ public class ModbusSdv3Device : IAsyncDisposable
 	public async Task SetSpeedAsync(int value)
 	{
 		await WriteDatasAsync(ParamAddress.Speed, [(uint)value]);
+	}
+}
+
+/// <summary>
+///		CRC 校验错误，响应帧中的功能码，数据地址等不符合预期，都会引发此异常。
+/// </summary>
+public class ModbusFrameException : Exception
+{
+	public ModbusFrameException()
+	{
+	}
+
+	public ModbusFrameException(string? message) : base(message)
+	{
+	}
+
+	public ModbusFrameException(string? message, Exception? innerException) : base(message, innerException)
+	{
 	}
 }
