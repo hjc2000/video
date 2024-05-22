@@ -1,4 +1,5 @@
 ﻿using JCNET;
+using JCNET.流;
 using JCRazor.表单;
 using libsdv3.Modbus;
 using System;
@@ -84,10 +85,17 @@ public static class Database
 				BaudRate = SerialPortOptions.BaudRate,
 				Parity = SerialPortOptions.Parity,
 				StopBits = SerialPortOptions.StopBits,
+				ReadTimeout = 2000,
+				WriteTimeout = 2000,
 			};
 
 			await Task.Run(SerialPort.Open);
-			SDV3 = new ModbusSdv3Device(SerialPort.BaseStream, 1, true);
+
+			/* 必须使用 SerialPortStream，因为 SerialPort 的 BaseStream 永远不会触发
+			 * 超时。SerialPortStream 内部通过 SerialPort 的同步读写方法来实现流，所以
+			 * 可以触发超时。
+			 */
+			SDV3 = new ModbusSdv3Device(new SerialPortStream(SerialPort), 1, true);
 			LogOutputPort.WriteLine("成功打开新的 SDV3 对象");
 		}
 
