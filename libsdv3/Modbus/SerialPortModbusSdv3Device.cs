@@ -310,15 +310,11 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		};
 		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
-		CancellationTokenSource cancel_write = new();
-		cancel_write.CancelAfter(2000);
-		await _serial_stream.WriteAsync(frame, cancel_write.Token);
+		await _serial_stream.WriteAsync(frame);
 
 		// 接收
 		byte[] read_buffer = new byte[8];
-		CancellationTokenSource cancel_read = new();
-		cancel_read.CancelAfter(2000);
-		await _serial_stream.ReadExactlyAsync(read_buffer, cancel_read.Token);
+		await _serial_stream.ReadExactlyAsync(read_buffer);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
@@ -360,14 +356,10 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		};
 		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
-		CancellationTokenSource cancel_write = new();
-		cancel_write.CancelAfter(2000);
-		await _serial_stream.WriteAsync(frame, cancel_write.Token);
+		await _serial_stream.WriteAsync(frame);
 
 		byte[] read_buffer = new byte[5 + (bit_count / 8) + 1];
-		CancellationTokenSource cancel_read = new();
-		cancel_read.CancelAfter(2000);
-		await _serial_stream.ReadExactlyAsync(read_buffer, cancel_read.Token);
+		await _serial_stream.ReadExactlyAsync(read_buffer);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
@@ -399,15 +391,11 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		};
 		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
-		CancellationTokenSource cancel_write = new();
-		cancel_write.CancelAfter(2000);
-		await _serial_stream.WriteAsync(frame, cancel_write.Token);
+		await _serial_stream.WriteAsync(frame);
 
 		// 接收响应
 		byte[] read_buffer = new byte[5 + (record_count * 2)];
-		CancellationTokenSource cancel_read = new();
-		cancel_read.CancelAfter(2000);
-		await _serial_stream.ReadExactlyAsync(read_buffer, cancel_read.Token);
+		await _serial_stream.ReadExactlyAsync(read_buffer);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.ReadDatas)
@@ -446,15 +434,11 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		};
 		byte[] frame = request_frame.ToBytes(_big_endian);
 		PrintFrame(frame, true);
-		CancellationTokenSource cancel_write = new();
-		cancel_write.CancelAfter(2000);
-		await _serial_stream.WriteAsync(frame, cancel_write.Token);
+		await _serial_stream.WriteAsync(frame);
 
 		// 接收响应
 		byte[] read_buffer = new byte[8];
-		CancellationTokenSource cancel_read = new();
-		cancel_read.CancelAfter(2000);
-		await _serial_stream.ReadExactlyAsync(read_buffer, cancel_read.Token);
+		await _serial_stream.ReadExactlyAsync(read_buffer);
 		PrintFrame(read_buffer, false);
 		CheckADU(read_buffer);
 		if (read_buffer[1] != (byte)FunctionCode.WriteDatas)
