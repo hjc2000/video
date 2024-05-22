@@ -103,8 +103,6 @@ public partial class TestPage : IAsyncDisposable
 						BaudRate = _serial_port_options.BaudRate,
 						Parity = _serial_port_options.Parity,
 						StopBits = _serial_port_options.StopBits,
-						ReadTimeout = 2000,
-						WriteTimeout = 2000
 					};
 
 					await Task.Run(_serial_port.Open);
