@@ -10,6 +10,42 @@ using System.Threading.Tasks;
 
 namespace Sdv3ControlPanel.Data;
 
+public interface ISdv3Database
+{
+	Task UpdateDatasAsync();
+
+	bool Enabled { get; set; }
+	int FeedbackCurrentPosition { get; set; }
+	int FeedbackSpeed { get; set; }
+
+	/// <summary>
+	///		运行模式
+	/// </summary>
+	uint P1_01 { get; set; }
+	Task SetP1_01Async(uint value);
+
+	uint P2_40 { get; set; }
+	Task SetP2_40Async(uint value);
+
+	uint P3_01 { get; set; }
+	Task SetP3_01Async(uint value);
+
+	uint P3_09 { get; set; }
+	Task SetP3_09Async(uint value);
+
+	uint P3_10 { get; set; }
+	Task SetP3_10Async(uint value);
+
+	uint P3_11 { get; set; }
+	Task SetP3_11Async(uint value);
+
+	uint P3_12 { get; set; }
+	Task SetP3_12Async(uint value);
+
+	int Speed { get; set; }
+	Task SetSpeedAsync(int value);
+}
+
 public static class Database
 {
 	/// <summary>
@@ -36,7 +72,7 @@ public static class Database
 			{
 				while (!_cancel_timer.IsCancellationRequested)
 				{
-					await UpdateDatas();
+					await UpdateDatasAsync();
 					await Task.Delay(1000);
 				}
 			}, _cancel_timer.Token);
@@ -77,7 +113,7 @@ public static class Database
 	/// </summary>
 	/// <param name="update_func"></param>
 	/// <returns></returns>
-	private static async Task TryUpdate(Func<Task> update_func)
+	private static async Task TryUpdateAsync(Func<Task> update_func)
 	{
 		static async Task OpenDeviceAsync()
 		{
@@ -163,54 +199,54 @@ public static class Database
 		}
 	}
 
-	private static async Task UpdateDatas()
+	private static async Task UpdateDatasAsync()
 	{
-		await TryUpdate(async () =>
+		await TryUpdateAsync(async () =>
 		{
 			Enabled = await SDV3!.GetEI9Async();
 		});
 
-		await TryUpdate(async () =>
+		await TryUpdateAsync(async () =>
 		{
 			FeedbackCurrentPosition = await SDV3!.GetFeedbackCurrentPositionAsync();
 		});
 
-		await TryUpdate(async () =>
+		await TryUpdateAsync(async () =>
 		{
 			FeedbackSpeed = await SDV3!.GetFeedbackSpeedAsync();
 		});
 
-		await TryUpdate(async () =>
+		await TryUpdateAsync(async () =>
 		{
 			P1_01 = await SDV3!.GetPnAsync(1, 1);
 		});
 
-		await TryUpdate(async () =>
+		await TryUpdateAsync(async () =>
 		{
 			P3_01 = await SDV3!.GetPnAsync(3, 1);
 		});
 
-		await TryUpdate(async () =>
+		await TryUpdateAsync(async () =>
 		{
 			P3_09 = await SDV3!.GetPnAsync(3, 9);
 		});
 
-		await TryUpdate(async () =>
+		await TryUpdateAsync(async () =>
 		{
 			P3_10 = await SDV3!.GetPnAsync(3, 10);
 		});
 
-		await TryUpdate(async () =>
+		await TryUpdateAsync(async () =>
 		{
 			P3_11 = await SDV3!.GetPnAsync(3, 11);
 		});
 
-		await TryUpdate(async () =>
+		await TryUpdateAsync(async () =>
 		{
 			P3_12 = await SDV3!.GetPnAsync(3, 12);
 		});
 
-		await TryUpdate(async () =>
+		await TryUpdateAsync(async () =>
 		{
 			Speed = await SDV3!.GetSpeedAsync();
 		});
