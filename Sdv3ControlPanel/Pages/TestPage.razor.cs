@@ -59,7 +59,6 @@ public partial class TestPage : IAsyncDisposable
 			Database.LogOutputPort.WriteLine("使能按钮处理函数");
 			await Database.SDV3.SetEI9Async(!await Database.SDV3.GetEI9Async());
 			await Database.SDV3.SetEI10Async(true);
-			await Database.SDV3.SetEI11Async(false);
 		}
 		catch (Exception ex)
 		{
@@ -81,7 +80,7 @@ public partial class TestPage : IAsyncDisposable
 			}
 
 			Database.LogOutputPort.WriteLine("正转按钮处理函数");
-			await Database.SDV3.SetEI12Async(!await Database.SDV3.GetEI12Async());
+			await Database.SDV3.SetEI11Async(!await Database.SDV3.GetEI11Async());
 		}
 		catch (Exception ex)
 		{
