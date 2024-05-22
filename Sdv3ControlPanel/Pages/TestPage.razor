@@ -1,4 +1,5 @@
 @page "/"
+@using Sdv3ControlPanel.Data
 
 <div class="root">
 	<div>
@@ -10,37 +11,37 @@
 			<Body>
 				<div>P1.01：</div>
 				<div>
-					<input @bind:get="P1_01" @bind:set="SetP1_01Async" />
+					<input @bind:get="Database.P1_01" @bind:set="Database.SetP1_01Async" />
 				</div>
 
 				<div>P3.01：</div>
 				<div>
-					<input @bind:get="P3_01" @bind:set="SetP3_01Async" />
+					<input @bind:get="Database.P3_01" @bind:set="Database.SetP3_01Async" />
 				</div>
 
 				<div>P3.09：</div>
 				<div>
-					<input @bind:get="P3_09" @bind:set="SetP3_09Async"/>
+					<input @bind:get="Database.P3_09" @bind:set="Database.SetP3_09Async" />
 				</div>
 
 				<div>P3.10：</div>
 				<div>
-					<input @bind:get="P3_10" @bind:set="SetP3_10Async"/>
+					<input @bind:get="Database.P3_10" @bind:set="Database.SetP3_10Async" />
 				</div>
 
 				<div>P3.11：</div>
 				<div>
-					<input @bind:get="P3_11" @bind:set="SetP3_11Async"/>
+					<input @bind:get="Database.P3_11" @bind:set="Database.SetP3_11Async" />
 				</div>
 
 				<div>P3.12：</div>
 				<div>
-					<input @bind:get="P3_12" @bind:set="SetP3_12Async"/>
+					<input @bind:get="Database.P3_12" @bind:set="Database.SetP3_12Async" />
 				</div>
 
 				<div>通信给定速度：</div>
 				<div>
-					<input @bind:get="Speed" @bind:set="SetSpeedAsync" />
+					<input @bind:get="Database.Speed" @bind:set="Database.SetSpeedAsync" />
 				</div>
 			</Body>
 		</JCRazor.表单.FormTable>

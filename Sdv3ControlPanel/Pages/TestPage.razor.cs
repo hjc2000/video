@@ -153,37 +153,37 @@ public partial class TestPage : IAsyncDisposable
 
 		await TryUpdate(async () =>
 		{
-			P1_01 = await Database.SDV3!.GetPnAsync(1, 1);
+			Database.P1_01 = await Database.SDV3!.GetPnAsync(1, 1);
 		});
 
 		await TryUpdate(async () =>
 		{
-			P3_01 = await Database.SDV3!.GetPnAsync(3, 1);
+			Database.P3_01 = await Database.SDV3!.GetPnAsync(3, 1);
 		});
 
 		await TryUpdate(async () =>
 		{
-			P3_09 = await Database.SDV3!.GetPnAsync(3, 9);
+			Database.P3_09 = await Database.SDV3!.GetPnAsync(3, 9);
 		});
 
 		await TryUpdate(async () =>
 		{
-			P3_10 = await Database.SDV3!.GetPnAsync(3, 10);
+			Database.P3_10 = await Database.SDV3!.GetPnAsync(3, 10);
 		});
 
 		await TryUpdate(async () =>
 		{
-			P3_11 = await Database.SDV3!.GetPnAsync(3, 11);
+			Database.P3_11 = await Database.SDV3!.GetPnAsync(3, 11);
 		});
 
 		await TryUpdate(async () =>
 		{
-			P3_12 = await Database.SDV3!.GetPnAsync(3, 12);
+			Database.P3_12 = await Database.SDV3!.GetPnAsync(3, 12);
 		});
 
 		await TryUpdate(async () =>
 		{
-			Speed = await Database.SDV3!.GetSpeedAsync();
+			Database.Speed = await Database.SDV3!.GetSpeedAsync();
 		});
 
 		await InvokeAsync(StateHasChanged);
@@ -228,139 +228,6 @@ public partial class TestPage : IAsyncDisposable
 		catch (Exception ex)
 		{
 			Database.LogOutputPort.WriteLine(ex.ToString());
-		}
-	}
-
-	private uint P1_01 { get; set; } = 0;
-	private async Task SetP1_01Async(uint value)
-	{
-		if (Database.SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await Database.SDV3.SetPnAsync(1, 1, value);
-			P1_01 = value;
-		}
-		catch (Exception ex)
-		{
-			Database.LogOutputPort.WriteLine(ex);
-		}
-	}
-
-	private uint P3_01 { get; set; } = 0;
-	public async Task SetP3_01Async(uint value)
-	{
-		if (Database.SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await Database.SDV3.SetPnAsync(3, 1, value);
-			P3_01 = value;
-		}
-		catch (Exception ex)
-		{
-			Database.LogOutputPort.WriteLine(ex);
-		}
-	}
-
-	private uint P3_09 { get; set; } = 0;
-	public async Task SetP3_09Async(uint value)
-	{
-		if (Database.SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await Database.SDV3.SetPnAsync(3, 9, value);
-			P3_09 = value;
-		}
-		catch (Exception ex)
-		{
-			Database.LogOutputPort.WriteLine(ex);
-		}
-	}
-
-	private uint P3_10 { get; set; } = 0;
-	public async Task SetP3_10Async(uint value)
-	{
-		if (Database.SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await Database.SDV3.SetPnAsync(3, 10, value);
-			P3_10 = value;
-		}
-		catch (Exception ex)
-		{
-			Database.LogOutputPort.WriteLine(ex);
-		}
-	}
-
-	private uint P3_11 { get; set; } = 0;
-	public async Task SetP3_11Async(uint value)
-	{
-		if (Database.SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await Database.SDV3.SetPnAsync(3, 11, value);
-			P3_11 = value;
-		}
-		catch (Exception ex)
-		{
-			Database.LogOutputPort.WriteLine(ex);
-		}
-	}
-
-	private uint P3_12 { get; set; } = 0;
-	public async Task SetP3_12Async(uint value)
-	{
-		if (Database.SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await Database.SDV3.SetPnAsync(3, 12, value);
-			P3_12 = value;
-		}
-		catch (Exception ex)
-		{
-			Database.LogOutputPort.WriteLine(ex);
-		}
-	}
-
-	private int Speed { get; set; } = 0;
-	private async Task SetSpeedAsync(int value)
-	{
-		if (Database.SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await Database.SDV3.SetSpeedAsync(value);
-			Speed = value;
-		}
-		catch (Exception ex)
-		{
-			Database.LogOutputPort.WriteLine(ex);
 		}
 	}
 }
