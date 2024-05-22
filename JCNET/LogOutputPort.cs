@@ -14,8 +14,11 @@ public class LogOutputPort : IAsyncDisposable
 		_output_file_path = output_file_path;
 		if (_output_file_path is not null)
 		{
-			_output_file = File.Open(_output_file_path, FileMode.Create);
-			_output_writer = new(_output_file);
+			_log_file = File.Open(_output_file_path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+			_log_writer = new(_log_file)
+			{
+				AutoFlush = true
+			};
 		}
 	}
 
@@ -30,54 +33,63 @@ public class LogOutputPort : IAsyncDisposable
 		_disposed = true;
 		GC.SuppressFinalize(this);
 
-		if (_output_writer is not null)
+		if (_log_writer is not null)
 		{
-			await _output_writer.DisposeAsync();
+			await _log_writer.DisposeAsync();
 		}
 
-		if (_output_file is not null)
+		if (_log_file is not null)
 		{
-			await _output_file.DisposeAsync();
+			await _log_file.DisposeAsync();
 		}
 	}
 
 	private string? _output_file_path;
-	private FileStream? _output_file = null;
-	private StreamWriter? _output_writer = null;
+	private FileStream? _log_file = null;
+	private StreamWriter? _log_writer = null;
 
-	public void Write(string value)
+	public void Write<T>(T value)
 	{
-		if (_output_writer is not null)
+		lock (this)
 		{
-			_output_writer.Write(value);
-		}
-		else
-		{
-			Console.Write(value);
+			if (_log_writer is not null)
+			{
+				_log_writer.Write(value);
+			}
+			else
+			{
+				Console.Write(value);
+			}
 		}
 	}
 
-	public void WriteLine(string value)
+	public void WriteLine<T>(T value)
 	{
-		if (_output_writer is not null)
+		lock (this)
 		{
-			_output_writer.WriteLine(value);
-		}
-		else
-		{
-			Console.WriteLine(value);
+			if (_log_writer is not null)
+			{
+				_log_writer.WriteLine(value);
+			}
+			else
+			{
+				Console.WriteLine(value);
+			}
 		}
 	}
 
 	public void WriteLine()
 	{
-		if (_output_writer is not null)
+		lock (this)
 		{
-			_output_writer.WriteLine();
-		}
-		else
-		{
-			Console.WriteLine();
+			if (_log_writer is not null)
+			{
+				_log_writer.WriteLine();
+			}
+			else
+			{
+				Console.WriteLine();
+			}
 		}
 	}
 }
