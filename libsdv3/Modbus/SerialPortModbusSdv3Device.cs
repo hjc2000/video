@@ -35,7 +35,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 	private InnerSerialPortModbusSdv3Device _sdv3;
 	private SemaphoreSlim _async_lock = new(1);
 
-	public int RetryTimes { get; set; } = 2;
+	public int RetryTimes { get; set; } = 5;
 
 	/// <summary>
 	///		重新构造一个 SerialPort 对象，复制旧的 SerialPort 对象的所有属性，
@@ -92,6 +92,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 			try
 			{
 				await ((IModbusSdv3Device)_sdv3).WriteSingleBitAsync(data_addr, value);
+				return;
 			}
 			catch (ModbusFrameException)
 			{
@@ -124,7 +125,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 		{
 			try
 			{
-				await ((IModbusSdv3Device)_sdv3).ReadBitsAsync(data_addr, bit_count);
+				return await ((IModbusSdv3Device)_sdv3).ReadBitsAsync(data_addr, bit_count);
 			}
 			catch (ModbusFrameException)
 			{
@@ -157,7 +158,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 		{
 			try
 			{
-				await ((IModbusSdv3Device)_sdv3).ReadDatasAsync(data_addr, record_count);
+				return await ((IModbusSdv3Device)_sdv3).ReadDatasAsync(data_addr, record_count);
 			}
 			catch (ModbusFrameException)
 			{
@@ -191,6 +192,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 			try
 			{
 				await ((IModbusSdv3Device)_sdv3).WriteDatasAsync(data_addr, datas);
+				return;
 			}
 			catch (ModbusFrameException)
 			{

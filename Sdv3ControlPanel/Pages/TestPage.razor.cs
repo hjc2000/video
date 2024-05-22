@@ -92,16 +92,24 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 			return;
 		}
 
-		Enabled = await Database.SDV3.GetEI9Async();
-		FeedbackCurrentPosition = await Database.SDV3.GetFeedbackCurrentPositionAsync();
-		FeedbackSpeed = await Database.SDV3.GetFeedbackSpeedAsync();
-		P1_01 = await Database.SDV3.GetPnAsync(1, 1);
-		P3_01 = await Database.SDV3.GetPnAsync(3, 1);
-		P3_09 = await Database.SDV3.GetPnAsync(3, 9);
-		P3_10 = await Database.SDV3.GetPnAsync(3, 10);
-		P3_11 = await Database.SDV3.GetPnAsync(3, 11);
-		P3_12 = await Database.SDV3.GetPnAsync(3, 12);
-		Speed = await Database.SDV3.GetSpeedAsync();
+		try
+		{
+			Enabled = await Database.SDV3.GetEI9Async();
+			FeedbackCurrentPosition = await Database.SDV3.GetFeedbackCurrentPositionAsync();
+			FeedbackSpeed = await Database.SDV3.GetFeedbackSpeedAsync();
+			P1_01 = await Database.SDV3.GetPnAsync(1, 1);
+			P3_01 = await Database.SDV3.GetPnAsync(3, 1);
+			P3_09 = await Database.SDV3.GetPnAsync(3, 9);
+			P3_10 = await Database.SDV3.GetPnAsync(3, 10);
+			P3_11 = await Database.SDV3.GetPnAsync(3, 11);
+			P3_12 = await Database.SDV3.GetPnAsync(3, 12);
+			Speed = await Database.SDV3.GetSpeedAsync();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex);
+		}
+
 		await InvokeAsync(StateHasChanged);
 	}
 
