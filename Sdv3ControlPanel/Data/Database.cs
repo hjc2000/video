@@ -1,4 +1,5 @@
-﻿using JCRazor.表单;
+﻿using JCNET.定时器;
+using JCRazor.表单;
 using libsdv3.Modbus;
 using System;
 using System.Collections.Generic;
@@ -48,18 +49,13 @@ public static class Database
 			// 设置定时器
 			_cancel_timer.Cancel();
 			_cancel_timer = new CancellationTokenSource();
-			_ = Task.Run(async () =>
+			TaskTimer.SetInterval(async () =>
 			{
-				while (!_cancel_timer.IsCancellationRequested)
+				foreach (IDataUpdater updater in _data_updater_list)
 				{
-					foreach (IDataUpdater updater in _data_updater_list)
-					{
-						await updater.UpdateDatasAsync();
-					}
-
-					await Task.Delay(1000);
+					await updater.UpdateDatasAsync();
 				}
-			}, _cancel_timer.Token);
+			}, 1000, _cancel_timer.Token);
 		}
 		catch (Exception ex)
 		{
