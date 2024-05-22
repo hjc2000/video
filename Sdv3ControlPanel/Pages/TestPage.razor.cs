@@ -87,56 +87,16 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 
 	async Task IDataUpdater.UpdateDatasAsync()
 	{
-		await Database.TryUpdateAsync(async () =>
-		{
-			Enabled = await Database.SDV3!.GetEI9Async();
-		});
-
-		await Database.TryUpdateAsync(async () =>
-		{
-			FeedbackCurrentPosition = await Database.SDV3!.GetFeedbackCurrentPositionAsync();
-		});
-
-		await Database.TryUpdateAsync(async () =>
-		{
-			FeedbackSpeed = await Database.SDV3!.GetFeedbackSpeedAsync();
-		});
-
-		await Database.TryUpdateAsync(async () =>
-		{
-			P1_01 = await Database.SDV3!.GetPnAsync(1, 1);
-		});
-
-		await Database.TryUpdateAsync(async () =>
-		{
-			P3_01 = await Database.SDV3!.GetPnAsync(3, 1);
-		});
-
-		await Database.TryUpdateAsync(async () =>
-		{
-			P3_09 = await Database.SDV3!.GetPnAsync(3, 9);
-		});
-
-		await Database.TryUpdateAsync(async () =>
-		{
-			P3_10 = await Database.SDV3!.GetPnAsync(3, 10);
-		});
-
-		await Database.TryUpdateAsync(async () =>
-		{
-			P3_11 = await Database.SDV3!.GetPnAsync(3, 11);
-		});
-
-		await Database.TryUpdateAsync(async () =>
-		{
-			P3_12 = await Database.SDV3!.GetPnAsync(3, 12);
-		});
-
-		await Database.TryUpdateAsync(async () =>
-		{
-			Speed = await Database.SDV3!.GetSpeedAsync();
-		});
-
+		Enabled = await Database.SDV3!.GetEI9Async();
+		FeedbackCurrentPosition = await Database.SDV3!.GetFeedbackCurrentPositionAsync();
+		FeedbackSpeed = await Database.SDV3!.GetFeedbackSpeedAsync();
+		P1_01 = await Database.SDV3!.GetPnAsync(1, 1);
+		P3_01 = await Database.SDV3!.GetPnAsync(3, 1);
+		P3_09 = await Database.SDV3!.GetPnAsync(3, 9);
+		P3_10 = await Database.SDV3!.GetPnAsync(3, 10);
+		P3_11 = await Database.SDV3!.GetPnAsync(3, 11);
+		P3_12 = await Database.SDV3!.GetPnAsync(3, 12);
+		Speed = await Database.SDV3!.GetSpeedAsync();
 		await InvokeAsync(StateHasChanged);
 	}
 

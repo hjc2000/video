@@ -33,6 +33,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 
 	private SerialPort _serial_port;
 	private InnerSerialPortModbusSdv3Device _sdv3;
+	public int RetryTimes { get; set; } = 2;
 
 	/// <summary>
 	///		重新构造一个 SerialPort 对象，复制旧的 SerialPort 对象的所有属性，
@@ -84,6 +85,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 
 	public async Task WriteSingleBitAsync(ushort data_addr, bool value)
 	{
+		int retry_times = 0;
 		while (true)
 		{
 			try
@@ -94,6 +96,12 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 			{
 				_serial_port.DiscardInBuffer();
 				_serial_port.DiscardOutBuffer();
+				if (retry_times < RetryTimes)
+				{
+					retry_times++;
+					continue;
+				}
+
 				throw;
 			}
 			catch (Exception ex)
@@ -107,6 +115,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 
 	public async Task<byte[]> ReadBitsAsync(ushort data_addr, ushort bit_count)
 	{
+		int retry_times = 0;
 		while (true)
 		{
 			try
@@ -117,6 +126,12 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 			{
 				_serial_port.DiscardInBuffer();
 				_serial_port.DiscardOutBuffer();
+				if (retry_times < RetryTimes)
+				{
+					retry_times++;
+					continue;
+				}
+
 				throw;
 			}
 			catch (Exception ex)
@@ -130,6 +145,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 
 	public async Task<uint[]> ReadDatasAsync(ushort data_addr, ushort record_count)
 	{
+		int retry_times = 0;
 		while (true)
 		{
 			try
@@ -140,6 +156,12 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 			{
 				_serial_port.DiscardInBuffer();
 				_serial_port.DiscardOutBuffer();
+				if (retry_times < RetryTimes)
+				{
+					retry_times++;
+					continue;
+				}
+
 				throw;
 			}
 			catch (Exception ex)
@@ -153,6 +175,7 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 
 	public async Task WriteDatasAsync(ushort data_addr, uint[] datas)
 	{
+		int retry_times = 0;
 		while (true)
 		{
 			try
@@ -163,6 +186,12 @@ public class SerialPortModbusSdv3Device : IModbusSdv3Device
 			{
 				_serial_port.DiscardInBuffer();
 				_serial_port.DiscardOutBuffer();
+				if (retry_times < RetryTimes)
+				{
+					retry_times++;
+					continue;
+				}
+
 				throw;
 			}
 			catch (Exception ex)
