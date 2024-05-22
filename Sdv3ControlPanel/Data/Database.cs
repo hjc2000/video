@@ -13,6 +13,10 @@ namespace Sdv3ControlPanel.Data;
 
 public interface IDataUpdater
 {
+	/// <summary>
+	///		接口的实现者在这里更新自己需要的数据
+	/// </summary>
+	/// <returns></returns>
 	Task UpdateDatasAsync();
 }
 

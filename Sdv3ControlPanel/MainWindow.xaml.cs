@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using JCNET;
+using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
 namespace Sdv3ControlPanel;
@@ -13,5 +14,10 @@ public partial class MainWindow : Window
 		ServiceCollection serviceCollection = new();
 		serviceCollection.AddWpfBlazorWebView();
 		Resources.Add("services", serviceCollection.BuildServiceProvider());
+
+		serviceCollection.AddSingleton((service_provider) =>
+		{
+			return new LogOutputPort("log.txt");
+		});
 	}
 }

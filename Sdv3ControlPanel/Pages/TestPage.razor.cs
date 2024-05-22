@@ -1,4 +1,6 @@
-﻿using Sdv3ControlPanel.Data;
+﻿using JCNET;
+using Microsoft.AspNetCore.Components;
+using Sdv3ControlPanel.Data;
 using System;
 using System.Threading.Tasks;
 
@@ -26,6 +28,9 @@ public partial class TestPage : IAsyncDisposable, IDataUpdater
 		await Task.CompletedTask;
 		Database.RemoveUpdater(this);
 	}
+
+	[Inject]
+	public LogOutputPort LogOutputPort { get; set; } = default!;
 
 	/// <summary>
 	///		配置为速度控制模式并能指定速度
