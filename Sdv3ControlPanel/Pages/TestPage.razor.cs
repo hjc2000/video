@@ -1,5 +1,4 @@
-﻿using JCRazor.表单;
-using Sdv3ControlPanel.Data;
+﻿using Sdv3ControlPanel.Data;
 using System;
 using System.Threading.Tasks;
 
@@ -44,16 +43,6 @@ public partial class TestPage : IAsyncDisposable
 	private async void OnDataUpdatedEvent()
 	{
 		await InvokeAsync(StateHasChanged);
-	}
-
-	/// <summary>
-	///		连接按钮点击事件处理函数
-	/// </summary>
-	/// <param name="serial_port_options"></param>
-	/// <returns></returns>
-	private async Task OnConnecteButtonClickAsync(SerialPortOptions serial_port_options)
-	{
-		await Database.ConnectAsync(serial_port_options);
 	}
 
 	/// <summary>
