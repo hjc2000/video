@@ -7,7 +7,6 @@ public abstract class ModbusSdv3Device : ISdv3Device
 {
 	public abstract ValueTask DisposeAsync();
 
-	#region modbus 基本操作函数
 	/// <summary>
 	///		写单个位
 	/// </summary>
@@ -42,7 +41,6 @@ public abstract class ModbusSdv3Device : ISdv3Device
 	/// <returns></returns>
 	/// <exception cref="ModbusFrameException"></exception>
 	public abstract Task WriteDatasAsync(ushort data_addr, uint[] datas);
-	#endregion
 
 	#region 硬件 EI
 	public async Task<bool> GetEI1Async()
