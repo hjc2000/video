@@ -4,11 +4,17 @@ using JCNET.流;
 using JCRazor.表单;
 using libsdv3.Modbus;
 using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Sdv3ControlPanel.Data;
+
+public interface IDataUpdater
+{
+	Task UpdateDatasAsync();
+}
 
 public static class Database
 {
@@ -36,7 +42,11 @@ public static class Database
 			{
 				while (!_cancel_timer.IsCancellationRequested)
 				{
-					await UpdateDatasAsync();
+					foreach (IDataUpdater updater in _data_updater_list)
+					{
+						await updater.UpdateDatasAsync();
+					}
+
 					await Task.Delay(1000);
 				}
 			}, _cancel_timer.Token);
@@ -70,14 +80,28 @@ public static class Database
 		}
 	}
 
-	public static event Action? DataUpdatedEvent;
+	private static List<IDataUpdater> _data_updater_list = [];
+	public static void AddUpdater(IDataUpdater updater)
+	{
+		lock (_data_updater_list)
+		{
+			_data_updater_list.Add(updater);
+		}
+	}
+	public static bool RemoveUpdater(IDataUpdater updater)
+	{
+		lock (_data_updater_list)
+		{
+			return _data_updater_list.Remove(updater);
+		}
+	}
 
 	/// <summary>
 	///		传入用来更新伺服属性的委托，会按照重试流程和异常处理流程回调传入的委托。
 	/// </summary>
 	/// <param name="update_func"></param>
 	/// <returns></returns>
-	private static async Task TryUpdateAsync(Func<Task> update_func)
+	public static async Task TryUpdateAsync(Func<Task> update_func)
 	{
 		static async Task OpenDeviceAsync()
 		{
@@ -160,220 +184,6 @@ public static class Database
 				await Task.Delay(100);
 				continue;
 			}
-		}
-	}
-
-	private static async Task UpdateDatasAsync()
-	{
-		await TryUpdateAsync(async () =>
-		{
-			Enabled = await SDV3!.GetEI9Async();
-		});
-
-		await TryUpdateAsync(async () =>
-		{
-			FeedbackCurrentPosition = await SDV3!.GetFeedbackCurrentPositionAsync();
-		});
-
-		await TryUpdateAsync(async () =>
-		{
-			FeedbackSpeed = await SDV3!.GetFeedbackSpeedAsync();
-		});
-
-		await TryUpdateAsync(async () =>
-		{
-			P1_01 = await SDV3!.GetPnAsync(1, 1);
-		});
-
-		await TryUpdateAsync(async () =>
-		{
-			P3_01 = await SDV3!.GetPnAsync(3, 1);
-		});
-
-		await TryUpdateAsync(async () =>
-		{
-			P3_09 = await SDV3!.GetPnAsync(3, 9);
-		});
-
-		await TryUpdateAsync(async () =>
-		{
-			P3_10 = await SDV3!.GetPnAsync(3, 10);
-		});
-
-		await TryUpdateAsync(async () =>
-		{
-			P3_11 = await SDV3!.GetPnAsync(3, 11);
-		});
-
-		await TryUpdateAsync(async () =>
-		{
-			P3_12 = await SDV3!.GetPnAsync(3, 12);
-		});
-
-		await TryUpdateAsync(async () =>
-		{
-			Speed = await SDV3!.GetSpeedAsync();
-		});
-
-		DataUpdatedEvent?.Invoke();
-	}
-
-	public static bool Enabled { get; set; } = false;
-	public static int FeedbackCurrentPosition { get; set; } = 0;
-	public static int FeedbackSpeed { get; set; } = 0;
-
-	/// <summary>
-	///		运行模式
-	/// </summary>
-	public static uint P1_01 { get; set; } = 0;
-	public static async Task SetP1_01Async(uint value)
-	{
-		if (SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await SDV3.SetPnAsync(1, 1, value);
-			P1_01 = value;
-		}
-		catch (Exception ex)
-		{
-			LogOutputPort.WriteLine(ex);
-		}
-	}
-
-	public static uint P2_40 { get; set; } = 0;
-	public static async Task SetP2_40Async(uint value)
-	{
-		if (SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await SDV3.SetPnAsync(2, 40, value);
-			P2_40 = value;
-		}
-		catch (Exception ex)
-		{
-			LogOutputPort.WriteLine(ex);
-		}
-	}
-
-	public static uint P3_01 { get; set; } = 0;
-	public static async Task SetP3_01Async(uint value)
-	{
-		if (SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await SDV3.SetPnAsync(3, 1, value);
-			P3_01 = value;
-		}
-		catch (Exception ex)
-		{
-			LogOutputPort.WriteLine(ex);
-		}
-	}
-
-	public static uint P3_09 { get; set; } = 0;
-	public static async Task SetP3_09Async(uint value)
-	{
-		if (SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await SDV3.SetPnAsync(3, 9, value);
-			P3_09 = value;
-		}
-		catch (Exception ex)
-		{
-			LogOutputPort.WriteLine(ex);
-		}
-	}
-
-	public static uint P3_10 { get; set; } = 0;
-	public static async Task SetP3_10Async(uint value)
-	{
-		if (SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await SDV3.SetPnAsync(3, 10, value);
-			P3_10 = value;
-		}
-		catch (Exception ex)
-		{
-			LogOutputPort.WriteLine(ex);
-		}
-	}
-
-	public static uint P3_11 { get; set; } = 0;
-	public static async Task SetP3_11Async(uint value)
-	{
-		if (SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await SDV3.SetPnAsync(3, 11, value);
-			P3_11 = value;
-		}
-		catch (Exception ex)
-		{
-			LogOutputPort.WriteLine(ex);
-		}
-	}
-
-	public static uint P3_12 { get; set; } = 0;
-	public static async Task SetP3_12Async(uint value)
-	{
-		if (SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await SDV3.SetPnAsync(3, 12, value);
-			P3_12 = value;
-		}
-		catch (Exception ex)
-		{
-			LogOutputPort.WriteLine(ex);
-		}
-	}
-
-	public static int Speed { get; set; } = 0;
-	public static async Task SetSpeedAsync(int value)
-	{
-		if (SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await SDV3.SetSpeedAsync(value);
-			Speed = value;
-		}
-		catch (Exception ex)
-		{
-			LogOutputPort.WriteLine(ex);
 		}
 	}
 }
