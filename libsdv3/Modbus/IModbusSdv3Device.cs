@@ -1,8 +1,7 @@
 ﻿using JCNET.Modbus;
 using libsdv3.Code;
-using libsdv3.Modbus;
 
-namespace libsdv3;
+namespace libsdv3.Modbus;
 
 public interface IModbusSdv3Device : IAsyncDisposable
 {
