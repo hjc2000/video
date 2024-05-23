@@ -13,6 +13,11 @@ public partial class FormTable
 	public RenderFragment? Foot { get; set; }
 
 	[Parameter]
+	public string Width { get; set; } = "100%";
+	[Parameter]
+	public string Height { get; set; } = "100%";
+
+	[Parameter]
 	public string HeadPadding { get; set; } = "0";
 	[Parameter]
 	public string BodyPadding { get; set; } = "0";

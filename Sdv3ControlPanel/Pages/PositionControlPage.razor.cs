@@ -56,6 +56,23 @@ public partial class PositionControlPage : IAsyncDisposable
 		await SetP3_10Async(4);
 	}
 
+	private async Task StartPositioningAsync()
+	{
+		if (Database.SDV3 is null)
+		{
+			return;
+		}
+
+		try
+		{
+			await Database.SDV3.SetEI10Async(!await Database.SDV3.GetEI10Async());
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.ToString());
+		}
+	}
+
 	private async Task UpdateDatasAsync()
 	{
 		if (Database.SDV3 is null)

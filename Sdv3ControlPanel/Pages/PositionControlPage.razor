@@ -2,7 +2,7 @@
 
 <div class="root">
 	<STButton @onclick="ConfigAsync">一键配置</STButton>
-	<JCRazor.表单.FormTable HeadBorderBottom="none">
+	<JCRazor.表单.FormTable HeadBorderBottom="none" Height="fit-content">
 		<Body>
 			<div>P1.01：</div>
 			<div>
@@ -26,4 +26,5 @@
 
 		</Body>
 	</JCRazor.表单.FormTable>
+	<STButton @onclick="StartPositioningAsync">定位数据启动</STButton>
 </div>
