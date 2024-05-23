@@ -37,6 +37,6 @@ public static class TaskTimer
 	/// <param name="token"></param>
 	public static void SetInterval(Func<Task> func, int interval_in_milliseconds, CancellationToken token)
 	{
-		SetInterval(func, TimeSpan.FromMicroseconds(interval_in_milliseconds), token);
+		SetInterval(func, TimeSpan.FromMilliseconds(interval_in_milliseconds), token);
 	}
 }
