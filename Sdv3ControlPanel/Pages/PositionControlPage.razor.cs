@@ -57,6 +57,9 @@ public partial class PositionControlPage : IAsyncDisposable
 
 		// 将 EI11 设置为位置预置功能
 		await SetP3_11Async(16);
+
+		// 将 EI12 设置为立即值变更指令
+		await SetP3_12Async(23);
 	}
 
 	private async Task SetImmediateDatasAsync()
@@ -218,6 +221,25 @@ public partial class PositionControlPage : IAsyncDisposable
 		{
 			await Database.SDV3.SetPnAsync(3, 11, value);
 			P3_11 = value;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex);
+		}
+	}
+
+	public static uint P3_12 { get; set; } = 0;
+	public static async Task SetP3_12Async(uint value)
+	{
+		if (Database.SDV3 is null)
+		{
+			return;
+		}
+
+		try
+		{
+			await Database.SDV3.SetPnAsync(3, 12, value);
+			P3_12 = value;
 		}
 		catch (Exception ex)
 		{
