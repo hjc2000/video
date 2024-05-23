@@ -68,6 +68,25 @@ public partial class PositionControlPage : IAsyncDisposable
 		await SetP3_14Async(32);
 	}
 
+	private bool CancelPositioning { get; set; } = false;
+	private async Task SetCancelPositioningAsync(bool value)
+	{
+		if (Database.SDV3 is null)
+		{
+			return;
+		}
+
+		try
+		{
+			await Database.SDV3.SetEI14Async(value);
+			CancelPositioning = value;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.ToString());
+		}
+	}
+
 	private async Task SetImmediateDatasAsync()
 	{
 		// 使用绝对定位模式
@@ -130,6 +149,7 @@ public partial class PositionControlPage : IAsyncDisposable
 			ImmediateSpeed = await Database.SDV3.GetImmediateSpeedAsync();
 			ImmediateAccelerationDuration = await Database.SDV3.GetImmediateAccelerationDurationAsync();
 			ImmediateDecelerationDuration = await Database.SDV3.GetImmediateDecelerationDurationAsync();
+			CancelPositioning = await Database.SDV3.GetEI14Async();
 		}
 		catch (Exception ex)
 		{

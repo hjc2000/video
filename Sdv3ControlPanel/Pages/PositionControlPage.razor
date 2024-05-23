@@ -55,10 +55,22 @@
 			</div>
 		</Body>
 	</JCRazor.表单.FormTable>
-	<STButton @onclick="SetImmediateDatasAsync">一键设置立即值数据</STButton>
-	<STButton @onclick="PresetPositionAsync">位置预置</STButton>
-	<STButton @onclick="StartPositioningAsync">定位数据启动</STButton>
-	<STButton @onclick="ForceUpdateImmediateDatasAsync">立即应用新的定位数据</STButton>
+	<div>
+		<STButton @onclick="SetImmediateDatasAsync">一键设置立即值数据</STButton>
+		<STButton @onclick="PresetPositionAsync">位置预置</STButton>
+		<STButton @onclick="StartPositioningAsync">定位数据启动</STButton>
+		<STButton @onclick="ForceUpdateImmediateDatasAsync">立即应用新的定位数据</STButton>
+	</div>
+	<div>
+		<JCRazor.盒子.LeftRightLabel Width="max-content">
+			<Left>
+				取消定位：
+			</Left>
+			<Right>
+				<input type="checkbox" @bind:get="CancelPositioning" @bind:set="SetCancelPositioningAsync" />
+			</Right>
+		</JCRazor.盒子.LeftRightLabel>
+	</div>
 	<JCRazor.表单.FormTable HeadBorderBottom="none"
 						  Height="fit-content"
 						  BodyOverflow="hidden">
