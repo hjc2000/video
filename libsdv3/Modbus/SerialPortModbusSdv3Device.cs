@@ -265,7 +265,6 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		Console.WriteLine();
 	}
 
-	#region modbus 基本操作函数
 	/// <summary>
 	///		检查 ADU。
 	///		* 不包括 PDU 部分，只检查作为头部的地址和作为尾部的 CRC16。
@@ -458,5 +457,4 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 			throw new ModbusFrameException("设备回复帧中的记录数不对");
 		}
 	}
-	#endregion
 }
