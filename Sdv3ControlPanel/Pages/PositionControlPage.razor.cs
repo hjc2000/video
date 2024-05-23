@@ -36,6 +36,40 @@ public partial class PositionControlPage : IAsyncDisposable
 
 	private static CancellationTokenSource _cancel_timer = new();
 
+	private async Task UpdateDatasAsync()
+	{
+		if (Database.SDV3 is null)
+		{
+			return;
+		}
+
+		try
+		{
+			FeedbackCurrentPosition = await Database.SDV3.GetFeedbackCurrentPositionAsync();
+			FeedbackSpeed = await Database.SDV3.GetFeedbackSpeedAsync();
+			P1_01 = await Database.SDV3.GetPnAsync(1, 1);
+			P2_40 = await Database.SDV3.GetPnAsync(2, 40);
+			P3_09 = await Database.SDV3.GetPnAsync(3, 9);
+			P3_10 = await Database.SDV3.GetPnAsync(3, 10);
+			P3_11 = await Database.SDV3.GetPnAsync(3, 11);
+			P3_12 = await Database.SDV3.GetPnAsync(3, 12);
+			P3_13 = await Database.SDV3.GetPnAsync(3, 13);
+			P3_14 = await Database.SDV3.GetPnAsync(3, 14);
+			ImmediatePosition = await Database.SDV3.GetImmediatePositionAsync();
+			ImmediateSpeed = await Database.SDV3.GetImmediateSpeedAsync();
+			ImmediateAccelerationDuration = await Database.SDV3.GetImmediateAccelerationDurationAsync();
+			ImmediateDecelerationDuration = await Database.SDV3.GetImmediateDecelerationDurationAsync();
+			PausePositioning = await Database.SDV3.GetEI13Async();
+			CancelPositioning = await Database.SDV3.GetEI14Async();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex);
+		}
+
+		await InvokeAsync(StateHasChanged);
+	}
+
 	private async Task ConfigAsync()
 	{
 		if (Database.SDV3 is null)
@@ -66,44 +100,6 @@ public partial class PositionControlPage : IAsyncDisposable
 
 		// 将 EI14 设置为定位取消
 		await SetP3_14Async(32);
-	}
-
-	private bool PausePositioning { get; set; } = false;
-	private async Task SetPausePositioningAsync(bool value)
-	{
-		if (Database.SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await Database.SDV3.SetEI13Async(value);
-			PausePositioning = value;
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine(ex.ToString());
-		}
-	}
-
-	private bool CancelPositioning { get; set; } = false;
-	private async Task SetCancelPositioningAsync(bool value)
-	{
-		if (Database.SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			await Database.SDV3.SetEI14Async(value);
-			CancelPositioning = value;
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine(ex.ToString());
-		}
 	}
 
 	private async Task SetImmediateDatasAsync()
@@ -145,40 +141,6 @@ public partial class PositionControlPage : IAsyncDisposable
 		}
 	}
 
-	private async Task UpdateDatasAsync()
-	{
-		if (Database.SDV3 is null)
-		{
-			return;
-		}
-
-		try
-		{
-			FeedbackCurrentPosition = await Database.SDV3.GetFeedbackCurrentPositionAsync();
-			FeedbackSpeed = await Database.SDV3.GetFeedbackSpeedAsync();
-			P1_01 = await Database.SDV3.GetPnAsync(1, 1);
-			P2_40 = await Database.SDV3.GetPnAsync(2, 40);
-			P3_09 = await Database.SDV3.GetPnAsync(3, 9);
-			P3_10 = await Database.SDV3.GetPnAsync(3, 10);
-			P3_11 = await Database.SDV3.GetPnAsync(3, 11);
-			P3_12 = await Database.SDV3.GetPnAsync(3, 12);
-			P3_13 = await Database.SDV3.GetPnAsync(3, 13);
-			P3_14 = await Database.SDV3.GetPnAsync(3, 14);
-			ImmediatePosition = await Database.SDV3.GetImmediatePositionAsync();
-			ImmediateSpeed = await Database.SDV3.GetImmediateSpeedAsync();
-			ImmediateAccelerationDuration = await Database.SDV3.GetImmediateAccelerationDurationAsync();
-			ImmediateDecelerationDuration = await Database.SDV3.GetImmediateDecelerationDurationAsync();
-			PausePositioning = await Database.SDV3.GetEI13Async();
-			CancelPositioning = await Database.SDV3.GetEI14Async();
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine(ex);
-		}
-
-		await InvokeAsync(StateHasChanged);
-	}
-
 	public static async Task ForceUpdateImmediateDatasAsync()
 	{
 		if (Database.SDV3 is null)
@@ -199,6 +161,44 @@ public partial class PositionControlPage : IAsyncDisposable
 
 	public static int FeedbackCurrentPosition { get; set; } = 0;
 	public static int FeedbackSpeed { get; set; } = 0;
+
+	private bool PausePositioning { get; set; } = false;
+	private async Task SetPausePositioningAsync(bool value)
+	{
+		if (Database.SDV3 is null)
+		{
+			return;
+		}
+
+		try
+		{
+			await Database.SDV3.SetEI13Async(value);
+			PausePositioning = value;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.ToString());
+		}
+	}
+
+	private bool CancelPositioning { get; set; } = false;
+	private async Task SetCancelPositioningAsync(bool value)
+	{
+		if (Database.SDV3 is null)
+		{
+			return;
+		}
+
+		try
+		{
+			await Database.SDV3.SetEI14Async(value);
+			CancelPositioning = value;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.ToString());
+		}
+	}
 
 	/// <summary>
 	///		运行模式
