@@ -68,6 +68,25 @@ public partial class PositionControlPage : IAsyncDisposable
 		await SetP3_14Async(32);
 	}
 
+	private bool PausePositioning { get; set; } = false;
+	private async Task SetPausePositioningAsync(bool value)
+	{
+		if (Database.SDV3 is null)
+		{
+			return;
+		}
+
+		try
+		{
+			await Database.SDV3.SetEI13Async(value);
+			PausePositioning = value;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.ToString());
+		}
+	}
+
 	private bool CancelPositioning { get; set; } = false;
 	private async Task SetCancelPositioningAsync(bool value)
 	{
@@ -149,6 +168,7 @@ public partial class PositionControlPage : IAsyncDisposable
 			ImmediateSpeed = await Database.SDV3.GetImmediateSpeedAsync();
 			ImmediateAccelerationDuration = await Database.SDV3.GetImmediateAccelerationDurationAsync();
 			ImmediateDecelerationDuration = await Database.SDV3.GetImmediateDecelerationDurationAsync();
+			PausePositioning = await Database.SDV3.GetEI13Async();
 			CancelPositioning = await Database.SDV3.GetEI14Async();
 		}
 		catch (Exception ex)
