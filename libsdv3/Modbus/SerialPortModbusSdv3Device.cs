@@ -92,8 +92,9 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 				await _sdv3.WriteSingleBitAsync(data_addr, value);
 				return;
 			}
-			catch (ModbusFrameException)
+			catch (ModbusFrameException ex)
 			{
+				Console.WriteLine(ex.ToString());
 				_serial_port.DiscardInBuffer();
 				_serial_port.DiscardOutBuffer();
 				if (retry_times < RetryTimes)
@@ -125,8 +126,9 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 			{
 				return await _sdv3.ReadBitsAsync(data_addr, bit_count);
 			}
-			catch (ModbusFrameException)
+			catch (ModbusFrameException ex)
 			{
+				Console.WriteLine(ex.ToString());
 				_serial_port.DiscardInBuffer();
 				_serial_port.DiscardOutBuffer();
 				if (retry_times < RetryTimes)
@@ -158,8 +160,9 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 			{
 				return await _sdv3.ReadDatasAsync(data_addr, record_count);
 			}
-			catch (ModbusFrameException)
+			catch (ModbusFrameException ex)
 			{
+				Console.WriteLine(ex.ToString());
 				_serial_port.DiscardInBuffer();
 				_serial_port.DiscardOutBuffer();
 				if (retry_times < RetryTimes)
@@ -192,8 +195,9 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 				await _sdv3.WriteDatasAsync(data_addr, datas);
 				return;
 			}
-			catch (ModbusFrameException)
+			catch (ModbusFrameException ex)
 			{
+				Console.WriteLine(ex.ToString());
 				_serial_port.DiscardInBuffer();
 				_serial_port.DiscardOutBuffer();
 				if (retry_times < RetryTimes)

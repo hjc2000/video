@@ -551,6 +551,17 @@ public abstract class ModbusSdv3Device : ISdv3Device
 	}
 
 	#region 立即数
+	public async Task<uint> GetImmediateStateAsync()
+	{
+		uint[] datas = await ReadDatasAsync(ParamAddress.ImmediateState, 2);
+		return datas[0];
+	}
+
+	public async Task SetImmediateStateAsync(uint value)
+	{
+		await WriteDatasAsync(ParamAddress.ImmediateState, [value]);
+	}
+
 	public async Task<int> GetImmediatePositionAsync()
 	{
 		uint[] datas = await ReadDatasAsync(ParamAddress.ImmediatePosition, 2);

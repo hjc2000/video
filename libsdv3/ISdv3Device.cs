@@ -127,6 +127,9 @@ public interface ISdv3Device : IAsyncDisposable
 	Task SetPnAsync(int major, int minor, uint value);
 
 	#region 立即数
+	Task<uint> GetImmediateStateAsync();
+	Task SetImmediateStateAsync(uint value);
+
 	Task<int> GetImmediatePositionAsync();
 	Task SetImmediatePositionAsync(int value);
 

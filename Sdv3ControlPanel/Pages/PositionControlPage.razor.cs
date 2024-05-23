@@ -16,7 +16,7 @@ public partial class PositionControlPage : IAsyncDisposable
 			// 设置定时器
 			_cancel_timer.Cancel();
 			_cancel_timer = new CancellationTokenSource();
-			TaskTimer.SetInterval(UpdateDatasAsync, 1000, _cancel_timer.Token);
+			TaskTimer.SetInterval(UpdateDatasAsync, 100, _cancel_timer.Token);
 		}
 	}
 
@@ -70,6 +70,8 @@ public partial class PositionControlPage : IAsyncDisposable
 
 	private async Task SetImmediateDatasAsync()
 	{
+		// 使用绝对定位模式
+		await SetImmediateStateAsync(0);
 		await SetImmediatePositionAsync(100000);
 		await SetImmediateSpeedAsync(10000);
 		await SetImmediateAccelerationDurationAsync(100);
@@ -128,7 +130,6 @@ public partial class PositionControlPage : IAsyncDisposable
 			ImmediateSpeed = await Database.SDV3.GetImmediateSpeedAsync();
 			ImmediateAccelerationDuration = await Database.SDV3.GetImmediateAccelerationDurationAsync();
 			ImmediateDecelerationDuration = await Database.SDV3.GetImmediateDecelerationDurationAsync();
-			ForceUpdateImmediateDatas = await Database.SDV3.GetEI12Async();
 		}
 		catch (Exception ex)
 		{
@@ -138,8 +139,7 @@ public partial class PositionControlPage : IAsyncDisposable
 		await InvokeAsync(StateHasChanged);
 	}
 
-	public static bool ForceUpdateImmediateDatas { get; set; } = false;
-	public static async Task SetForceUpdateImmediateDatasAsync(bool value)
+	public static async Task ForceUpdateImmediateDatasAsync()
 	{
 		if (Database.SDV3 is null)
 		{
@@ -148,8 +148,8 @@ public partial class PositionControlPage : IAsyncDisposable
 
 		try
 		{
-			await Database.SDV3.SetEI12Async(value);
-			ForceUpdateImmediateDatas = value;
+			await Database.SDV3.SetEI12Async(false);
+			await Database.SDV3.SetEI12Async(true);
 		}
 		catch (Exception ex)
 		{
@@ -308,6 +308,23 @@ public partial class PositionControlPage : IAsyncDisposable
 		{
 			await Database.SDV3.SetPnAsync(3, 14, value);
 			P3_14 = value;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex);
+		}
+	}
+
+	public static async Task SetImmediateStateAsync(uint value)
+	{
+		if (Database.SDV3 is null)
+		{
+			return;
+		}
+
+		try
+		{
+			await Database.SDV3.SetImmediateStateAsync(value);
 		}
 		catch (Exception ex)
 		{

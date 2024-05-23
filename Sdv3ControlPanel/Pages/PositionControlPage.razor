@@ -58,6 +58,7 @@
 	<STButton @onclick="SetImmediateDatasAsync">一键设置立即值数据</STButton>
 	<STButton @onclick="PresetPositionAsync">位置预置</STButton>
 	<STButton @onclick="StartPositioningAsync">定位数据启动</STButton>
+	<STButton @onclick="ForceUpdateImmediateDatasAsync">立即应用新的定位数据</STButton>
 	<JCRazor.表单.FormTable HeadBorderBottom="none"
 						  Height="fit-content"
 						  BodyOverflow="hidden">
@@ -80,17 +81,6 @@
 			<div>立即值减速时间：</div>
 			<div>
 				<input @bind:get="ImmediateDecelerationDuration" @bind:set="SetImmediateDecelerationDurationAsync" />
-			</div>
-
-			<div style="grid-column:1/-1; padding: 10px 0;">
-				<JCRazor.盒子.LeftRightLabel Width="max-content">
-					<Left>
-						<span>立即数立即生效：</span>
-					</Left>
-					<Right>
-						<input type="checkbox" @bind:get="ForceUpdateImmediateDatas" @bind:set="SetForceUpdateImmediateDatasAsync" />
-					</Right>
-				</JCRazor.盒子.LeftRightLabel>
 			</div>
 		</Body>
 	</JCRazor.表单.FormTable>
