@@ -579,18 +579,18 @@ public abstract class ModbusSdv3Device : ISdv3Device
 		return (int)datas[0];
 	}
 
-	public async Task SetImmediateAccelerationDuration(int value)
+	public async Task SetImmediateAccelerationDurationAsync(int value)
 	{
 		await WriteDatasAsync(ParamAddress.ImmediateAccelerationDuration, [(uint)value]);
 	}
 
-	public async Task<int> GetImmediateDecelerationDuration()
+	public async Task<int> GetImmediateDecelerationDurationAsync()
 	{
 		uint[] datas = await ReadDatasAsync(ParamAddress.ImmediateDecelerationDuration, 2);
 		return (int)datas[0];
 	}
 
-	public async Task SetImmediateDecelerationDuration(int value)
+	public async Task SetImmediateDecelerationDurationAsync(int value)
 	{
 		await WriteDatasAsync(ParamAddress.ImmediateDecelerationDuration, [(uint)value]);
 	}

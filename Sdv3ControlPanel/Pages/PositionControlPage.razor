@@ -24,7 +24,41 @@
 				<input readonly @bind:get="P3_10" @bind:set="SetP3_10Async" />
 			</div>
 
+			<div>反馈当前位置：</div>
+			<div>
+				<input readonly value="@(FeedbackCurrentPosition)" />
+			</div>
+
+			<div>反馈速度：</div>
+			<div>
+				<input readonly value="@(FeedbackSpeed)" />
+			</div>
 		</Body>
 	</JCRazor.表单.FormTable>
+	<STButton @onclick="SetImmediateDatasAsync">一键设置立即值数据</STButton>
+	<STButton @onclick="PresetPositionAsync">位置预置</STButton>
 	<STButton @onclick="StartPositioningAsync">定位数据启动</STButton>
+	<JCRazor.表单.FormTable HeadBorderBottom="none" Height="fit-content">
+		<Body>
+			<div>立即值位置：</div>
+			<div>
+				<input @bind:get="ImmediatePosition" @bind:set="SetImmediatePositionAsync" />
+			</div>
+
+			<div>立即值速度：</div>
+			<div>
+				<input @bind:get="ImmediateSpeed" @bind:set="SetImmediateSpeedAsync" />
+			</div>
+
+			<div>立即值加速时间：</div>
+			<div>
+				<input @bind:get="ImmediateAccelerationDuration" @bind:set="SetImmediateAccelerationDurationAsync" />
+			</div>
+
+			<div>立即值减速时间：</div>
+			<div>
+				<input @bind:get="ImmediateDecelerationDuration" @bind:set="SetImmediateDecelerationDurationAsync" />
+			</div>
+		</Body>
+	</JCRazor.表单.FormTable>
 </div>

@@ -134,10 +134,10 @@ public interface ISdv3Device : IAsyncDisposable
 	Task SetImmediateSpeedAsync(int value);
 
 	Task<int> GetImmediateAccelerationDurationAsync();
-	Task SetImmediateAccelerationDuration(int value);
+	Task SetImmediateAccelerationDurationAsync(int value);
 
-	Task<int> GetImmediateDecelerationDuration();
-	Task SetImmediateDecelerationDuration(int value);
+	Task<int> GetImmediateDecelerationDurationAsync();
+	Task SetImmediateDecelerationDurationAsync(int value);
 	#endregion
 
 	Task<int> GetSpeedAsync();
