@@ -24,6 +24,26 @@
 				<input readonly @bind:get="P3_10" @bind:set="SetP3_10Async" />
 			</div>
 
+			<div>P3.11：</div>
+			<div>
+				<input readonly @bind:get="P3_11" @bind:set="SetP3_11Async" />
+			</div>
+
+			<div>P3.12：</div>
+			<div>
+				<input readonly @bind:get="P3_12" @bind:set="SetP3_12Async" />
+			</div>
+
+			<div>P3.13：</div>
+			<div>
+				<input readonly @bind:get="P3_13" @bind:set="SetP3_13Async" />
+			</div>
+
+			<div>P3.14：</div>
+			<div>
+				<input readonly @bind:get="P3_14" @bind:set="SetP3_14Async" />
+			</div>
+
 			<div>反馈当前位置：</div>
 			<div>
 				<input readonly value="@(FeedbackCurrentPosition)" />
@@ -38,7 +58,9 @@
 	<STButton @onclick="SetImmediateDatasAsync">一键设置立即值数据</STButton>
 	<STButton @onclick="PresetPositionAsync">位置预置</STButton>
 	<STButton @onclick="StartPositioningAsync">定位数据启动</STButton>
-	<JCRazor.表单.FormTable HeadBorderBottom="none" Height="fit-content">
+	<JCRazor.表单.FormTable HeadBorderBottom="none"
+						  Height="fit-content"
+						  BodyOverflow="hidden">
 		<Body>
 			<div>立即值位置：</div>
 			<div>
@@ -58,6 +80,17 @@
 			<div>立即值减速时间：</div>
 			<div>
 				<input @bind:get="ImmediateDecelerationDuration" @bind:set="SetImmediateDecelerationDurationAsync" />
+			</div>
+
+			<div style="grid-column:1/-1; padding: 10px 0;">
+				<JCRazor.盒子.LeftRightLabel Width="max-content">
+					<Left>
+						<span>立即数立即生效：</span>
+					</Left>
+					<Right>
+						<input type="checkbox" @bind:get="ForceUpdateImmediateDatas" @bind:set="SetForceUpdateImmediateDatasAsync" />
+					</Right>
+				</JCRazor.盒子.LeftRightLabel>
 			</div>
 		</Body>
 	</JCRazor.表单.FormTable>

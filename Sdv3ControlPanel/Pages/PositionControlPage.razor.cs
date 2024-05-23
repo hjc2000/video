@@ -60,6 +60,12 @@ public partial class PositionControlPage : IAsyncDisposable
 
 		// 将 EI12 设置为立即值变更指令
 		await SetP3_12Async(23);
+
+		// 将 EI13 设置为临时停止
+		await SetP3_13Async(31);
+
+		// 将 EI14 设置为定位取消
+		await SetP3_14Async(32);
 	}
 
 	private async Task SetImmediateDatasAsync()
@@ -114,10 +120,15 @@ public partial class PositionControlPage : IAsyncDisposable
 			P2_40 = await Database.SDV3.GetPnAsync(2, 40);
 			P3_09 = await Database.SDV3.GetPnAsync(3, 9);
 			P3_10 = await Database.SDV3.GetPnAsync(3, 10);
+			P3_11 = await Database.SDV3.GetPnAsync(3, 11);
+			P3_12 = await Database.SDV3.GetPnAsync(3, 12);
+			P3_13 = await Database.SDV3.GetPnAsync(3, 13);
+			P3_14 = await Database.SDV3.GetPnAsync(3, 14);
 			ImmediatePosition = await Database.SDV3.GetImmediatePositionAsync();
 			ImmediateSpeed = await Database.SDV3.GetImmediateSpeedAsync();
 			ImmediateAccelerationDuration = await Database.SDV3.GetImmediateAccelerationDurationAsync();
 			ImmediateDecelerationDuration = await Database.SDV3.GetImmediateDecelerationDurationAsync();
+			ForceUpdateImmediateDatas = await Database.SDV3.GetEI12Async();
 		}
 		catch (Exception ex)
 		{
@@ -125,6 +136,25 @@ public partial class PositionControlPage : IAsyncDisposable
 		}
 
 		await InvokeAsync(StateHasChanged);
+	}
+
+	public static bool ForceUpdateImmediateDatas { get; set; } = false;
+	public static async Task SetForceUpdateImmediateDatasAsync(bool value)
+	{
+		if (Database.SDV3 is null)
+		{
+			return;
+		}
+
+		try
+		{
+			await Database.SDV3.SetEI12Async(value);
+			ForceUpdateImmediateDatas = value;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex);
+		}
 	}
 
 	public static int FeedbackCurrentPosition { get; set; } = 0;
@@ -240,6 +270,44 @@ public partial class PositionControlPage : IAsyncDisposable
 		{
 			await Database.SDV3.SetPnAsync(3, 12, value);
 			P3_12 = value;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex);
+		}
+	}
+
+	public static uint P3_13 { get; set; } = 0;
+	public static async Task SetP3_13Async(uint value)
+	{
+		if (Database.SDV3 is null)
+		{
+			return;
+		}
+
+		try
+		{
+			await Database.SDV3.SetPnAsync(3, 13, value);
+			P3_13 = value;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex);
+		}
+	}
+
+	public static uint P3_14 { get; set; } = 0;
+	public static async Task SetP3_14Async(uint value)
+	{
+		if (Database.SDV3 is null)
+		{
+			return;
+		}
+
+		try
+		{
+			await Database.SDV3.SetPnAsync(3, 14, value);
+			P3_14 = value;
 		}
 		catch (Exception ex)
 		{
