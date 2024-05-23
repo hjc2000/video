@@ -1,5 +1,29 @@
 @page "/position_control"
 
 <div class="root">
+	<STButton @onclick="ConfigAsync">一键配置</STButton>
+	<JCRazor.表单.FormTable HeadBorderBottom="none">
+		<Body>
+			<div>P1.01：</div>
+			<div>
+				<input readonly @bind:get="P1_01" @bind:set="SetP1_01Async" />
+			</div>
 
+			<div>P2.40：</div>
+			<div>
+				<input readonly @bind:get="P2_40" @bind:set="SetP2_40Async" />
+			</div>
+
+			<div>P3.09：</div>
+			<div>
+				<input readonly @bind:get="P3_09" @bind:set="SetP3_09Async" />
+			</div>
+
+			<div>P3.10：</div>
+			<div>
+				<input readonly @bind:get="P3_10" @bind:set="SetP3_10Async" />
+			</div>
+
+		</Body>
+	</JCRazor.表单.FormTable>
 </div>

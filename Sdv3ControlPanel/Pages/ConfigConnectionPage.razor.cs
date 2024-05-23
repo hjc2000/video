@@ -15,6 +15,13 @@ public partial class ConfigConnectionPage : IAsyncDisposable
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
+		if (Database.SDV3 is not null)
+		{
+			// 设置定时器
+			_cancel_timer.Cancel();
+			_cancel_timer = new CancellationTokenSource();
+			TaskTimer.SetInterval(UpdateDatasAsync, 1000, _cancel_timer.Token);
+		}
 	}
 
 	private bool _disposed = false;
@@ -28,7 +35,7 @@ public partial class ConfigConnectionPage : IAsyncDisposable
 		_disposed = true;
 		GC.SuppressFinalize(this);
 
-		await Task.CompletedTask;
+		await _cancel_timer.CancelAsync();
 	}
 	#endregion
 
