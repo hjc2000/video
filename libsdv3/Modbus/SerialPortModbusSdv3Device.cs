@@ -1,5 +1,6 @@
 ﻿using JCNET;
 using JCNET.Modbus;
+using JCNET.Modbus.ModbusException;
 using JCNET.流;
 using libsdv3.Modbus.Frame;
 using System.IO.Ports;
@@ -105,6 +106,10 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 
 				throw;
 			}
+			catch (ModbusRequestInvalidException)
+			{
+				throw;
+			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex);
@@ -137,6 +142,10 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 					continue;
 				}
 
+				throw;
+			}
+			catch (ModbusRequestInvalidException)
+			{
 				throw;
 			}
 			catch (Exception ex)
@@ -173,6 +182,10 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 
 				throw;
 			}
+			catch (ModbusRequestInvalidException)
+			{
+				throw;
+			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex);
@@ -206,6 +219,10 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 					continue;
 				}
 
+				throw;
+			}
+			catch (ModbusRequestInvalidException)
+			{
 				throw;
 			}
 			catch (Exception ex)
@@ -269,13 +286,7 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		Console.WriteLine();
 	}
 
-	/// <summary>
-	///		检查 ADU。
-	///		* 不包括 PDU 部分，只检查作为头部的地址和作为尾部的 CRC16。
-	/// </summary>
-	/// <param name="response_frame"></param>
-	/// <exception cref="ModbusFrameException"></exception>
-	private void CheckADU(Memory<byte> response_frame)
+	private void CrcCheck(Memory<byte> response_frame)
 	{
 		ModbusCrc16 crc16 = new();
 		crc16.Add(response_frame[..^2]);
@@ -289,11 +300,6 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		if (span[^1] != crc16.RegisterHighByte)
 		{
 			throw new ModbusFrameException("CRC 校验错误");
-		}
-
-		if (span[0] != _device_addr)
-		{
-			throw new ModbusFrameException("接收到非预期地址的设备的响应");
 		}
 	}
 
@@ -317,14 +323,47 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 
 		// 接收
 		byte[] read_buffer = new byte[8];
-		await _serial_stream.ReadExactlyAsync(read_buffer);
-		PrintFrame(read_buffer, false);
-		CheckADU(read_buffer);
+
+		// 先接收前 2 个字节，即设备地址，功能码。
+		await _serial_stream.ReadExactlyAsync(read_buffer, 0, 2);
+		if (read_buffer[0] != _device_addr)
+		{
+			throw new ModbusFrameException("接收到非预期地址的设备的响应");
+		}
+
 		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
 		{
+			// 收到意外的功能码
+			if (read_buffer[1] == ((byte)FunctionCode.WriteSingleBit | 0b1000_0000))
+			{
+				// 收到例外响应
+				// 剩下 1 字节的例外码和 2 字节的 CRC 没有接收
+				await _serial_stream.ReadExactlyAsync(read_buffer, 2, 3);
+				CrcCheck(new Memory<byte>(read_buffer, 0, 5));
+				switch (read_buffer[2])
+				{
+				case 1:
+					{
+						throw new ModbusRequestFunctionCodeInvalidException();
+					}
+				case 2:
+					{
+						throw new ModbusRequestDataAddressInvalidException();
+					}
+				case 3:
+					{
+						throw new ModbusRequestDataInvalidException();
+					}
+				}
+			}
+
 			throw new ModbusFrameException("设备回复的帧中的功能码错误");
 		}
 
+		// 设备地址和功能码正确。接收剩余的字节。
+		await _serial_stream.ReadExactlyAsync(read_buffer, 2, read_buffer.Length - 2);
+		PrintFrame(read_buffer, false);
+		CrcCheck(read_buffer);
 		ushort received_data_addr = _auto_bit_converter.ToUInt16(read_buffer, 2);
 		if (received_data_addr != data_addr)
 		{
@@ -362,14 +401,47 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		await _serial_stream.WriteAsync(frame);
 
 		byte[] read_buffer = new byte[5 + (bit_count / 8) + 1];
-		await _serial_stream.ReadExactlyAsync(read_buffer);
-		PrintFrame(read_buffer, false);
-		CheckADU(read_buffer);
+
+		// 先接收前 2 个字节，即设备地址，功能码。
+		await _serial_stream.ReadExactlyAsync(read_buffer, 0, 2);
+		if (read_buffer[0] != _device_addr)
+		{
+			throw new ModbusFrameException("接收到非预期地址的设备的响应");
+		}
+
 		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
 		{
+			// 收到意外的功能码
+			if (read_buffer[1] == ((byte)FunctionCode.ReadBits | 0b1000_0000))
+			{
+				// 收到例外响应
+				// 剩下 1 字节的例外码和 2 字节的 CRC 没有接收
+				await _serial_stream.ReadExactlyAsync(read_buffer, 2, 3);
+				CrcCheck(new Memory<byte>(read_buffer, 0, 5));
+				switch (read_buffer[2])
+				{
+				case 1:
+					{
+						throw new ModbusRequestFunctionCodeInvalidException();
+					}
+				case 2:
+					{
+						throw new ModbusRequestDataAddressInvalidException();
+					}
+				case 3:
+					{
+						throw new ModbusRequestDataInvalidException();
+					}
+				}
+			}
+
 			throw new ModbusFrameException("设备回复的帧中的功能码错误");
 		}
 
+		// 设备地址和功能码正确。接收剩余的字节。
+		await _serial_stream.ReadExactlyAsync(read_buffer, 2, read_buffer.Length - 2);
+		PrintFrame(read_buffer, false);
+		CrcCheck(read_buffer);
 		return read_buffer[3..^2];
 	}
 
@@ -398,14 +470,47 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 
 		// 接收响应
 		byte[] read_buffer = new byte[5 + (record_count * 2)];
-		await _serial_stream.ReadExactlyAsync(read_buffer);
-		PrintFrame(read_buffer, false);
-		CheckADU(read_buffer);
+
+		// 先接收前 2 个字节，即设备地址，功能码。
+		await _serial_stream.ReadExactlyAsync(read_buffer, 0, 2);
+		if (read_buffer[0] != _device_addr)
+		{
+			throw new ModbusFrameException("接收到非预期地址的设备的响应");
+		}
+
 		if (read_buffer[1] != (byte)FunctionCode.ReadDatas)
 		{
+			// 收到意外的功能码
+			if (read_buffer[1] == ((byte)FunctionCode.ReadDatas | 0b1000_0000))
+			{
+				// 收到例外响应
+				// 剩下 1 字节的例外码和 2 字节的 CRC 没有接收
+				await _serial_stream.ReadExactlyAsync(read_buffer, 2, 3);
+				CrcCheck(new Memory<byte>(read_buffer, 0, 5));
+				switch (read_buffer[2])
+				{
+				case 1:
+					{
+						throw new ModbusRequestFunctionCodeInvalidException();
+					}
+				case 2:
+					{
+						throw new ModbusRequestDataAddressInvalidException();
+					}
+				case 3:
+					{
+						throw new ModbusRequestDataInvalidException();
+					}
+				}
+			}
+
 			throw new ModbusFrameException("设备回复的帧中的功能码错误");
 		}
 
+		// 设备地址和功能码正确。接收剩余的字节。
+		await _serial_stream.ReadExactlyAsync(read_buffer, 2, read_buffer.Length - 2);
+		PrintFrame(read_buffer, false);
+		CrcCheck(read_buffer);
 		if (read_buffer[2] != record_count * 2)
 		{
 			throw new ModbusFrameException("返回的数据字节数不对");
@@ -441,14 +546,47 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 
 		// 接收响应
 		byte[] read_buffer = new byte[8];
-		await _serial_stream.ReadExactlyAsync(read_buffer);
-		PrintFrame(read_buffer, false);
-		CheckADU(read_buffer);
+
+		// 先接收前 2 个字节，即设备地址，功能码。
+		await _serial_stream.ReadExactlyAsync(read_buffer, 0, 2);
+		if (read_buffer[0] != _device_addr)
+		{
+			throw new ModbusFrameException("接收到非预期地址的设备的响应");
+		}
+
 		if (read_buffer[1] != (byte)FunctionCode.WriteDatas)
 		{
+			// 收到意外的功能码
+			if (read_buffer[1] == ((byte)FunctionCode.WriteDatas | 0b1000_0000))
+			{
+				// 收到例外响应
+				// 剩下 1 字节的例外码和 2 字节的 CRC 没有接收
+				await _serial_stream.ReadExactlyAsync(read_buffer, 2, 3);
+				CrcCheck(new Memory<byte>(read_buffer, 0, 5));
+				switch (read_buffer[2])
+				{
+				case 1:
+					{
+						throw new ModbusRequestFunctionCodeInvalidException();
+					}
+				case 2:
+					{
+						throw new ModbusRequestDataAddressInvalidException();
+					}
+				case 3:
+					{
+						throw new ModbusRequestDataInvalidException();
+					}
+				}
+			}
+
 			throw new ModbusFrameException("设备回复的帧中的功能码错误");
 		}
 
+		// 设备地址和功能码正确。接收剩余的字节。
+		await _serial_stream.ReadExactlyAsync(read_buffer, 2, read_buffer.Length - 2);
+		PrintFrame(read_buffer, false);
+		CrcCheck(read_buffer);
 		ushort response_data_addr = _auto_bit_converter.ToUInt16(read_buffer, 2);
 		if (response_data_addr != data_addr)
 		{

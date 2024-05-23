@@ -71,7 +71,7 @@ public partial class PositionControlPage : IAsyncDisposable
 	private async Task SetImmediateDatasAsync()
 	{
 		// 使用绝对定位模式
-		await SetImmediateStateAsync(0);
+		await SetImmediateStateAsync(1);
 		await SetImmediatePositionAsync(100000);
 		await SetImmediateSpeedAsync(10000);
 		await SetImmediateAccelerationDurationAsync(100);

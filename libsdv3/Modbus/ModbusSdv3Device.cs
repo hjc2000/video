@@ -1,4 +1,4 @@
-﻿using JCNET.Modbus;
+﻿using JCNET.Modbus.ModbusException;
 using libsdv3.Code;
 
 namespace libsdv3.Modbus;
