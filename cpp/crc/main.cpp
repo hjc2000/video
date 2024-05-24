@@ -2,7 +2,7 @@
 #include<format>
 #include<iostream>
 #include<jccpp/Bit.h>
-#include<jccpp/math/ModbusCrc16.h>
+#include<jccpp/communicate/ModbusCrc16.h>
 #include<stdint.h>
 
 int main(void)
