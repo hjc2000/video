@@ -1,7 +1,6 @@
 ﻿#include<bit>
 #include<format>
 #include<iostream>
-#include<jccpp/Bit.h>
 #include<jccpp/communicate/ModbusCrc16.h>
 #include<stdint.h>
 
