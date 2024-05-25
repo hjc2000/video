@@ -12,10 +12,10 @@ void test_libusb()
 {
 	try
 	{
-		UsbContextWrapper usb_ctx{};
+		UsbContextWrapper usb_ctx { };
 		UsbDeviceListWrapper device_list;
 		device_list.FindDevices(usb_ctx);
-		cout << "找到 " << device_list.Count() << " 个设备" << endl;
+		std::cout << "找到 " << device_list.Count() << " 个设备" << std::endl;
 		for (UsbDeviceWrapper device : device_list)
 		{
 			try
@@ -28,11 +28,11 @@ void test_libusb()
 			}
 
 			libusb_device_descriptor desc = device.GetDescriptor();
-			cout << std::format("{:x}  {:x}", desc.idVendor, desc.idProduct) << endl;
+			std::cout << std::format("{:x}  {:x}", desc.idVendor, desc.idProduct) << std::endl;
 		}
 	}
 	catch (std::runtime_error &ex)
 	{
-		cout << ex.what() << endl;
+		std::cout << ex.what() << std::endl;
 	}
 }

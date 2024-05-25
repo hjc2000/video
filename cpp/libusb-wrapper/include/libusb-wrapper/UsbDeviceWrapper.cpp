@@ -74,12 +74,12 @@ void UsbDeviceWrapper::Open()
 		throw std::runtime_error(UsbErrorCodeToString(ret));
 	}
 
-	_device_handle = shared_ptr<libusb_device_handle>{
+	_device_handle = shared_ptr<libusb_device_handle> {
 		handle,
 		[](libusb_device_handle *handle)
-		{
-			libusb_close(handle);
-		}
+	{
+		libusb_close(handle);
+	}
 	};
 }
 
@@ -109,7 +109,7 @@ uint16_t UsbDeviceWrapper::GetStatus()
 {
 	uint8_t status_buf[2];
 	int have_read = ControlTransfer(
-		USBRequestOptions{
+		USBRequestOptions {
 			USBRequestOptions::DataDirection::DeviceToHost,
 			USBRequestOptions::RequestType::Standard,
 			USBRequestOptions::RecipientType::Device
@@ -161,11 +161,11 @@ std::vector<shared_ptr<UsbConfigDescriptorWrapper>> UsbDeviceWrapper::GetConfigD
 		int ret = libusb_get_config_descriptor(_wrapped_obj, i, &config);
 		if (ret)
 		{
-			std::cout << CODE_POS_STR << UsbErrorCodeToString(ret) << endl;
+			std::cout << CODE_POS_STR << UsbErrorCodeToString(ret) << std::endl;
 			continue;
 		}
 
-		shared_ptr<UsbConfigDescriptorWrapper> wrapper{ new UsbConfigDescriptorWrapper{config} };
+		shared_ptr<UsbConfigDescriptorWrapper> wrapper { new UsbConfigDescriptorWrapper { config } };
 		config_list.push_back(wrapper);
 	}
 
@@ -205,7 +205,7 @@ void UsbDeviceWrapper::ClaimInterface(int interface_number)
 	int ret = libusb_claim_interface(_device_handle.get(), interface_number);
 	if (ret)
 	{
-		cout << CODE_POS_STR << UsbErrorCodeToString(ret) << endl;
+		std::cout << CODE_POS_STR << UsbErrorCodeToString(ret) << std::endl;
 		throw std::runtime_error(UsbErrorCodeToString(ret));
 	}
 }
