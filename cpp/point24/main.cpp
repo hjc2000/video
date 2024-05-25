@@ -1,4 +1,5 @@
-﻿#include<Point24Solver.h>
+﻿#include<iostream>
+#include<Point24Solver.h>
 
 using namespace std;
 

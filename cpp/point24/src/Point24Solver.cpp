@@ -1,5 +1,10 @@
 #include"Point24Solver.h"
+#include<algorithm>
+#include<base/BaseConverter.h>
 #include<base/tinyexpr.h>
+#include<format>
+#include<iostream>
+#include<math.h>
 
 using namespace std;
 
@@ -51,7 +56,7 @@ std::string Point24Solver::TryAllOperatorCombinations(std::array<uint8_t, 4> con
 	// 4 则运算符就像是 4 进制数。3 个运算符就像是 3 位 4 进制数
 	for (uint8_t i = 0; i < std::pow(4, 3); i++)
 	{
-		std::vector<uint8_t> operators = jc::BaseConverter::ConvertBase(i, 4);
+		std::vector<uint8_t> operators = base::BaseConverter::ConvertBase(i, 4);
 
 		// 把 operators 补全到长度为 3
 		int remain = 3 - operators.size();

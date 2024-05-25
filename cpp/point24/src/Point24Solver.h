@@ -1,11 +1,8 @@
 #pragma once
-#include<algorithm>
 #include<array>
-#include<format>
-#include<iostream>
-#include<jccpp/math/BaseConverter.h>
-#include<math.h>
+#include<stdint.h>
 #include<string>
+#include<vector>
 
 class Point24Solver
 {
