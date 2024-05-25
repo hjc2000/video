@@ -1,12 +1,12 @@
-﻿#include<bit>
+﻿#include<base/modbus/ModbusCrc16.h>
+#include<bit>
 #include<format>
 #include<iostream>
-#include<jccpp/communicate/ModbusCrc16.h>
 #include<stdint.h>
 
 int main(void)
 {
-	jccpp::ModbusCrc16 crc16;
+	base::ModbusCrc16 crc16;
 	crc16.Add(0x01);
 	crc16.Add(0x03);
 	crc16.Add(0x04);
