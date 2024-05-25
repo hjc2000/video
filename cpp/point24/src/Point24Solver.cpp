@@ -1,5 +1,5 @@
 #include"Point24Solver.h"
-#include<jc-algorithm/tinyexpr.h>
+#include<base/tinyexpr.h>
 
 using namespace std;
 
