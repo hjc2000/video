@@ -11,9 +11,11 @@ endif()
 include($ENV{cpp_lib_build_scripts_path}/cmake-module/setup.cmake)
 include(target_import_libusb)
 include(target_import_jccpp)
+include(target_import_base)
 
 # 定义生成规则
 add_library("${ProjectName}" SHARED)
 target_import_src(${ProjectName})
 target_import_libusb(${ProjectName} PUBLIC)
 target_import_jccpp(${ProjectName} PUBLIC)
+target_import_base(${ProjectName} PUBLIC)

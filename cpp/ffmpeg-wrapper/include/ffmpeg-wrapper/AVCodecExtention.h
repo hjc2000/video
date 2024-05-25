@@ -1,5 +1,5 @@
 #pragma once
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/base_include.h>
 

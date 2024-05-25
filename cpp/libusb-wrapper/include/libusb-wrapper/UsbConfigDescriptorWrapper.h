@@ -1,10 +1,10 @@
 #pragma once
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 #include<libusb-wrapper/UsbContextWrapper.h>
 
 namespace libusb
 {
-	class UsbConfigDescriptorWrapper :public Wrapper<libusb_config_descriptor>
+	class UsbConfigDescriptorWrapper :public base::Wrapper<libusb_config_descriptor>
 	{
 		libusb_config_descriptor *_wrapped_obj = nullptr;
 		UsbConfigDescriptorWrapper(UsbConfigDescriptorWrapper &value) = delete;

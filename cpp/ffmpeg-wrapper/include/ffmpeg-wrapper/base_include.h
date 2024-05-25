@@ -22,7 +22,7 @@ extern "C"
 	#include<libswscale/swscale.h>
 }
 
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 #include<jccpp/define.h>
 #include<fstream>
 #include<functional>

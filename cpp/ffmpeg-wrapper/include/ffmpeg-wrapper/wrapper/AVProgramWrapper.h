@@ -3,7 +3,7 @@
 #include<ffmpeg-wrapper/wrapper/AVDictionaryWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
 #include<jccpp/ToString.h>
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 #include<jccpp/container/List.h>
 
 namespace video
@@ -15,7 +15,7 @@ namespace video
 	 * AVProgramWrapper 析构的时候不会释放有关 AVProgram 的资源。这是由 AVFormatContext 的 avformat_free_context
 	 * 函数负责释放的。
 	*/
-	class AVProgramWrapper :public Wrapper<AVProgram>, public ICanToString
+	class AVProgramWrapper :public base::Wrapper<AVProgram>, public ICanToString
 	{
 		AVProgram *_wrapped_obj = nullptr;
 		shared_ptr<AVDictionaryWrapper> _dic;

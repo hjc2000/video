@@ -8,7 +8,7 @@
 namespace video
 {
 	class VideoFilterGraph :
-		public Wrapper<AVFilterGraph>,
+		public base::Wrapper<AVFilterGraph>,
 		public IFrameConsumer,
 		public IFrameSource
 	{

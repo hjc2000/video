@@ -1854,7 +1854,7 @@ bool ts::UString::hexaDecodeAppend(ts::ByteBlock &result, bool c_style) const
 
 //----------------------------------------------------------------------------
 // Build a multi-line string containing the hexadecimal dump of a memory area.
-// Wrapper methods.
+// base::Wrapper methods.
 //----------------------------------------------------------------------------
 
 ts::UString ts::UString::Dump(const void *data,

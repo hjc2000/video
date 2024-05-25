@@ -1,11 +1,11 @@
 #pragma once
 #include<base/Stream.h>
 #include<ffmpeg-wrapper/base_include.h>
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 
 namespace video
 {
-	class AVIOContextWrapper :public Wrapper<AVIOContext>
+	class AVIOContextWrapper :public base::Wrapper<AVIOContext>
 	{
 		AVIOContext *_wrapped_obj = nullptr;
 		int _buffer_size;

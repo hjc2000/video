@@ -20,7 +20,7 @@ namespace video
 	///		* 本类线程安全，因为所有的公共方法都加了互斥锁。
 	/// </summary>
 	class SwrContextWrapper :
-		public Wrapper<SwrContext>,
+		public base::Wrapper<SwrContext>,
 		public IFrameConsumer,
 		public IFrameSource
 	{

@@ -1,6 +1,6 @@
 #pragma once
 #include<iostream>
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 #include<jccpp/container/List.h>
 #include<jccpp/define.h>
 #include<libusb-1.0/libusb.h>
@@ -13,7 +13,7 @@ using std::shared_ptr;
 
 namespace libusb
 {
-	class UsbDeviceWrapper :public Wrapper<libusb_device>
+	class UsbDeviceWrapper :public base::Wrapper<libusb_device>
 	{
 		libusb_device *_wrapped_obj = nullptr;
 		shared_ptr<libusb_device_handle> _device_handle = nullptr;

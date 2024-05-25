@@ -5,13 +5,13 @@
 #include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameSource.h>
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 #include<mutex>
 
 namespace video
 {
 	class SwsContextWrapper :
-		public Wrapper<SwsContext>,
+		public base::Wrapper<SwsContext>,
 		public IFrameConsumer,
 		public IFrameSource
 	{

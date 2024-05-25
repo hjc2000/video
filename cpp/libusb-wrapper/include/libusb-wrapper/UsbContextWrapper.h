@@ -1,12 +1,12 @@
 #pragma once
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 #include<jccpp/define.h>
 #include<libusb-1.0/libusb.h>
 #include<libusb-wrapper/UsbError.h>
 
 namespace libusb
 {
-	class UsbContextWrapper :public Wrapper<libusb_context>
+	class UsbContextWrapper :public base::Wrapper<libusb_context>
 	{
 		libusb_context *_wrapped_obj;
 

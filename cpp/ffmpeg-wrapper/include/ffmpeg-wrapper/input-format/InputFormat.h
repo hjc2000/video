@@ -5,7 +5,7 @@
 #include<ffmpeg-wrapper/wrapper/AVIOContextWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVProgramWrapper.h>
 #include<functional>
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 #include<string>
 
 namespace video
@@ -15,7 +15,7 @@ namespace video
 	class AVCodecContextWrapper;
 
 	class InputFormat :
-		public Wrapper<AVFormatContext>,
+		public base::Wrapper<AVFormatContext>,
 		public IPacketSource
 	{
 	private:

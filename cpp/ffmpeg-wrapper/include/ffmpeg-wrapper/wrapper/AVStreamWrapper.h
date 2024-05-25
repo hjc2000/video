@@ -2,7 +2,7 @@
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/info-collection/IAudioStreamInfoCollection.h>
 #include<ffmpeg-wrapper/info-collection/IVideoStreamInfoCollection.h>
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 
 namespace video
 {
@@ -15,7 +15,7 @@ namespace video
 	///		将被包装对象的指针拷贝。
 	/// </summary>
 	class AVStreamWrapper :
-		public Wrapper<AVStream>,
+		public base::Wrapper<AVStream>,
 		public IAudioStreamInfoCollection,
 		public IVideoStreamInfoCollection
 	{

@@ -4,7 +4,7 @@
 
 namespace video
 {
-	class SDL_RendererWrapper : public Wrapper<SDL_Renderer>
+	class SDL_RendererWrapper : public base::Wrapper<SDL_Renderer>
 	{
 		SDL_Renderer *_wrapped_obj = nullptr;
 

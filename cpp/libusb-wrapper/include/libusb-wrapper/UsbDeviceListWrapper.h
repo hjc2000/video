@@ -13,7 +13,7 @@ namespace libusb
 	/**
 	* @brief 设备列表。支持使用 for-in 循环，在循环中用 UsbDeviceWrapper 接收。
 	*/
-	class UsbDeviceListWrapper :public Wrapper<libusb_device *>
+	class UsbDeviceListWrapper :public base::Wrapper<libusb_device *>
 	{
 		libusb_device **_wrapped_obj = nullptr;
 		int64_t _count = 0;

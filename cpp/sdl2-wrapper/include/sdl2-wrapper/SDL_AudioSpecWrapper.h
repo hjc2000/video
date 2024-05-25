@@ -2,7 +2,7 @@
 #include<SDL.h>
 #include<ffmpeg-wrapper/info-collection/IAudioFrameInfoCollection.h>
 #include<jccpp/Json.h>
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 #include<sstream>
 #include<string>
 
@@ -14,7 +14,7 @@ using namespace video;
 namespace video
 {
 	class SDL_AudioSpecWrapper :
-		public Wrapper<SDL_AudioSpec>,
+		public base::Wrapper<SDL_AudioSpec>,
 		public IAudioFrameInfoCollection,
 		public IJsonSerializable
 	{

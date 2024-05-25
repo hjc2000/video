@@ -1,5 +1,6 @@
 #pragma once
 #include<base/Stream.h>
+#include<base/Wrapper.h>
 #include<chrono>
 #include<ffmpeg-wrapper/AVCalculate.h>
 #include<ffmpeg-wrapper/AVToString.h>
@@ -8,14 +9,13 @@
 #include<ffmpeg-wrapper/info-collection/AudioFrameInfoCollection.h>
 #include<ffmpeg-wrapper/info-collection/AudioStreamInfoCollection.h>
 #include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>
-#include<jccpp/Wrapper.h>
 
 namespace video
 {
 	class ImageBuffer;
 
 	class AVFrameWrapper :
-		public Wrapper<AVFrame>,
+		public base::Wrapper<AVFrame>,
 		public IAudioFrameInfoCollection,
 		public IVideoFrameInfoCollection
 	{

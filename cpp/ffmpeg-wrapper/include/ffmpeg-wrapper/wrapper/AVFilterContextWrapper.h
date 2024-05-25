@@ -1,10 +1,10 @@
 #pragma once
 #include<ffmpeg-wrapper/base_include.h>
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 
 namespace video
 {
-	class AVFilterContextWrapper :public Wrapper<AVFilterContext>
+	class AVFilterContextWrapper :public base::Wrapper<AVFilterContext>
 	{
 		AVFilterContext *_wrapped_obj = nullptr;
 

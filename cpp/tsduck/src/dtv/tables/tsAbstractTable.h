@@ -406,7 +406,7 @@ namespace ts {
         virtual void addOneSectionImpl(BinaryTable& table, PSIBuffer& payload) const;
 
         //!
-        //! Wrapper for deserializePayload().
+        //! base::Wrapper for deserializePayload().
         //! This is a method to overload in intermediate classes to avoid using "call superclass" to all tables.
         //! @param [in,out] buf Deserialization buffer.
         //! @param [in] section A reference to the section.

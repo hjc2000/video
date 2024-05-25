@@ -285,7 +285,7 @@ bool ts::AbstractTable::deserialize(DuckContext& duck, const BinaryTable& table)
 
 
 //----------------------------------------------------------------------------
-// Wrapper for deserializePayload (overridden by intermediate classes).
+// base::Wrapper for deserializePayload (overridden by intermediate classes).
 //----------------------------------------------------------------------------
 
 void ts::AbstractTable::deserializePayloadWrapper(PSIBuffer& buf, const Section& section)

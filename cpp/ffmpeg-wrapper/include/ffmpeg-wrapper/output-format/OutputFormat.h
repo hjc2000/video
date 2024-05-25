@@ -4,7 +4,7 @@
 #include<ffmpeg-wrapper/wrapper/AVPacketWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVProgramWrapper.h>
 #include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 #include<jccpp/container/List.h>
 #include<mutex>
 #include<thread>
@@ -16,7 +16,7 @@ namespace video
 	///		本类的 _wrapped_obj 没有初始化，需要派生类继承后进行初始化。
 	/// </summary>
 	class OutputFormat :
-		public Wrapper<AVFormatContext>,
+		public base::Wrapper<AVFormatContext>,
 		public IPacketConsumer
 	{
 		std::mutex _not_private_methods_lock;

@@ -1,14 +1,14 @@
 #pragma once
 #include<ffmpeg-wrapper/AVCalculate.h>
 #include<ffmpeg-wrapper/base_include.h>
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 
 namespace video
 {
 	class AVFrameWrapper;
 	class AVCodecContextWrapper;
 
-	class AVPacketWrapper : public Wrapper<AVPacket>
+	class AVPacketWrapper : public base::Wrapper<AVPacket>
 	{
 		AVPacket *_wrapped_obj = nullptr;
 

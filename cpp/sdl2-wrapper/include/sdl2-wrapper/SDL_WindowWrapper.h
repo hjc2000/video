@@ -1,5 +1,5 @@
 #pragma once
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 #include<sdl2-wrapper/SDL_Initializer.h>
 #include<sdl2-wrapper/SDL_RendererWrapper.h>
 
@@ -40,7 +40,7 @@ namespace video
 		RendererTargetTexture = ::SDL_RendererFlags::SDL_RENDERER_TARGETTEXTURE,
 	};
 
-	class SDL_WindowWrapper : public Wrapper<SDL_Window>
+	class SDL_WindowWrapper : public base::Wrapper<SDL_Window>
 	{
 		SDL_Window *_wrapped_obj = nullptr;
 

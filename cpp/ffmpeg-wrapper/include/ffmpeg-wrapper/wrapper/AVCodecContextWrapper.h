@@ -9,7 +9,7 @@
 #include<ffmpeg-wrapper/pipe/interface/IFrameSource.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
 #include<ffmpeg-wrapper/wrapper/AVStreamWrapper.h>
-#include<jccpp/Wrapper.h>
+#include<base/Wrapper.h>
 
 namespace video
 {
@@ -21,7 +21,7 @@ namespace video
 	///		* 本类线程安全，所有公共方法都有加锁。
 	/// </summary>
 	class AVCodecContextWrapper :
-		public Wrapper<AVCodecContext>,
+		public base::Wrapper<AVCodecContext>,
 		public IAudioStreamInfoCollection,
 		public IVideoStreamInfoCollection,
 		public IFrameSource,

@@ -4,7 +4,7 @@
 
 namespace video
 {
-	class SDL_TextureWrapper :public Wrapper<SDL_Texture>
+	class SDL_TextureWrapper :public base::Wrapper<SDL_Texture>
 	{
 		SDL_Texture *_wrapped_obj = nullptr;
 
