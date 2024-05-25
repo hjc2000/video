@@ -1,10 +1,10 @@
-﻿#include<QtCore/QCoreApplication>
-#include<QtCore/QDebug>
-#include<algorithm>
+﻿#include<algorithm>
 #include<ffmpeg-wrapper/mux/SptsEncodeMux.h>
 #include<filesystem>
 #include<jccpp/math/BaseConverter.h>
 #include<jccpp/math/Counter.h>
+#include<QtCore/QCoreApplication>
+#include<QtCore/QDebug>
 #include<sdl2-wrapper/AVPacketPlayer.h>
 #include<test_libusb.h>
 #include<test_tsduck.h>
