@@ -1,12 +1,13 @@
 #pragma once
-#include<jccpp/stream/Stream.h>
+#include<base/Stream.h>
+#include<memory>
 
 /// <summary>
 ///		本类对象应该由 C# 调用 C 接口函数 CreateDotNetStream 进行创建。
 ///		C# 侧需要保持住在堆上的本对象的指针，同时，本类对象的生命周期内，
 ///		绑定的 C# 的 Stream 对象应该始终有效，不能被回收。
 /// </summary>
-class DotNetStream :public Stream
+class DotNetStream :public base::Stream
 {
 private:
 	#pragma region 用来接收 .NET 委托的函数指针
@@ -78,9 +79,9 @@ public:
 	///		  对象的生命周期是由 .NET 管理的。
 	/// </summary>
 	/// <returns></returns>
-	shared_ptr<DotNetStream> ToSharePtr()
+	std::shared_ptr<DotNetStream> ToSharePtr()
 	{
-		return shared_ptr<DotNetStream>{ this, [](DotNetStream *p) {} };
+		return std::shared_ptr<DotNetStream>{ this, [](DotNetStream *p) { } };
 	}
 };
 

@@ -8,7 +8,7 @@ void ReencodeDotNetVideoStream(DotNetStream *dotnet_video_stream)
 {
 	// 想要输出的视频信息
 	VideoStreamInfoCollection output_video_stream_infos;
-	output_video_stream_infos._frame_rate = AVRational{ 30,1 };
+	output_video_stream_infos._frame_rate = AVRational { 30, 1 };
 	output_video_stream_infos._width = 1920;
 	output_video_stream_infos._height = 1080;
 	output_video_stream_infos._pixel_format = AVPixelFormat::AV_PIX_FMT_YUV420P;
@@ -20,9 +20,9 @@ void ReencodeDotNetVideoStream(DotNetStream *dotnet_video_stream)
 	output_audio_stream_infos._sample_rate = 48000;
 
 	// 编码封装管道
-	shared_ptr<Stream> out_fs = FileStream::CreateNewAnyway("mux_out.ts");
-	shared_ptr<StreamOutputFormat> out_fmt_ctx{ new StreamOutputFormat{".ts",out_fs} };
-	shared_ptr<SptsEncodeMux> spts_encode_mux{ new SptsEncodeMux{
+	shared_ptr<base::Stream> out_fs = jccpp::FileStream::CreateNewAnyway("mux_out.ts");
+	shared_ptr<StreamOutputFormat> out_fmt_ctx { new StreamOutputFormat { ".ts", out_fs } };
+	shared_ptr<SptsEncodeMux> spts_encode_mux { new SptsEncodeMux {
 		out_fmt_ctx,
 		output_video_stream_infos,
 		"hevc_amf",
@@ -32,7 +32,7 @@ void ReencodeDotNetVideoStream(DotNetStream *dotnet_video_stream)
 	} };
 
 	// 输入格式
-	shared_ptr<JoinedInputFormatDemuxDecoder> joined_input_format_demux_decoder{ new JoinedInputFormatDemuxDecoder{} };
+	shared_ptr<JoinedInputFormatDemuxDecoder> joined_input_format_demux_decoder { new JoinedInputFormatDemuxDecoder { } };
 	joined_input_format_demux_decoder->AddVideoFrameConsumer(spts_encode_mux->VideoEncodePipe());
 	joined_input_format_demux_decoder->AddAudioFrameConsumer(spts_encode_mux->AudioEncodePipe());
 
@@ -45,14 +45,14 @@ void ReencodeDotNetVideoStream(DotNetStream *dotnet_video_stream)
 		}
 
 		dotnet_video_stream->SetPosition(0);
-		shared_ptr<InputFormat> in_fmt_ctx{ new InputFormat{ dotnet_video_stream->ToSharePtr()} };
+		shared_ptr<InputFormat> in_fmt_ctx { new InputFormat { dotnet_video_stream->ToSharePtr() } };
 		loop_times++;
 		return in_fmt_ctx;
 	};
 
 	// 解码管道
 	CancellationTokenSource cancel_pump_source;
-	TaskCompletionSignal pump_thread_exit{ false };
+	TaskCompletionSignal pump_thread_exit { false };
 	std::thread([&]()
 	{
 		try

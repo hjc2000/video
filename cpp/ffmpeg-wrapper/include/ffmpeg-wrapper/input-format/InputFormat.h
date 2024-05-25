@@ -1,4 +1,5 @@
 #pragma once
+#include<chrono>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/pipe/interface/IPacketSource.h>
 #include<ffmpeg-wrapper/wrapper/AVIOContextWrapper.h>
@@ -32,7 +33,7 @@ namespace video
 		InputFormat(std::string url);
 		InputFormat(std::string url, AVInputFormat const *fmt, AVDictionary **options);
 		InputFormat(shared_ptr<AVIOContextWrapper> io_context);
-		InputFormat(shared_ptr<Stream> input_stream);
+		InputFormat(shared_ptr<base::Stream> input_stream);
 		~InputFormat();
 
 		AVFormatContext *&WrappedObj() override

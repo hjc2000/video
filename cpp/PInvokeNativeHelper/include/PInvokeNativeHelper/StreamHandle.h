@@ -1,5 +1,5 @@
 #pragma once
-#include<jccpp/stream/Stream.h>
+#include<base/Stream.h>
 #include<memory>
 #include<stdint.h>
 
@@ -11,31 +11,31 @@
 class StreamHandle
 {
 public:
-	StreamHandle(shared_ptr<Stream> stream)
+	StreamHandle(std::shared_ptr<base::Stream> stream)
 	{
 		*this = stream;
 	}
 
-	StreamHandle(Stream *stream)
+	StreamHandle(base::Stream *stream)
 	{
 		*this = stream;
 	}
 
 public:
-	StreamHandle &operator=(shared_ptr<Stream> stream)
+	StreamHandle &operator=(std::shared_ptr<base::Stream> stream)
 	{
 		_stream = stream;
 		return *this;
 	}
 
-	StreamHandle &operator=(Stream *stream)
+	StreamHandle &operator=(base::Stream *stream)
 	{
-		_stream = shared_ptr<Stream>{ stream };
+		_stream = std::shared_ptr<base::Stream> { stream };
 		return *this;
 	}
 
 public:
-	shared_ptr<Stream> _stream;
+	std::shared_ptr<base::Stream> _stream;
 };
 
 

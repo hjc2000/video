@@ -6,12 +6,12 @@
 
 AVPacketPlayer::AVPacketPlayer(int x, int y, AVStreamWrapper &video_stream, AVStreamWrapper &audio_stream)
 {
-	_audio_packet_player = shared_ptr<AudioPacketPlayer>{
-		new AudioPacketPlayer{audio_stream}
+	_audio_packet_player = shared_ptr<AudioPacketPlayer> {
+		new AudioPacketPlayer { audio_stream }
 	};
 
-	_video_packet_player = shared_ptr<VideoPacketPlayer>{
-		new VideoPacketPlayer{x,y,video_stream}
+	_video_packet_player = shared_ptr<VideoPacketPlayer> {
+		new VideoPacketPlayer { x, y, video_stream }
 	};
 	_video_packet_player->SetRefTimer(_audio_packet_player);
 
@@ -61,22 +61,22 @@ void AVPacketPlayer::SendPacket(AVPacketWrapper *packet)
 
 void video::test_AVPacketPlayer()
 {
-	auto fs = FileStream::Open("idol.mp4");
-	shared_ptr<AVIOContextWrapper> io_context{ new AVIOContextWrapper{ false, fs } };
-	shared_ptr<InputFormat> in_fmt_ctx{ new InputFormat{ io_context } };
+	auto fs = jccpp::FileStream::Open("idol.mp4");
+	shared_ptr<AVIOContextWrapper> io_context { new AVIOContextWrapper { false, fs } };
+	shared_ptr<InputFormat> in_fmt_ctx { new InputFormat { io_context } };
 	in_fmt_ctx->DumpFormat();
 
 	AVStreamWrapper best_audio_stream = in_fmt_ctx->FindBestStream(AVMediaType::AVMEDIA_TYPE_AUDIO);
 	AVStreamWrapper best_video_stream = in_fmt_ctx->FindBestStream(AVMediaType::AVMEDIA_TYPE_VIDEO);
 
-	shared_ptr<AVPacketPlayer> player{ new AVPacketPlayer{ 0, 70, best_video_stream, best_audio_stream } };
+	shared_ptr<AVPacketPlayer> player { new AVPacketPlayer { 0, 70, best_video_stream, best_audio_stream } };
 	AVPacketWrapper packet;
 
 	CancellationTokenSource cancellation_token_source;
 	auto cancellation_token = cancellation_token_source.Token();
-	TaskCompletionSignal thread_has_exited{ false };
+	TaskCompletionSignal thread_has_exited { false };
 
-	PacketPump packet_pump{ in_fmt_ctx };
+	PacketPump packet_pump { in_fmt_ctx };
 	packet_pump.PacketConsumerList().Add(player);
 	thread([&]()
 	{

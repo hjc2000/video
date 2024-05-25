@@ -1,7 +1,7 @@
 #pragma once
+#include<base/Stream.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<fstream>
-#include<jccpp/stream/Stream.h>
 #include<memory>
 using std::shared_ptr;
 
@@ -18,7 +18,7 @@ namespace video
 		ImageBuffer(int width, int height, AVPixelFormat format, int align);
 		~ImageBuffer();
 
-		void CopyToStream(Stream &stream);
+		void CopyToStream(base::Stream &stream);
 
 		/// <summary>
 		/// 长度为 4 的指针数组。每个指针都指向一个数组的首地址。4 个数组可能分别代表

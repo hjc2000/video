@@ -1,14 +1,14 @@
 #pragma once
+#include<base/Stream.h>
 #include<chrono>
 #include<ffmpeg-wrapper/AVCalculate.h>
 #include<ffmpeg-wrapper/AVToString.h>
-#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/base_include.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/info-collection/AudioFrameInfoCollection.h>
 #include<ffmpeg-wrapper/info-collection/AudioStreamInfoCollection.h>
 #include<ffmpeg-wrapper/info-collection/VideoFrameInfoCollection.h>
 #include<jccpp/Wrapper.h>
-#include<jccpp/stream/Stream.h>
 
 namespace video
 {
@@ -155,7 +155,7 @@ namespace video
 		///		将视频帧复制到流中.请确保本帧是视频帧。
 		/// </summary>
 		/// <param name="stream"></param>
-		void CopyVideoFrameToStream(Stream &stream);
+		void CopyVideoFrameToStream(base::Stream &stream);
 
 		/// <summary>
 		///		将音频帧复制到流中。请确保本帧是音频帧。
@@ -164,7 +164,7 @@ namespace video
 		///		  文件要求不同声道的采样点必须是交织存放的。
 		/// </summary>
 		/// <param name="stream">要复制到的流</param>
-		void CopyAudioFrameToStream(Stream &stream);
+		void CopyAudioFrameToStream(base::Stream &stream);
 
 		/// <summary>
 		///		将音频数据复制到缓冲区中。要求本帧的音频数据是交错类型的。

@@ -2,9 +2,9 @@
 #include<filesystem>
 #include<jccpp/stream/FileStream.h>
 #include<tsCerrReport.h>
-#include<tsduck/TestProgramMux.h>
 #include<tsduck/io/TSPacketStreamReader.h>
 #include<tsduck/mux/JoinedTsStream.h>
+#include<tsduck/TestProgramMux.h>
 
 using namespace std;
 using namespace video;
@@ -26,12 +26,12 @@ void test_tsduck()
 			return;
 		}
 
-		shared_ptr<FileStream> input_file_stream = FileStream::Open(file_name.c_str());
-		shared_ptr<TSPacketStreamReader> ts_packet_reader{ new TSPacketStreamReader{input_file_stream} };
+		shared_ptr<jccpp::FileStream> input_file_stream = jccpp::FileStream::Open(file_name.c_str());
+		shared_ptr<TSPacketStreamReader> ts_packet_reader { new TSPacketStreamReader { input_file_stream } };
 		joined_ts_stream.AddSource(ts_packet_reader);
 	};
 
-	shared_ptr<TestProgramMux> test_program_mux{ new TestProgramMux{} };
+	shared_ptr<TestProgramMux> test_program_mux { new TestProgramMux { } };
 	CancellationTokenSource cancel_pump_source;
 	ITSPacketSource::ReadPacketResult pump_result = joined_ts_stream.PumpTo(test_program_mux, cancel_pump_source.Token());
 	switch (pump_result)

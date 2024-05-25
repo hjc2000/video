@@ -3,7 +3,7 @@
 
 using namespace video;
 
-AVIOContextWrapper::AVIOContextWrapper(bool is_write, shared_ptr<Stream> stream)
+AVIOContextWrapper::AVIOContextWrapper(bool is_write, shared_ptr<base::Stream> stream)
 {
 	_stream = stream;
 	_buffer_size = 1024 * 64;
@@ -34,7 +34,7 @@ AVIOContextWrapper::~AVIOContextWrapper()
 
 	/* 因为 Stream 有自己的析构函数，且是用共享指针来引用的，所以这里不执行析构。
 	* 这还有一个好处是：此 Stream 如果不止是要给本 AVIOContextWrapper 使用，
-	* 还要到别的地方使用，不需要额外的逻辑来防止本 AVIOContextWrapper 
+	* 还要到别的地方使用，不需要额外的逻辑来防止本 AVIOContextWrapper
 	* 对象把 Stream 关闭了。
 	*/
 	//_stream->Close();

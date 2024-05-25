@@ -23,7 +23,7 @@ video::ImageBuffer::~ImageBuffer()
 	::av_freep(&_pointers[0]);
 }
 
-void video::ImageBuffer::CopyToStream(Stream &stream)
+void video::ImageBuffer::CopyToStream(base::Stream &stream)
 {
 	/*
 	* _pointers 是一个长度为 4 的指针数组，里面储存着 4 个指针。

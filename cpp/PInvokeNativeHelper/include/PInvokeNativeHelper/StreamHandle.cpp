@@ -6,8 +6,8 @@ using namespace std;
 
 StreamHandle *GetFileStream(std::string *url)
 {
-	shared_ptr<FileStream> fs = FileStream::Open(url->c_str());
-	return new StreamHandle{ fs };
+	shared_ptr<jccpp::FileStream> fs = jccpp::FileStream::Open(url->c_str());
+	return new StreamHandle { fs };
 }
 
 void FreeStream(StreamHandle *handle)

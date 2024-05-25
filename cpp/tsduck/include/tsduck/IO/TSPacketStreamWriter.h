@@ -1,6 +1,6 @@
 #pragma once
+#include<base/Stream.h>
 #include<tsduck/interface/ITSPacketConsumer.h>
-#include<jccpp/stream/Stream.h>
 
 namespace video
 {
@@ -10,10 +10,10 @@ namespace video
 	class TSPacketStreamWriter :public ITSPacketConsumer
 	{
 	public:
-		TSPacketStreamWriter(shared_ptr<Stream> out_stream);
+		TSPacketStreamWriter(shared_ptr<base::Stream> out_stream);
 
 	private:
-		shared_ptr<Stream> _out_stream;
+		shared_ptr<base::Stream> _out_stream;
 
 	public:
 		using ITSPacketConsumer::SendPacket;

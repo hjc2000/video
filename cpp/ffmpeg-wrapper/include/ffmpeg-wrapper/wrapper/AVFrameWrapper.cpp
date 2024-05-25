@@ -1,8 +1,8 @@
 #include "ffmpeg-wrapper/wrapper/AVFrameWrapper.h"
 #include<ffmpeg-wrapper/AVToString.h>
+#include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/ImageBuffer.h>
-#include<ffmpeg-wrapper/base_include.h>
 
 using namespace video;
 using namespace std;
@@ -96,7 +96,7 @@ void AVFrameWrapper::get_buffer(int align)
 	int ret = ::av_frame_get_buffer(_wrapped_obj, align);
 	if (ret < 0)
 	{
-		throw std::runtime_error{ CODE_POS_STR + std::string{"av_frame_get_buffer 失败。"} };
+		throw std::runtime_error { CODE_POS_STR + std::string { "av_frame_get_buffer 失败。" } };
 	}
 }
 
@@ -120,7 +120,7 @@ void AVFrameWrapper::make_writable()
 	int ret = ::av_frame_make_writable(_wrapped_obj);
 	if (ret)
 	{
-		throw std::runtime_error{ CODE_POS_STR + std::string{"av_frame_make_writable 失败。"} };
+		throw std::runtime_error { CODE_POS_STR + std::string { "av_frame_make_writable 失败。" } };
 	}
 }
 
@@ -128,7 +128,7 @@ std::chrono::milliseconds AVFrameWrapper::PtsToMilliseconds()
 {
 	int64_t num = pts() * 1000 * TimeBase().num;
 	int64_t den = TimeBase().den;
-	std::chrono::milliseconds m{ num / den };
+	std::chrono::milliseconds m { num / den };
 	return m;
 }
 
@@ -205,7 +205,7 @@ void video::AVFrameWrapper::SetSampleRate(int value)
 	_wrapped_obj->sample_rate = value;
 }
 
-void video::AVFrameWrapper::CopyVideoFrameToStream(Stream &stream)
+void video::AVFrameWrapper::CopyVideoFrameToStream(base::Stream &stream)
 {
 	if (!_image_buf)
 	{
@@ -225,12 +225,12 @@ void video::AVFrameWrapper::CopyVideoFrameToStream(Stream &stream)
 	_image_buf->CopyToStream(stream);
 }
 
-void video::AVFrameWrapper::CopyAudioFrameToStream(Stream &stream)
+void video::AVFrameWrapper::CopyAudioFrameToStream(base::Stream &stream)
 {
 	int buf_size = audio_data_size();
 	if (buf_size < 0)
 	{
-		throw std::runtime_error{ video::ToString((ErrorCode)buf_size) };
+		throw std::runtime_error { video::ToString((ErrorCode)buf_size) };
 	}
 
 	stream.Write(_wrapped_obj->extended_data[0], 0, buf_size);
