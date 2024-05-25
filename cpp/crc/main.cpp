@@ -7,12 +7,7 @@
 int main(void)
 {
 	base::ModbusCrc16 crc16;
-	crc16.Add(0x01);
-	crc16.Add(0x03);
-	crc16.Add(0x04);
-	crc16.Add(0x00);
-	crc16.Add(0x00);
-	crc16.Add(0x27);
-	crc16.Add(0x10);
+	std::vector<uint8_t> datas { 0x01, 0x03, 0x04, 0x00, 0x00, 0x27, 0x10 };
+	crc16.Add(datas);
 	std::cout << std::format("{:04x}", crc16.RegisterValue()) << std::endl;
 }
