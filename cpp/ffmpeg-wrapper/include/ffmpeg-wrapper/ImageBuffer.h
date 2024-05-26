@@ -1,5 +1,5 @@
 #pragma once
-#include<base/Stream.h>
+#include<base/stream/Stream.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<fstream>
 #include<memory>

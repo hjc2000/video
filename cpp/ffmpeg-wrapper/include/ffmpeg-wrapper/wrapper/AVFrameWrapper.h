@@ -1,5 +1,5 @@
 #pragma once
-#include<base/Stream.h>
+#include<base/stream/Stream.h>
 #include<base/Wrapper.h>
 #include<chrono>
 #include<ffmpeg-wrapper/AVCalculate.h>
