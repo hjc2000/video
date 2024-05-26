@@ -1,13 +1,13 @@
 #pragma once
+#include<base/Trigger.h>
+#include<base/Wrapper.h>
 #include<ffmpeg-wrapper/AVCalculate.h>
-#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/base_include.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/filter/VideoFilterGraph.h>
 #include<ffmpeg-wrapper/pipe/interface/IPipeFrameSource.h>
-#include<base/Wrapper.h>
 #include<jccpp/container/List.h>
 #include<jccpp/container/Queue.h>
-#include<jccpp/container/Trigger.h>
 
 namespace video
 {
@@ -24,7 +24,7 @@ namespace video
 		VideoStreamInfoCollection _input_video_stream_infos;
 		VideoFilterGraph _graph;
 		AVRational _desired_out_fps;
-		jc::Trigger<int64_t> _trigger;
+		base::Trigger<int64_t> _trigger;
 
 		void ReadAndSendFrame();
 
