@@ -19,7 +19,7 @@ namespace video
 	{
 		std::atomic_bool _disposed = false;
 		shared_ptr<IPacketSource> _packet_source;
-		List<shared_ptr<IPacketConsumer>> _consumer_list;
+		base::List<shared_ptr<IPacketConsumer>> _consumer_list;
 
 	public:
 		PacketPump(shared_ptr<IPacketSource> packet_source)
@@ -38,7 +38,7 @@ namespace video
 			_disposed = true;
 		}
 
-		List<shared_ptr<IPacketConsumer>> &PacketConsumerList() override
+		base::List<shared_ptr<IPacketConsumer>> &PacketConsumerList() override
 		{
 			return _consumer_list;
 		}

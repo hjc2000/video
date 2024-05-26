@@ -2,8 +2,8 @@
 #include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
 #include<ffmpeg-wrapper/input-format/InputFormat.h>
 #include<ffmpeg-wrapper/pipe/InfinitePacketPipe.h>
-#include<ffmpeg-wrapper/pipe/ThreadDecoderPipe.h>
 #include<ffmpeg-wrapper/pipe/interface/IPump.h>
+#include<ffmpeg-wrapper/pipe/ThreadDecoderPipe.h>
 #include<functional>
 #include<jccpp/CancellationTokenSource.h>
 #include<memory>
@@ -27,9 +27,9 @@ namespace video
 		AVStreamInfoCollection _audio_stream_infos;
 		shared_ptr<IDecoderPipe> _audio_decode_pipe;
 		int _source_audio_stream_index = -1;
-		shared_ptr<InfinitePacketPipe> _infinite_packet_pipe{ new InfinitePacketPipe{} };
-		List<shared_ptr<IFrameConsumer>> _video_frame_consumer_list;
-		List<shared_ptr<IFrameConsumer>> _audio_frame_consumer_list;
+		shared_ptr<InfinitePacketPipe> _infinite_packet_pipe { new InfinitePacketPipe { } };
+		base::List<shared_ptr<IFrameConsumer>> _video_frame_consumer_list;
+		base::List<shared_ptr<IFrameConsumer>> _audio_frame_consumer_list;
 
 		void InitializeVideoDecoderPipe();
 		void InitializeAudioDecoderPipe();

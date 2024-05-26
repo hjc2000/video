@@ -11,7 +11,7 @@ namespace video
 		public IFrameConsumer
 	{
 	private:
-		List<shared_ptr<IFrameConsumer>> _consumer_list;
+		base::List<shared_ptr<IFrameConsumer>> _consumer_list;
 		shared_ptr<SwsContextWrapper> _sws_context;
 		VideoFrameInfoCollection _in_video_frame_infos;
 		VideoFrameInfoCollection _desire_out_video_frame_infos;
@@ -23,7 +23,7 @@ namespace video
 	public:
 		SwsPipe(IVideoFrameInfoCollection const &desire_out_video_frame_infos);
 
-		List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override
+		base::List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override
 		{
 			return _consumer_list;
 		}

@@ -1,4 +1,5 @@
 #pragma once
+#include<base/container/List.h>
 #include<base/container/Queue.h>
 #include<base/Trigger.h>
 #include<base/Wrapper.h>
@@ -7,7 +8,6 @@
 #include<ffmpeg-wrapper/ErrorCode.h>
 #include<ffmpeg-wrapper/filter/VideoFilterGraph.h>
 #include<ffmpeg-wrapper/pipe/interface/IPipeFrameSource.h>
-#include<jccpp/container/List.h>
 
 namespace video
 {
@@ -20,7 +20,7 @@ namespace video
 		public IPipeFrameSource
 	{
 	private:
-		List<shared_ptr<IFrameConsumer>> _consumer_list;
+		base::List<shared_ptr<IFrameConsumer>> _consumer_list;
 		VideoStreamInfoCollection _input_video_stream_infos;
 		VideoFilterGraph _graph;
 		AVRational _desired_out_fps;
@@ -36,7 +36,7 @@ namespace video
 		/// <param name="desired_out_fps">期望的输出帧率</param>
 		FpsAdjustPipe(IVideoStreamInfoCollection const &input_video_stream_infos, AVRational desired_out_fps);
 
-		List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override
+		base::List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override
 		{
 			return _consumer_list;
 		}

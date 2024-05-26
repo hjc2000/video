@@ -1,11 +1,11 @@
 #pragma once
-#include<iostream>
+#include<base/container/List.h>
 #include<base/Wrapper.h>
-#include<jccpp/container/List.h>
+#include<iostream>
 #include<jccpp/define.h>
 #include<libusb-1.0/libusb.h>
-#include<libusb-wrapper/USBRequestOptions.h>
 #include<libusb-wrapper/UsbConfigDescriptorWrapper.h>
+#include<libusb-wrapper/USBRequestOptions.h>
 #include<memory>
 #include<vector>
 
@@ -25,7 +25,7 @@ namespace libusb
 		/// <summary>
 		///		默认构造函数。此时并没有实际指向任何一个 USB 设备，所以调用任何方法都将引发异常。
 		/// </summary>
-		UsbDeviceWrapper() {}
+		UsbDeviceWrapper() { }
 		UsbDeviceWrapper(libusb_device *device);
 		UsbDeviceWrapper(UsbDeviceWrapper const &other);
 		~UsbDeviceWrapper();

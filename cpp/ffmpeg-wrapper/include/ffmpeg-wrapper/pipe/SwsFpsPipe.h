@@ -16,7 +16,7 @@ namespace video
 
 	public:
 		SwsFpsPipe(IVideoStreamInfoCollection const &out_video_stream_infos);
-		List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override;
+		base::List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override;
 		void SendFrame(AVFrameWrapper *frame) override;
 	};
 }

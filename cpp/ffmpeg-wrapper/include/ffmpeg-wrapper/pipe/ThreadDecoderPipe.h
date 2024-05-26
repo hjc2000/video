@@ -75,7 +75,7 @@ namespace video
 		void SetFrameRate(AVRational value) override;
 		#pragma endregion
 
-		List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override
+		base::List<shared_ptr<IFrameConsumer>> &FrameConsumerList() override
 		{
 			return _decoder_pipe->FrameConsumerList();
 		}

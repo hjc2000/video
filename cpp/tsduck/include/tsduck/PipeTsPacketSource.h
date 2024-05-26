@@ -1,9 +1,9 @@
 #pragma once
-#include<jccpp/container/List.h>
+#include<base/container/List.h>
 #include<jccpp/define.h>
 #include<memory>
-#include<tsTSPacket.h>
 #include<tsduck/interface/ITSPacketConsumer.h>
+#include<tsTSPacket.h>
 
 using std::shared_ptr;
 
@@ -12,7 +12,7 @@ namespace video
 	class IPipeTsPacketSource
 	{
 	public:
-		virtual ~IPipeTsPacketSource() {}
+		virtual ~IPipeTsPacketSource() { }
 
 	public:
 		/// <summary>
@@ -37,7 +37,7 @@ namespace video
 	class PipeTsPacketSource :public IPipeTsPacketSource
 	{
 	protected:
-		List<shared_ptr<ITSPacketConsumer>> _consumer_list;
+		base::List<shared_ptr<ITSPacketConsumer>> _consumer_list;
 
 		void SendPacketToEachConsumer(ts::TSPacket *packet);
 		void SendPacketToEachConsumer(std::vector<ts::TSPacket> packets);
