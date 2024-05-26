@@ -1,4 +1,5 @@
 #pragma once
+#include<base/container/Queue.h>
 #include<base/Trigger.h>
 #include<base/Wrapper.h>
 #include<ffmpeg-wrapper/AVCalculate.h>
@@ -7,7 +8,6 @@
 #include<ffmpeg-wrapper/filter/VideoFilterGraph.h>
 #include<ffmpeg-wrapper/pipe/interface/IPipeFrameSource.h>
 #include<jccpp/container/List.h>
-#include<jccpp/container/Queue.h>
 
 namespace video
 {

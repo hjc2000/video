@@ -1,10 +1,10 @@
 #pragma once
-#include<tsduck/interface/ITSPacketConsumer.h>
-#include<tsduck/interface/ITSPacketSource.h>
 #include<functional>
 #include<jccpp/define.h>
 #include<tsduck/container/TSPacketQueue.h>
 #include<tsduck/handler/TableHandler.h>
+#include<tsduck/interface/ITSPacketConsumer.h>
+#include<tsduck/interface/ITSPacketSource.h>
 
 namespace video
 {
@@ -14,7 +14,7 @@ namespace video
 		JoinedTsStream();
 
 	private:
-		Queue<shared_ptr<ITSPacketSource>> _ts_packet_source_queue;
+		base::Queue<shared_ptr<ITSPacketSource>> _ts_packet_source_queue;
 
 		/// <summary>
 		///		当前正在被读取的 ITSPacketSource。

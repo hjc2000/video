@@ -1,14 +1,14 @@
 #pragma once
+#include<base/container/Queue.h>
 #include<tsduck/interface/ITSPacketConsumer.h>
 #include<tsduck/interface/ITSPacketSource.h>
-#include<jccpp/container/Queue.h>
 
 namespace video
 {
 	class TSPacketQueue :public ITSPacketConsumer, public ITSPacketSource
 	{
 	private:
-		Queue<ts::TSPacket> _packet_queue;
+		base::Queue<ts::TSPacket> _packet_queue;
 		bool _flushed = false;
 
 	public:

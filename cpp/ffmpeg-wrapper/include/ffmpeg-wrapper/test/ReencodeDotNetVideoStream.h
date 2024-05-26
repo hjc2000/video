@@ -1,5 +1,5 @@
 #pragma once
-#include<PInvokeNativeHelper/DotNetStream.h>
+#include<base/container/Queue.h>
 #include<ffmpeg-wrapper/demux/JoinedInputFormatDemuxDecoder.h>
 #include<ffmpeg-wrapper/input-format/InputFormat.h>
 #include<ffmpeg-wrapper/mux/SptsEncodeMux.h>
@@ -7,8 +7,8 @@
 #include<ffmpeg-wrapper/pipe/PacketPump.h>
 #include<iostream>
 #include<jccpp/container/List.h>
-#include<jccpp/container/Queue.h>
 #include<jccpp/stream/FileStream.h>
+#include<PInvokeNativeHelper/DotNetStream.h>
 
 extern "C"
 {

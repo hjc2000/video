@@ -12,7 +12,7 @@ using namespace video;
 void test_tsduck()
 {
 	// 输入文件
-	Queue<string> file_queue;
+	base::Queue<string> file_queue;
 	file_queue.Enqueue("不老梦.ts");
 	file_queue.Enqueue("水龙吟.ts");
 	file_queue.Enqueue("idol.ts");

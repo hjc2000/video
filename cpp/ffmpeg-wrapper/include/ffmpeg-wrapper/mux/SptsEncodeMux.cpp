@@ -1,6 +1,6 @@
 #include"ffmpeg-wrapper/mux/SptsEncodeMux.h"
+#include<base/container/Queue.h>
 #include<iostream>
-#include<jccpp/container/Queue.h>
 
 using namespace video;
 using namespace std;
@@ -88,7 +88,7 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 /// </summary>
 void test_SptsEncodeMux()
 {
-	Queue<std::string> file_queue;
+	base::Queue<std::string> file_queue;
 	file_queue.Enqueue("予你成歌.ts");
 	file_queue.Enqueue("越权访问.mkv");
 	file_queue.Enqueue("moon.mp4");
