@@ -32,7 +32,14 @@ int main(int argc, char **argv)
 			->required();
 
 		// 解析命令行参数
-		CLI11_PARSE(app, argc, argv);
+		try
+		{
+			app.parse(argc, argv);
+		}
+		catch (const CLI::ParseError &e)
+		{
+			return app.exit(e);
+		};
 
 		// 执行到这里就是解析命令行成功，并且命令行参数不是 -h,--help
 		cout << "正在解析 ts" << endl;
