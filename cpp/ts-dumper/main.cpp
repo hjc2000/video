@@ -31,7 +31,6 @@ int main(int argc, char **argv)
 		)
 			->required();
 
-		// 解析命令行参数
 		try
 		{
 			app.parse(argc, argv);
