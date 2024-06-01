@@ -9,11 +9,12 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
+	string input_file_path;
+	string output_file_path;
+	CLI::App app { "输出 ts 文件的包、表格的信息到指定的文本文件中。" };
+
 	try
 	{
-		string input_file_path, output_file_path;
-		CLI::App app { "输出 ts 文件的包、表格的信息到指定的文本文件中。" };
-
 		// 定义输入文件选项
 		app.add_option(
 			"-i,--input",
@@ -31,14 +32,7 @@ int main(int argc, char **argv)
 		)
 			->required();
 
-		try
-		{
-			app.parse(argc, argv);
-		}
-		catch (const CLI::ParseError &e)
-		{
-			return app.exit(e);
-		};
+		app.parse(argc, argv);
 
 		// 执行到这里就是解析命令行成功，并且命令行参数不是 -h,--help
 		cout << "正在解析 ts" << endl;
@@ -49,6 +43,10 @@ int main(int argc, char **argv)
 		CancellationTokenSource cancel_pump_source;
 		reader.PumpTo(ts_dumper, cancel_pump_source.Token());
 		ts_dumper->DisplayStatisticalResults();
+	}
+	catch (const CLI::ParseError &e)
+	{
+		return app.exit(e);
 	}
 	catch (std::exception &e)
 	{
