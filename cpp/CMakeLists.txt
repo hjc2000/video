@@ -1,11 +1,6 @@
 ﻿# 基础配置
-if(1)
-	cmake_minimum_required (VERSION 3.8)
-	project ("video")
-	
-	# 设置CMake构建时使用的线程数
-	set(CMAKE_BUILD_PARALLEL_LEVEL 12)
-endif()
+cmake_minimum_required (VERSION 3.8)
+project ("video")
 
 # 包含子项目。
 add_subdirectory(${CMAKE_SOURCE_DIR}/PInvokeNativeHelper)
