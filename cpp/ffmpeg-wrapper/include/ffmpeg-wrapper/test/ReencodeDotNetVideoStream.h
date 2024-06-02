@@ -8,7 +8,7 @@
 #include<ffmpeg-wrapper/pipe/PacketPump.h>
 #include<iostream>
 #include<jccpp/stream/FileStream.h>
-#include<PInvokeNativeHelper/DotNetStream.h>
+#include<pinvoke-base/DotNetStream.h>
 
 extern "C"
 {
