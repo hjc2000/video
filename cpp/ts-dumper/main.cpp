@@ -1,4 +1,5 @@
-﻿#include<CLI/CLI.hpp>
+﻿#include<base/task/CancellationTokenSource.h>
+#include<CLI/CLI.hpp>
 #include<iostream>
 #include<jccpp/stream/FileStream.h>
 #include<tsduck/io/TSPacketStreamReader.h>
@@ -40,7 +41,7 @@ int main(int argc, char **argv)
 		shared_ptr<jccpp::FileStream> input_file_stream = jccpp::FileStream::OpenReadOnly(input_file_path);
 		TSPacketStreamReader reader { input_file_stream };
 		shared_ptr<TSDumper> ts_dumper { new TSDumper { output_file_path } };
-		CancellationTokenSource cancel_pump_source;
+		base::CancellationTokenSource cancel_pump_source;
 		reader.PumpTo(ts_dumper, cancel_pump_source.Token());
 		ts_dumper->DisplayStatisticalResults();
 	}

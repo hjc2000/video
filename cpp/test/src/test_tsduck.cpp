@@ -1,4 +1,5 @@
-#include "test_tsduck.h"
+#include"test_tsduck.h"
+#include<base/task/CancellationTokenSource.h>
 #include<filesystem>
 #include<jccpp/stream/FileStream.h>
 #include<tsCerrReport.h>
@@ -32,7 +33,7 @@ void test_tsduck()
 	};
 
 	shared_ptr<TestProgramMux> test_program_mux { new TestProgramMux { } };
-	CancellationTokenSource cancel_pump_source;
+	base::CancellationTokenSource cancel_pump_source;
 	ITSPacketSource::ReadPacketResult pump_result = joined_ts_stream.PumpTo(test_program_mux, cancel_pump_source.Token());
 	switch (pump_result)
 	{

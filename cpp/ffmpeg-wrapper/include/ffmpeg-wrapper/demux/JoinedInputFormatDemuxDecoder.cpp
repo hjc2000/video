@@ -18,8 +18,8 @@ void video::JoinedInputFormatDemuxDecoder::InitializeVideoDecoderPipe()
 		*/
 		_video_stream_infos.SetIndex(0);
 		// 经过 InfinitePacketPipe 处理后时间基会变成 1/90000，所以这里需要改。
-		_video_stream_infos.SetTimeBase(AVRational{ 1,90000 });
-		_video_decode_pipe = shared_ptr<ThreadDecoderPipe>{ new ThreadDecoderPipe{_video_stream_infos} };
+		_video_stream_infos.SetTimeBase(AVRational { 1, 90000 });
+		_video_decode_pipe = shared_ptr<ThreadDecoderPipe> { new ThreadDecoderPipe { _video_stream_infos } };
 		_video_decode_pipe->FrameConsumerList().Add(_video_frame_consumer_list);
 		_infinite_packet_pipe->PacketConsumerList().Add(_video_decode_pipe);
 	}
@@ -44,8 +44,8 @@ void video::JoinedInputFormatDemuxDecoder::InitializeAudioDecoderPipe()
 		*/
 		_audio_stream_infos.SetIndex(1);
 		// 经过 InfinitePacketPipe 处理后时间基会变成 1/90000，所以这里需要改。
-		_audio_stream_infos.SetTimeBase(AVRational{ 1,90000 });
-		_audio_decode_pipe = shared_ptr<ThreadDecoderPipe>{ new ThreadDecoderPipe{_audio_stream_infos} };
+		_audio_stream_infos.SetTimeBase(AVRational { 1, 90000 });
+		_audio_decode_pipe = shared_ptr<ThreadDecoderPipe> { new ThreadDecoderPipe { _audio_stream_infos } };
 		_audio_decode_pipe->FrameConsumerList().Add(_audio_frame_consumer_list);
 		_infinite_packet_pipe->PacketConsumerList().Add(_audio_decode_pipe);
 	}
@@ -84,7 +84,7 @@ void video::JoinedInputFormatDemuxDecoder::OpenInputIfNull()
 	InitializeAudioDecoderPipe();
 }
 
-void video::JoinedInputFormatDemuxDecoder::Pump(shared_ptr<CancellationToken> cancel_pump)
+void video::JoinedInputFormatDemuxDecoder::Pump(shared_ptr<base::CancellationToken> cancel_pump)
 {
 	while (!cancel_pump->IsCancellationRequested())
 	{
@@ -95,7 +95,7 @@ void video::JoinedInputFormatDemuxDecoder::Pump(shared_ptr<CancellationToken> ca
 			return;
 		}
 
-		shared_ptr<PacketPump> packet_pump{ new PacketPump{_current_input_format} };
+		shared_ptr<PacketPump> packet_pump { new PacketPump { _current_input_format } };
 		packet_pump->PacketConsumerList().Add(_infinite_packet_pipe);
 		packet_pump->_on_before_send_packet_to_consumer = [&](AVPacketWrapper *packet)
 		{
@@ -104,7 +104,7 @@ void video::JoinedInputFormatDemuxDecoder::Pump(shared_ptr<CancellationToken> ca
 				return;
 			}
 
-			packet->ChangeTimeBase(AVRational{ 1,90000 });
+			packet->ChangeTimeBase(AVRational { 1, 90000 });
 			if (packet->StreamIndex() == _source_video_stream_index)
 			{
 				// 视频流的索引更改为 0.

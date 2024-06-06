@@ -1,8 +1,8 @@
 #pragma once
 #include<ffmpeg-wrapper/input-format/InputFormat.h>
-#include<ffmpeg-wrapper/pipe/ThreadDecoderPipe.h>
 #include<ffmpeg-wrapper/pipe/interface/IFrameConsumer.h>
 #include<ffmpeg-wrapper/pipe/interface/IPump.h>
+#include<ffmpeg-wrapper/pipe/ThreadDecoderPipe.h>
 
 namespace video
 {
@@ -18,6 +18,6 @@ namespace video
 		void AddVideoFrameConsumer(shared_ptr<IFrameConsumer> consumer);
 		void AddAudioFrameConsumer(shared_ptr<IFrameConsumer> consumer);
 
-		void Pump(shared_ptr<CancellationToken> cancel_pump) override;
+		void Pump(shared_ptr<base::CancellationToken> cancel_pump) override;
 	};
 }

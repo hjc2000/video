@@ -72,7 +72,7 @@ void video::test_AVPacketPlayer()
 	shared_ptr<AVPacketPlayer> player { new AVPacketPlayer { 0, 70, best_video_stream, best_audio_stream } };
 	AVPacketWrapper packet;
 
-	CancellationTokenSource cancellation_token_source;
+	base::CancellationTokenSource cancellation_token_source;
 	auto cancellation_token = cancellation_token_source.Token();
 	TaskCompletionSignal thread_has_exited { false };
 

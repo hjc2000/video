@@ -1,10 +1,11 @@
 #pragma once
-#include<ffmpeg-wrapper/ErrorCode.h>
+#include<base/task/CancellationTokenSource.h>
 #include<ffmpeg-wrapper/base_include.h>
 #include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
+#include<ffmpeg-wrapper/ErrorCode.h>
+#include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
 #include<ffmpeg-wrapper/pipe/PacketPump.h>
 #include<ffmpeg-wrapper/pipe/ThreadDecoderPipe.h>
-#include<ffmpeg-wrapper/pipe/interface/IPacketConsumer.h>
 #include<jccpp/IDisposable.h>
 #include<sdl2-wrapper/VideoFramePlayer.h>
 
@@ -16,7 +17,7 @@ namespace video
 	{
 		std::atomic_bool _disposed = false;
 		shared_ptr<HysteresisBlockingPacketQueue> _packet_queue;
-		CancellationTokenSource _cancel_pump_source;
+		base::CancellationTokenSource _cancel_pump_source;
 		shared_ptr<PacketPump> _packet_pump;
 		shared_ptr<IDecoderPipe> _decoder_pipe;
 		shared_ptr<VideoFramePlayer> _player;
@@ -25,12 +26,12 @@ namespace video
 		///		解码线程创建后会立刻等待此信号，当时机成熟，解码线程可以开始执行了，
 		///		就将此信号设置为已完成。
 		/// </summary>
-		TaskCompletionSignal _decoding_thread_can_start{ false };
+		TaskCompletionSignal _decoding_thread_can_start { false };
 
 		/// <summary>
 		///		解码线程退出后设为已完成。
 		/// </summary>
-		TaskCompletionSignal _thread_has_exited{ true };
+		TaskCompletionSignal _thread_has_exited { true };
 
 		/// <summary>
 		///		用于解码的线程函数

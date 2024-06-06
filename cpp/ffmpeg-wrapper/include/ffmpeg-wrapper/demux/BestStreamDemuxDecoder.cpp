@@ -36,7 +36,7 @@ void video::BestStreamDemuxDecoder::AddAudioFrameConsumer(shared_ptr<IFrameConsu
 	}
 }
 
-void video::BestStreamDemuxDecoder::Pump(shared_ptr<CancellationToken> cancel_pump)
+void video::BestStreamDemuxDecoder::Pump(shared_ptr<base::CancellationToken> cancel_pump)
 {
 	shared_ptr<PacketPump> packet_pump{ new PacketPump{_input_format} };
 	if (_video_decode_pipe)

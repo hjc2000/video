@@ -1,7 +1,7 @@
 #pragma once
-#include<jccpp/CancellationTokenSource.h>
-#include<tsTSPacket.h>
+#include<base/task/CancellationToken.h>
 #include<tsduck/interface/ITSPacketConsumer.h>
+#include<tsTSPacket.h>
 
 namespace video
 {
@@ -24,7 +24,7 @@ namespace video
 		};
 
 	public:
-		virtual ~ITSPacketSource() {}
+		virtual ~ITSPacketSource() { }
 
 	public:
 		virtual ITSPacketSource::ReadPacketResult ReadPacket(ts::TSPacket &packet) = 0;
@@ -39,12 +39,12 @@ namespace video
 		/// <returns></returns>
 		virtual ITSPacketSource::ReadPacketResult PumpTo(
 			shared_ptr<ITSPacketConsumer> consumer,
-			shared_ptr<CancellationToken> cancel_pump
+			shared_ptr<base::CancellationToken> cancel_pump
 		);
 
 		virtual ITSPacketSource::ReadPacketResult PumpTo(
 			std::vector<shared_ptr<ITSPacketConsumer>> const consumers,
-			shared_ptr<CancellationToken> cancel_pump
+			shared_ptr<base::CancellationToken> cancel_pump
 		);
 	};
 }

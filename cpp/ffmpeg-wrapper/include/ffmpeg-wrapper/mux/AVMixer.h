@@ -26,8 +26,8 @@ namespace video
 
 		void CreateNewVideoStream();
 		void CreateNewAudioStream();
-		bool ReadVideoPacketOnce(shared_ptr<CancellationToken> cancel_pump);
-		bool ReadAudioPacketOnce(shared_ptr<CancellationToken> cancel_pump);
+		bool ReadVideoPacketOnce(shared_ptr<base::CancellationToken> cancel_pump);
+		bool ReadAudioPacketOnce(shared_ptr<base::CancellationToken> cancel_pump);
 
 	public:
 		AVMixer(
@@ -36,6 +36,6 @@ namespace video
 			shared_ptr<OutputFormat> out_format
 		);
 
-		void Pump(shared_ptr<CancellationToken> cancel_pump) override;
+		void Pump(shared_ptr<base::CancellationToken> cancel_pump) override;
 	};
 }

@@ -4,7 +4,7 @@ using namespace video;
 
 ITSPacketSource::ReadPacketResult ITSPacketSource::PumpTo(
 	shared_ptr<ITSPacketConsumer> consumer,
-	shared_ptr<CancellationToken> cancel_pump
+	shared_ptr<base::CancellationToken> cancel_pump
 )
 {
 	std::vector<shared_ptr<ITSPacketConsumer>> consumers;
@@ -14,7 +14,7 @@ ITSPacketSource::ReadPacketResult ITSPacketSource::PumpTo(
 
 ITSPacketSource::ReadPacketResult ITSPacketSource::PumpTo(
 	std::vector<shared_ptr<ITSPacketConsumer>> const consumers,
-	shared_ptr<CancellationToken> cancel_pump
+	shared_ptr<base::CancellationToken> cancel_pump
 )
 {
 	ts::TSPacket packet;

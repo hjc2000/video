@@ -1,4 +1,5 @@
 #include"ReencodeDotNetVideoStream.h"
+#include<base/task/CancellationTokenSource.h>
 
 using namespace std;
 using namespace jc;
@@ -51,7 +52,7 @@ void ReencodeDotNetVideoStream(DotNetStream *dotnet_video_stream)
 	};
 
 	// 解码管道
-	CancellationTokenSource cancel_pump_source;
+	base::CancellationTokenSource cancel_pump_source;
 	TaskCompletionSignal pump_thread_exit { false };
 	std::thread([&]()
 	{

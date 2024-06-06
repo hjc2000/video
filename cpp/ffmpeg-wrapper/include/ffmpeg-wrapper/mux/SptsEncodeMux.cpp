@@ -82,6 +82,7 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 #include<jccpp/stream/FileStream.h>
 #include<ffmpeg-wrapper/demux/JoinedInputFormatDemuxDecoder.h>
 #include<ffmpeg-wrapper/output-format/StreamOutputFormat.h>
+#include<base/task/CancellationTokenSource.h>
 
 /// <summary>
 ///		测试函数
@@ -146,7 +147,7 @@ void test_SptsEncodeMux()
 	joined_input_format_demux_decoder->AddVideoFrameConsumer(spts_encode_mux->VideoEncodePipe());
 	joined_input_format_demux_decoder->AddAudioFrameConsumer(spts_encode_mux->AudioEncodePipe());
 
-	CancellationTokenSource cancel_pump_source;
+	base::CancellationTokenSource cancel_pump_source;
 	TaskCompletionSignal pump_thread_exit { false };
 	std::thread([&]()
 	{

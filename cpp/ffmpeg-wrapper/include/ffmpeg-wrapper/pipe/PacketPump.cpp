@@ -3,7 +3,7 @@
 using namespace std;
 using namespace video;
 
-void video::PacketPump::Pump(shared_ptr<CancellationToken> cancellation_token)
+void video::PacketPump::Pump(shared_ptr<base::CancellationToken> cancellation_token)
 {
 	AVPacketWrapper packet;
 	while (!_disposed)

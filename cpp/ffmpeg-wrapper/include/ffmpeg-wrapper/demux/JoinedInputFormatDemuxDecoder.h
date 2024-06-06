@@ -5,8 +5,8 @@
 #include<ffmpeg-wrapper/pipe/interface/IPump.h>
 #include<ffmpeg-wrapper/pipe/ThreadDecoderPipe.h>
 #include<functional>
-#include<jccpp/CancellationTokenSource.h>
 #include<memory>
+#include<base/task/CancellationToken.h>
 
 namespace video
 {
@@ -43,7 +43,7 @@ namespace video
 		/// </summary>
 		std::function<shared_ptr<InputFormat>()> _get_format_callback;
 
-		void Pump(shared_ptr<CancellationToken> cancel_pump) override;
+		void Pump(shared_ptr<base::CancellationToken> cancel_pump) override;
 
 		void AddVideoFrameConsumer(shared_ptr<IFrameConsumer> consumer);
 		void AddAudioFrameConsumer(shared_ptr<IFrameConsumer> consumer);
