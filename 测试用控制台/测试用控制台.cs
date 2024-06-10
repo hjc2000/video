@@ -17,7 +17,7 @@
 //}
 #endregion
 
-string[] num_strs = ["-5.12", "5", "5/-1", "5/2", "/5", "1/"];
+string[] num_strs = ["-5.12", "5", "5/-1", "5/2", "/5", "0"];
 foreach (string str in num_strs)
 {
 	Fraction fraction = new(str);
