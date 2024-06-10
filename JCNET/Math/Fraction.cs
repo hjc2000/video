@@ -42,6 +42,11 @@ public readonly struct Fraction
 		if (index > 0)
 		{
 			// 存在 / 号，且不是第 1 个字符
+			if (str.EndsWith('/'))
+			{
+				throw new ArgumentException("不能以 '/' 结尾");
+			}
+
 			string num_string = str[..index];
 			string den_string = str[(index + 1)..];
 			_num = BigInteger.Parse(num_string);

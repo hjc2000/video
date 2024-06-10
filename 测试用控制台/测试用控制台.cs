@@ -17,9 +17,9 @@
 //}
 #endregion
 
-string[] num_strs = ["5.12", "5", "5/1", "5/2"];
+string[] num_strs = ["-5.12", "5", "5/-1", "5/2", "/5", "1/"];
 foreach (string str in num_strs)
 {
 	Fraction fraction = new(str);
-	Console.WriteLine(fraction);
+	Console.WriteLine(fraction.Simplify());
 }
