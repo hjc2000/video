@@ -93,7 +93,7 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 				await _sdv3.WriteSingleBitAsync(data_addr, value);
 				return;
 			}
-			catch (ModbusFrameException ex)
+			catch (ModbusResponseException ex)
 			{
 				Console.WriteLine(ex.ToString());
 				_serial_port.DiscardInBuffer();
@@ -106,7 +106,7 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 
 				throw;
 			}
-			catch (ModbusRequestInvalidException)
+			catch (ModbusRequestException)
 			{
 				throw;
 			}
@@ -131,7 +131,7 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 			{
 				return await _sdv3.ReadBitsAsync(data_addr, bit_count);
 			}
-			catch (ModbusFrameException ex)
+			catch (ModbusResponseException ex)
 			{
 				Console.WriteLine(ex.ToString());
 				_serial_port.DiscardInBuffer();
@@ -144,7 +144,7 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 
 				throw;
 			}
-			catch (ModbusRequestInvalidException)
+			catch (ModbusRequestException)
 			{
 				throw;
 			}
@@ -169,7 +169,7 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 			{
 				return await _sdv3.ReadDatasAsync(data_addr, record_count);
 			}
-			catch (ModbusFrameException ex)
+			catch (ModbusResponseException ex)
 			{
 				Console.WriteLine(ex.ToString());
 				_serial_port.DiscardInBuffer();
@@ -182,7 +182,7 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 
 				throw;
 			}
-			catch (ModbusRequestInvalidException)
+			catch (ModbusRequestException)
 			{
 				throw;
 			}
@@ -208,7 +208,7 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 				await _sdv3.WriteDatasAsync(data_addr, datas);
 				return;
 			}
-			catch (ModbusFrameException ex)
+			catch (ModbusResponseException ex)
 			{
 				Console.WriteLine(ex.ToString());
 				_serial_port.DiscardInBuffer();
@@ -221,7 +221,7 @@ public class SerialPortModbusSdv3Device : ModbusSdv3Device
 
 				throw;
 			}
-			catch (ModbusRequestInvalidException)
+			catch (ModbusRequestException)
 			{
 				throw;
 			}
@@ -294,12 +294,12 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		Span<byte> span = response_frame.Span;
 		if (span[^2] != crc16.RegisterLowByte)
 		{
-			throw new ModbusFrameException("CRC 校验错误");
+			throw new ModbusResponseException("CRC 校验错误");
 		}
 
 		if (span[^1] != crc16.RegisterHighByte)
 		{
-			throw new ModbusFrameException("CRC 校验错误");
+			throw new ModbusResponseException("CRC 校验错误");
 		}
 	}
 
@@ -308,7 +308,7 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 	/// </summary>
 	/// <param name="data_addr"></param>
 	/// <param name="value"></param>
-	/// <exception cref="ModbusFrameException"></exception>
+	/// <exception cref="ModbusResponseException"></exception>
 	public override async Task WriteSingleBitAsync(ushort data_addr, bool value)
 	{
 		WriteSingleBitRequestFrame request_frame = new()
@@ -328,7 +328,7 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		await _serial_stream.ReadExactlyAsync(read_buffer, 0, 2);
 		if (read_buffer[0] != _device_addr)
 		{
-			throw new ModbusFrameException("接收到非预期地址的设备的响应");
+			throw new ModbusResponseException("接收到非预期地址的设备的响应");
 		}
 
 		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
@@ -344,20 +344,20 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 				{
 				case 1:
 					{
-						throw new ModbusRequestFunctionCodeInvalidException();
+						throw new ModbusRequestFunctionCodeException();
 					}
 				case 2:
 					{
-						throw new ModbusRequestDataAddressInvalidException();
+						throw new ModbusRequestDataAddressException();
 					}
 				case 3:
 					{
-						throw new ModbusRequestDataInvalidException();
+						throw new ModbusRequestDataException();
 					}
 				}
 			}
 
-			throw new ModbusFrameException("设备回复的帧中的功能码错误");
+			throw new ModbusResponseException("设备回复的帧中的功能码错误");
 		}
 
 		// 设备地址和功能码正确。接收剩余的字节。
@@ -367,13 +367,13 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		ushort received_data_addr = _auto_bit_converter.ToUInt16(read_buffer, 2);
 		if (received_data_addr != data_addr)
 		{
-			throw new ModbusFrameException("设备回复帧中的数据地址不对");
+			throw new ModbusResponseException("设备回复帧中的数据地址不对");
 		}
 
 		ushort received_data = _auto_bit_converter.ToUInt16(read_buffer, 4);
 		if (received_data != 0 != value)
 		{
-			throw new ModbusFrameException("设备回复帧中的数据不对");
+			throw new ModbusResponseException("设备回复帧中的数据不对");
 		}
 	}
 
@@ -406,7 +406,7 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		await _serial_stream.ReadExactlyAsync(read_buffer, 0, 2);
 		if (read_buffer[0] != _device_addr)
 		{
-			throw new ModbusFrameException("接收到非预期地址的设备的响应");
+			throw new ModbusResponseException("接收到非预期地址的设备的响应");
 		}
 
 		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
@@ -422,20 +422,20 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 				{
 				case 1:
 					{
-						throw new ModbusRequestFunctionCodeInvalidException();
+						throw new ModbusRequestFunctionCodeException();
 					}
 				case 2:
 					{
-						throw new ModbusRequestDataAddressInvalidException();
+						throw new ModbusRequestDataAddressException();
 					}
 				case 3:
 					{
-						throw new ModbusRequestDataInvalidException();
+						throw new ModbusRequestDataException();
 					}
 				}
 			}
 
-			throw new ModbusFrameException("设备回复的帧中的功能码错误");
+			throw new ModbusResponseException("设备回复的帧中的功能码错误");
 		}
 
 		// 设备地址和功能码正确。接收剩余的字节。
@@ -475,7 +475,7 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		await _serial_stream.ReadExactlyAsync(read_buffer, 0, 2);
 		if (read_buffer[0] != _device_addr)
 		{
-			throw new ModbusFrameException("接收到非预期地址的设备的响应");
+			throw new ModbusResponseException("接收到非预期地址的设备的响应");
 		}
 
 		if (read_buffer[1] != (byte)FunctionCode.ReadDatas)
@@ -491,20 +491,20 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 				{
 				case 1:
 					{
-						throw new ModbusRequestFunctionCodeInvalidException();
+						throw new ModbusRequestFunctionCodeException();
 					}
 				case 2:
 					{
-						throw new ModbusRequestDataAddressInvalidException();
+						throw new ModbusRequestDataAddressException();
 					}
 				case 3:
 					{
-						throw new ModbusRequestDataInvalidException();
+						throw new ModbusRequestDataException();
 					}
 				}
 			}
 
-			throw new ModbusFrameException("设备回复的帧中的功能码错误");
+			throw new ModbusResponseException("设备回复的帧中的功能码错误");
 		}
 
 		// 设备地址和功能码正确。接收剩余的字节。
@@ -513,7 +513,7 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		CrcCheck(read_buffer);
 		if (read_buffer[2] != record_count * 2)
 		{
-			throw new ModbusFrameException("返回的数据字节数不对");
+			throw new ModbusResponseException("返回的数据字节数不对");
 		}
 
 		int response_uint32_data_count = read_buffer[2] / 4;
@@ -551,7 +551,7 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		await _serial_stream.ReadExactlyAsync(read_buffer, 0, 2);
 		if (read_buffer[0] != _device_addr)
 		{
-			throw new ModbusFrameException("接收到非预期地址的设备的响应");
+			throw new ModbusResponseException("接收到非预期地址的设备的响应");
 		}
 
 		if (read_buffer[1] != (byte)FunctionCode.WriteDatas)
@@ -567,20 +567,20 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 				{
 				case 1:
 					{
-						throw new ModbusRequestFunctionCodeInvalidException();
+						throw new ModbusRequestFunctionCodeException();
 					}
 				case 2:
 					{
-						throw new ModbusRequestDataAddressInvalidException();
+						throw new ModbusRequestDataAddressException();
 					}
 				case 3:
 					{
-						throw new ModbusRequestDataInvalidException();
+						throw new ModbusRequestDataException();
 					}
 				}
 			}
 
-			throw new ModbusFrameException("设备回复的帧中的功能码错误");
+			throw new ModbusResponseException("设备回复的帧中的功能码错误");
 		}
 
 		// 设备地址和功能码正确。接收剩余的字节。
@@ -590,13 +590,13 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 		ushort response_data_addr = _auto_bit_converter.ToUInt16(read_buffer, 2);
 		if (response_data_addr != data_addr)
 		{
-			throw new ModbusFrameException("设备回复帧中的数据地址不对");
+			throw new ModbusResponseException("设备回复帧中的数据地址不对");
 		}
 
 		ushort response_record_count = _auto_bit_converter.ToUInt16(read_buffer, 4);
 		if (response_record_count != datas.Length * 2)
 		{
-			throw new ModbusFrameException("设备回复帧中的记录数不对");
+			throw new ModbusResponseException("设备回复帧中的记录数不对");
 		}
 	}
 }

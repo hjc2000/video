@@ -12,7 +12,7 @@ public abstract class ModbusSdv3Device : ISdv3Device
 	/// </summary>
 	/// <param name="data_addr"></param>
 	/// <param name="value"></param>
-	/// <exception cref="ModbusFrameException"></exception>
+	/// <exception cref="ModbusResponseException"></exception>
 	public abstract Task WriteSingleBitAsync(ushort data_addr, bool value);
 
 	/// <summary>
@@ -21,7 +21,7 @@ public abstract class ModbusSdv3Device : ISdv3Device
 	/// <param name="data_addr">数据地址</param>
 	/// <param name="bit_count">要读取多少个位</param>
 	/// <returns></returns>
-	/// <exception cref="ModbusFrameException"></exception>
+	/// <exception cref="ModbusResponseException"></exception>
 	public abstract Task<byte[]> ReadBitsAsync(ushort data_addr, ushort bit_count);
 
 	/// <summary>
@@ -30,7 +30,7 @@ public abstract class ModbusSdv3Device : ISdv3Device
 	/// <param name="data_addr">数据地址</param>
 	/// <param name="record_count">记录数。一个记录是 16 位。读取 1 个 32 位的数据需要 2 个记录。</param>
 	/// <returns></returns>
-	/// <exception cref="ModbusFrameException"></exception>
+	/// <exception cref="ModbusResponseException"></exception>
 	public abstract Task<uint[]> ReadDatasAsync(ushort data_addr, ushort record_count);
 
 	/// <summary>
@@ -39,7 +39,7 @@ public abstract class ModbusSdv3Device : ISdv3Device
 	/// <param name="data_addr"></param>
 	/// <param name="datas"></param>
 	/// <returns></returns>
-	/// <exception cref="ModbusFrameException"></exception>
+	/// <exception cref="ModbusResponseException"></exception>
 	public abstract Task WriteDatasAsync(ushort data_addr, uint[] datas);
 
 	#region 硬件 EI
