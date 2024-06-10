@@ -17,12 +17,9 @@
 //}
 #endregion
 
-Fraction f = new(1, 4);
-Fraction f1 = new(2, 3);
-Console.WriteLine(f + f1);
-Console.WriteLine(f - f1);
-Console.WriteLine(f * f1);
-Console.WriteLine(f / f1);
-Console.WriteLine(f.Reciprocal);
-Console.WriteLine(f1.Div);
-Console.WriteLine(f1.Mod);
+string[] num_strs = ["5.12", "5", "5/1", "5/2"];
+foreach (string str in num_strs)
+{
+	Fraction fraction = new(str);
+	Console.WriteLine(fraction);
+}

@@ -21,6 +21,52 @@ public readonly struct Fraction
 		_den = den;
 	}
 
+	/// <summary>
+	///		使用字符串进行初始化。
+	///		传进来的字符串可以是分数的字符串，也可以是整型或浮点的字符串，例如：
+	///			"5/2", "5", "5.12"
+	///		这些都是合法的。
+	/// </summary>
+	/// <param name="str"></param>
+	public Fraction(string str)
+	{
+		int index = str.IndexOf('/');
+		if (index == 0)
+		{
+			// 第 1 个字符就是 / 号
+			_num = 0;
+			_den = 1;
+			return;
+		}
+
+		if (index > 0)
+		{
+			// 存在 / 号，且不是第 1 个字符
+			string num_string = str[..index];
+			string den_string = str[(index + 1)..];
+			_num = BigInteger.Parse(num_string);
+			_den = BigInteger.Parse(den_string);
+			return;
+		}
+
+		// 不包含 / 号，推测传进来的是浮点字符串或整数字符串
+		index = str.IndexOf('.');
+		if (index < 0)
+		{
+			// 传进来的是整型字符串
+			_num = BigInteger.Parse(str);
+			_den = 1;
+			return;
+		}
+
+		// 传进来的是浮点字符串
+		// 计算小数点后有多少位
+		int count = str.Length - 1 - index;
+		str = str.Remove(index, 1);
+		_num = BigInteger.Parse(str);
+		_den = (int)System.Math.Pow(10, count);
+	}
+
 	private readonly BigInteger _num = 0;
 	private readonly BigInteger _den = 1;
 
