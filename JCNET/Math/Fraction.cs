@@ -5,7 +5,7 @@ namespace JCNET.Math;
 /// <summary>
 ///		分数类
 /// </summary>
-public struct Fraction
+public readonly struct Fraction
 {
 	public Fraction() { }
 
@@ -21,8 +21,8 @@ public struct Fraction
 		_den = den;
 	}
 
-	private BigInteger _num = 0;
-	private BigInteger _den = 1;
+	private readonly BigInteger _num = 0;
+	private readonly BigInteger _den = 1;
 
 	/// <summary>
 	///		化简。返回化简后的新分数对象。
@@ -31,17 +31,22 @@ public struct Fraction
 	public Fraction Simplify()
 	{
 		BigInteger gcd = BigInteger.GreatestCommonDivisor(_num, _den);
-		_num /= gcd;
-		_den /= gcd;
+		BigInteger num = _num / gcd;
+		BigInteger den = _den / gcd;
 		if (_den < 0)
 		{
-			_num = -_num;
-			_den = -_den;
+			num = -num;
+			den = -den;
 		}
 
-		return new Fraction(_num, _den);
+		return new Fraction(num, den);
 	}
 
+	/// <summary>
+	///		求负
+	/// </summary>
+	/// <param name="fraction1"></param>
+	/// <returns></returns>
 	public static Fraction operator -(Fraction fraction1)
 	{
 		Fraction ret = new(-fraction1._num, fraction1._den);
@@ -49,7 +54,7 @@ public struct Fraction
 	}
 
 	/// <summary>
-	///		两个分数相加
+	///		加法
 	/// </summary>
 	/// <param name="fraction1"></param>
 	/// <param name="fraction2"></param>
@@ -61,19 +66,31 @@ public struct Fraction
 			/ BigInteger.GreatestCommonDivisor(fraction1._den, fraction2._den);
 
 		// 分子放大与分母相同的倍数
-		BigInteger new_num1 = fraction1._num * (den_lcm / fraction1._den);
-		BigInteger new_num2 = fraction2._num * (den_lcm / fraction2._den);
+		BigInteger num1 = fraction1._num * (den_lcm / fraction1._den);
+		BigInteger num2 = fraction2._num * (den_lcm / fraction2._den);
 
-		Fraction ret = new(new_num1 + new_num2, den_lcm);
+		Fraction ret = new(num1 + num2, den_lcm);
 		return ret.Simplify();
 	}
 
+	/// <summary>
+	///		减法
+	/// </summary>
+	/// <param name="fraction1"></param>
+	/// <param name="fraction2"></param>
+	/// <returns></returns>
 	public static Fraction operator -(Fraction fraction1, Fraction fraction2)
 	{
 		Fraction ret = fraction1 + (-fraction2);
 		return ret.Simplify();
 	}
 
+	/// <summary>
+	///		乘法
+	/// </summary>
+	/// <param name="fraction1"></param>
+	/// <param name="fraction2"></param>
+	/// <returns></returns>
 	public static Fraction operator *(Fraction fraction1, Fraction fraction2)
 	{
 		BigInteger num = fraction1._num * fraction2._num;
@@ -82,6 +99,12 @@ public struct Fraction
 		return ret.Simplify();
 	}
 
+	/// <summary>
+	///		除法
+	/// </summary>
+	/// <param name="fraction1"></param>
+	/// <param name="fraction2"></param>
+	/// <returns></returns>
 	public static Fraction operator /(Fraction fraction1, Fraction fraction2)
 	{
 		Fraction ret = fraction1 * fraction2.Reciprocal;
