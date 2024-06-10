@@ -3,7 +3,6 @@ cmake_minimum_required (VERSION 3.8)
 project ("video")
 
 # 包含子项目。
-add_subdirectory(${CMAKE_SOURCE_DIR}/pinvoke)
 add_subdirectory(${CMAKE_SOURCE_DIR}/ffmpeg-wrapper)
 add_subdirectory(${CMAKE_SOURCE_DIR}/tsduck)
 add_subdirectory(${CMAKE_SOURCE_DIR}/libusb-wrapper)
