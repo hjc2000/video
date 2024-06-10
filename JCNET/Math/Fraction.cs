@@ -119,4 +119,9 @@ public struct Fraction
 			return _num % _den;
 		}
 	}
+
+	public override string ToString()
+	{
+		return $"{_num} / {_den}";
+	}
 }

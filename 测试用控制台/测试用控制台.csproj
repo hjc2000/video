@@ -15,6 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\JCNET\JCNET.csproj" />
 		<ProjectReference Include="..\PInvokeLib\PInvokeLib.csproj" />
 	</ItemGroup>
 
