@@ -9,7 +9,7 @@
 
 	<ItemGroup>
 		<!-- 引用外部DLL，并确保它们被复制到输出目录 -->
-		<None Include="$(SolutionDir)/cpp/out/install/x64-release/bin/*.dll">
+		<None Include="$(cpp_lib_build_scripts_path)/msys/.libs/pinvoke/bin/*.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<Visible>false</Visible>
 		</None>

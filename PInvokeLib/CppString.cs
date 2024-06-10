@@ -5,19 +5,19 @@ namespace PInvokeLib;
 
 public partial class CppString
 {
-	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "CreateEmptyString")]
+	[LibraryImport("libpinvoke", EntryPoint = "CreateEmptyString")]
 	private static unsafe partial nuint CreateEmptyString();
 
-	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "String_GetSize")]
+	[LibraryImport("libpinvoke", EntryPoint = "String_GetSize")]
 	private static unsafe partial int String_GetSize(nuint std_string);
 
-	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "String_GetBuffer")]
+	[LibraryImport("libpinvoke", EntryPoint = "String_GetBuffer")]
 	private static unsafe partial byte* String_GetBuffer(nuint std_string);
 
-	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "String_Set")]
+	[LibraryImport("libpinvoke", EntryPoint = "String_Set")]
 	private static unsafe partial void String_Set(nuint std_string, byte* char_arr, int size);
 
-	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "FreeStdString")]
+	[LibraryImport("libpinvoke", EntryPoint = "FreeStdString")]
 	private static unsafe partial void FreeStdString(nuint std_string);
 }
 

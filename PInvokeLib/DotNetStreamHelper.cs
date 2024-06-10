@@ -43,7 +43,7 @@ public partial class DotNetStreamHelper
 	/// <param name="set_position"></param>
 	/// <param name="error"></param>
 	/// <returns></returns>
-	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "CreateDotNetStream")]
+	[LibraryImport("libpinvoke", EntryPoint = "CreateDotNetStream")]
 	private static unsafe partial nuint CreateDotNetStream(
 		CanReadDelegate can_read,
 		CanWriteDelegate can_write,
@@ -63,7 +63,7 @@ public partial class DotNetStreamHelper
 	///		释放 C++ 侧的 DotNetStream 对象。
 	/// </summary>
 	/// <param name="cpp_obj"></param>
-	[LibraryImport("libPInvokeNativeHelper", EntryPoint = "FreeDotNetStream")]
+	[LibraryImport("libpinvoke", EntryPoint = "FreeDotNetStream")]
 	private static unsafe partial void FreeDotNetStream(nuint cpp_obj);
 
 	#region 将对 Stream 的操作函数包装成与供 C++ 调用的委托兼容的形式。
