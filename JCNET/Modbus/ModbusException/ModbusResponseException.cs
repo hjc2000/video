@@ -3,7 +3,7 @@
 /// <summary>
 ///		响应帧中的 CRC 校验错误，功能码，数据地址等不符合预期，都会引发此异常。
 /// </summary>
-public class ModbusResponseException : Exception
+public class ModbusResponseException : ModbusException
 {
 	public ModbusResponseException()
 	{
