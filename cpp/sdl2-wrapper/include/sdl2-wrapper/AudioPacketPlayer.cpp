@@ -1,4 +1,5 @@
 #include"sdl2-wrapper/AudioPacketPlayer.h"
+#include<ffmpeg-wrapper/factory/DecoderPipeFactory.h>
 
 using namespace video;
 using namespace std;
@@ -7,16 +8,16 @@ AudioPacketPlayer::AudioPacketPlayer(AVStreamWrapper &stream)
 {
 	#pragma region 安装管道
 	// 根据音频流构造音频帧播放器
-	_player = shared_ptr<AudioFramePlayer>{ new AudioFramePlayer{stream} };
+	_player = shared_ptr<AudioFramePlayer> { new AudioFramePlayer { stream } };
 
 	// 根据音频流创建解码器
-	_decoder_pipe = unique_ptr<ThreadDecoderPipe>{ new ThreadDecoderPipe{stream} };
+	_decoder_pipe = unique_ptr<ThreadDecoderPipe> { new ThreadDecoderPipe { video::DecoderPipeFactory::Instance(), stream } };
 	_decoder_pipe->FrameConsumerList().Add(_player);
 
-	_packet_queue = shared_ptr<HysteresisBlockingPacketQueue>{ new HysteresisBlockingPacketQueue{} };
+	_packet_queue = shared_ptr<HysteresisBlockingPacketQueue> { new HysteresisBlockingPacketQueue { } };
 
 	// 将包从队列送到管道解码器的泵
-	_packet_pump = shared_ptr<PacketPump>{ new PacketPump{_packet_queue} };
+	_packet_pump = shared_ptr<PacketPump> { new PacketPump { _packet_queue } };
 	_packet_pump->PacketConsumerList().Add(_decoder_pipe);
 	#pragma endregion
 

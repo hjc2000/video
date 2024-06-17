@@ -7,6 +7,8 @@ namespace video
 	class IDecoderPipeFactory
 	{
 	public:
+		virtual ~IDecoderPipeFactory() = default;
+
 		virtual shared_ptr<IDecoderPipe> CreateDecoderPipe(AVStreamInfoCollection const &infos) = 0;
 	};
 }

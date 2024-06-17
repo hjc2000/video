@@ -1,14 +1,14 @@
 #include"ThreadDecoderPipe.h"
 #include<DecoderPipe.h>
-#include<ffmpeg-wrapper/factory/DecoderPipeFactory.h>
 #include<iostream>
 
 using namespace std;
 using namespace video;
 
-video::ThreadDecoderPipe::ThreadDecoderPipe(AVStreamInfoCollection stream)
+video::ThreadDecoderPipe::ThreadDecoderPipe(std::shared_ptr<IDecoderPipeFactory> factory, AVStreamInfoCollection stream)
 {
-	_decoder_pipe = DecoderPipeFactory::Instance().CreateDecoderPipe(stream);
+	_factory = factory;
+	_decoder_pipe = _factory->CreateDecoderPipe(stream);
 	InitDecodeThread();
 }
 

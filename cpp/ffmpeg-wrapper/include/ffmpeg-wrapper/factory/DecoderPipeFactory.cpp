@@ -4,9 +4,9 @@
 using namespace std;
 using namespace video;
 
-DecoderPipeFactory &DecoderPipeFactory::Instance()
+std::shared_ptr<DecoderPipeFactory> DecoderPipeFactory::Instance()
 {
-	static DecoderPipeFactory o;
+	static std::shared_ptr<DecoderPipeFactory> o { new DecoderPipeFactory { } };
 	return o;
 }
 

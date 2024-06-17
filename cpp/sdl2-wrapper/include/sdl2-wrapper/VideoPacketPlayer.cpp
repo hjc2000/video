@@ -1,4 +1,5 @@
 #include"VideoPacketPlayer.h"
+#include<ffmpeg-wrapper/factory/DecoderPipeFactory.h>
 
 using namespace video;
 using namespace std;
@@ -11,22 +12,22 @@ VideoPacketPlayer::VideoPacketPlayer(int x, int y, AVStreamWrapper &stream)
 	*/
 
 	// 播放器，管道最下游
-	_player = shared_ptr<VideoFramePlayer>{ new VideoFramePlayer{
-			x,
-			y,
-			stream,
-			"VideoPacketPlayer",
-			SDL_WindowFlags::SDL_WINDOW_SHOWN,
+	_player = shared_ptr<VideoFramePlayer> { new VideoFramePlayer {
+		x,
+		y,
+		stream,
+		"VideoPacketPlayer",
+		SDL_WindowFlags::SDL_WINDOW_SHOWN,
 	} };
 
-	_decoder_pipe = shared_ptr<ThreadDecoderPipe>{ new ThreadDecoderPipe{stream} };
+	_decoder_pipe = shared_ptr<ThreadDecoderPipe> { new ThreadDecoderPipe { video::DecoderPipeFactory::Instance(), stream } };
 	_decoder_pipe->FrameConsumerList().Add(_player);
 
 	// 包队列其实不算管道。它应该类似水池，需要一个泵将包送入管道。
-	_packet_queue = shared_ptr<HysteresisBlockingPacketQueue>{ new HysteresisBlockingPacketQueue{} };
+	_packet_queue = shared_ptr<HysteresisBlockingPacketQueue> { new HysteresisBlockingPacketQueue { } };
 
 	// 将包从队列送到管道解码器的泵
-	_packet_pump = shared_ptr<PacketPump>{ new PacketPump{_packet_queue} };
+	_packet_pump = shared_ptr<PacketPump> { new PacketPump { _packet_queue } };
 	_packet_pump->PacketConsumerList().Add(_decoder_pipe);
 	#pragma endregion
 

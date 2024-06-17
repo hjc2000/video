@@ -1,5 +1,6 @@
 #pragma once
 #include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
+#include<ffmpeg-wrapper/factory/IDecoderPipeFactory.h>
 #include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
 #include<ffmpeg-wrapper/pipe/interface/IDecoderPipe.h>
 #include<jccpp/define.h>
@@ -14,6 +15,7 @@ namespace video
 	class ThreadDecoderPipe final :public IDecoderPipe
 	{
 	private:
+		std::shared_ptr<IDecoderPipeFactory> _factory;
 		shared_ptr<IDecoderPipe> _decoder_pipe;
 		HysteresisBlockingPacketQueue _packet_queue { };
 		TaskCompletionSignal _decode_thread_exit { true };
@@ -29,7 +31,7 @@ namespace video
 		///		将根据 stream 的信息构造一个解码管道。
 		/// </summary>
 		/// <param name="stream"></param>
-		ThreadDecoderPipe(AVStreamInfoCollection stream);
+		ThreadDecoderPipe(std::shared_ptr<IDecoderPipeFactory> factory, AVStreamInfoCollection stream);
 		~ThreadDecoderPipe();
 		void Dispose() override;
 		#pragma endregion
