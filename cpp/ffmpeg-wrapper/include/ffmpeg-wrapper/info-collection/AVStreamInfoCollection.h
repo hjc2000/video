@@ -14,6 +14,7 @@ namespace video
 		public IAudioStreamInfoCollection,
 		public IVideoStreamInfoCollection
 	{
+	private:
 		void CopyCodecParamFrom(AVCodecParameters const *src);
 
 	public:
@@ -45,7 +46,7 @@ namespace video
 		int Index()  const;
 		void SetIndex(int value);
 
-		AVMediaType _media_type{};
+		AVMediaType _media_type { };
 
 		int64_t _bitrate = 0;
 		int64_t Bitrate() const
@@ -60,14 +61,14 @@ namespace video
 		AVCodecParameters *_codec_params = avcodec_parameters_alloc();
 		AVCodec const *_codec = nullptr;
 
-		AVRational _timebase{};
-		AVSampleFormat _sample_format{};
+		AVRational _timebase { };
+		AVSampleFormat _sample_format { };
 		int _sample_rate = 0;
-		AVChannelLayout _ch_layout{};
+		AVChannelLayout _ch_layout { };
 		int _width = 0;
 		int _height = 0;
-		AVPixelFormat _pixel_format{};
-		AVRational _frame_rate{};
+		AVPixelFormat _pixel_format { };
+		AVRational _frame_rate { };
 
 		#pragma region 通过 IAudioStreamInfoCollection 继承
 		AVRational TimeBase() const override;

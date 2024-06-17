@@ -3,17 +3,10 @@
 
 using namespace video;
 
-shared_ptr<EncoderPipeFactory> video::EncoderPipeFactory::_custom_factory = nullptr;
-
 EncoderPipeFactory &video::EncoderPipeFactory::Instance()
 {
-	static EncoderPipeFactory instance;
-	if (_custom_factory)
-	{
-		return *_custom_factory;
-	}
-
-	return instance;
+	static EncoderPipeFactory o;
+	return o;
 }
 
 shared_ptr<IFrameConsumer> video::EncoderPipeFactory::CreateEncoderPipe(

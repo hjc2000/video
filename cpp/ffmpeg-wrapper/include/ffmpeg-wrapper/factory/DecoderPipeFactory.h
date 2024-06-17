@@ -4,6 +4,9 @@
 
 namespace video
 {
+	/// <summary>
+	///		本库实现的一个解码管道工厂。使用单例模式。
+	/// </summary>
 	class DecoderPipeFactory :
 		public video::IDecoderPipeFactory
 	{
