@@ -2,20 +2,21 @@
 #include<ffmpeg-wrapper/container/HysteresisBlockingPacketQueue.h>
 #include<ffmpeg-wrapper/info-collection/AVStreamInfoCollection.h>
 #include<ffmpeg-wrapper/pipe/interface/IDecoderPipe.h>
-#include<jccpp/TaskCompletionSignal.h>
 #include<jccpp/define.h>
+#include<jccpp/TaskCompletionSignal.h>
 
 namespace video
 {
 	/// <summary>
-	///		内部包装了一个线程地解码管道。
+	///		内部包装了一个线程的解码管道。
 	///		本类依赖 DecoderPipeFactory 来创建内部的解码管道。
 	/// </summary>
 	class ThreadDecoderPipe final :public IDecoderPipe
 	{
+	private:
 		shared_ptr<IDecoderPipe> _decoder_pipe;
-		HysteresisBlockingPacketQueue _packet_queue{};
-		TaskCompletionSignal _decode_thread_exit{ true };
+		HysteresisBlockingPacketQueue _packet_queue { };
+		TaskCompletionSignal _decode_thread_exit { true };
 		std::atomic_bool _do_not_flush_consumer = false;
 		std::atomic_bool _disposed = false;
 

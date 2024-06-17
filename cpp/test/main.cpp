@@ -17,17 +17,17 @@ int main(void)
 {
 	try
 	{
-		//std::filesystem::current_path(Predefine_ResourceDir);
-		//test_SptsEncodeMux();
+		std::filesystem::current_path(Predefine_ResourceDir);
+		test_SptsEncodeMux();
 		//test_AVPacketPlayer();
 		//test_tsduck();
 		//test_libusb();
-		base::Fraction a { 1, 5 };
-		base::Fraction b { 1, 4 };
-		cout << a + b << endl;
-		cout << a - b << endl;
-		cout << a * b << endl;
-		cout << a / b << endl;
+		//base::Fraction a { 1, 5 };
+		//base::Fraction b { 1, 4 };
+		//cout << a + b << endl;
+		//cout << a - b << endl;
+		//cout << a * b << endl;
+		//cout << a / b << endl;
 		return 0;
 	}
 	catch (std::runtime_error &e)
