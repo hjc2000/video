@@ -1,5 +1,6 @@
 #pragma once
 #include<ffmpeg-wrapper/factory/IEncoderPipeFactory.h>
+#include<memory>
 
 namespace video
 {
@@ -12,7 +13,7 @@ namespace video
 		public video::IEncoderPipeFactory
 	{
 	public:
-		static EncoderPipeFactory &Instance();
+		static std::shared_ptr<EncoderPipeFactory> Instance();
 
 		/// <summary>
 		///		构造视频编码管道

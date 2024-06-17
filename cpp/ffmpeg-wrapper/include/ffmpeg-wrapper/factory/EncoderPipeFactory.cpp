@@ -3,9 +3,9 @@
 
 using namespace video;
 
-EncoderPipeFactory &video::EncoderPipeFactory::Instance()
+std::shared_ptr<EncoderPipeFactory> video::EncoderPipeFactory::Instance()
 {
-	static EncoderPipeFactory o;
+	static std::shared_ptr<EncoderPipeFactory> o { new  EncoderPipeFactory { } };
 	return o;
 }
 
@@ -16,7 +16,7 @@ shared_ptr<IFrameConsumer> video::EncoderPipeFactory::CreateEncoderPipe(
 	int64_t out_bit_rate_in_bps
 )
 {
-	return shared_ptr<IFrameConsumer>{new EncoderPipe{
+	return shared_ptr<IFrameConsumer>{new EncoderPipe {
 		codec_name,
 		in_stream_infos,
 		output_format,
@@ -30,7 +30,7 @@ shared_ptr<IFrameConsumer> video::EncoderPipeFactory::CreateEncoderPipe(
 	shared_ptr<OutputFormat> output_format
 )
 {
-	return shared_ptr<IFrameConsumer>{new EncoderPipe{
+	return shared_ptr<IFrameConsumer>{new EncoderPipe {
 		codec_name,
 		in_stream_infos,
 		output_format

@@ -1,5 +1,6 @@
 #include"ffmpeg-wrapper/mux/SptsEncodeMux.h"
 #include<base/container/Queue.h>
+#include<ffmpeg-wrapper/factory/EncoderPipeFactory.h>
 #include<iostream>
 
 using namespace video;
@@ -39,6 +40,7 @@ video::SptsEncodeMux::SptsEncodeMux(
 void video::SptsEncodeMux::InitVideoEncodePipe()
 {
 	_video_encoder_pipe = shared_ptr<SwsFpsEncoderPipe> { new SwsFpsEncoderPipe {
+		video::EncoderPipeFactory::Instance(),
 		_out_format,
 		_video_stream_infos,
 		_video_codec_name,
@@ -49,6 +51,7 @@ void video::SptsEncodeMux::InitVideoEncodePipe()
 void video::SptsEncodeMux::InitAudioEncodePipe()
 {
 	_audio_encode_pipe = shared_ptr<SwrEncoderPipe> { new SwrEncoderPipe {
+		video::EncoderPipeFactory::Instance(),
 		_audio_codec_name,
 		_audio_stream_infos,
 		_out_format,
