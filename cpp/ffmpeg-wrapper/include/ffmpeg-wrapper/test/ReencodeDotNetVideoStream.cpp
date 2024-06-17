@@ -1,5 +1,6 @@
 #include"ReencodeDotNetVideoStream.h"
 #include<base/task/CancellationTokenSource.h>
+#include<ffmpeg-wrapper/factory/EncoderPipeFactory.h>
 
 using namespace std;
 using namespace jc;
@@ -24,6 +25,7 @@ void ReencodeDotNetVideoStream(DotNetStream *dotnet_video_stream)
 	shared_ptr<base::Stream> out_fs = jccpp::FileStream::CreateNewAnyway("mux_out.ts");
 	shared_ptr<StreamOutputFormat> out_fmt_ctx { new StreamOutputFormat { ".ts", out_fs } };
 	shared_ptr<SptsEncodeMux> spts_encode_mux { new SptsEncodeMux {
+		video::EncoderPipeFactory::Instance(),
 		out_fmt_ctx,
 		output_video_stream_infos,
 		"hevc_amf",

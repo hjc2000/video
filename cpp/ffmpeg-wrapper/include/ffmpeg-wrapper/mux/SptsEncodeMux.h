@@ -1,4 +1,5 @@
 #pragma once
+#include<ffmpeg-wrapper/factory/IEncoderPipeFactory.h>
 #include<ffmpeg-wrapper/info-collection/AudioStreamInfoCollection.h>
 #include<ffmpeg-wrapper/info-collection/VideoStreamInfoCollection.h>
 #include<ffmpeg-wrapper/output-format/OutputFormat.h>
@@ -15,6 +16,8 @@ namespace video
 	/// </summary>
 	class SptsEncodeMux
 	{
+		std::shared_ptr<video::IEncoderPipeFactory> _factory;
+
 		shared_ptr<OutputFormat> _out_format;
 
 		VideoStreamInfoCollection _video_stream_infos;
@@ -49,6 +52,7 @@ namespace video
 		/// </param>
 		/// <param name="audio_codec_name">输出音频所使用的编码器名称</param>
 		SptsEncodeMux(
+			std::shared_ptr<video::IEncoderPipeFactory> factory,
 			shared_ptr<OutputFormat> out_format,
 			// 视频相关参数
 			IVideoStreamInfoCollection const &video_stream_infos,

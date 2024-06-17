@@ -15,7 +15,8 @@ namespace video
 		public IPacketSource,
 		public IDisposable
 	{
-		jc::HysteresisBlockingQueue<AVPacketWrapper> _packet_queue{ 10 };
+	private:
+		jc::HysteresisBlockingQueue<AVPacketWrapper> _packet_queue { 10 };
 		std::atomic_bool _disposed = false;
 
 	public:

@@ -1,12 +1,12 @@
 #include"ffmpeg-wrapper/mux/SptsEncodeMux.h"
 #include<base/container/Queue.h>
-#include<ffmpeg-wrapper/factory/EncoderPipeFactory.h>
 #include<iostream>
 
 using namespace video;
 using namespace std;
 
 video::SptsEncodeMux::SptsEncodeMux(
+	std::shared_ptr<video::IEncoderPipeFactory> factory,
 	shared_ptr<OutputFormat> out_format,
 	// 视频相关参数
 	IVideoStreamInfoCollection const &video_stream_infos,
@@ -17,6 +17,7 @@ video::SptsEncodeMux::SptsEncodeMux(
 	std::string audio_codec_name
 )
 {
+	_factory = factory;
 	_out_format = out_format;
 
 	// 视频参数
@@ -40,7 +41,7 @@ video::SptsEncodeMux::SptsEncodeMux(
 void video::SptsEncodeMux::InitVideoEncodePipe()
 {
 	_video_encoder_pipe = shared_ptr<SwsFpsEncoderPipe> { new SwsFpsEncoderPipe {
-		video::EncoderPipeFactory::Instance(),
+		_factory,
 		_out_format,
 		_video_stream_infos,
 		_video_codec_name,
@@ -51,7 +52,7 @@ void video::SptsEncodeMux::InitVideoEncodePipe()
 void video::SptsEncodeMux::InitAudioEncodePipe()
 {
 	_audio_encode_pipe = shared_ptr<SwrEncoderPipe> { new SwrEncoderPipe {
-		video::EncoderPipeFactory::Instance(),
+		_factory,
 		_audio_codec_name,
 		_audio_stream_infos,
 		_out_format,
@@ -86,6 +87,7 @@ shared_ptr<IFrameConsumer> video::SptsEncodeMux::AudioEncodePipe()
 #include<ffmpeg-wrapper/demux/JoinedInputFormatDemuxDecoder.h>
 #include<ffmpeg-wrapper/output-format/StreamOutputFormat.h>
 #include<base/task/CancellationTokenSource.h>
+#include<ffmpeg-wrapper/factory/EncoderPipeFactory.h>
 
 /// <summary>
 ///		测试函数
@@ -139,6 +141,7 @@ void test_SptsEncodeMux()
 	shared_ptr<base::Stream> out_fs = jccpp::FileStream::CreateNewAnyway("mux_out.ts");
 	shared_ptr<StreamOutputFormat> out_fmt_ctx { new StreamOutputFormat { ".ts", out_fs } };
 	shared_ptr<SptsEncodeMux> spts_encode_mux { new SptsEncodeMux {
+		video::EncoderPipeFactory::Instance(),
 		out_fmt_ctx,
 		output_video_stream_infos,
 		"hevc_amf",
