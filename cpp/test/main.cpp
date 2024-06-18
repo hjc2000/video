@@ -20,12 +20,6 @@ int main(void)
 		test_SptsEncodeMux();
 		//test_AVPacketPlayer();
 		//test_tsduck();
-		//base::Fraction a { 1, 5 };
-		//base::Fraction b { 1, 4 };
-		//cout << a + b << endl;
-		//cout << a - b << endl;
-		//cout << a * b << endl;
-		//cout << a / b << endl;
 		return 0;
 	}
 	catch (std::runtime_error &e)
