@@ -4,10 +4,10 @@
 #include<base/math/Fraction.h>
 #include<ffmpeg-wrapper/mux/SptsEncodeMux.h>
 #include<filesystem>
-#include<QtCore/QCoreApplication>
-#include<QtCore/QDebug>
 #include<sdl2-wrapper/AVPacketPlayer.h>
 #include<test_tsduck.h>
+//#include<QtCore/QCoreApplication>
+//#include<QtCore/QDebug>
 
 using namespace video;
 using namespace jc;
