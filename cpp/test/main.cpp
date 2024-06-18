@@ -7,7 +7,6 @@
 #include<QtCore/QCoreApplication>
 #include<QtCore/QDebug>
 #include<sdl2-wrapper/AVPacketPlayer.h>
-#include<test_libusb.h>
 #include<test_tsduck.h>
 
 using namespace video;

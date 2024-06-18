@@ -23,5 +23,4 @@ target_link_libraries(${ProjectName} PUBLIC
     tsduck 
     ffmpeg-wrapper 
     sdl2-wrapper 
-    libusb-wrapper
 )
