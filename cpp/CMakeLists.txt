@@ -4,7 +4,6 @@ project ("video")
 
 # 包含子项目。
 add_subdirectory(${CMAKE_SOURCE_DIR}/ffmpeg-wrapper)
-add_subdirectory(${CMAKE_SOURCE_DIR}/tsduck)
 add_subdirectory(${CMAKE_SOURCE_DIR}/sdl2-wrapper)
 add_subdirectory(${CMAKE_SOURCE_DIR}/test)
 add_subdirectory(${CMAKE_SOURCE_DIR}/ts-dumper)
