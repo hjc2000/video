@@ -5,7 +5,6 @@
 #include<ffmpeg-wrapper/mux/SptsEncodeMux.h>
 #include<filesystem>
 #include<sdl2-wrapper/AVPacketPlayer.h>
-#include<test_tsduck.h>
 //#include<QtCore/QCoreApplication>
 //#include<QtCore/QDebug>
 
