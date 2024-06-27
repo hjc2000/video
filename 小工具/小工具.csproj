@@ -11,10 +11,10 @@
 	  <None Include="wwwroot\index.html" />
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="JCNET" Version="2.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="8.0.6" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\JCNET\JCNET.csproj" />
 	  <ProjectReference Include="..\JCRazor\JCRazor.csproj" />
 	</ItemGroup>
 </Project>

@@ -10,12 +10,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="JCNET" Version="2.0.0" />
 	  <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.4.2" />
 	  <PackageReference Include="System.Management.Automation" Version="7.4.2" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\JCNET\JCNET.csproj" />
 		<ProjectReference Include="..\PInvokeLib\PInvokeLib.csproj" />
 	</ItemGroup>
 

@@ -3,7 +3,10 @@ using Microsoft.JSInterop;
 
 namespace JCRazor.js互操作;
 
-public class JSReadableStreamBinder : Stream, IJSObjectProjection, IJoinedStreamCurrentStreamEndHandler
+public class JSReadableStreamBinder :
+	Stream,
+	IJSObjectProjection,
+	JoinedStream.IStreamSource
 {
 	/// <summary>
 	/// 
@@ -12,7 +15,7 @@ public class JSReadableStreamBinder : Stream, IJSObjectProjection, IJoinedStream
 	/// <param name="readable_stream">js 中的 ReadableStream 对象。</param>
 	public JSReadableStreamBinder(IJSRuntime jsrt, IJSObjectReference readable_stream)
 	{
-		_joined_stream.CurrentStreamEndHandler = this;
+		_joined_stream.StreamSource = this;
 		_ = InitAsync(jsrt, readable_stream);
 	}
 
@@ -31,7 +34,7 @@ public class JSReadableStreamBinder : Stream, IJSObjectProjection, IJoinedStream
 
 		// 如果任务没完成，直接取消
 		await _joined_stream.DisposeAsync();
-		_joined_stream.CurrentStreamEndHandler = null;
+		_joined_stream.StreamSource = null;
 		_init_tcs.TrySetCanceled();
 		if (_init_tcs.Task.IsCompletedSuccessfully)
 		{
@@ -43,7 +46,10 @@ public class JSReadableStreamBinder : Stream, IJSObjectProjection, IJoinedStream
 	private async Task InitAsync(IJSRuntime jsrt, IJSObjectReference readable_stream)
 	{
 		await using JSModule module = new(jsrt, "./_content/JCRazor/ReadableStreamBinder.js");
-		Projection = await module.InvokeAsync<IJSObjectReference>("ReadableStreamBinder.create", readable_stream);
+
+		Projection = await module.InvokeAsync<IJSObjectReference>(
+			"ReadableStreamBinder.create", readable_stream);
+
 		_init_tcs.TrySetResult();
 	}
 
@@ -100,17 +106,9 @@ public class JSReadableStreamBinder : Stream, IJSObjectProjection, IJoinedStream
 	public IJSObjectReference Projection { get; private set; } = default!;
 
 	private JoinedStream _joined_stream = new();
-	async Task IJoinedStreamCurrentStreamEndHandler.OnCurrentStreamEnd()
-	{
-		try
-		{
-			MemoryStream mstream = new(await ReadAsync());
-			_joined_stream.AppendStream(mstream);
-		}
-		catch { }
-	}
 
-	public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+	public override async ValueTask<int> ReadAsync(Memory<byte> buffer,
+		CancellationToken cancellationToken = default)
 	{
 		int haveRead = await _joined_stream.ReadAsync(buffer, cancellationToken);
 		_position += haveRead;
@@ -206,6 +204,18 @@ public class JSReadableStreamBinder : Stream, IJSObjectProjection, IJoinedStream
 	}
 
 	public event Action<PositionChangeEventArgs>? PositionChangedEvent;
+
+	public async Task GetNextStreamAsync()
+	{
+		try
+		{
+			MemoryStream mstream = new(await ReadAsync());
+			_joined_stream.AppendStream(mstream);
+		}
+		catch
+		{
+		}
+	}
 }
 
 public struct PositionChangeEventArgs
