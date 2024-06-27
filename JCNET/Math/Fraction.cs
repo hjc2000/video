@@ -113,8 +113,9 @@ public readonly struct Fraction
 	public static Fraction operator +(Fraction fraction1, Fraction fraction2)
 	{
 		// 两个分数的分母的最小公倍数
-		BigInteger den_lcm = fraction1._den * fraction2._den
-			/ BigInteger.GreatestCommonDivisor(fraction1._den, fraction2._den);
+		BigInteger den_lcm = fraction1._den *
+			fraction2._den /
+			BigInteger.GreatestCommonDivisor(fraction1._den, fraction2._den);
 
 		// 分子放大与分母相同的倍数
 		BigInteger num1 = fraction1._num * (den_lcm / fraction1._den);
