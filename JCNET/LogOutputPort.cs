@@ -1,7 +1,7 @@
 ﻿namespace JCNET;
 
 /// <summary>
-///		日志输出端口。可以输出到文件或控制台。指定文件路径则输出到文件，文件路径为空则输出到控制台。
+///		日志输出端口
 /// </summary>
 public class LogOutputPort : IAsyncDisposable
 {
@@ -15,7 +15,8 @@ public class LogOutputPort : IAsyncDisposable
 		_console_origin_writer = Console.Out;
 		if (_output_file_path is not null)
 		{
-			_log_file = File.Open(_output_file_path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+			_log_file = File.Open(_output_file_path, FileMode.Create,
+				FileAccess.ReadWrite, FileShare.ReadWrite);
 			_log_writer = new(_log_file)
 			{
 				AutoFlush = true
