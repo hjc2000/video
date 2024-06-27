@@ -1,5 +1,8 @@
-﻿namespace libsdv3.Modbus;
+﻿namespace SDV3Lib.Modbus;
 
+/// <summary>
+///		功能码枚举。
+/// </summary>
 public enum FunctionCode
 {
 	/// <summary>

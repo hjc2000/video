@@ -1,7 +1,7 @@
 ﻿using JCNET;
 using JCNET.Modbus;
 
-namespace libsdv3.Modbus.Frame;
+namespace SDV3Lib.Modbus.Frame;
 
 /// <summary>
 ///		读取各种数据的请求帧。

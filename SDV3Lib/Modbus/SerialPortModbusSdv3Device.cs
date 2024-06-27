@@ -2,14 +2,15 @@
 using JCNET.Modbus;
 using JCNET.Modbus.ModbusException;
 using JCNET.流;
-using libsdv3.Modbus.Frame;
+using SDV3Lib.Modbus.Frame;
 using System.IO.Ports;
 
-namespace libsdv3.Modbus;
+namespace SDV3Lib.Modbus;
 
 public class SerialPortModbusSdv3Device : ModbusSdv3Device
 {
-	public SerialPortModbusSdv3Device(SerialPort serialPort, byte device_addr, bool big_endian)
+	public SerialPortModbusSdv3Device(SerialPort serialPort,
+		byte device_addr, bool big_endian)
 	{
 		_serial_port = serialPort;
 		_device_addr = device_addr;

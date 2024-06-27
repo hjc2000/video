@@ -1,4 +1,4 @@
-﻿namespace libsdv3.Modbus;
+﻿namespace SDV3Lib.Modbus;
 
 public static class ParamAddress
 {

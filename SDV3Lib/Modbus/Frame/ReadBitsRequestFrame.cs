@@ -1,7 +1,7 @@
 ﻿using JCNET;
 using JCNET.Modbus;
 
-namespace libsdv3.Modbus.Frame;
+namespace SDV3Lib.Modbus.Frame;
 
 public class ReadBitsRequestFrame
 {

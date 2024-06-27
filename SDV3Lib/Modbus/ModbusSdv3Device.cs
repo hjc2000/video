@@ -1,7 +1,7 @@
 ﻿using JCNET.Modbus.ModbusException;
-using libsdv3.Code;
+using SDV3Lib.Code;
 
-namespace libsdv3.Modbus;
+namespace SDV3Lib.Modbus;
 
 public abstract class ModbusSdv3Device : ISdv3Device
 {

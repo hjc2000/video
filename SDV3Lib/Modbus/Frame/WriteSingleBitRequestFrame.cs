@@ -1,7 +1,7 @@
 ﻿using JCNET;
 using JCNET.Modbus;
 
-namespace libsdv3.Modbus.Frame;
+namespace SDV3Lib.Modbus.Frame;
 
 /// <summary>
 ///		写单个位的请求帧。由主机发给从机。

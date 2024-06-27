@@ -1,4 +1,4 @@
-﻿namespace libsdv3.Code;
+﻿namespace SDV3Lib.Code;
 
 public enum AlarmCode
 {

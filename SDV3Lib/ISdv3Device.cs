@@ -1,6 +1,6 @@
-﻿using libsdv3.Code;
+﻿using SDV3Lib.Code;
 
-namespace libsdv3;
+namespace SDV3Lib;
 
 public interface ISdv3Device : IAsyncDisposable
 {
