@@ -5,11 +5,14 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<!-- 引用外部DLL，并确保它们被复制到输出目录 -->
-		<None Include="$(cpp_lib_build_scripts_path)/msys/.libs/pinvoke/bin/*.dll">
+		<None Include="$(cpp_lib_build_scripts_path)/msys/.libs/pinvoke/bin/*.dll"
+				Pack="true"
+				PackagePath="runtimes/win-x64/native">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<Visible>false</Visible>
 		</None>
