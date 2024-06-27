@@ -69,7 +69,7 @@ public readonly struct Fraction
 		int count = str.Length - 1 - index;
 		str = str.Remove(index, 1);
 		_num = BigInteger.Parse(str);
-		_den = (int)System.Math.Pow(10, count);
+		_den = BigInteger.Pow(10, count);
 	}
 
 	private readonly BigInteger _num = 0;
