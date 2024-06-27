@@ -13,7 +13,7 @@ public class WriteSingleBitRequestFrame
 	/// </summary>
 	public byte SlaveAddress { get; set; } = 1;
 
-	private FunctionCode FunctionCode { get; } = FunctionCode.WriteSingleBit;
+	private FunctionCode FunctionCode { get; } = FunctionCode.WriteSingleCoil;
 
 	/// <summary>
 	///		数据地址。这里就是要写入的位的地址。

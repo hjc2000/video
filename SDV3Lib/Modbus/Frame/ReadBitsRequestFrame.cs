@@ -6,7 +6,7 @@ namespace SDV3Lib.Modbus.Frame;
 public class ReadBitsRequestFrame
 {
 	public byte SlaveAddress { get; set; } = 1;
-	private FunctionCode FunctionCode { get; } = FunctionCode.ReadBits;
+	private FunctionCode FunctionCode { get; } = FunctionCode.ReadCoils;
 	public ushort DataAddress { get; set; } = 0;
 	public ushort BitCount { get; set; } = 1;
 

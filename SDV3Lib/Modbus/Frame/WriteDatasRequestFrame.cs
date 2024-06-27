@@ -6,7 +6,7 @@ namespace SDV3Lib.Modbus.Frame;
 public class WriteDatasRequestFrame
 {
 	public byte SlaveAddress { get; set; } = 1;
-	private FunctionCode FunctionCode { get; } = FunctionCode.WriteDatas;
+	private FunctionCode FunctionCode { get; } = FunctionCode.WriteHoldingRegisters;
 	public ushort DataAddress { get; set; } = 0;
 
 	private ushort RecordCount

@@ -6,29 +6,46 @@
 public enum FunctionCode
 {
 	/// <summary>
-	///		读取各种数据
+	///		读取一组线圈的状态。
+	///		* 线圈表示输出位，只有 0 和 1 两种状态。
+	///		* PLC 中的开关量输出控制的是继电器线圈，所以就有这个传统叫法。
+	///		* 可以同时读取多个线圈。
 	/// </summary>
-	ReadDatas = 0x03,
+	ReadCoils = 0x01,
 
 	/// <summary>
-	///		写入各种数据
+	///		读取一组输入位的状态。
+	///		* 相当于 PLC 中的开关量输入端子。
+	///		* 可以同时读取多个输入位。
 	/// </summary>
-	WriteDatas = 0x10,
+	ReadInputBits = 0x02,
 
 	/// <summary>
-	///		读取多个位
+	///		读取一组保持寄存器。
+	///		* 一个保持寄存器就是一段 2 个字节的内存。
+	///		* 可以一次性读取一组连续的保持寄存器。用这种方式可以一次性传输一段较大的内存。
 	/// </summary>
-	ReadBits = 0x01,
+	ReadHoldingRegisters = 0x03,
 
 	/// <summary>
-	///		写入单个位
+	///		读取一组输入寄存器。
 	/// </summary>
-	WriteSingleBit = 0x05,
+	ReadInputRegisters = 0x04,
 
 	/// <summary>
-	///		写入多个位
+	///		写单个线圈。
 	/// </summary>
-	WriteBits = 0x0f,
+	WriteSingleCoil = 0x05,
+
+	/// <summary>
+	///		写入多个线圈。
+	/// </summary>
+	WriteCoil = 0x0f,
+
+	/// <summary>
+	///		写入多个保持寄存器
+	/// </summary>
+	WriteHoldingRegisters = 0x10,
 
 	/// <summary>
 	///		诊断

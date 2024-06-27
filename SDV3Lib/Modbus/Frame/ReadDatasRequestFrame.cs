@@ -9,7 +9,7 @@ namespace SDV3Lib.Modbus.Frame;
 public class ReadDatasRequestFrame
 {
 	public byte SlaveAddress { get; set; } = 1;
-	private FunctionCode FunctionCode { get; } = FunctionCode.ReadDatas;
+	private FunctionCode FunctionCode { get; } = FunctionCode.ReadHoldingRegisters;
 	public ushort DataAddress { get; set; } = 0;
 	public ushort RecordCount { get; set; } = 1;
 

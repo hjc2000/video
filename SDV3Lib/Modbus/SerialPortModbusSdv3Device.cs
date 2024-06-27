@@ -332,10 +332,10 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 			throw new ModbusResponseException("接收到非预期地址的设备的响应");
 		}
 
-		if (read_buffer[1] != (byte)FunctionCode.WriteSingleBit)
+		if (read_buffer[1] != (byte)FunctionCode.WriteSingleCoil)
 		{
 			// 收到意外的功能码
-			if (read_buffer[1] == ((byte)FunctionCode.WriteSingleBit | 0b1000_0000))
+			if (read_buffer[1] == ((byte)FunctionCode.WriteSingleCoil | 0b1000_0000))
 			{
 				// 收到例外响应
 				// 剩下 1 字节的例外码和 2 字节的 CRC 没有接收
@@ -410,10 +410,10 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 			throw new ModbusResponseException("接收到非预期地址的设备的响应");
 		}
 
-		if (read_buffer[1] != (byte)FunctionCode.ReadBits)
+		if (read_buffer[1] != (byte)FunctionCode.ReadCoils)
 		{
 			// 收到意外的功能码
-			if (read_buffer[1] == ((byte)FunctionCode.ReadBits | 0b1000_0000))
+			if (read_buffer[1] == ((byte)FunctionCode.ReadCoils | 0b1000_0000))
 			{
 				// 收到例外响应
 				// 剩下 1 字节的例外码和 2 字节的 CRC 没有接收
@@ -479,10 +479,10 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 			throw new ModbusResponseException("接收到非预期地址的设备的响应");
 		}
 
-		if (read_buffer[1] != (byte)FunctionCode.ReadDatas)
+		if (read_buffer[1] != (byte)FunctionCode.ReadHoldingRegisters)
 		{
 			// 收到意外的功能码
-			if (read_buffer[1] == ((byte)FunctionCode.ReadDatas | 0b1000_0000))
+			if (read_buffer[1] == ((byte)FunctionCode.ReadHoldingRegisters | 0b1000_0000))
 			{
 				// 收到例外响应
 				// 剩下 1 字节的例外码和 2 字节的 CRC 没有接收
@@ -555,10 +555,10 @@ internal class InnerSerialPortModbusSdv3Device : ModbusSdv3Device
 			throw new ModbusResponseException("接收到非预期地址的设备的响应");
 		}
 
-		if (read_buffer[1] != (byte)FunctionCode.WriteDatas)
+		if (read_buffer[1] != (byte)FunctionCode.WriteHoldingRegisters)
 		{
 			// 收到意外的功能码
-			if (read_buffer[1] == ((byte)FunctionCode.WriteDatas | 0b1000_0000))
+			if (read_buffer[1] == ((byte)FunctionCode.WriteHoldingRegisters | 0b1000_0000))
 			{
 				// 收到例外响应
 				// 剩下 1 字节的例外码和 2 字节的 CRC 没有接收

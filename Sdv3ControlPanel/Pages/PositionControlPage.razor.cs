@@ -16,7 +16,9 @@ public partial class PositionControlPage : IAsyncDisposable
 			// 设置定时器
 			_cancel_timer.Cancel();
 			_cancel_timer = new CancellationTokenSource();
-			TaskTimer.SetInterval(UpdateDatasAsync, 100, _cancel_timer.Token);
+
+			TaskTimer.SetInterval(UpdateDatasAsync,
+				100, _cancel_timer.Token);
 		}
 	}
 
