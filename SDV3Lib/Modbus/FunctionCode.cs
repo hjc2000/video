@@ -40,7 +40,7 @@ public enum FunctionCode
 	/// <summary>
 	///		写入多个线圈。
 	/// </summary>
-	WriteCoil = 0x0f,
+	WriteCoils = 0x0f,
 
 	/// <summary>
 	///		写入多个保持寄存器
