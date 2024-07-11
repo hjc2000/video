@@ -6,7 +6,7 @@ namespace JCRazor.js互操作;
 public class JSReadableStreamBinder :
 	Stream,
 	IJSObjectProjection,
-	JoinedStream.IStreamSource
+	IAsyncEnumerator<Stream>
 {
 	/// <summary>
 	/// 
@@ -15,7 +15,7 @@ public class JSReadableStreamBinder :
 	/// <param name="readable_stream">js 中的 ReadableStream 对象。</param>
 	public JSReadableStreamBinder(IJSRuntime jsrt, IJSObjectReference readable_stream)
 	{
-		_joined_stream.StreamSource = this;
+		_joined_stream = new JoinedStream(this);
 		_ = InitAsync(jsrt, readable_stream);
 	}
 
@@ -34,7 +34,6 @@ public class JSReadableStreamBinder :
 
 		// 如果任务没完成，直接取消
 		await _joined_stream.DisposeAsync();
-		_joined_stream.StreamSource = null;
 		_init_tcs.TrySetCanceled();
 		if (_init_tcs.Task.IsCompletedSuccessfully)
 		{
@@ -105,7 +104,7 @@ public class JSReadableStreamBinder :
 
 	public IJSObjectReference Projection { get; private set; } = default!;
 
-	private JoinedStream _joined_stream = new();
+	private JoinedStream _joined_stream;
 
 	public override async ValueTask<int> ReadAsync(Memory<byte> buffer,
 		CancellationToken cancellationToken = default)
@@ -205,17 +204,22 @@ public class JSReadableStreamBinder :
 
 	public event Action<PositionChangeEventArgs>? PositionChangedEvent;
 
-	public async Task GetNextStreamAsync()
+	public async ValueTask<bool> MoveNextAsync()
 	{
 		try
 		{
 			MemoryStream mstream = new(await ReadAsync());
-			_joined_stream.AppendStream(mstream);
+			Current = mstream;
 		}
 		catch
 		{
+
 		}
+
+		return false;
 	}
+
+	public Stream Current { get; private set; } = default!;
 }
 
 public struct PositionChangeEventArgs
