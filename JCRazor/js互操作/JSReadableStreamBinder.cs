@@ -3,7 +3,7 @@ using Microsoft.JSInterop;
 
 namespace JCRazor.js互操作;
 
-public class JSReadableStreamBinder :
+public partial class JSReadableStreamBinder :
 	Stream,
 	IJSObjectProjection,
 	IAsyncEnumerator<Stream>
@@ -46,8 +46,8 @@ public class JSReadableStreamBinder :
 	{
 		await using JSModule module = new(jsrt, "./_content/JCRazor/ReadableStreamBinder.js");
 
-		Projection = await module.InvokeAsync<IJSObjectReference>(
-			"ReadableStreamBinder.create", readable_stream);
+		Projection = await module.InvokeAsync<IJSObjectReference>("ReadableStreamBinder.create",
+			readable_stream);
 
 		_init_tcs.TrySetResult();
 	}
@@ -126,6 +126,28 @@ public class JSReadableStreamBinder :
 		return haveRead;
 	}
 
+	public event Action<PositionChangeEventArgs>? PositionChangedEvent;
+
+	public async ValueTask<bool> MoveNextAsync()
+	{
+		try
+		{
+			MemoryStream mstream = new(await ReadAsync());
+			Current = mstream;
+		}
+		catch
+		{
+
+		}
+
+		return false;
+	}
+
+	public Stream Current { get; private set; } = default!;
+}
+
+public partial class JSReadableStreamBinder
+{
 	#region 不支持的功能
 	public override void Flush()
 	{
@@ -201,25 +223,6 @@ public class JSReadableStreamBinder :
 			throw new NotSupportedException();
 		}
 	}
-
-	public event Action<PositionChangeEventArgs>? PositionChangedEvent;
-
-	public async ValueTask<bool> MoveNextAsync()
-	{
-		try
-		{
-			MemoryStream mstream = new(await ReadAsync());
-			Current = mstream;
-		}
-		catch
-		{
-
-		}
-
-		return false;
-	}
-
-	public Stream Current { get; private set; } = default!;
 }
 
 public struct PositionChangeEventArgs
