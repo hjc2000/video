@@ -111,6 +111,7 @@ public static class HttpContextExtension
 		{
 			response.Headers[header.Key] = string.Join(", ", header.Value);
 		}
+
 		// 移除此头部。直接发送响应体流，asp.net 会自动决定要不要 chunk，还是使用 http2 的分帧发送。
 		response.Headers.Remove("Transfer-Encoding");
 		response.Headers.Remove("Set-Cookie");

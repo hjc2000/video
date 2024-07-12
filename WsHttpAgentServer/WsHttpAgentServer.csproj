@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\video\HttpClientLib\HttpClientLib.csproj" />
     <ProjectReference Include="..\..\video\HttpServerLib\HttpServerLib.csproj" />
   </ItemGroup>
 
