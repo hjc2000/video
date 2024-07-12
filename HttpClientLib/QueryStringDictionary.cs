@@ -14,10 +14,10 @@ public class QueryStringDictionary : IDictionary<string, string>
 		string[] query_strings = SeperateQeuryString(uri.Query);
 		foreach (string query_string in query_strings)
 		{
-			(bool success, string key, string value) = query_string.ParseKeyValueEx();
-			if (success)
+			ParseKeyValueResult? result = query_string.ParseKeyValueEx();
+			if (result is not null)
 			{
-				Add(key, value);
+				Add(result.Value.Key, result.Value.Value);
 			}
 		}
 	}

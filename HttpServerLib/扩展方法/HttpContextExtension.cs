@@ -1,4 +1,5 @@
-﻿using JCNET.流;
+﻿using JCNET.容器;
+using JCNET.流;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
@@ -53,9 +54,8 @@ public static class HttpContextExtension
 				await mstream.WriteAsync(buf.AsMemory(0, have_read));
 				mstream.Position = 0;
 
-				JoinedStream jstream = new();
-				jstream.AppendStream(mstream);
-				jstream.AppendStream(request.Body);
+				List<Stream> stream_list = [mstream, request.Body];
+				JoinedStream jstream = new(stream_list.AsIAsyncEnumerableEx());
 				request_message.Content = new StreamContent(jstream);
 
 				// 复制内容头部
