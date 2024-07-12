@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="PInvokeLib" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HttpServerLib\HttpServerLib.csproj" />
-    <ProjectReference Include="..\PInvokeLib\PInvokeLib.csproj" />
   </ItemGroup>
 
 </Project>
