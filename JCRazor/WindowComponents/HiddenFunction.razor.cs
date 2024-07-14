@@ -1,4 +1,4 @@
-﻿using JCRazor.js互操作;
+﻿using JSInteropLib;
 using Microsoft.JSInterop;
 
 namespace JCRazor.WindowComponents;

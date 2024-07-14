@@ -1,6 +1,6 @@
 ﻿using JCNET;
 using JCNET.容器;
-using JCRazor.js互操作;
+using JSInteropLib;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
