@@ -1,4 +1,4 @@
-﻿using JCRazor.mpegts_player;
+﻿using RazorUI.ts播放器;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
