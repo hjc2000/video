@@ -3,12 +3,12 @@
 
 <div class="root">
 	<div>
-		<JCRazor.表单.SerialPortSetupFormTable ConnectButtonClickCallback="ConnectAsync">
-		</JCRazor.表单.SerialPortSetupFormTable>
+		<SerialPortSetupFormTable ConnectButtonClickCallback="ConnectAsync">
+		</SerialPortSetupFormTable>
 	</div>
 	<div class="param-box">
 		<STButton @onclick="ConfigAsync">一键配置</STButton>
-		<JCRazor.表单.FormTable HeadBorderBottom="none">
+		<FormTable HeadBorderBottom="none">
 			<Body>
 				<div>P1.01：</div>
 				<div>
@@ -45,11 +45,11 @@
 					<input @bind:get="Speed" @bind:set="SetSpeedAsync" />
 				</div>
 			</Body>
-		</JCRazor.表单.FormTable>
+		</FormTable>
 		<STButton @onclick="OnEnableButtonClickAsync">使能</STButton>
 		<STButton @onclick="OnFwdClickAsync">正转</STButton>
 		<div class="enable-light" _enabled="@(Enabled)"></div>
-		<JCRazor.表单.FormTable HeadBorderBottom="none">
+		<FormTable HeadBorderBottom="none">
 			<Body>
 				<div>反馈当前位置：</div>
 				<div>
@@ -61,6 +61,6 @@
 					<input readonly value="@(FeedbackSpeed)" />
 				</div>
 			</Body>
-		</JCRazor.表单.FormTable>
+		</FormTable>
 	</div>
 </div>

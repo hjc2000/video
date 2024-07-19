@@ -2,7 +2,7 @@
 
 <div class="root">
 	<STButton @onclick="ConfigAsync">一键配置</STButton>
-	<JCRazor.表单.FormTable HeadBorderBottom="none" Height="fit-content">
+	<FormTable HeadBorderBottom="none" Height="fit-content">
 		<Body>
 			<div>P1.01：</div>
 			<div>
@@ -54,7 +54,7 @@
 				<input readonly value="@(FeedbackSpeed)" />
 			</div>
 		</Body>
-	</JCRazor.表单.FormTable>
+	</FormTable>
 	<div style="padding: 10px 0;">
 		<STButton @onclick="SetImmediateDatasAsync">一键设置立即值数据</STButton>
 		<STButton @onclick="PresetPositionAsync">位置预置</STButton>
@@ -79,9 +79,9 @@
 			</Right>
 		</LeftRightLabel>
 	</div>
-	<JCRazor.表单.FormTable HeadBorderBottom="none"
-						  Height="fit-content"
-						  BodyOverflow="hidden">
+	<FormTable HeadBorderBottom="none"
+			   Height="fit-content"
+			   BodyOverflow="hidden">
 		<Body>
 			<div>立即值位置：</div>
 			<div>
@@ -103,5 +103,5 @@
 				<input @bind:get="ImmediateDecelerationDuration" @bind:set="SetImmediateDecelerationDurationAsync" />
 			</div>
 		</Body>
-	</JCRazor.表单.FormTable>
+	</FormTable>
 </div>
