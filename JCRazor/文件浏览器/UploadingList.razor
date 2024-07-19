@@ -15,12 +15,12 @@
 							<div style="color:red;">@upload_state.FailureReason</div>
 						}
 
-						<JCRazor.WindowComponents.ProgressBar Value="upload_state.Progress"
-															  MaxValue="1"
-															  UseCancelButton="true"
-															  CancelButtonClickEvent="async ()=>{await OnCancelDownloading(upload_state);}">
+						<ProgressBar Value="upload_state.Progress"
+									 MaxValue="1"
+									 UseCancelButton="true"
+									 CancelButtonClickEvent="async ()=>{await OnCancelDownloading(upload_state);}">
 
-						</JCRazor.WindowComponents.ProgressBar>
+						</ProgressBar>
 					</div>
 				}
 			}
