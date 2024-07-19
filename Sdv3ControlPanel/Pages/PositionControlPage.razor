@@ -62,22 +62,22 @@
 		<STButton @onclick="ForceUpdateImmediateDatasAsync">立即应用新的定位数据</STButton>
 	</div>
 	<div style="padding: 10px 0;">
-		<JCRazor.盒子.LeftRightLabel Width="max-content">
+		<LeftRightLabel Width="max-content">
 			<Left>
 				暂停定位：
 			</Left>
 			<Right>
 				<input type="checkbox" @bind:get="PausePositioning" @bind:set="SetPausePositioningAsync" />
 			</Right>
-		</JCRazor.盒子.LeftRightLabel>
-		<JCRazor.盒子.LeftRightLabel Width="max-content">
+		</LeftRightLabel>
+		<LeftRightLabel Width="max-content">
 			<Left>
 				取消定位：
 			</Left>
 			<Right>
 				<input type="checkbox" @bind:get="CancelPositioning" @bind:set="SetCancelPositioningAsync" />
 			</Right>
-		</JCRazor.盒子.LeftRightLabel>
+		</LeftRightLabel>
 	</div>
 	<JCRazor.表单.FormTable HeadBorderBottom="none"
 						  Height="fit-content"
