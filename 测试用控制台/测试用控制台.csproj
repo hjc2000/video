@@ -10,7 +10,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="JCNET" Version="8.0.0" />
+	  <PackageReference Include="JCNET" Version="9.0.0" />
 	  <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.4.3" />
 	  <PackageReference Include="System.Management.Automation" Version="7.4.3" />
 	</ItemGroup>
