@@ -13,7 +13,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="8.0.70" />
-		<PackageReference Include="RazorUI" Version="2.6.8" />
+		<PackageReference Include="RazorUI" Version="2.6.9" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\SDV3Lib\SDV3Lib.csproj" />
