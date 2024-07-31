@@ -1,17 +1,14 @@
 <div class="root">
-	<NavLinkButton Url="./">
-		<Right>
-			速度控制
-		</Right>
-	</NavLinkButton>
-	<NavLinkButton Url="./position_control">
-		<Right>
-			定位控制
-		</Right>
-	</NavLinkButton>
-	<NavLinkButton Url="./">
-		<Right>
-			控制
-		</Right>
-	</NavLinkButton>
+	<RazorUI.Layout.SecondaryNavMenu FirstLevelNavigationPath="control">
+		<RazorUI.Layout.SecondaryNavMenuButton Href="control/config">
+			<Right>
+				速度控制
+			</Right>
+		</RazorUI.Layout.SecondaryNavMenuButton>
+		<RazorUI.Layout.SecondaryNavMenuButton Href="control/position_control">
+			<Right>
+				定位控制
+			</Right>
+		</RazorUI.Layout.SecondaryNavMenuButton>
+	</RazorUI.Layout.SecondaryNavMenu>
 </div>

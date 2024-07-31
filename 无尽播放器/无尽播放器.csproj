@@ -11,9 +11,9 @@
 	  <None Include="wwwroot\index.html" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="JCNET" Version="9.0.0" />
+		<PackageReference Include="JCNET" Version="11.1.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="8.0.70" />
 		<PackageReference Include="PInvokeLib" Version="1.0.0" />
-		<PackageReference Include="RazorUI" Version="2.6.10" />
+		<PackageReference Include="RazorUI" Version="4.2.10" />
 	</ItemGroup>
 </Project>
